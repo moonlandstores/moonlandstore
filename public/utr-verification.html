@@ -16,6 +16,12 @@
   </script>
 </head>
 <body class="bg-[#050505] text-slate-100 min-h-screen font-sans p-6 sm:p-10 space-y-8 selection:bg-white selection:text-black">
+  
+  <!-- Hidden Audio for Beep Alert -->
+  <audio id="alertAudio" preload="auto">
+    <source src="https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3" type="audio/mpeg">
+  </audio>
+
   <div class="max-w-7xl mx-auto space-y-8">
     
     <!-- Header & Locked Single-Line Navigation Bar -->
@@ -44,9 +50,12 @@
     </div>
 
     <!-- Tabs for Pending and Rejected UTRs -->
-    <div class="flex items-center gap-3 border-b border-zinc-900 pb-4">
-      <button onclick="switchTab('pending')" id="tabBtnPending" class="bg-cyan-400 text-black font-black px-5 py-2.5 text-xs uppercase tracking-wider transition">Pending UTRs</button>
-      <button onclick="switchTab('rejected')" id="tabBtnRejected" class="bg-black border border-zinc-800 text-zinc-400 hover:text-white font-bold px-5 py-2.5 text-xs uppercase tracking-wider transition">Rejected UTRs</button>
+    <div class="flex items-center justify-between border-b border-zinc-900 pb-4">
+      <div class="flex items-center gap-3">
+        <button onclick="switchTab('pending')" id="tabBtnPending" class="bg-cyan-400 text-black font-black px-5 py-2.5 text-xs uppercase tracking-wider transition">Pending UTRs</button>
+        <button onclick="switchTab('rejected')" id="tabBtnRejected" class="bg-black border border-zinc-800 text-zinc-400 hover:text-white font-bold px-5 py-2.5 text-xs uppercase tracking-wider transition">Rejected UTRs</button>
+      </div>
+      <button onclick="enableSound()" id="soundToggleBtn" class="bg-zinc-900 text-cyan-400 border border-cyan-400/30 px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider">🔔 Enable Sound Alert</button>
     </div>
 
     <!-- Queue Containers -->
@@ -71,30 +80,35 @@
     let cachedRejectedOrders = [];
     let currentTab = 'pending';
     let previousPendingCount = null;
+    let soundAllowed = false;
 
     document.addEventListener("DOMContentLoaded", () => {
         fetchUtrQueue();
         setInterval(fetchUtrQueue, 5000);
     });
 
-    // Play subtle audio beep alert when new UTR arrives
+    function enableSound() {
+        soundAllowed = true;
+        const audio = document.getElementById('alertAudio');
+        audio.play().then(() => {
+            audio.pause();
+            audio.currentTime = 0;
+            document.getElementById('soundToggleBtn').innerText = '🔔 Sound Alert Active';
+            document.getElementById('soundToggleBtn').className = 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider';
+            showToast('Sound Enabled', 'Ab naya UTR aane par alert sound bajega!');
+        }).catch(err => {
+            console.log('Audio enable error:', err);
+        });
+    }
+
     function playAlertSound() {
+        if (!soundAllowed) return;
         try {
-            const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-            const oscillator = audioCtx.createOscillator();
-            const gainNode = audioCtx.createGain();
-            
-            oscillator.type = 'sine';
-            oscillator.frequency.setValueAtTime(880, audioCtx.currentTime); // High pitch beep
-            gainNode.gain.setValueAtTime(0.1, audioCtx.currentTime);
-            
-            oscillator.connect(gainNode);
-            gainNode.connect(audioCtx.destination);
-            
-            oscillator.start();
-            oscillator.stop(audioCtx.currentTime + 0.2);
+            const audio = document.getElementById('alertAudio');
+            audio.currentTime = 0;
+            audio.play().catch(e => console.log('Playback prevented:', e));
         } catch (e) {
-            console.log('Audio alert note:', e);
+            console.log('Audio error:', e);
         }
     }
 
@@ -150,11 +164,9 @@
                 const allOrders = await res.json();
                 const newPending = allOrders.filter(o => (!o.utrVerified && o.status !== 'Rejected') || o.status === 'Payment Verification Pending');
                 
-                // Check if a new UTR order has arrived
                 if (previousPendingCount !== null && newPending.length > previousPendingCount) {
                     playAlertSound();
                     showToast('New UTR Received!', 'Ek naya payment UTR verification ke liye aaya hai.');
-                    // Flash pulse dot to amber/red alert
                     const dot = document.getElementById('livePulseDot');
                     dot.className = "w-3 h-3 bg-amber-400 rounded-full animate-ping";
                     setTimeout(() => { dot.className = "w-3 h-3 bg-cyan-400 rounded-full animate-pulse"; }, 4000);
