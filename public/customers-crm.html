@@ -40,7 +40,7 @@
             </nav>
         </div>
 
-        <!-- Dashboard Analytics Summary Cards (2 Cards) -->
+        <!-- Dashboard Analytics Summary Cards -->
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
             <div class="bg-[rgba(12,12,12,0.7)] border border-white/10 p-6 space-y-2 shadow-xl rounded-none">
                 <p class="text-[10px] text-zinc-400 uppercase tracking-[0.2em] font-bold">Total Unique Customers</p>
@@ -60,13 +60,11 @@
             </div>
 
             <div class="flex flex-wrap items-center gap-3 w-full lg:w-auto justify-end">
-                <!-- Date Filter -->
                 <div class="flex items-center gap-2">
                     <span class="text-xs text-zinc-400 font-bold uppercase tracking-widest"><i class="fa-solid fa-calendar mr-1"></i> Date:</span>
                     <input type="date" id="customerDateFilter" onchange="filterCustomers()" class="bg-black border border-zinc-800 px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-cyan-400 font-mono">
                 </div>
 
-                <!-- Sort By -->
                 <div class="flex items-center gap-2">
                     <span class="text-xs text-zinc-400 font-bold uppercase tracking-widest"><i class="fa-solid fa-sort mr-1"></i> Sort:</span>
                     <select id="customerSortSelect" onchange="filterCustomers()" class="bg-black border border-zinc-800 px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-cyan-400 font-mono uppercase">
@@ -87,7 +85,7 @@
     <!-- Edit Customer Modal -->
     <div id="editCustomerModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm hidden">
         <div class="bg-[rgba(12,12,12,0.95)] border border-cyan-400/40 p-6 rounded-none max-w-md w-full m-4 space-y-4 text-xs shadow-2xl">
-            <h3 class="text-sm font-black text-white uppercase tracking-wider">Edit Customer & Order Details</h3>
+            <h3 class="text-sm font-black text-white uppercase tracking-wider">Edit Customer & Referral Details</h3>
             <input type="hidden" id="editCustomerIndex">
             
             <div class="space-y-1">
@@ -103,8 +101,12 @@
                 <input type="text" id="editCustAddress" class="w-full bg-black border border-zinc-800 px-4 py-3 text-white focus:outline-none focus:border-cyan-400">
             </div>
             <div class="space-y-1">
-                <label class="text-zinc-400 font-bold uppercase tracking-wider text-[10px]">Referral ID</label>
+                <label class="text-zinc-400 font-bold uppercase tracking-wider text-[10px]">Own Referral ID</label>
                 <input type="text" id="editCustRef" class="w-full bg-black border border-zinc-800 px-4 py-3 text-white font-mono text-cyan-400 focus:outline-none focus:border-cyan-400">
+            </div>
+            <div class="space-y-1">
+                <label class="text-zinc-400 font-bold uppercase tracking-wider text-[10px]">Entered Referral Code (Upline Referrer Code)</label>
+                <input type="text" id="editEnteredRef" placeholder="e.g. REF-162659" class="w-full bg-black border border-zinc-800 px-4 py-3 text-white font-mono text-amber-400 focus:outline-none focus:border-cyan-400">
             </div>
 
             <div class="flex gap-3 justify-end pt-2">
@@ -159,6 +161,7 @@
                 const res = await fetch('/api/orders');
                 if (res.ok) {
                     cachedCustomers = await res.json();
+                    console.log("Fetched Orders/Customers:", cachedCustomers);
                 } else {
                     cachedCustomers = [];
                 }
@@ -196,10 +199,10 @@
                 const productsList = o.items ? o.items.map(i => i.name).join(', ') : (o.productName || o.product || 'Appliance Product');
                 const totalAmount = o.totalAmount ? `₹${o.totalAmount}` : 'N/A';
                 
-                // Robust Referral Code check across all possible properties
+                // Robust check for entered referral code across all fields
                 const enteredCode = (o.enteredRefCode || o.refCodeUsed || o.referralCode || o.refCode || o.code || o.appliedRefCode || o.appliedCode || '').trim();
                 
-                // Lookup Referrer Name from cachedCustomers
+                // Lookup Referrer Name
                 let referrer = cachedCustomers.find(item => {
                     const refCode = (item.userRefCode || item.myRefCode || item.ownRefCode || item.refCode || '').trim().toLowerCase();
                     return refCode && refCode === enteredCode.toLowerCase();
@@ -314,6 +317,7 @@
             document.getElementById('editCustPhone').value = o.phone || '';
             document.getElementById('editCustAddress').value = o.address || '';
             document.getElementById('editCustRef').value = o.userRefCode || '';
+            document.getElementById('editEnteredRef').value = o.enteredRefCode || o.refCodeUsed || o.referralCode || '';
             document.getElementById('editCustomerModal').classList.remove('hidden');
         }
 
@@ -328,7 +332,8 @@
                 name: document.getElementById('editCustName').value.trim(),
                 phone: document.getElementById('editCustPhone').value.trim(),
                 address: document.getElementById('editCustAddress').value.trim(),
-                userRefCode: document.getElementById('editCustRef').value.trim()
+                userRefCode: document.getElementById('editCustRef').value.trim(),
+                enteredRefCode: document.getElementById('editEnteredRef').value.trim()
             };
 
             try {
@@ -340,7 +345,7 @@
 
                 if (res.ok) {
                     closeCustomerModal();
-                    showToast('Updated', 'Customer details successfully update ho gaye hain!');
+                    showToast('Updated', 'Customer details & referral code successfully update ho gaye hain!');
                     fetchCustomers();
                 } else {
                     showToast('Error', 'Failed to update customer details on server');
