@@ -292,7 +292,9 @@
         }
 
         function toggleSelectAll(master) {
-            document.querySelectorAll('.order-checkbox').forEach(cb => cb.checked = master.checked);
+            document.querySelectorAll('.order-checkbox').forEach(cb => {
+                cb.checked = master.checked;
+            });
         }
 
         function closeCancelModal() {
@@ -442,7 +444,7 @@
         function filterOrders() {
             const query = document.getElementById('orderSearchInput').value.toLowerCase().trim();
             const statusFilter = document.getElementById('statusFilterSelect').value;
-            const dateVal = document.getElementById('orderDateFilter').value;
+            const dateVal = document.getElementById('orderDateFilter'].value;
 
             const filtered = cachedOrders.filter(o => {
                 const blob = ((o.customer || o.name || '') + (o.phone || '') + (o.utr || '') + (o.id || '')).toLowerCase();
