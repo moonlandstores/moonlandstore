@@ -22,7 +22,7 @@
     <div class="flex flex-col xl:flex-row justify-between items-start xl:items-center gap-6 pb-6 border-b border-zinc-900">
       <div>
         <h1 class="text-2xl font-black text-white uppercase tracking-wider flex items-center gap-3">
-          <span class="w-3 h-3 bg-cyan-400 rounded-full animate-pulse"></span>
+          <span id="livePulseDot" class="w-3 h-3 bg-cyan-400 rounded-full animate-pulse"></span>
           UTR Payment Verification Queue
         </h1>
         <p class="text-xs text-zinc-400 tracking-wide mt-1">Review pending bank payment UTRs from Firestore, approve orders & check rejected records</p>
@@ -70,11 +70,33 @@
     let cachedPendingOrders = [];
     let cachedRejectedOrders = [];
     let currentTab = 'pending';
+    let previousPendingCount = null;
 
     document.addEventListener("DOMContentLoaded", () => {
         fetchUtrQueue();
         setInterval(fetchUtrQueue, 5000);
     });
+
+    // Play subtle audio beep alert when new UTR arrives
+    function playAlertSound() {
+        try {
+            const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            const oscillator = audioCtx.createOscillator();
+            const gainNode = audioCtx.createGain();
+            
+            oscillator.type = 'sine';
+            oscillator.frequency.setValueAtTime(880, audioCtx.currentTime); // High pitch beep
+            gainNode.gain.setValueAtTime(0.1, audioCtx.currentTime);
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(audioCtx.destination);
+            
+            oscillator.start();
+            oscillator.stop(audioCtx.currentTime + 0.2);
+        } catch (e) {
+            console.log('Audio alert note:', e);
+        }
+    }
 
     function switchTab(tab) {
         currentTab = tab;
@@ -126,7 +148,20 @@
             const res = await fetch('/api/orders');
             if (res.ok) {
                 const allOrders = await res.json();
-                cachedPendingOrders = allOrders.filter(o => (!o.utrVerified && o.status !== 'Rejected') || o.status === 'Payment Verification Pending');
+                const newPending = allOrders.filter(o => (!o.utrVerified && o.status !== 'Rejected') || o.status === 'Payment Verification Pending');
+                
+                // Check if a new UTR order has arrived
+                if (previousPendingCount !== null && newPending.length > previousPendingCount) {
+                    playAlertSound();
+                    showToast('New UTR Received!', 'Ek naya payment UTR verification ke liye aaya hai.');
+                    // Flash pulse dot to amber/red alert
+                    const dot = document.getElementById('livePulseDot');
+                    dot.className = "w-3 h-3 bg-amber-400 rounded-full animate-ping";
+                    setTimeout(() => { dot.className = "w-3 h-3 bg-cyan-400 rounded-full animate-pulse"; }, 4000);
+                }
+
+                previousPendingCount = newPending.length;
+                cachedPendingOrders = newPending;
                 cachedRejectedOrders = allOrders.filter(o => o.status === 'Rejected');
                 
                 updateNavBadge(cachedPendingOrders.length);
