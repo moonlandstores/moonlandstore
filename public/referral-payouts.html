@@ -184,7 +184,8 @@
         if (currentFilter === 'Paid' && status !== 'Paid') return false;
         if (currentFilter === 'Pending' && status === 'Paid') return false;
 
-        const enteredCode = (o.enteredRefCode || o.refCodeUsed || o.referralCode || '').trim();
+        // Expanded check for all possible referral field names in order object
+        const enteredCode = (o.enteredRefCode || o.refCodeUsed || o.referralCode || o.refCode || o.code || o.appliedRefCode || o.appliedCode || '').trim();
         const isDirect = !enteredCode || enteredCode.toLowerCase() === 'none' || enteredCode.toLowerCase() === 'direct' || enteredCode === '';
 
         if (typeVal === 'direct' && !isDirect) return false;
@@ -192,7 +193,7 @@
 
         // Find User A (Referrer) from all orders matching userRefCode, myRefCode, or ownRefCode
         let referrer = orders.find(item => {
-          const userA_Code = (item.userRefCode || item.myRefCode || item.ownRefCode || '').trim().toLowerCase();
+          const userA_Code = (item.userRefCode || item.myRefCode || item.ownRefCode || item.refCode || '').trim().toLowerCase();
           return userA_Code && userA_Code === enteredCode.toLowerCase();
         });
 
@@ -216,9 +217,9 @@
 
       let referrerCounts = {};
       orders.forEach(o => {
-        const code = (o.enteredRefCode || o.refCodeUsed || '').trim();
+        const code = (o.enteredRefCode || o.refCodeUsed || o.referralCode || o.refCode || o.code || '').trim();
         let refObj = orders.find(item => {
-          const refCode = (item.userRefCode || item.myRefCode || item.ownRefCode || '').trim().toLowerCase();
+          const refCode = (item.userRefCode || item.myRefCode || item.ownRefCode || item.refCode || '').trim().toLowerCase();
           return refCode && refCode === code.toLowerCase();
         });
         let refName = refObj ? (refObj.customer || refObj.name) : 'Direct / Unknown Referrer';
@@ -235,9 +236,12 @@
         if (sortVal === 'newest') return timeB - timeA;
         if (sortVal === 'oldest') return timeA - timeB;
 
-        let refA = orders.find(item => (item.userRefCode || item.myRefCode || '').trim().toLowerCase() === (a.enteredRefCode || '').trim().toLowerCase());
+        let codeA = (a.enteredRefCode || a.refCodeUsed || a.referralCode || a.refCode || a.code || '').trim().toLowerCase();
+        let codeB = (b.enteredRefCode || b.refCodeUsed || b.referralCode || b.refCode || b.code || '').trim().toLowerCase();
+
+        let refA = orders.find(item => (item.userRefCode || item.myRefCode || item.ownRefCode || '').trim().toLowerCase() === codeA);
         let nameA = refA ? (refA.customer || refA.name) : 'Direct / Unknown Referrer';
-        let refB = orders.find(item => (item.userRefCode || item.myRefCode || '').trim().toLowerCase() === (b.enteredRefCode || '').trim().toLowerCase());
+        let refB = orders.find(item => (item.userRefCode || item.myRefCode || item.ownRefCode || '').trim().toLowerCase() === codeB);
         let nameB = refB ? (refB.customer || refB.name) : 'Direct / Unknown Referrer';
 
         if (sortVal === 'topEarners') {
@@ -256,14 +260,14 @@
       container.innerHTML = '';
       filteredOrders.forEach(o => {
         const payoutStatus = o.payoutStatus || 'Pending';
-        const enteredCode = (o.enteredRefCode || o.refCodeUsed || o.referralCode || 'Direct').trim();
+        const enteredCode = (o.enteredRefCode || o.refCodeUsed || o.referralCode || o.refCode || o.code || 'None').trim();
         const orderDate = o.createdAt || o.timestamp ? new Date(o.createdAt || o.timestamp).toLocaleString('en-IN') : (o.date || 'N/A');
         
         const paidTimeText = o.payoutPaidAt ? `<span class="text-emerald-400 ml-2 font-mono">| Paid At: ${o.payoutPaidAt}</span>` : '';
 
         // Lookup User A Details (Referrer Name, UPI, Phone)
         let referrer = orders.find(item => {
-          const refCode = (item.userRefCode || item.myRefCode || item.ownRefCode || '').trim().toLowerCase();
+          const refCode = (item.userRefCode || item.myRefCode || item.ownRefCode || item.refCode || '').trim().toLowerCase();
           return refCode && refCode === enteredCode.toLowerCase();
         });
 

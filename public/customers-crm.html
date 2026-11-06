@@ -196,7 +196,20 @@
                 const productsList = o.items ? o.items.map(i => i.name).join(', ') : (o.productName || o.product || 'Appliance Product');
                 const totalAmount = o.totalAmount ? `₹${o.totalAmount}` : 'N/A';
                 
-                const referredBy = o.enteredRefCode && o.enteredRefCode !== 'None' && o.enteredRefCode.trim() !== '' ? o.enteredRefCode : 'Direct (No Referral)';
+                // Robust Referral Code check across all possible properties
+                const enteredCode = (o.enteredRefCode || o.refCodeUsed || o.referralCode || o.refCode || o.code || o.appliedRefCode || o.appliedCode || '').trim();
+                
+                // Lookup Referrer Name from cachedCustomers
+                let referrer = cachedCustomers.find(item => {
+                    const refCode = (item.userRefCode || item.myRefCode || item.ownRefCode || item.refCode || '').trim().toLowerCase();
+                    return refCode && refCode === enteredCode.toLowerCase();
+                });
+                let referrerName = referrer ? (referrer.customer || referrer.name || referrer.fullName) : '';
+
+                let referredBy = 'Direct (No Referral)';
+                if (enteredCode && enteredCode.toLowerCase() !== 'none' && enteredCode.toLowerCase() !== 'direct' && enteredCode !== '') {
+                    referredBy = referrerName ? `${referrerName} (${enteredCode})` : enteredCode;
+                }
 
                 const card = document.createElement('div');
                 card.className = "bg-[rgba(12,12,12,0.7)] border border-white/10 p-6 space-y-4 text-xs flex flex-col justify-between shadow-xl rounded-none";
@@ -250,7 +263,7 @@
                 const name = (o.customer || o.name || '').toLowerCase();
                 const phone = (o.phone || '').toLowerCase();
                 const refCode = (o.userRefCode || '').toLowerCase();
-                const enteredRef = (o.enteredRefCode || '').toLowerCase();
+                const enteredRef = (o.enteredRefCode || o.refCodeUsed || o.referralCode || '').toLowerCase();
                 const address = (o.address || '').toLowerCase();
                 const utr = (o.utr || '').toLowerCase();
 
