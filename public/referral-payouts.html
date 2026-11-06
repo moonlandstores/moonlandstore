@@ -149,7 +149,9 @@
       try {
         const res = await fetch('/api/orders');
         if (res.ok) {
-          cachedOrders = await res.json();
+          const allOrders = await res.json();
+          // Filter out rejected orders so they don't show in payout history
+          cachedOrders = allOrders.filter(o => o.status !== 'Rejected');
         } else {
           cachedOrders = [];
         }

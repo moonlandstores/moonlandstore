@@ -160,8 +160,9 @@
             try {
                 const res = await fetch('/api/orders');
                 if (res.ok) {
-                    cachedCustomers = await res.json();
-                    console.log("Fetched Orders/Customers:", cachedCustomers);
+                    const allOrders = await res.json();
+                    // Filter out rejected orders so they don't show in CRM or Revenue
+                    cachedCustomers = allOrders.filter(o => o.status !== 'Rejected');
                 } else {
                     cachedCustomers = [];
                 }
@@ -199,10 +200,8 @@
                 const productsList = o.items ? o.items.map(i => i.name).join(', ') : (o.productName || o.product || 'Appliance Product');
                 const totalAmount = o.totalAmount ? `₹${o.totalAmount}` : 'N/A';
                 
-                // Robust check for entered referral code across all fields
                 const enteredCode = (o.enteredRefCode || o.refCodeUsed || o.referralCode || o.refCode || o.code || o.appliedRefCode || o.appliedCode || '').trim();
                 
-                // Lookup Referrer Name
                 let referrer = cachedCustomers.find(item => {
                     const refCode = (item.userRefCode || item.myRefCode || item.ownRefCode || item.refCode || '').trim().toLowerCase();
                     return refCode && refCode === enteredCode.toLowerCase();
