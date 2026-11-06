@@ -504,7 +504,7 @@ app.put('/api/orders/:id', requireAdmin, adminBodyParser, adminUrlParser, async 
   }
 });
 
-// 2. Bulk Update Orders Status (Fixed)
+// 2. Bulk Update Orders Status (Fixed with batch.set merge)
 app.put('/api/orders/bulk-status', requireAdmin, adminBodyParser, adminUrlParser, async (req, res) => {
   try {
     const { ids, status } = req.body;
@@ -517,11 +517,12 @@ app.put('/api/orders/bulk-status', requireAdmin, adminBodyParser, adminUrlParser
 
     const batch = db.batch();
     for (const orderId of ids) {
-      const orderRef = db.collection('orders').doc(orderId);
-      batch.update(orderRef, {
+      if (!orderId) continue;
+      const orderRef = db.collection('orders').doc(orderId.trim());
+      batch.set(orderRef, {
         status: status.trim(),
         updatedAt: new Date().toISOString()
-      });
+      }, { merge: true });
     }
 
     await batch.commit();
