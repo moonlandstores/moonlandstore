@@ -415,7 +415,6 @@ app.post('/api/orders', publicApiLimiter, async (req, res) => {
     let verifiedItems = [];
     let calculatedTotal = 0;
     
-    // FIX: Properly validate and extract enteredRefCode from req.body
     let validRefCode = 'None';
     if (enteredRefCode && typeof enteredRefCode === 'string') {
       const trimmedCode = enteredRefCode.trim();
@@ -460,7 +459,7 @@ app.post('/api/orders', publicApiLimiter, async (req, res) => {
         utr: utr.trim(),
         items: verifiedItems,
         totalAmount: calculatedTotal,
-        enteredRefCode: validRefCode, // FIX: Now saves the actual referral code correctly!
+        enteredRefCode: validRefCode,
         utrVerified: false,
         status: 'Payment Verification Pending',
         createdAt: new Date().toISOString()
@@ -527,11 +526,11 @@ app.put('/api/orders/bulk-status', requireAdmin, adminBodyParser, adminUrlParser
   }
 });
 
-// 2. Update Referral Payout Status
+// 2. Update Referral Payout Status (Updated to handle payoutPaidAt timestamp)
 app.put('/api/referrals/:id', requireAdmin, adminBodyParser, adminUrlParser, async (req, res) => {
   try {
     const orderId = req.params.id;
-    const { payoutStatus } = req.body;
+    const { payoutStatus, payoutPaidAt } = req.body;
 
     if (!db) return res.status(503).json({ success: false, error: 'Database unavailable' });
 
@@ -548,10 +547,16 @@ app.put('/api/referrals/:id', requireAdmin, adminBodyParser, adminUrlParser, asy
       }
     }
 
-    await orderRef.update({
+    const updatePayload = {
       payoutStatus: payoutStatus ? payoutStatus.trim() : 'Paid',
       updatedAt: new Date().toISOString()
-    });
+    };
+
+    if (payoutPaidAt !== undefined) {
+      updatePayload.payoutPaidAt = payoutPaidAt;
+    }
+
+    await orderRef.update(updatePayload);
 
     res.json({ success: true, message: 'Payout status updated successfully' });
   } catch (err) {

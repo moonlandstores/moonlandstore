@@ -184,14 +184,12 @@
         if (currentFilter === 'Paid' && status !== 'Paid') return false;
         if (currentFilter === 'Pending' && status === 'Paid') return false;
 
-        // Expanded check for all possible referral field names in order object
         const enteredCode = (o.enteredRefCode || o.refCodeUsed || o.referralCode || o.refCode || o.code || o.appliedRefCode || o.appliedCode || '').trim();
         const isDirect = !enteredCode || enteredCode.toLowerCase() === 'none' || enteredCode.toLowerCase() === 'direct' || enteredCode === '';
 
         if (typeVal === 'direct' && !isDirect) return false;
         if (typeVal === 'referral' && isDirect) return false;
 
-        // Find User A (Referrer) from all orders matching userRefCode, myRefCode, or ownRefCode
         let referrer = orders.find(item => {
           const userA_Code = (item.userRefCode || item.myRefCode || item.ownRefCode || item.refCode || '').trim().toLowerCase();
           return userA_Code && userA_Code === enteredCode.toLowerCase();
@@ -228,7 +226,6 @@
         }
       });
 
-      // Sorting Logic
       filteredOrders.sort((a, b) => {
         const timeA = new Date(a.createdAt || a.timestamp || 0).getTime();
         const timeB = new Date(b.createdAt || b.timestamp || 0).getTime();
@@ -263,9 +260,10 @@
         const enteredCode = (o.enteredRefCode || o.refCodeUsed || o.referralCode || o.refCode || o.code || 'None').trim();
         const orderDate = o.createdAt || o.timestamp ? new Date(o.createdAt || o.timestamp).toLocaleString('en-IN') : (o.date || 'N/A');
         
-        const paidTimeText = o.payoutPaidAt ? `<span class="text-emerald-400 ml-2 font-mono">| Paid At: ${o.payoutPaidAt}</span>` : '';
+        const paidTimeText = (payoutStatus === 'Paid' && o.payoutPaidAt) 
+          ? `<span class="text-emerald-400 font-mono block mt-1"><i class="fa-solid fa-circle-check mr-1"></i> Paid At: ${o.payoutPaidAt}</span>` 
+          : '';
 
-        // Lookup User A Details (Referrer Name, UPI, Phone)
         let referrer = orders.find(item => {
           const refCode = (item.userRefCode || item.myRefCode || item.ownRefCode || item.refCode || '').trim().toLowerCase();
           return refCode && refCode === enteredCode.toLowerCase();
@@ -290,7 +288,8 @@
               </div>
               <p class="text-zinc-400 font-mono">Referral Code Used: <code class="text-cyan-400 font-bold">${enteredCode}</code> | User A UPI ID: <span class="text-amber-300 font-bold">${referrerUpi}</span></p>
               <p class="text-zinc-500 font-mono text-[11px]">Buyer (User B): ${o.customer || o.name} (${o.phone}) | Order ID: <span class="text-cyan-400 font-mono">${o.id}</span></p>
-              <p class="text-[10px] text-zinc-400 font-mono"><i class="fa-solid fa-clock text-cyan-400 mr-1"></i> Order Time: <span class="text-slate-300 font-medium">${orderDate}</span> ${paidTimeText}</p>
+              <p class="text-[10px] text-zinc-400 font-mono"><i class="fa-solid fa-clock text-cyan-400 mr-1"></i> Order Time: <span class="text-slate-300 font-medium">${orderDate}</span></p>
+              ${paidTimeText}
             </div>
 
             <div class="flex flex-wrap items-center gap-3">
