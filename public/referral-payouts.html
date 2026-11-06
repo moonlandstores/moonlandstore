@@ -184,14 +184,19 @@
         if (currentFilter === 'Paid' && status !== 'Paid') return false;
         if (currentFilter === 'Pending' && status === 'Paid') return false;
 
-        const enteredCode = (o.enteredRefCode || 'Direct').trim();
-        const isDirect = !o.enteredRefCode || enteredCode.toLowerCase() === 'none' || enteredCode.toLowerCase() === 'direct' || enteredCode === '';
+        const enteredCode = (o.enteredRefCode || o.refCodeUsed || o.referralCode || '').trim();
+        const isDirect = !enteredCode || enteredCode.toLowerCase() === 'none' || enteredCode.toLowerCase() === 'direct' || enteredCode === '';
 
         if (typeVal === 'direct' && !isDirect) return false;
         if (typeVal === 'referral' && isDirect) return false;
 
-        let referrer = orders.find(item => item.userRefCode && item.userRefCode.toLowerCase() === enteredCode.toLowerCase());
-        let referrerName = referrer ? (referrer.customer || referrer.name || '').toLowerCase() : 'direct / unknown referrer';
+        // Find User A (Referrer) from all orders matching userRefCode, myRefCode, or ownRefCode
+        let referrer = orders.find(item => {
+          const userA_Code = (item.userRefCode || item.myRefCode || item.ownRefCode || '').trim().toLowerCase();
+          return userA_Code && userA_Code === enteredCode.toLowerCase();
+        });
+
+        let referrerName = referrer ? (referrer.customer || referrer.name || referrer.fullName || '').toLowerCase() : 'direct / unknown referrer';
         const buyerName = (o.customer || o.name || '').toLowerCase();
         const buyerPhone = (o.phone || '').toLowerCase();
         const orderId = (o.id || '').toLowerCase();
@@ -211,8 +216,11 @@
 
       let referrerCounts = {};
       orders.forEach(o => {
-        const code = o.enteredRefCode || 'Direct';
-        let refObj = orders.find(item => item.userRefCode === code);
+        const code = (o.enteredRefCode || o.refCodeUsed || '').trim();
+        let refObj = orders.find(item => {
+          const refCode = (item.userRefCode || item.myRefCode || item.ownRefCode || '').trim().toLowerCase();
+          return refCode && refCode === code.toLowerCase();
+        });
         let refName = refObj ? (refObj.customer || refObj.name) : 'Direct / Unknown Referrer';
         if ((o.payoutStatus || 'Pending') === 'Paid') {
           referrerCounts[refName] = (referrerCounts[refName] || 0) + 1;
@@ -227,9 +235,9 @@
         if (sortVal === 'newest') return timeB - timeA;
         if (sortVal === 'oldest') return timeA - timeB;
 
-        let refA = orders.find(item => item.userRefCode === (a.enteredRefCode || 'Direct'));
+        let refA = orders.find(item => (item.userRefCode || item.myRefCode || '').trim().toLowerCase() === (a.enteredRefCode || '').trim().toLowerCase());
         let nameA = refA ? (refA.customer || refA.name) : 'Direct / Unknown Referrer';
-        let refB = orders.find(item => item.userRefCode === (b.enteredRefCode || 'Direct'));
+        let refB = orders.find(item => (item.userRefCode || item.myRefCode || '').trim().toLowerCase() === (b.enteredRefCode || '').trim().toLowerCase());
         let nameB = refB ? (refB.customer || refB.name) : 'Direct / Unknown Referrer';
 
         if (sortVal === 'topEarners') {
@@ -248,15 +256,20 @@
       container.innerHTML = '';
       filteredOrders.forEach(o => {
         const payoutStatus = o.payoutStatus || 'Pending';
-        const enteredCode = o.enteredRefCode || 'Direct';
+        const enteredCode = (o.enteredRefCode || o.refCodeUsed || o.referralCode || 'Direct').trim();
         const orderDate = o.createdAt || o.timestamp ? new Date(o.createdAt || o.timestamp).toLocaleString('en-IN') : (o.date || 'N/A');
         
         const paidTimeText = o.payoutPaidAt ? `<span class="text-emerald-400 ml-2 font-mono">| Paid At: ${o.payoutPaidAt}</span>` : '';
 
-        let referrer = orders.find(item => item.userRefCode === enteredCode);
-        let referrerName = referrer ? (referrer.customer || referrer.name) : 'Direct / Unknown Referrer';
-        let referrerUpi = referrer ? referrer.upiId : (o.upiId || 'N/A');
-        let referrerPhone = referrer ? referrer.phone : o.phone;
+        // Lookup User A Details (Referrer Name, UPI, Phone)
+        let referrer = orders.find(item => {
+          const refCode = (item.userRefCode || item.myRefCode || item.ownRefCode || '').trim().toLowerCase();
+          return refCode && refCode === enteredCode.toLowerCase();
+        });
+
+        let referrerName = o.referrerName || (referrer ? (referrer.customer || referrer.name || referrer.fullName) : 'Direct / Unknown Referrer');
+        let referrerUpi = o.referrerUpi || (referrer ? (referrer.upiId || referrer.upi) : (o.upiId || 'N/A'));
+        let referrerPhone = o.referrerPhone || (referrer ? (referrer.phone || referrer.mobile) : o.phone);
 
         const whatsappButtonHtml = payoutStatus === 'Paid' ? `
           <button onclick="sendPayoutWhatsApp('${referrerName}', '${o.customer || o.name}', '${referrerUpi}', '${referrerPhone}')" class="bg-cyan-400 hover:bg-cyan-300 text-black font-black px-4 py-2.5 flex items-center gap-2 shadow-lg transition uppercase tracking-wider text-[11px]">
@@ -269,10 +282,10 @@
             <div class="space-y-2">
               <div class="flex items-center gap-2">
                 <span class="w-2.5 h-2.5 rounded-none ${payoutStatus === 'Paid' ? 'bg-emerald-400' : 'bg-amber-400'}"></span>
-                <strong class="text-white text-sm uppercase tracking-wider">Payout Target: ${referrerName}</strong>
+                <strong class="text-white text-sm uppercase tracking-wider">Payout Target (User A): ${referrerName}</strong>
               </div>
-              <p class="text-zinc-400 font-mono">Referral Code Used: <code class="text-cyan-400 font-bold">${enteredCode}</code> | UPI ID: <span class="text-amber-300 font-bold">${referrerUpi}</span></p>
-              <p class="text-zinc-500 font-mono text-[11px]">Buyer: ${o.customer || o.name} (${o.phone}) | Order ID: <span class="text-cyan-400 font-mono">${o.id}</span></p>
+              <p class="text-zinc-400 font-mono">Referral Code Used: <code class="text-cyan-400 font-bold">${enteredCode}</code> | User A UPI ID: <span class="text-amber-300 font-bold">${referrerUpi}</span></p>
+              <p class="text-zinc-500 font-mono text-[11px]">Buyer (User B): ${o.customer || o.name} (${o.phone}) | Order ID: <span class="text-cyan-400 font-mono">${o.id}</span></p>
               <p class="text-[10px] text-zinc-400 font-mono"><i class="fa-solid fa-clock text-cyan-400 mr-1"></i> Order Time: <span class="text-slate-300 font-medium">${orderDate}</span> ${paidTimeText}</p>
             </div>
 
