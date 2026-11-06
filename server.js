@@ -691,6 +691,20 @@ app.delete('/api/orders/:id', requireAdmin, async (req, res) => {
   }
 });
 
+// ==================== DYNAMIC PUBLIC & ADMIN HTML PAGES ROUTING ====================
+app.get('/:page', (req, res, next) => {
+  const page = req.params.page;
+  if (page.endsWith('.html')) {
+    const filePath = path.join(__dirname, 'public', page);
+    return res.sendFile(filePath, (err) => {
+      if (err) {
+        next(); // Fallback to index.html if the file doesn't exist
+      }
+    });
+  }
+  next();
+});
+
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
