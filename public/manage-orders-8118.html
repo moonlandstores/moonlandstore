@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Orders & Status | Moonland & Ninja Admin</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        fetch('/api/admin/check-session').then(res => res.json()).then(data => {
+            if (!data.authenticated) window.location.href = 'admin-login.html';
+        }).catch(() => {
+            window.location.href = 'admin-login.html';
+        });
+    </script>
+</head>
+<body class="bg-[#050505] text-slate-100 min-h-screen font-sans p-6 sm:p-10 space-y-8 selection:bg-white selection:text-black">
+    <div class="max-w-7xl mx-auto space-y-8">
+        
+        <!-- Header & Locked Single-Line Navigation Bar -->
+        <div class="flex flex-col xl:flex-row justify-between items-start xl:items-center gap-6 pb-6 border-b border-zinc-900">
+            <div>
+                <h1 class="text-2xl font-black text-white uppercase tracking-wider flex items-center gap-3">
+                    <span class="w-3 h-3 bg-cyan-400 rounded-full animate-pulse"></span>
+                    Verified Orders & Status Tracking
+                </h1>
+                <p class="text-xs text-zinc-400 tracking-wide mt-1">Track approved orders from Firestore, apply bulk updates, WhatsApp alerts & CSV export</p>
+            </div>
+            
+            <!-- Locked Single-Row Navigation Bar -->
+            <nav class="flex flex-row flex-nowrap items-center gap-0.5 text-[9.5px] font-bold uppercase tracking-wider whitespace-nowrap overflow-x-auto max-w-full pb-1">
+                <a href="dash-analytics-9x81.html" class="bg-black text-zinc-400 hover:text-white border border-zinc-800 px-2.5 py-2 transition">Dashboard</a>
+                <a href="utr-verification.html" class="bg-black text-zinc-400 hover:text-white border border-zinc-800 px-2.5 py-2 transition">UTR Verification</a>
+                <a href="manage-orders-8118.html" class="bg-cyan-400 text-black border border-cyan-400 px-2.5 py-2 shadow-[0_0_15px_rgba(34,211,238,0.3)] transition">Orders</a>
+                <a href="inventory-products.html" class="bg-black text-zinc-400 hover:text-white border border-zinc-800 px-2.5 py-2 transition">Products</a>
+                <a href="customers-crm.html" class="bg-black text-zinc-400 hover:text-white border border-zinc-800 px-2.5 py-2 transition">Customers</a>
+                <a href="referral-payouts.html" class="bg-black text-zinc-400 hover:text-white border border-zinc-800 px-2.5 py-2 transition">Referrals</a>
+                <a href="settings-gateways.html" class="bg-black text-zinc-400 hover:text-white border border-zinc-800 px-2.5 py-2 transition">Settings</a>
+            </nav>
+        </div>
+
+        <!-- Filter & Bulk Actions Bar -->
+        <div class="bg-[rgba(12,12,12,0.7)] border border-white/10 p-5 rounded-none flex flex-col lg:flex-row gap-4 items-center justify-between shadow-xl">
+            <div class="flex flex-col sm:flex-row gap-3 w-full lg:w-auto items-center">
+                <div class="relative w-full sm:w-56">
+                    <i class="fa-solid fa-magnifying-glass absolute left-4 top-3.5 text-zinc-500 text-xs"></i>
+                    <input type="text" id="orderSearchInput" oninput="filterOrders()" placeholder="Search Name, Phone, UTR..." class="w-full bg-black border border-zinc-800 pl-10 pr-4 py-3 text-xs text-white focus:outline-none focus:border-cyan-400 transition font-medium">
+                </div>
+
+                <!-- Status Filter Dropdown -->
+                <select id="statusFilterSelect" onchange="filterOrders()" class="bg-black border border-zinc-800 px-4 py-3 text-xs text-white focus:outline-none focus:border-cyan-400 font-mono uppercase">
+                    <option value="All">Filter: All Status</option>
+                    <option value="Order Placed">Order Placed</option>
+                    <option value="Processing">Processing</option>
+                    <option value="Packed">Packed</option>
+                    <option value="Shipped">Shipped</option>
+                    <option value="Out for Delivery">Out for Delivery</option>
+                    <option value="Delivered">Delivered</option>
+                    <option value="Cancelled">Cancelled</option>
+                </select>
+
+                <div class="flex items-center gap-2 w-full sm:w-auto">
+                    <input type="date" id="orderDateFilter" onchange="filterOrders()" class="bg-black border border-zinc-800 px-4 py-3 text-xs text-white focus:outline-none focus:border-cyan-400 transition font-mono">
+                    <button onclick="clearFilters()" class="bg-zinc-900 hover:bg-zinc-800 text-zinc-300 hover:text-white border border-zinc-800 px-4 py-3 text-xs font-bold uppercase tracking-wider transition">Clear</button>
+                </div>
+            </div>
+
+            <!-- Bulk Status Update & Export CSV -->
+            <div class="flex flex-wrap items-center gap-3 w-full lg:w-auto justify-end">
+                <select id="bulkStatusSelect" onchange="handleBulkStatusChange()" class="bg-black border border-zinc-800 px-4 py-3 text-xs text-white focus:outline-none focus:border-cyan-400 transition font-mono uppercase">
+                    <option value="Order Placed">Order Placed</option>
+                    <option value="Processing">Processing</option>
+                    <option value="Packed">Packed</option>
+                    <option value="Shipped">Shipped</option>
+                    <option value="Out for Delivery">Out for Delivery</option>
+                    <option value="Delivered">Delivered</option>
+                    <option value="Cancelled">Cancelled</option>
+                    <option value="custom">Custom Status...</option>
+                </select>
+
+                <input type="text" id="bulkCustomStatusInput" placeholder="Type custom status..." class="bg-black border border-zinc-800 px-4 py-3 text-xs text-white focus:outline-none focus:border-cyan-400 hidden font-mono">
+
+                <button onclick="applyBulkStatus()" class="bg-cyan-400 hover:bg-cyan-300 text-black font-black px-5 py-3 text-xs uppercase tracking-wider transition whitespace-nowrap shadow-[0_0_20px_rgba(34,211,238,0.2)]">Update Selected</button>
+                <button onclick="exportOrdersToCSV()" class="bg-emerald-500 hover:bg-emerald-400 text-black font-black px-5 py-3 text-xs uppercase tracking-wider transition whitespace-nowrap flex items-center gap-2"><i class="fa-solid fa-file-excel"></i> Export CSV</button>
+            </div>
+        </div>
+
+        <!-- Select All Bar -->
+        <div class="flex items-center space-x-3 px-2 text-xs text-zinc-400 font-mono">
+            <input type="checkbox" id="selectAllCheckbox" onclick="toggleSelectAll(this)" class="w-4 h-4 bg-black border-zinc-800 text-cyan-400 focus:ring-0 cursor-pointer">
+            <label for="selectAllCheckbox" class="font-bold uppercase tracking-wider cursor-pointer">Select All Visible Orders</label>
+        </div>
+
+        <!-- Container -->
+        <div id="verifiedOrdersContainer" class="space-y-4"></div>
+    </div>
+
+    <!-- Cancellation Reason Modal -->
+    <div id="cancelReasonModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm hidden">
+        <div class="bg-[rgba(12,12,12,0.95)] border border-rose-500/40 p-6 rounded-none max-w-md w-full m-4 space-y-4 text-xs shadow-2xl">
+            <h3 class="text-sm font-black text-white uppercase tracking-wider text-rose-400"><i class="fa-solid fa-triangle-exclamation mr-2"></i> Order Cancellation Reason</h3>
+            <input type="hidden" id="cancelTargetId">
+            
+            <div class="space-y-1">
+                <label class="text-zinc-400 font-bold uppercase tracking-wider text-[10px]">Reason for Cancellation *</label>
+                <textarea id="cancelReasonInput" rows="3" placeholder="e.g. Out of stock, Customer requested cancellation..." class="w-full bg-black border border-zinc-800 p-3 text-white focus:outline-none focus:border-rose-500"></textarea>
+            </div>
+
+            <div class="flex gap-3 justify-end pt-2">
+                <button onclick="closeCancelModal()" class="bg-zinc-900 hover:bg-zinc-800 text-zinc-300 border border-zinc-800 px-4 py-2.5 font-bold uppercase tracking-wider transition">Abort</button>
+                <button onclick="confirmCancellation()" class="bg-rose-500 hover:bg-rose-400 text-black px-6 py-2.5 font-black uppercase tracking-wider transition">Confirm Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modern Custom Popup Notification Modal -->
+    <div id="customToast" class="fixed bottom-6 right-6 z-50 transform translate-y-24 opacity-0 transition-all duration-300 pointer-events-none">
+        <div class="bg-[rgba(12,12,12,0.95)] border border-cyan-400/40 px-6 py-4 shadow-2xl flex items-center gap-3">
+            <div class="w-8 h-8 bg-cyan-400/20 text-cyan-400 flex items-center justify-center font-bold">
+                <i class="fa-solid fa-circle-check"></i>
+            </div>
+            <div>
+                <h4 class="text-xs font-bold text-white uppercase tracking-wider" id="toastTitle">Success</h4>
+                <p class="text-[11px] text-zinc-400" id="toastMessage">Status successfully update ho gaya hai!</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let cachedOrders = [];
+
+        document.addEventListener("DOMContentLoaded", () => {
+            fetchOrders();
+        });
+
+        function escapeHtml(str) {
+            if (!str) return '';
+            return String(str)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#039;');
+        }
+
+        function showToast(title, message) {
+            const toast = document.getElementById('customToast');
+            document.getElementById('toastTitle').innerText = title;
+            document.getElementById('toastMessage').innerText = message;
+            toast.classList.remove('translate-y-24', 'opacity-0', 'pointer-events-none');
+            setTimeout(() => {
+                toast.classList.add('translate-y-24', 'opacity-0', 'pointer-events-none');
+            }, 3000);
+        }
+
+        async function fetchOrders() {
+            try {
+                const res = await fetch('/api/orders');
+                if (res.ok) {
+                    cachedOrders = await res.json();
+                } else {
+                    cachedOrders = [];
+                }
+            } catch (err) {
+                console.error('Failed to fetch orders from server:', err);
+                cachedOrders = [];
+            }
+            filterOrders();
+        }
+
+        function renderOrdersList(ordersToRender) {
+            const container = document.getElementById('verifiedOrdersContainer');
+            if (!ordersToRender || ordersToRender.length === 0) {
+                container.innerHTML = `<div class="bg-[rgba(12,12,12,0.7)] border border-white/10 p-10 text-center text-zinc-500 text-xs uppercase tracking-widest shadow-xl">No matching orders found.</div>`;
+                return;
+            }
+
+            container.innerHTML = '';
+            ordersToRender.forEach((ord, index) => {
+                const currentStatus = ord.status || 'Order Placed';
+                const isPreset = ['Order Placed', 'Processing', 'Packed', 'Shipped', 'Out for Delivery', 'Delivered', 'Cancelled'].includes(currentStatus);
+                const rawDate = ord.createdAt || ord.timestamp || ord.date;
+                const formattedDate = rawDate ? new Date(rawDate).toLocaleString('en-IN') : 'N/A';
+                
+                const productsText = ord.product || (ord.items ? ord.items.map(i => i.name).join(', ') : 'Appliance Product');
+                
+                const card = document.createElement('div');
+                card.className = "bg-[rgba(12,12,12,0.7)] border border-white/10 p-6 space-y-4 text-xs relative shadow-xl rounded-none";
+                
+                let cancelNoteHtml = '';
+                if (ord.cancelReason) {
+                    cancelNoteHtml = `<div class="bg-rose-500/10 border border-rose-500/30 text-rose-400 p-2.5 font-mono text-[11px]"><strong>Cancellation Reason:</strong> ${escapeHtml(ord.cancelReason)}</div>`;
+                }
+
+                card.innerHTML = `
+                    <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-2 pb-3 border-b border-zinc-900">
+                        <div class="flex items-center space-x-3">
+                            <input type="checkbox" class="order-checkbox w-4 h-4 bg-black border-zinc-800 text-cyan-400 focus:ring-0 cursor-pointer" data-id="${escapeHtml(ord.id)}">
+                            <div>
+                                <strong class="text-white text-sm uppercase tracking-wider">${escapeHtml(productsText)}</strong><br>
+                                <span class="text-zinc-400 font-mono">Order ID: <span class="text-cyan-400 font-bold">${escapeHtml(ord.id)}</span> | Time: ${escapeHtml(formattedDate)}</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span class="bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-3 py-1 font-bold uppercase tracking-wider text-[10px]"><i class="fa-solid fa-check mr-1"></i>Verified</span>
+                            <button class="whatsapp-btn bg-emerald-500 hover:bg-emerald-400 text-black font-black px-3 py-1.5 uppercase tracking-wider text-[10px] flex items-center gap-1.5 transition shadow"><i class="fa-brands fa-whatsapp text-sm"></i> WhatsApp Alert</button>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 text-zinc-300 bg-black border border-zinc-800 p-4 font-mono">
+                        <div><span class="text-zinc-500 text-[10px] uppercase block mb-0.5">Customer Name:</span> <strong class="text-white text-sm uppercase">${escapeHtml(ord.customer || ord.name)}</strong></div>
+                        <div><span class="text-zinc-500 text-[10px] uppercase block mb-0.5">Phone Number:</span> <strong class="text-cyan-400 text-sm">${escapeHtml(ord.phone)}</strong></div>
+                        <div><span class="text-zinc-500 text-[10px] uppercase block mb-0.5">Delivery Address:</span> <strong class="text-white text-sm">${escapeHtml(ord.address)}</strong></div>
+                        <div><span class="text-zinc-500 text-[10px] uppercase block mb-0.5">UTR Number:</span> <strong class="text-amber-400 text-sm">${escapeHtml(ord.utr)}</strong></div>
+                    </div>
+
+                    ${cancelNoteHtml}
+
+                    <div class="pt-3 border-t border-zinc-900 flex flex-col sm:flex-row items-center justify-between gap-4">
+                        <div class="flex flex-wrap items-center gap-3 w-full sm:w-auto">
+                            <label class="text-zinc-400 font-bold uppercase tracking-widest text-[10px]">Update Status:</label>
+                            <select id="statusSelect_${index}" class="bg-black border border-zinc-800 px-4 py-2.5 text-xs text-white focus:outline-none focus:border-cyan-400 font-mono uppercase">
+                                <option value="Order Placed" ${currentStatus === 'Order Placed' ? 'selected' : ''}>1. Order Placed</option>
+                                <option value="Processing" ${currentStatus === 'Processing' ? 'selected' : ''}>2. Processing</option>
+                                <option value="Packed" ${currentStatus === 'Packed' ? 'selected' : ''}>3. Packed</option>
+                                <option value="Shipped" ${currentStatus === 'Shipped' ? 'selected' : ''}>4. Shipped</option>
+                                <option value="Out for Delivery" ${currentStatus === 'Out for Delivery' ? 'selected' : ''}>5. Out for Delivery</option>
+                                <option value="Delivered" ${currentStatus === 'Delivered' ? 'selected' : ''}>6. Delivered</option>
+                                <option value="Cancelled" ${currentStatus === 'Cancelled' ? 'selected' : ''}>7. Cancelled</option>
+                                <option value="custom" ${!isPreset ? 'selected' : ''}>Custom Status...</option>
+                            </select>
+
+                            <input type="text" id="customStatusInput_${index}" value="${!isPreset ? escapeHtml(currentStatus) : ''}" placeholder="Type custom status..." class="bg-black border border-zinc-800 px-4 py-2.5 text-xs text-white focus:outline-none focus:border-cyan-400 font-mono ${isPreset ? 'hidden' : ''}">
+                        </div>
+
+                        <button class="save-status-btn bg-cyan-400 hover:bg-cyan-300 text-black font-black px-6 py-2.5 uppercase tracking-wider transition w-full sm:w-auto shadow-lg">Save Status</button>
+                    </div>
+                `;
+
+                card.querySelector('.whatsapp-btn').addEventListener('click', () => {
+                    sendWhatsAppAlert(ord.phone, ord.customer || ord.name, ord.id, currentStatus);
+                });
+
+                const selectElem = card.querySelector(`#statusSelect_${index}`);
+                const inputElem = card.querySelector(`#customStatusInput_${index}`);
+                selectElem.addEventListener('change', () => {
+                    if (selectElem.value === 'Cancelled') {
+                        inputElem.classList.add('hidden');
+                        document.getElementById('cancelTargetId').value = ord.id;
+                        document.getElementById('cancelReasonInput').value = '';
+                        document.getElementById('cancelReasonModal').classList.remove('hidden');
+                    } else if (selectElem.value === 'custom') {
+                        inputElem.classList.remove('hidden');
+                        inputElem.value = '';
+                        inputElem.focus();
+                    } else {
+                        inputElem.classList.add('hidden');
+                    }
+                });
+
+                card.querySelector('.save-status-btn').addEventListener('click', () => {
+                    let newStatus = selectElem.value === 'custom' ? inputElem.value.trim() : selectElem.value;
+                    saveSingleStatus(ord.id, newStatus);
+                });
+
+                container.appendChild(card);
+            });
+        }
+
+        function toggleSelectAll(master) {
+            document.querySelectorAll('.order-checkbox').forEach(cb => cb.checked = master.checked);
+        }
+
+        function closeCancelModal() {
+            document.getElementById('cancelReasonModal').classList.add('hidden');
+            filterOrders();
+        }
+
+        async function confirmCancellation() {
+            const orderId = document.getElementById('cancelTargetId').value;
+            const reason = document.getElementById('cancelReasonInput').value.trim();
+            if (!reason) return showToast('Error', 'Kripya cancellation reason likhein!');
+
+            try {
+                const res = await fetch(`/api/orders/${orderId}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ status: 'Cancelled', cancelReason: reason })
+                });
+                if (res.ok) {
+                    closeCancelModal();
+                    showToast('Cancelled', 'Order successfully cancelled aur reason save ho gaya hai!');
+                    fetchOrders();
+                } else {
+                    showToast('Error', 'Failed to update order status');
+                }
+            } catch (err) {
+                showToast('Error', 'Server connection error');
+            }
+        }
+
+        function handleBulkStatusChange() {
+            const select = document.getElementById('bulkStatusSelect');
+            const input = document.getElementById('bulkCustomStatusInput');
+            if (select.value === 'custom') {
+                input.classList.remove('hidden');
+                input.value = '';
+                input.focus();
+            } else {
+                input.classList.add('hidden');
+                input.value = select.value;
+            }
+        }
+
+        async function saveSingleStatus(orderId, newStatus) {
+            if (!newStatus) return showToast('Error', 'Kripya valid status likhein!');
+
+            try {
+                const payload = { status: newStatus };
+                if (newStatus !== 'Cancelled') {
+                    payload.cancelReason = null;
+                }
+
+                const res = await fetch(`/api/orders/${orderId}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (res.ok) {
+                    showToast('Status Updated', 'Order logistics status successfully save ho gaya hai!');
+                    fetchOrders();
+                } else {
+                    showToast('Error', 'Failed to update status on server');
+                }
+            } catch (err) {
+                showToast('Error', 'Server connection error');
+            }
+        }
+
+        async function applyBulkStatus() {
+            const selected = document.querySelectorAll('.order-checkbox:checked');
+            if (selected.length === 0) return showToast('Warning', 'Pehle visible orders mein se select karein!');
+
+            const select = document.getElementById('bulkStatusSelect');
+            const input = document.getElementById('bulkCustomStatusInput');
+            let bulkStatus = select.value === 'custom' ? input.value.trim() : select.value;
+
+            if (!bulkStatus) return showToast('Error', 'Kripya valid bulk status enter kijiye!');
+
+            const idsToUpdate = Array.from(selected).map(cb => cb.getAttribute('data-id'));
+
+            try {
+                const res = await fetch('/api/orders/bulk-status', {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ ids: idsToUpdate, status: bulkStatus })
+                });
+
+                if (res.ok) {
+                    showToast('Bulk Success', 'Selected orders ka status update ho gaya hai!');
+                    document.getElementById('selectAllCheckbox').checked = false;
+                    fetchOrders();
+                } else {
+                    showToast('Error', 'Bulk update failed');
+                }
+            } catch (err) {
+                showToast('Error', 'Server connection error');
+            }
+        }
+
+        function sendWhatsAppAlert(phone, customerName, orderId, status) {
+            const msg = `Hello *${customerName}*,\n\n📦 Aapke Moonland Store order (*${orderId}*) ka status update hua hai:\n🔹 *Current Status: ${status}*\n\nAap apna order track karne ke liye visit karein: https://yourdomain.com/track.html\n\nThank you for shopping with us! 🚀`;
+            window.open(`https://wa.me/91${phone}?text=${encodeURIComponent(msg)}`, '_blank');
+        }
+
+        function exportOrdersToCSV() {
+            const query = document.getElementById('orderSearchInput').value.toLowerCase().trim();
+            const statusFilter = document.getElementById('statusFilterSelect').value;
+            const dateVal = document.getElementById('orderDateFilter').value;
+
+            const orders = cachedOrders.filter(o => {
+                const blob = ((o.customer || o.name || '') + (o.phone || '') + (o.utr || '') + (o.id || '')).toLowerCase();
+                const matchesQuery = !query || blob.includes(query);
+                const currentStatus = o.status || 'Order Placed';
+                const matchesStatus = statusFilter === 'All' || currentStatus === statusFilter;
+                
+                let matchesDate = true;
+                if (dateVal) {
+                    const rawDate = o.createdAt || o.timestamp || o.date;
+                    if (!rawDate) {
+                        matchesDate = false;
+                    } else {
+                        const orderDateStr = new Date(rawDate).toISOString().split('T')[0];
+                        matchesDate = (orderDateStr === dateVal);
+                    }
+                }
+                return matchesQuery && matchesStatus && matchesDate;
+            });
+
+            if (orders.length === 0) return showToast('Warning', 'Export ke liye koi filtered order nahi hai!');
+
+            let csv = 'Order ID,Customer Name,Phone,Address,UTR,Status\n';
+            orders.forEach(o => {
+                csv += `"${o.id}","${o.customer || o.name || ''}","${o.phone}","${(o.address || '').replace(/,/g, ' ')}","${o.utr}","${o.status || 'Verified'}"\n`;
+            });
+
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.setAttribute('download', `Moonland_Filtered_Orders_${new Date().toISOString().split('T')[0]}.csv`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            showToast('Exported', 'Filtered orders successfully CSV format mein download ho gaye hain!');
+        }
+
+        function filterOrders() {
+            const query = document.getElementById('orderSearchInput').value.toLowerCase().trim();
+            // Fixed bracket bug here from ] to )
+            const statusFilter = document.getElementById('statusFilterSelect').value;
+            const dateVal = document.getElementById('orderDateFilter').value;
+
+            const filtered = cachedOrders.filter(o => {
+                const blob = ((o.customer || o.name || '') + (o.phone || '') + (o.utr || '') + (o.id || '')).toLowerCase();
+                const matchesQuery = !query || blob.includes(query);
+                const currentStatus = o.status || 'Order Placed';
+                const matchesStatus = statusFilter === 'All' || currentStatus === statusFilter;
+
+                let matchesDate = true;
+                if (dateVal) {
+                    const rawDate = o.createdAt || o.timestamp || o.date;
+                    if (!rawDate) {
+                        matchesDate = false;
+                    } else {
+                        const orderDateStr = new Date(rawDate).toISOString().split('T')[0];
+                        matchesDate = (orderDateStr === dateVal);
+                    }
+                }
+
+                return matchesQuery && matchesStatus && matchesDate;
+            });
+            renderOrdersList(filtered);
+            document.getElementById('selectAllCheckbox').checked = false;
+        }
+
+        function clearFilters() {
+            document.getElementById('orderSearchInput').value = '';
+            document.getElementById('statusFilterSelect').value = 'All';
+            document.getElementById('orderDateFilter').value = '';
+            filterOrders();
+        }
+    </script>
+</body>
+</html>

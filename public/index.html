@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MOONLAND | Home</title>
+  <!-- Browser Tab Favicon Logo -->
+  <link rel="icon" type="image/png" href="logo.png?v=999">
+  <link rel="shortcut icon" href="logo.png?v=999">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    @keyframes moonFloat {
+      0%, 100% { transform: translateY(0px) scale(1); opacity: 0.85; }
+      50% { transform: translateY(-15px) scale(1.03); opacity: 1; }
+    }
+    .animated-moon { animation: moonFloat 12s ease-in-out infinite; }
+
+    @keyframes landscapeDrift {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+    .animated-land { animation: landscapeDrift 20s ease-in-out infinite; }
+
+    @keyframes glowPulse {
+      0%, 100% { text-shadow: 0 0 20px rgba(255,255,255,0.2); }
+      50% { text-shadow: 0 0 35px rgba(255,255,255,0.6); }
+    }
+    .hero-glow-text { animation: glowPulse 3s ease-in-out infinite; }
+
+    @keyframes popupBorderGlow {
+      0% { border-color: rgba(239, 68, 68, 0.4); box-shadow: 0 0 20px rgba(239, 68, 68, 0.2); }
+      50% { border-color: rgba(250, 204, 21, 0.9); box-shadow: 0 0 40px rgba(250, 204, 21, 0.4); }
+      100% { border-color: rgba(239, 68, 68, 0.4); box-shadow: 0 0 20px rgba(239, 68, 68, 0.2); }
+    }
+    .jaguar-popup-card { animation: popupBorderGlow 3s ease-in-out infinite; }
+
+    @keyframes lightBlingPulse {
+      0%, 100% { opacity: 0.25; filter: brightness(0.6); }
+      50% { opacity: 0.85; filter: brightness(1.4); }
+    }
+    .bg-light-flashing { animation: lightBlingPulse 5s ease-in-out infinite; }
+
+    @keyframes rocketFlightWithSmoke {
+      0% { transform: translate(0px, 0px) scale(0.5) rotate(0deg); opacity: 0; }
+      20% { opacity: 1; }
+      75% { opacity: 1; }
+      100% { transform: translate(200px, -400px) scale(0.95) rotate(18deg); opacity: 0; }
+    }
+
+    @keyframes smokeTrailExhaust {
+      0% { transform: translateY(0px) scale(0.4); opacity: 0.9; filter: blur(2px); }
+      100% { transform: translateY(60px) scale(1.5); opacity: 0; filter: blur(6px); }
+    }
+
+    .launching-rocket-container { position: relative; display: inline-block; z-index: 5; }
+    .white-rocket-visible {
+      color: #ffffff;
+      font-size: 19px;
+      display: inline-block;
+      filter: drop-shadow(0 0 8px rgba(255,255,255,0.8));
+      animation: rocketFlightWithSmoke 8s cubic-bezier(0.25, 1, 0.5, 1) infinite;
+    }
+    .rocket-smoke-exhaust {
+      position: absolute;
+      bottom: -8px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 8px;
+      height: 20px;
+      background: linear-gradient(to bottom, rgba(255,255,255,0.9), rgba(0,255,255,0.4), transparent);
+      border-radius: 50%;
+      animation: smokeTrailExhaust 8s ease-out infinite;
+    }
+
+    /* Subtle Arrow Nudge Animation */
+    @keyframes arrowNudge {
+      0%, 100% { transform: translateX(0); }
+      50% { transform: translateX(6px); }
+    }
+    .arrow-nudge { animation: arrowNudge 1.5s infinite; }
+
+    #promoModalOverlay, #cartDrawerOverlay { transition: opacity 0.4s ease, visibility 0.4s ease; }
+  </style>
+</head>
+<body class="bg-[#050505] text-white font-sans antialiased min-h-screen flex flex-col justify-between selection:bg-white selection:text-black">
+
+  <div class="bg-black text-zinc-300 py-2.5 px-4 text-[10px] font-bold tracking-[0.25em] uppercase border-b border-zinc-900 overflow-hidden whitespace-nowrap">
+    <marquee behavior="scroll" direction="left" scrollamount="5">
+      <span class="inline-flex items-center gap-2 mx-6"><i class="fa-solid fa-fire text-red-500"></i> MEGA STOCK CLEARANCE SALE IS LIVE: GET UP TO 70% OFF ON ALL PRODUCTS!</span>
+      <span class="inline-flex items-center gap-2 mx-6"><i class="fa-solid fa-bolt text-yellow-400"></i> MOONLAND SPECIAL: UNLIMITED REFER & EARN ₹1,000 INSTANT CASHBACK PER REFERRAL!</span>
+    </marquee>
+  </div>
+
+  <header class="sticky top-0 z-40 bg-black/90 backdrop-blur-xl border-b border-zinc-900">
+    <div class="max-w-7xl mx-auto px-6 sm:px-12 flex justify-between items-center h-24">
+      <a href="index.html" class="flex items-center space-x-4 group">
+        <div class="w-8 h-8 border border-white flex items-center justify-center font-black text-xs tracking-widest text-white group-hover:bg-white group-hover:text-black transition duration-500">M</div>
+        <div class="flex flex-col">
+          <span class="font-bold text-base tracking-[0.4em] uppercase text-white">MOONLAND</span>
+          <span class="text-[7px] tracking-[0.55em] text-zinc-400 uppercase font-bold">STORE</span>
+        </div>
+      </a>
+
+      <nav class="hidden md:flex items-center space-x-12 font-medium text-[11px] uppercase tracking-[0.25em] text-zinc-400">
+        <a href="store.html" class="hover:text-white transition pb-1">Store</a>
+        <a href="referral.html" class="hover:text-white transition pb-1">Refer & Earn</a>
+        <a href="track.html" class="hover:text-white transition pb-1">Track Order</a>
+        <a href="about.html" class="hover:text-white transition pb-1">About Us</a>
+      </nav>
+
+      <div class="flex items-center space-x-6">
+        <button onclick="openCartModal()" class="flex items-center space-x-2 text-[11px] uppercase tracking-[0.2em] font-medium text-zinc-400 hover:text-white transition">
+          <i class="fa-solid fa-bag-shopping text-sm"></i>
+          <span id="cartCountBadge" class="bg-white text-black text-[9px] px-1.5 py-0.2 rounded-full font-bold ml-1">0</span>
+        </button>
+        <button onclick="toggleMobileMenu()" class="md:hidden text-white text-lg"><i class="fa-solid fa-bars"></i></button>
+      </div>
+    </div>
+
+    <div id="mobileMenuDropdown" class="hidden md:hidden bg-black border-b border-zinc-900 px-8 py-6 space-y-5 text-xs uppercase font-medium tracking-[0.25em]">
+      <a href="store.html" class="block text-zinc-400 hover:text-white">Store</a>
+      <a href="referral.html" class="block text-zinc-400 hover:text-white">Refer & Earn</a>
+      <a href="track.html" class="block text-zinc-400 hover:text-white">Track Order</a>
+      <a href="about.html" class="block text-zinc-400 hover:text-white">About Us</a>
+    </div>
+  </header>
+
+  <main class="flex-grow">
+    <!-- Hero Section -->
+    <section class="relative h-[85vh] flex items-center justify-center text-center px-6 overflow-hidden bg-black border-b border-zinc-900">
+      <canvas id="moonStarCanvas" class="absolute inset-0 z-0 pointer-events-none bg-light-flashing"></canvas>
+      
+      <div class="absolute top-12 right-12 sm:right-32 w-48 h-48 sm:w-80 sm:h-80 rounded-full bg-gradient-to-br from-slate-100 via-zinc-400 to-zinc-900 shadow-[0_0_80px_rgba(255,255,255,0.25)] z-20 pointer-events-none animated-moon bg-light-flashing">
+        <div class="w-full h-full rounded-full opacity-30 bg-[radial-gradient(#000_15%,transparent_16%)] bg-[size:16px_16px]"></div>
+      </div>
+
+      <div class="absolute bottom-0 inset-x-0 h-64 sm:h-80 z-10 pointer-events-none opacity-90 animated-land">
+        <svg class="w-full h-full text-[#080808] fill-current" viewBox="0 0 1440 320" preserveAspectRatio="none">
+          <path d="M0,224L60,202.7C120,181,240,139,360,149.3C480,160,600,224,720,224C840,224,960,160,1080,144C1200,128,1320,160,1380,176L1440,192L1440,320L1380,320C1320,320,1200,320,1080,320C240,320,120,320,60,320L0,320Z"></path>
+        </svg>
+      </div>
+      <div class="absolute inset-0 bg-gradient-to-t from-[#050505] via-black/40 to-black/70 z-10"></div>
+
+      <div class="relative z-20 space-y-6 max-w-4xl mx-auto">
+        <span class="inline-block text-[10px] font-bold uppercase tracking-[0.45em] text-white border border-white/30 px-4 py-1.5 bg-white/5 backdrop-blur-md">
+          <i class="fa-solid fa-crown text-yellow-400 mr-1.5"></i> MADE BY US WITH CARE
+        </span>
+        <h1 class="text-4xl sm:text-7xl font-black uppercase tracking-[0.12em] leading-tight text-white hero-glow-text">
+          BUILT FOR <br><span class="text-zinc-400 font-light">BEST QUALITY & POWER</span>
+        </h1>
+        <p class="text-zinc-300 text-xs sm:text-sm tracking-[0.15em] max-w-xl mx-auto font-light leading-relaxed">
+          Custom home appliances built to last. Comes with 1-year free replacement warranty.
+        </p>
+        
+        <!-- SLEEK & INTUITIVE EXPLORE BUTTON -->
+        <div class="flex flex-col items-center gap-2 pt-2">
+          <span class="text-[9px] uppercase tracking-[0.3em] text-zinc-400 font-bold flex items-center gap-1">
+            <i class="fa-solid fa-arrow-down text-cyan-400 animate-bounce"></i> Click below to view all items
+          </span>
+          <a href="store.html" class="group bg-white hover:bg-zinc-200 text-black font-black px-10 py-4 text-xs uppercase tracking-[0.25em] transition shadow-2xl flex items-center justify-center gap-4 border border-white">
+            <span class="launching-rocket-container">
+              <i class="fa-solid fa-rocket white-rocket-visible"></i>
+              <span class="rocket-smoke-exhaust"></span>
+            </span>
+            <span>View All Products</span>
+            <i class="fa-solid fa-arrow-right text-xs arrow-nudge text-black"></i>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- EASY 3-STEP SHOPPING GUIDE FOR NEW USERS -->
+    <section class="max-w-7xl mx-auto px-6 sm:px-12 py-16 border-b border-zinc-900 bg-zinc-950/40">
+      <div class="text-center space-y-3 mb-12">
+        <span class="text-[10px] font-extrabold uppercase tracking-[0.4em] text-cyan-400 bg-cyan-400/10 px-3 py-1 border border-cyan-400/20">EASY SHOPPING GUIDE</span>
+        <h2 class="text-2xl sm:text-4xl font-black uppercase tracking-wider text-white">HOW TO BUY IN 3 EASY STEPS</h2>
+        <p class="text-xs text-zinc-400 max-w-md mx-auto">Ordering online is fast and simple for everyone.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="bg-black border border-zinc-800 p-8 text-center space-y-4 relative group hover:border-white transition duration-300">
+          <div class="w-12 h-12 bg-white text-black font-mono font-black text-lg flex items-center justify-center mx-auto rounded-none shadow-lg">01</div>
+          <h3 class="text-sm font-bold uppercase tracking-widest text-white">Select Product</h3>
+          <p class="text-xs text-zinc-400 font-light leading-relaxed">Go to our store, pick your favorite item and check details.</p>
+        </div>
+
+        <div class="bg-black border border-zinc-800 p-8 text-center space-y-4 relative group hover:border-white transition duration-300">
+          <div class="w-12 h-12 bg-white text-black font-mono font-black text-lg flex items-center justify-center mx-auto rounded-none shadow-lg">02</div>
+          <h3 class="text-sm font-bold uppercase tracking-widest text-white">Click Buy Now</h3>
+          <p class="text-xs text-zinc-400 font-light leading-relaxed">Click 'Buy Now' or add items to your cart to open checkout.</p>
+        </div>
+
+        <div class="bg-black border border-zinc-800 p-8 text-center space-y-4 relative group hover:border-white transition duration-300">
+          <div class="w-12 h-12 bg-white text-black font-mono font-black text-lg flex items-center justify-center mx-auto rounded-none shadow-lg">03</div>
+          <h3 class="text-sm font-bold uppercase tracking-widest text-white">Enter Address & Order</h3>
+          <p class="text-xs text-zinc-400 font-light leading-relaxed">Fill in your name, mobile number, and address to confirm order.</p>
+        </div>
+      </div>
+      <div class="text-center mt-10">
+        <a href="store.html" class="inline-block bg-cyan-400 hover:bg-cyan-300 text-black font-black px-8 py-3.5 text-xs uppercase tracking-[0.2em] transition shadow-lg">Start Shopping Now</a>
+      </div>
+    </section>
+
+    <!-- BRAND STORY / ABOUT OUR CRAFT SECTION -->
+    <section class="max-w-7xl mx-auto px-6 sm:px-12 py-20 border-b border-zinc-900">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+        <div class="space-y-6">
+          <span class="text-[10px] font-bold uppercase tracking-[0.4em] text-yellow-400 bg-yellow-400/10 px-3 py-1 border border-yellow-400/20">OUR BRAND STORY</span>
+          <h2 class="text-3xl sm:text-5xl font-black uppercase tracking-wider text-white leading-tight">
+            MADE IN-HOUSE.<br><span class="text-zinc-500 font-light">TESTED FOR QUALITY.</span>
+          </h2>
+          <p class="text-xs sm:text-sm text-zinc-400 font-light tracking-wide leading-relaxed">
+            Every product at Moonland Store is carefully designed, built, and tested by us. We focus on durable materials so you get long-lasting performance at fair prices.
+          </p>
+          <div class="pt-2 flex items-center gap-6">
+            <div class="border-l-2 border-white pl-4">
+              <span class="block text-xl font-bold font-mono text-white">100%</span>
+              <span class="text-[9px] uppercase tracking-widest text-zinc-500 font-semibold">In-House Products</span>
+            </div>
+            <div class="border-l-2 border-white pl-4">
+              <span class="block text-xl font-bold font-mono text-white">1-YEAR</span>
+              <span class="text-[9px] uppercase tracking-widest text-zinc-500 font-semibold">Free Warranty</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-4">
+          <div class="bg-black border border-zinc-800 p-6 space-y-3">
+            <i class="fa-solid fa-hammer text-2xl text-white"></i>
+            <h3 class="text-xs font-bold uppercase tracking-wider text-white">In-House Design</h3>
+            <p class="text-[11px] text-zinc-500 font-light leading-relaxed">Carefully built using strong and durable materials.</p>
+          </div>
+          <div class="bg-black border border-zinc-800 p-6 space-y-3">
+            <i class="fa-solid fa-shield-halved text-2xl text-white"></i>
+            <h3 class="text-xs font-bold uppercase tracking-wider text-white">Strict Testing</h3>
+            <p class="text-[11px] text-zinc-500 font-light leading-relaxed">Tested multiple times before packing and delivery.</p>
+          </div>
+          <div class="bg-black border border-zinc-800 p-6 space-y-3">
+            <i class="fa-solid fa-truck-fast text-2xl text-white"></i>
+            <h3 class="text-xs font-bold uppercase tracking-wider text-white">Fast Delivery</h3>
+            <p class="text-[11px] text-zinc-500 font-light leading-relaxed">Safe and tracked delivery across India.</p>
+          </div>
+          <div class="bg-black border border-zinc-800 p-6 space-y-3">
+            <i class="fa-solid fa-indian-rupee-sign text-2xl text-yellow-400"></i>
+            <h3 class="text-xs font-bold uppercase tracking-wider text-yellow-400">Instant Cashback</h3>
+            <p class="text-[11px] text-zinc-500 font-light leading-relaxed">Get ₹1,000 direct bank reward per referral.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- REFERRAL HIGHLIGHT BANNER -->
+    <section class="max-w-7xl mx-auto px-6 sm:px-12 py-16">
+      <div class="bg-gradient-to-r from-zinc-950 via-black to-zinc-950 border border-zinc-800 p-8 sm:p-12 flex flex-col md:flex-row justify-between items-center gap-8">
+        <div class="space-y-3 text-center md:text-left">
+          <span class="text-[10px] font-extrabold uppercase tracking-[0.3em] text-yellow-400">REFER & EARN CASH</span>
+          <h2 class="text-2xl sm:text-4xl font-black uppercase tracking-wider text-white">INVITE FRIENDS & EARN <span class="text-yellow-400">₹1,000</span> CASHBACK</h2>
+          <p class="text-xs text-zinc-400 font-light max-w-xl">Share your referral link. Get cash credited directly to your bank account or UPI on every order.</p>
+        </div>
+        <a href="referral.html" class="whitespace-nowrap bg-white hover:bg-zinc-200 text-black font-black px-8 py-4 text-xs uppercase tracking-[0.2em] transition shadow-xl">Get Referral Link</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="bg-black text-zinc-600 py-16 border-t border-zinc-900 text-center text-[10px] uppercase tracking-[0.3em] space-y-4">
+    <p>© 2026 Moonland Store. All Rights Reserved.</p>
+    <div class="flex justify-center space-x-8 text-zinc-500">
+      <a href="index.html" class="hover:text-white transition">Store Home</a>
+      <a href="referral.html" class="hover:text-white transition">Refer & Earn</a>
+      <a href="track.html" class="hover:text-white transition">Track Order</a>
+      <a href="about.html" class="hover:text-white transition">About Us</a>
+    </div>
+  </footer>
+
+  <!-- UPDATED: MEGA STOCK CLEARANCE SALE PROMO MODAL -->
+  <div id="promoModalOverlay" class="fixed inset-0 z-50 bg-black/90 backdrop-blur-md flex items-center justify-center p-4 opacity-0 invisible">
+    <div class="relative w-full max-w-xl bg-gradient-to-b from-[#140505] via-[#090505] to-[#050505] border border-red-500/40 p-6 sm:p-10 jaguar-popup-card shadow-2xl text-center space-y-6">
+      
+      <!-- Close Button -->
+      <button onclick="closePromoModal()" class="absolute top-4 right-4 w-8 h-8 border border-zinc-700 hover:border-white text-zinc-400 hover:text-white flex items-center justify-center transition rounded-full">
+        <i class="fa-solid fa-xmark text-sm"></i>
+      </button>
+
+      <!-- Top Badge -->
+      <div class="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.3em] text-yellow-400 bg-red-950/80 px-4 py-1.5 border border-red-500/50 rounded-full shadow-lg">
+        <i class="fa-solid fa-fire text-red-500 animate-pulse"></i> MEGA STOCK CLEARANCE SALE IS LIVE
+      </div>
+
+      <!-- Main Headline -->
+      <div class="space-y-2">
+        <h2 class="text-3xl sm:text-5xl font-black uppercase tracking-tight text-white leading-tight">
+          GET UP TO <span class="text-red-500 drop-shadow-[0_0_15px_rgba(239,68,68,0.8)]">70% OFF</span>
+        </h2>
+        <p class="text-xs uppercase tracking-[0.25em] text-yellow-400 font-bold">LIMITED TIME OFFERS ON ALL IN-HOUSE PRODUCTS</p>
+      </div>
+
+      <!-- Highlights Grid -->
+      <div class="grid grid-cols-3 gap-3 pt-2">
+        <div class="bg-black/90 border border-zinc-800 p-3 sm:p-4 rounded">
+          <span class="block text-[9px] uppercase tracking-widest text-zinc-400 font-bold">DISCOUNT</span>
+          <span class="block text-lg font-mono font-black text-red-400 mt-1">UP TO 70%</span>
+        </div>
+        <div class="bg-black/90 border border-yellow-500/40 p-3 sm:p-4 rounded">
+          <span class="block text-[9px] uppercase tracking-widest text-yellow-400 font-bold">REFER BONUS</span>
+          <span class="block text-lg font-mono font-black text-yellow-400 mt-1">₹1,000 CASH</span>
+        </div>
+        <div class="bg-black/90 border border-zinc-800 p-3 sm:p-4 rounded">
+          <span class="block text-[9px] uppercase tracking-widest text-zinc-400 font-bold">WARRANTY</span>
+          <span class="block text-lg font-mono font-black text-white mt-1">1 YEAR</span>
+        </div>
+      </div>
+
+      <p class="text-xs text-zinc-300 font-light tracking-wide leading-relaxed">
+        Huge discounts on premium custom appliances! Order today and earn <strong class="text-yellow-400">₹1,000 direct bank cashback</strong> on every referral.
+      </p>
+
+      <!-- Action Button -->
+      <div class="pt-2">
+        <a href="store.html" onclick="closePromoModal()" class="block w-full bg-gradient-to-r from-red-600 to-yellow-500 hover:from-red-500 hover:to-yellow-400 text-black font-black py-4 text-xs uppercase tracking-[0.25em] transition shadow-2xl text-center rounded">
+          Shop Clearance Sale Now <i class="fa-solid fa-arrow-right ml-1"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Cart Drawer Overlay -->
+  <div id="cartDrawerOverlay" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex justify-end invisible opacity-0 transition-all duration-300">
+    <div class="w-full max-w-md bg-[#0c0c0c] border-l border-zinc-800 h-full p-8 flex flex-col justify-between shadow-2xl">
+      <div class="space-y-6">
+        <div class="flex justify-between items-center border-b border-zinc-900 pb-4">
+          <h2 class="text-sm font-black uppercase tracking-[0.25em] text-white">Your Shopping Cart</h2>
+          <button onclick="closeCartModal()" class="text-zinc-400 hover:text-white text-sm"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div id="cartDrawerItems" class="space-y-4 overflow-y-auto max-h-[60vh] pr-2"></div>
+      </div>
+      
+      <div class="pt-6 border-t border-zinc-900 space-y-4">
+        <div class="flex justify-between text-xs font-mono uppercase text-zinc-300">
+          <span>Total Amount:</span>
+          <span id="cartDrawerTotal" class="font-bold text-white">₹0</span>
+        </div>
+        <button onclick="proceedToCheckout()" class="w-full bg-white hover:bg-zinc-200 text-black py-3.5 text-xs uppercase tracking-[0.2em] font-black transition">
+          Proceed to Checkout
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function toggleMobileMenu() {
+      document.getElementById('mobileMenuDropdown').classList.toggle('hidden');
+    }
+
+    function openCartModal() {
+      const drawer = document.getElementById('cartDrawerOverlay');
+      if(drawer) {
+        drawer.classList.remove('invisible', 'opacity-0');
+        drawer.classList.add('opacity-100');
+        renderCartDrawer();
+      }
+    }
+
+    function closeCartModal() {
+      const drawer = document.getElementById('cartDrawerOverlay');
+      if(drawer) {
+        drawer.classList.remove('opacity-100');
+        drawer.classList.add('opacity-0', 'invisible');
+      }
+    }
+
+    function renderCartDrawer() {
+      const container = document.getElementById('cartDrawerItems');
+      const totalContainer = document.getElementById('cartDrawerTotal');
+      let cart = JSON.parse(localStorage.getItem('moonland_cart') || '[]');
+      
+      if(cart.length === 0) {
+        container.innerHTML = `<p class="text-xs text-zinc-500 uppercase tracking-widest text-center py-8">Your cart is empty.</p>`;
+        totalContainer.innerText = `₹0`;
+        return;
+      }
+
+      let total = 0;
+      container.innerHTML = cart.map((item, idx) => {
+        let itemPrice = Number(item.price) || 0;
+        let qty = Number(item.quantity || item.qty || 1);
+        total += itemPrice * qty;
+        return `
+          <div class="flex justify-between items-center bg-black p-4 border border-zinc-900 text-xs">
+            <div>
+              <div class="font-bold uppercase tracking-wider text-white">${item.title || item.name}</div>
+              <div class="text-zinc-400 font-mono mt-1">₹${itemPrice} x ${qty}</div>
+            </div>
+            <button onclick="removeFromCart(${idx})" class="text-zinc-500 hover:text-red-400 p-2"><i class="fa-solid fa-trash text-xs"></i></button>
+          </div>
+        `;
+      }).join('');
+      totalContainer.innerText = `₹${total}`;
+    }
+
+    function removeFromCart(index) {
+      let cart = JSON.parse(localStorage.getItem('moonland_cart') || '[]');
+      cart.splice(index, 1);
+      localStorage.setItem('moonland_cart', JSON.stringify(cart));
+      updateCartBadgeCount();
+      renderCartDrawer();
+    }
+
+    function proceedToCheckout() {
+      window.location.href = 'order.html';
+    }
+
+    function updateCartBadgeCount() {
+      let cart = JSON.parse(localStorage.getItem('moonland_cart') || '[]');
+      let totalCount = cart.reduce((sum, item) => sum + (item.quantity || item.qty || 1), 0);
+      document.getElementById('cartCountBadge').innerText = totalCount;
+    }
+
+    function openPromoModal() {
+      const modal = document.getElementById('promoModalOverlay');
+      if(modal) {
+        modal.classList.remove('invisible', 'opacity-0');
+        modal.classList.add('opacity-100');
+      }
+    }
+    
+    function closePromoModal() {
+      const modal = document.getElementById('promoModalOverlay');
+      if(modal) {
+        modal.classList.remove('opacity-100');
+        modal.classList.add('opacity-0', 'invisible');
+      }
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      updateCartBadgeCount();
+      if (!sessionStorage.getItem('moonland_popup_shown')) {
+        setTimeout(openPromoModal, 800);
+        sessionStorage.setItem('moonland_popup_shown', 'true');
+      }
+    });
+
+    const canvas = document.getElementById('moonStarCanvas');
+    const ctx = canvas.getContext('2d');
+    function resizeCanvas() {
+      canvas.width = canvas.parentElement.offsetWidth;
+      canvas.height = canvas.parentElement.offsetHeight;
+    }
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
+    const stars = [];
+    for (let i = 0; i < 75; i++) {
+      stars.push({ x: Math.random() * canvas.width, y: Math.random() * canvas.height, radius: Math.random() * 1.5 + 0.5, alpha: Math.random() * 0.7 + 0.3, speed: (Math.random() - 0.5) * 0.2 });
+    }
+    function drawStars() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      stars.forEach(s => {
+        s.y += s.speed;
+        if (s.y < 0) s.y = canvas.height;
+        if (s.y > canvas.height) s.y = 0;
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.radius, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(255, 255, 255, ${s.alpha})`;
+        ctx.fill();
+      });
+      requestAnimationFrame(drawStars);
+    }
+    drawStars();
+  </script>
+</body>
+</html>

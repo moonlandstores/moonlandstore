@@ -1,0 +1,15 @@
+/* 3D Perspective & Smooth Floating Animation */
+.perspective-container {
+  perspective: 1000px;
+}
+.card-3d {
+  transition: transform 0.1s ease-out;
+  transform-style: preserve-3d;
+}
+@keyframes float {
+  0%, 100% { transform: translateY(0px) rotateX(0deg) rotateY(0deg); }
+  50% { transform: translateY(-8px) rotateX(2deg) rotateY(-2deg); }
+}
+.floating-element {
+  animation: float 5s ease-in-out infinite;
+}

@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer CRM & Details | Moonland & Ninja Admin</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        fetch('/api/admin/check-session').then(res => res.json()).then(data => {
+            if (!data.authenticated) window.location.href = 'admin-login.html';
+        }).catch(() => {
+            window.location.href = 'admin-login.html';
+        });
+    </script>
+</head>
+<body class="bg-[#050505] text-slate-100 min-h-screen font-sans p-6 sm:p-10 space-y-8 selection:bg-white selection:text-black">
+    <div class="max-w-7xl mx-auto space-y-8">
+        
+        <!-- Header & Locked Single-Line Navigation Bar -->
+        <div class="flex flex-col xl:flex-row justify-between items-start xl:items-center gap-6 pb-6 border-b border-zinc-900">
+            <div>
+                <h1 class="text-2xl font-black text-white uppercase tracking-wider flex items-center gap-3">
+                    <span class="w-3 h-3 bg-cyan-400 rounded-full animate-pulse"></span>
+                    Customer Directory & Complete CRM
+                </h1>
+                <p class="text-xs text-zinc-400 tracking-wide mt-1">View registration date, referral IDs, complete details & edit records from Firestore</p>
+            </div>
+            
+            <!-- Locked Single-Row Navigation Bar -->
+            <nav class="flex flex-row flex-nowrap items-center gap-0.5 text-[9.5px] font-bold uppercase tracking-wider whitespace-nowrap overflow-x-auto max-w-full pb-1">
+                <a href="dash-analytics-9x81.html" class="bg-black text-zinc-400 hover:text-white border border-zinc-800 px-2.5 py-2 transition">Dashboard</a>
+                <a href="utr-verification.html" class="bg-black text-zinc-400 hover:text-white border border-zinc-800 px-2.5 py-2 transition">UTR Verification</a>
+                <a href="manage-orders-8118.html" class="bg-black text-zinc-400 hover:text-white border border-zinc-800 px-2.5 py-2 transition">Orders</a>
+                <a href="inventory-products.html" class="bg-black text-zinc-400 hover:text-white border border-zinc-800 px-2.5 py-2 transition">Products</a>
+                <a href="customers-crm.html" class="bg-cyan-400 text-black border border-cyan-400 px-2.5 py-2 shadow-[0_0_15px_rgba(34,211,238,0.3)] transition">Customers</a>
+                <a href="referral-payouts.html" class="bg-black text-zinc-400 hover:text-white border border-zinc-800 px-2.5 py-2 transition">Referrals</a>
+                <a href="settings-gateways.html" class="bg-black text-zinc-400 hover:text-white border border-zinc-800 px-2.5 py-2 transition">Settings</a>
+            </nav>
+        </div>
+
+        <!-- Dashboard Analytics Summary Cards (2 Cards) -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <div class="bg-[rgba(12,12,12,0.7)] border border-white/10 p-6 space-y-2 shadow-xl rounded-none">
+                <p class="text-[10px] text-zinc-400 uppercase tracking-[0.2em] font-bold">Total Unique Customers</p>
+                <h3 id="statTotalCustomers" class="text-3xl font-mono font-black text-white">0</h3>
+            </div>
+            <div class="bg-[rgba(12,12,12,0.7)] border border-white/10 p-6 space-y-2 shadow-xl rounded-none">
+                <p class="text-[10px] text-zinc-400 uppercase tracking-[0.2em] font-bold">Total Customer Revenue</p>
+                <h3 id="statTotalRevenue" class="text-3xl font-mono font-black text-emerald-400">₹0</h3>
+            </div>
+        </div>
+
+        <!-- Search, Date Filter & Sort Controls Bar -->
+        <div class="bg-[rgba(12,12,12,0.7)] border border-white/10 p-5 rounded-none flex flex-col lg:flex-row gap-4 items-center justify-between shadow-xl">
+            <div class="relative w-full lg:w-80">
+                <i class="fa-solid fa-magnifying-glass absolute left-4 top-3.5 text-zinc-500 text-xs"></i>
+                <input type="text" id="customerSearchInput" oninput="filterCustomers()" placeholder="Search name, phone, referral ID..." class="w-full bg-black border border-zinc-800 pl-10 pr-4 py-3 text-xs text-white focus:outline-none focus:border-cyan-400 transition font-medium">
+            </div>
+
+            <div class="flex flex-wrap items-center gap-3 w-full lg:w-auto justify-end">
+                <!-- Date Filter -->
+                <div class="flex items-center gap-2">
+                    <span class="text-xs text-zinc-400 font-bold uppercase tracking-widest"><i class="fa-solid fa-calendar mr-1"></i> Date:</span>
+                    <input type="date" id="customerDateFilter" onchange="filterCustomers()" class="bg-black border border-zinc-800 px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-cyan-400 font-mono">
+                </div>
+
+                <!-- Sort By -->
+                <div class="flex items-center gap-2">
+                    <span class="text-xs text-zinc-400 font-bold uppercase tracking-widest"><i class="fa-solid fa-sort mr-1"></i> Sort:</span>
+                    <select id="customerSortSelect" onchange="filterCustomers()" class="bg-black border border-zinc-800 px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-cyan-400 font-mono uppercase">
+                        <option value="newest">Newest First</option>
+                        <option value="oldest">Oldest First</option>
+                        <option value="name">Name (A-Z)</option>
+                    </select>
+                </div>
+
+                <button onclick="clearCustomerFilters()" class="bg-zinc-900 hover:bg-zinc-800 text-zinc-300 hover:text-white border border-zinc-800 px-4 py-2.5 text-xs font-bold uppercase tracking-wider transition">Clear</button>
+            </div>
+        </div>
+
+        <!-- Customer Cards Grid -->
+        <div id="customerListContainer" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+    </div>
+
+    <!-- Edit Customer Modal -->
+    <div id="editCustomerModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm hidden">
+        <div class="bg-[rgba(12,12,12,0.95)] border border-cyan-400/40 p-6 rounded-none max-w-md w-full m-4 space-y-4 text-xs shadow-2xl">
+            <h3 class="text-sm font-black text-white uppercase tracking-wider">Edit Customer & Order Details</h3>
+            <input type="hidden" id="editCustomerIndex">
+            
+            <div class="space-y-1">
+                <label class="text-zinc-400 font-bold uppercase tracking-wider text-[10px]">Customer Name</label>
+                <input type="text" id="editCustName" class="w-full bg-black border border-zinc-800 px-4 py-3 text-white focus:outline-none focus:border-cyan-400 font-medium">
+            </div>
+            <div class="space-y-1">
+                <label class="text-zinc-400 font-bold uppercase tracking-wider text-[10px]">Phone Number</label>
+                <input type="text" id="editCustPhone" class="w-full bg-black border border-zinc-800 px-4 py-3 text-white focus:outline-none focus:border-cyan-400 font-mono">
+            </div>
+            <div class="space-y-1">
+                <label class="text-zinc-400 font-bold uppercase tracking-wider text-[10px]">Delivery Address</label>
+                <input type="text" id="editCustAddress" class="w-full bg-black border border-zinc-800 px-4 py-3 text-white focus:outline-none focus:border-cyan-400">
+            </div>
+            <div class="space-y-1">
+                <label class="text-zinc-400 font-bold uppercase tracking-wider text-[10px]">Referral ID</label>
+                <input type="text" id="editCustRef" class="w-full bg-black border border-zinc-800 px-4 py-3 text-white font-mono text-cyan-400 focus:outline-none focus:border-cyan-400">
+            </div>
+
+            <div class="flex gap-3 justify-end pt-2">
+                <button onclick="closeCustomerModal()" class="bg-zinc-900 hover:bg-zinc-800 text-zinc-300 border border-zinc-800 px-4 py-2.5 font-bold uppercase tracking-wider transition">Cancel</button>
+                <button onclick="saveCustomerDetails()" class="bg-cyan-400 hover:bg-cyan-300 text-black px-6 py-2.5 font-black uppercase tracking-wider transition">Save Changes</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Custom Toast Popup -->
+    <div id="customToast" class="fixed bottom-6 right-6 z-50 transform translate-y-24 opacity-0 transition-all duration-300 pointer-events-none">
+        <div class="bg-[rgba(12,12,12,0.95)] border border-cyan-400/40 px-6 py-4 shadow-2xl flex items-center gap-3">
+            <div class="w-8 h-8 bg-cyan-400/20 text-cyan-400 flex items-center justify-center font-bold">
+                <i class="fa-solid fa-circle-check"></i>
+            </div>
+            <div>
+                <h4 class="text-xs font-bold text-white uppercase tracking-wider" id="toastTitle">Success</h4>
+                <p class="text-[11px] text-zinc-400" id="toastMessage">Details successfully update ho gayi hain!</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let cachedCustomers = [];
+
+        document.addEventListener("DOMContentLoaded", () => {
+            fetchCustomers();
+        });
+
+        function escapeHtml(str) {
+            if (!str) return '';
+            return String(str)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#039;');
+        }
+
+        function showToast(title, message) {
+            const toast = document.getElementById('customToast');
+            document.getElementById('toastTitle').innerText = title;
+            document.getElementById('toastMessage').innerText = message;
+            toast.classList.remove('translate-y-24', 'opacity-0', 'pointer-events-none');
+            setTimeout(() => {
+                toast.classList.add('translate-y-24', 'opacity-0', 'pointer-events-none');
+            }, 3000);
+        }
+
+        async function fetchCustomers() {
+            try {
+                const res = await fetch('/api/orders');
+                if (res.ok) {
+                    cachedCustomers = await res.json();
+                } else {
+                    cachedCustomers = [];
+                }
+            } catch (err) {
+                console.error('Failed to fetch customers from server:', err);
+                cachedCustomers = [];
+            }
+            updateDashboardMetrics();
+            filterCustomers();
+        }
+
+        function updateDashboardMetrics() {
+            const uniquePhones = new Set(cachedCustomers.map(o => o.phone).filter(Boolean));
+            document.getElementById('statTotalCustomers').innerText = uniquePhones.size || cachedCustomers.length;
+
+            let totalRev = 0;
+            cachedCustomers.forEach(o => {
+                const amt = parseFloat(o.totalAmount || 0);
+                if (!isNaN(amt)) totalRev += amt;
+            });
+
+            document.getElementById('statTotalRevenue').innerText = `₹${totalRev.toLocaleString('en-IN')}`;
+        }
+
+        function renderCustomers(orders) {
+            const container = document.getElementById('customerListContainer');
+            if (!orders || orders.length === 0) {
+                container.innerHTML = `<p class="text-zinc-500 text-xs col-span-full text-center py-10 uppercase tracking-widest bg-[rgba(12,12,12,0.7)] border border-white/10">No customer records found.</p>`;
+                return;
+            }
+            container.innerHTML = '';
+            orders.forEach((o) => {
+                const customerName = o.customer || o.name || 'Valued Customer';
+                const regDate = o.createdAt || o.timestamp ? new Date(o.createdAt || o.timestamp).toLocaleString('en-IN') : 'N/A';
+                const productsList = o.items ? o.items.map(i => i.name).join(', ') : (o.productName || o.product || 'Appliance Product');
+                const totalAmount = o.totalAmount ? `₹${o.totalAmount}` : 'N/A';
+                
+                const referredBy = o.enteredRefCode && o.enteredRefCode !== 'None' && o.enteredRefCode.trim() !== '' ? o.enteredRefCode : 'Direct (No Referral)';
+
+                const card = document.createElement('div');
+                card.className = "bg-[rgba(12,12,12,0.7)] border border-white/10 p-6 space-y-4 text-xs flex flex-col justify-between shadow-xl rounded-none";
+                
+                card.innerHTML = `
+                    <div class="space-y-3">
+                        <div class="flex justify-between items-start pb-3 border-b border-zinc-900">
+                            <div>
+                                <h3 class="font-black text-white text-sm uppercase tracking-wider">${escapeHtml(customerName)}</h3>
+                                <p class="text-[10px] text-zinc-500 font-mono mt-0.5"><i class="fa-solid fa-clock mr-1"></i> Registered: ${escapeHtml(regDate)}</p>
+                            </div>
+                            <div class="flex items-center gap-1.5">
+                                <button class="edit-btn bg-cyan-400/10 text-cyan-400 border border-cyan-400/20 px-3 py-1.5 font-bold uppercase tracking-wider text-[10px] hover:bg-cyan-400 hover:text-black transition">Edit</button>
+                                <button class="delete-btn bg-rose-500/10 text-rose-400 border border-rose-500/20 px-2.5 py-1.5 font-bold text-[10px] hover:bg-rose-500 hover:text-white transition"><i class="fa-solid fa-trash"></i></button>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-black border border-zinc-800 p-3.5 space-y-1.5 font-mono">
+                            <p class="text-emerald-400 font-bold"><i class="fa-brands fa-whatsapp mr-1"></i> ${escapeHtml(o.phone || 'N/A')}</p>
+                            <p class="text-zinc-300">Address: <span class="text-zinc-400">${escapeHtml(o.address || 'N/A')}</span></p>
+                        </div>
+
+                        <div class="space-y-1.5 text-[11px] font-mono text-zinc-400">
+                            <p>Product(s): <strong class="text-slate-200">${escapeHtml(productsList)}</strong></p>
+                            <p>Total Bill: <strong class="text-emerald-400">${escapeHtml(totalAmount)}</strong></p>
+                            <p>UTR / Ref: <strong class="text-amber-400">${escapeHtml(o.utr || 'N/A')}</strong></p>
+                            <p>Own Referral ID: <code class="text-cyan-400 font-bold">${escapeHtml(o.userRefCode || 'Not Generated')}</code></p>
+                            <p>Referred By: <span class="text-purple-400 font-bold">${escapeHtml(referredBy)}</span></p>
+                        </div>
+                    </div>
+
+                    <div class="pt-3 border-t border-zinc-900 flex justify-between items-center text-[10px] text-zinc-500 font-mono">
+                        <span>Order ID: <strong class="text-cyan-400">${escapeHtml(o.id || 'N/A')}</strong></span>
+                        <span class="px-2.5 py-1 font-bold uppercase tracking-wider ${o.utrVerified ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' : 'bg-amber-500/10 text-amber-400 border border-amber-500/20'}">${o.utrVerified ? 'Verified' : 'Pending UTR'}</span>
+                    </div>
+                `;
+
+                card.querySelector('.edit-btn').addEventListener('click', () => openEditCustomerModal(o.id));
+                card.querySelector('.delete-btn').addEventListener('click', () => deleteCustomerRecord(o.id));
+
+                container.appendChild(card);
+            });
+        }
+
+        function filterCustomers() {
+            const query = document.getElementById('customerSearchInput').value.toLowerCase().trim();
+            const dateVal = document.getElementById('customerDateFilter').value;
+            const sortVal = document.getElementById('customerSortSelect').value;
+
+            let filtered = cachedCustomers.filter(o => {
+                const name = (o.customer || o.name || '').toLowerCase();
+                const phone = (o.phone || '').toLowerCase();
+                const refCode = (o.userRefCode || '').toLowerCase();
+                const enteredRef = (o.enteredRefCode || '').toLowerCase();
+                const address = (o.address || '').toLowerCase();
+                const utr = (o.utr || '').toLowerCase();
+
+                const matchesQuery = !query || name.includes(query) || phone.includes(query) || refCode.includes(query) || enteredRef.includes(query) || address.includes(query) || utr.includes(query);
+
+                let matchesDate = true;
+                if (dateVal) {
+                    const rawDate = o.createdAt || o.timestamp || o.date;
+                    if (!rawDate) {
+                        matchesDate = false;
+                    } else {
+                        const orderDateStr = new Date(rawDate).toISOString().split('T')[0];
+                        matchesDate = (orderDateStr === dateVal);
+                    }
+                }
+
+                return matchesQuery && matchesDate;
+            });
+
+            filtered.sort((a, b) => {
+                const timeA = new Date(a.createdAt || a.timestamp || 0).getTime();
+                const timeB = new Date(b.createdAt || b.timestamp || 0).getTime();
+                const nameA = (a.customer || a.name || '').toLowerCase();
+                const nameB = (b.customer || b.name || '').toLowerCase();
+
+                if (sortVal === 'newest') return timeB - timeA;
+                if (sortVal === 'oldest') return timeA - timeB;
+                if (sortVal === 'name') return nameA.localeCompare(nameB);
+                return 0;
+            });
+
+            renderCustomers(filtered);
+        }
+
+        function clearCustomerFilters() {
+            document.getElementById('customerSearchInput').value = '';
+            document.getElementById('customerDateFilter').value = '';
+            document.getElementById('customerSortSelect').value = 'newest';
+            filterCustomers();
+        }
+
+        function openEditCustomerModal(orderId) {
+            const o = cachedCustomers.find(item => item.id === orderId);
+            if (!o) return;
+
+            document.getElementById('editCustomerIndex').value = orderId;
+            document.getElementById('editCustName').value = o.customer || o.name || '';
+            document.getElementById('editCustPhone').value = o.phone || '';
+            document.getElementById('editCustAddress').value = o.address || '';
+            document.getElementById('editCustRef').value = o.userRefCode || '';
+            document.getElementById('editCustomerModal').classList.remove('hidden');
+        }
+
+        function closeCustomerModal() {
+            document.getElementById('editCustomerModal').classList.add('hidden');
+        }
+
+        async function saveCustomerDetails() {
+            const orderId = document.getElementById('editCustomerIndex').value;
+            const updatedData = {
+                customer: document.getElementById('editCustName').value.trim(),
+                name: document.getElementById('editCustName').value.trim(),
+                phone: document.getElementById('editCustPhone').value.trim(),
+                address: document.getElementById('editCustAddress').value.trim(),
+                userRefCode: document.getElementById('editCustRef').value.trim()
+            };
+
+            try {
+                const res = await fetch(`/api/orders/${orderId}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(updatedData)
+                });
+
+                if (res.ok) {
+                    closeCustomerModal();
+                    showToast('Updated', 'Customer details successfully update ho gaye hain!');
+                    fetchCustomers();
+                } else {
+                    showToast('Error', 'Failed to update customer details on server');
+                }
+            } catch (err) {
+                showToast('Error', 'Server connection error');
+            }
+        }
+
+        async function deleteCustomerRecord(orderId) {
+            if (!confirm('Kya aap is customer record ko delete karna chahte hain?')) return;
+
+            try {
+                const res = await fetch(`/api/orders/${orderId}`, {
+                    method: 'DELETE'
+                });
+
+                if (res.ok) {
+                    showToast('Deleted', 'Customer record successfully delete ho gaya hai.');
+                    fetchCustomers();
+                } else {
+                    showToast('Error', 'Failed to delete record on server');
+                }
+            } catch (err) {
+                showToast('Error', 'Server connection error');
+            }
+        }
+    </script>
+</body>
+</html>

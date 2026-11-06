@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Privileges & Referral Rewards | MOONLAND STORE</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    @keyframes offerGlow {
+      0% { border-color: rgba(255, 255, 255, 0.1); box-shadow: 0 0 10px rgba(0, 0, 0, 0.9); }
+      50% { border-color: rgba(234, 179, 8, 0.7); box-shadow: 0 0 40px rgba(234, 179, 8, 0.25); }
+      100% { border-color: rgba(255, 255, 255, 0.1); box-shadow: 0 0 10px rgba(0, 0, 0, 0.9); }
+    }
+    .luxury-glow-card {
+      animation: offerGlow 4s ease-in-out infinite;
+    }
+
+    @keyframes coinFloat {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-8px) rotate(5deg); }
+    }
+    .animate-coin {
+      animation: coinFloat 3s ease-in-out infinite;
+    }
+
+    @keyframes badgePulse {
+      0% { transform: scale(1); opacity: 0.9; }
+      50% { transform: scale(1.05); opacity: 1; filter: brightness(1.2); }
+      100% { transform: scale(1); opacity: 0.9; }
+    }
+    .animate-badge-pulse {
+      animation: badgePulse 2s ease-in-out infinite;
+    }
+
+    @keyframes tickerFade {
+      0% { opacity: 0; transform: translateY(10px); }
+      20% { opacity: 1; transform: translateY(0); }
+      80% { opacity: 1; transform: translateY(0); }
+      100% { opacity: 0; transform: translateY(-10px); }
+    }
+    .ticker-animation {
+      animation: tickerFade 4s ease-in-out infinite;
+    }
+
+    @keyframes redGlowBorder {
+      0%, 100% { border-color: rgba(239, 68, 68, 0.3); box-shadow: 0 0 15px rgba(239, 68, 68, 0.1); }
+      50% { border-color: rgba(239, 68, 68, 0.8); box-shadow: 0 0 30px rgba(239, 68, 68, 0.25); }
+    }
+    .clearance-reason-card {
+      animation: redGlowBorder 4s ease-in-out infinite;
+    }
+  </style>
+</head>
+<body class="bg-[#050505] text-white font-sans antialiased min-h-screen flex flex-col justify-between selection:bg-white selection:text-black">
+
+  <!-- Top Announcement Bar -->
+  <div class="bg-black text-zinc-300 py-2.5 px-4 text-[10px] font-bold tracking-[0.25em] uppercase border-b border-zinc-900 overflow-hidden whitespace-nowrap">
+    <marquee behavior="scroll" direction="left" scrollamount="5">
+      <span class="inline-flex items-center gap-2 mx-6"><i class="fa-solid fa-bolt text-yellow-400"></i> MOONLAND SPECIAL: UNLIMITED REFER & EARN ₹1,000 INSTANT UPI CASHBACK PER REFERRAL!</span>
+    </marquee>
+  </div>
+
+  <!-- Header / Navbar perfectly matched with Store -->
+  <header class="sticky top-0 z-40 bg-black/90 backdrop-blur-xl border-b border-zinc-900">
+    <div class="max-w-7xl mx-auto px-6 sm:px-12 flex justify-between items-center h-24">
+      <a href="index.html" class="flex items-center space-x-4 group">
+        <div class="w-8 h-8 border border-white flex items-center justify-center font-black text-xs tracking-widest text-white group-hover:bg-white group-hover:text-black transition duration-500">M</div>
+        <div class="flex flex-col">
+          <span class="font-bold text-base tracking-[0.4em] uppercase text-white">MOONLAND</span>
+          <span class="text-[7px] tracking-[0.55em] text-zinc-400 uppercase font-bold">STORE</span>
+        </div>
+      </a>
+
+      <nav class="hidden md:flex items-center space-x-12 font-medium text-[11px] uppercase tracking-[0.25em] text-zinc-400">
+        <a href="store.html" class="hover:text-white transition pb-1">Store</a>
+        <a href="referral.html" class="text-white border-b border-white pb-1 tracking-[0.3em] font-bold">Refer & Earn</a>
+        <a href="track.html" class="hover:text-white transition pb-1">Track Order</a>
+        <a href="about.html" class="hover:text-white transition pb-1">About Us</a>
+      </nav>
+
+      <div class="flex items-center space-x-6">
+        <button onclick="openCartModal()" class="flex items-center space-x-2 text-[11px] uppercase tracking-[0.2em] font-medium text-zinc-400 hover:text-white transition">
+          <i class="fa-solid fa-bag-shopping text-sm"></i>
+          <span id="cartCountBadge" class="bg-white text-black text-[9px] px-1.5 py-0.2 rounded-full font-bold ml-1">0</span>
+        </button>
+        <button onclick="toggleMobileMenu()" class="md:hidden text-white text-lg"><i class="fa-solid fa-bars"></i></button>
+      </div>
+    </div>
+
+    <!-- Mobile Menu Dropdown -->
+    <div id="mobileMenuDropdown" class="hidden md:hidden bg-black border-b border-zinc-900 px-8 py-6 space-y-5 text-xs uppercase font-medium tracking-[0.25em]">
+      <a href="store.html" class="block text-zinc-400 hover:text-white">Store</a>
+      <a href="referral.html" class="block text-white font-bold">Refer & Earn</a>
+      <a href="track.html" class="block text-zinc-400 hover:text-white">Track Order</a>
+      <a href="about.html" class="block text-zinc-400 hover:text-white">About Us</a>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="max-w-5xl mx-auto px-6 sm:px-12 py-16 w-full space-y-12 flex-grow">
+    
+    <!-- Page Title with Animated Motivation Badge -->
+    <div class="text-center space-y-4 max-w-2xl mx-auto">
+      <span class="inline-block text-[10px] font-bold uppercase tracking-[0.4em] text-yellow-400 border border-yellow-400/30 px-4 py-2 bg-yellow-400/10 animate-badge-pulse shadow-[0_0_20px_rgba(234,179,8,0.2)]">
+        <i class="fa-solid fa-fire-flame-curved text-yellow-400 mr-1.5"></i> UNLIMITED MONEY MAKER PROGRAM • LIVE PAYOUTS
+      </span>
+      <h1 class="text-3xl sm:text-6xl font-black uppercase tracking-[0.1em] text-white">
+        REFER & EARN <span class="text-yellow-400 font-light animate-coin inline-block">₹1,000 UPI</span>
+      </h1>
+      <p class="text-xs sm:text-sm text-zinc-400 font-light tracking-wide leading-relaxed">
+        Share your referral link and get a direct ₹1,000 instant cashback on every successful order straight into your bank account or UPI. No limits, infinite earnings!
+      </p>
+    </div>
+
+    <!-- Live Earnings Social Proof Ticker Box -->
+    <div class="bg-[#0c0c0c] border border-emerald-500/30 p-4 max-w-xl mx-auto flex items-center justify-between shadow-lg">
+      <div class="flex items-center space-x-3">
+        <div class="w-8 h-8 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-xs">
+          <i class="fa-solid fa-bolt"></i>
+        </div>
+        <div class="text-xs">
+          <span class="text-zinc-500 uppercase tracking-widest block text-[9px] font-bold">Live Payout Alert</span>
+          <p id="liveTickerText" class="text-zinc-200 font-mono font-medium ticker-animation">Loading live earnings...</p>
+        </div>
+      </div>
+      
+      <!-- INSTANT PAYOUT BADGE -->
+      <span class="text-[10px] font-mono text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-3 py-1 uppercase tracking-widest font-bold flex items-center gap-1.5 shadow-[0_0_15px_rgba(16,185,129,0.15)]">
+        <i class="fa-solid fa-bolt text-yellow-400"></i> INSTANT PAYOUT
+      </span>
+    </div>
+
+    <!-- NEWLY ADDED SECTION: WHY ARE WE RUNNING THIS REFERRAL PROGRAM? -->
+    <div class="bg-[#0b0505] border border-red-500/40 p-8 sm:p-12 space-y-6 clearance-reason-card text-center sm:text-left relative overflow-hidden">
+      <div class="flex flex-col sm:flex-row items-center justify-between gap-6 border-b border-red-500/20 pb-6">
+        <div class="space-y-2">
+          <span class="text-[10px] font-extrabold uppercase tracking-[0.35em] text-red-500 bg-red-950/80 px-3.5 py-1 border border-red-500/40 rounded-full inline-block">
+            <i class="fa-solid fa-fire mr-1.5"></i> MEGA STOCK CLEARANCE REASON
+          </span>
+          <h2 class="text-2xl sm:text-4xl font-black uppercase tracking-wide text-white">
+            WHY ARE WE GIVING <span class="text-yellow-400">₹1,000 PER REFERRAL?</span>
+          </h2>
+        </div>
+        <div class="w-16 h-16 rounded-full bg-red-500/10 border border-red-500/30 flex items-center justify-center text-red-400 text-2xl font-black shrink-0">
+          <i class="fa-solid fa-box-open"></i>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-xs text-zinc-300 leading-relaxed font-light">
+        <div class="bg-black/60 border border-zinc-800 p-6 space-y-3">
+          <div class="flex items-center gap-2 text-white font-bold uppercase tracking-wider text-xs">
+            <i class="fa-solid fa-bullhorn text-red-400"></i> ZERO AD AGENCY SPEND
+          </div>
+          <p class="text-zinc-400">
+            Instead of spending millions on expensive TV or social media ads, we redirect 100% of our marketing budget directly into our customers' pockets.
+          </p>
+        </div>
+
+        <div class="bg-black/60 border border-zinc-800 p-6 space-y-3">
+          <div class="flex items-center gap-2 text-white font-bold uppercase tracking-wider text-xs">
+            <i class="fa-solid fa-warehouse text-yellow-400"></i> FAST WAREHOUSE CLEARANCE
+          </div>
+          <p class="text-zinc-400">
+            We are quickly clearing out our present inventory for upcoming model upgrades. Fast sales help us empty stock faster while rewarding you directly!
+          </p>
+        </div>
+      </div>
+
+      <div class="pt-2 text-center text-[11px] uppercase tracking-[0.25em] text-zinc-400 font-medium">
+        🔥 Win-Win Deal: You help us clear inventory, and we pay you instant ₹1,000 cash.
+      </div>
+    </div>
+
+    <!-- Interactive Referral Link Fetcher Box -->
+    <div class="bg-[#0c0c0c] border border-yellow-500/40 p-6 sm:p-8 luxury-glow-card space-y-4 text-center">
+      <h3 class="text-xs font-bold uppercase tracking-[0.2em] text-yellow-400">
+        <i class="fa-solid fa-link mr-2"></i> Get Your Registered Referral Link
+      </h3>
+      <div class="flex flex-col sm:flex-row gap-3 max-w-2xl mx-auto">
+        <input type="text" id="userReferralInput" placeholder="Enter your registered Mobile Number..." class="flex-1 bg-black border border-zinc-800 px-4 py-3.5 text-xs font-mono uppercase tracking-widest text-white focus:outline-none focus:border-yellow-400 transition">
+        <button onclick="fetchExistingRefLink()" class="bg-yellow-400 hover:bg-yellow-300 text-black font-black px-6 py-3.5 text-xs uppercase tracking-[0.2em] transition shadow-lg">
+          Fetch Link
+        </button>
+      </div>
+      <!-- Container starts hidden -->
+      <div id="generatedLinkContainer" class="hidden pt-2 space-y-2">
+        <div class="flex items-center justify-between bg-black border border-zinc-800 px-4 py-3 text-xs font-mono text-yellow-400">
+          <span id="displayRefUrl" class="truncate pr-4"></span>
+          <button onclick="copyRefLink()" class="bg-white text-black px-3 py-1 text-[10px] uppercase font-bold tracking-wider hover:bg-zinc-200 transition">Copy</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Referral Reward Slabs with Glow Animation -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="bg-[#0c0c0c] border border-zinc-900 p-8 text-center space-y-3 hover:border-zinc-700 transition">
+        <span class="text-[10px] uppercase tracking-widest text-zinc-500 font-bold">Milestone 1</span>
+        <div class="text-2xl font-mono font-black text-white">10 Refers</div>
+        <div class="text-3xl font-black text-yellow-400 font-mono">₹10,000</div>
+        <p class="text-[11px] text-zinc-400 uppercase tracking-wider font-semibold pt-2 border-t border-zinc-900">Instant Bank Transfer</p>
+      </div>
+
+      <div class="bg-[#0c0c0c] border border-yellow-500/50 p-8 text-center space-y-3 shadow-[0_0_30px_rgba(234,179,8,0.15)] luxury-glow-card">
+        <span class="text-[10px] uppercase tracking-widest text-yellow-400 font-bold">Milestone 2 (Popular)</span>
+        <div class="text-2xl font-mono font-black text-white">25 Refers</div>
+        <div class="text-3xl font-black text-yellow-400 font-mono">₹25,000</div>
+        <p class="text-[11px] text-zinc-400 uppercase tracking-wider font-semibold pt-2 border-t border-zinc-900">Instant Bank Transfer</p>
+      </div>
+
+      <div class="bg-[#0c0c0c] border border-zinc-900 p-8 text-center space-y-3 hover:border-zinc-700 transition">
+        <span class="text-[10px] uppercase tracking-widest text-zinc-500 font-bold">Milestone 3</span>
+        <div class="text-2xl font-mono font-black text-white">50 Refers</div>
+        <div class="text-3xl font-black text-yellow-400 font-mono">₹50,000</div>
+        <p class="text-[11px] text-zinc-400 uppercase tracking-wider font-semibold pt-2 border-t border-zinc-900">Instant Bank Transfer</p>
+      </div>
+    </div>
+
+    <!-- How It Works Card -->
+    <div class="bg-[#0c0c0c] border border-zinc-800 p-8 sm:p-12 space-y-8">
+      <div class="flex items-center space-x-4 border-b border-zinc-900 pb-6">
+        <div class="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center text-yellow-400 text-xl font-black animate-coin">
+          <i class="fa-solid fa-gift"></i>
+        </div>
+        <div>
+          <h3 class="text-lg font-bold uppercase tracking-wider text-white">How Referral Works</h3>
+          <p class="text-xs text-zinc-400 tracking-wide">3 simple steps to start earning instant cash</p>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-xs text-zinc-300">
+        <div class="space-y-2">
+          <div class="text-yellow-400 font-mono font-bold text-sm">01. Place Order</div>
+          <p class="text-zinc-400 leading-relaxed">Place any order from our store. Once your order is verified, you will receive your unique referral link.</p>
+        </div>
+        <div class="space-y-2">
+          <div class="text-yellow-400 font-mono font-bold text-sm">02. Share Link</div>
+          <p class="text-zinc-400 leading-relaxed">Share your referral link with your friends and on social media. Anyone who buys using your link will be tracked.</p>
+        </div>
+        <div class="space-y-2">
+          <div class="text-yellow-400 font-mono font-bold text-sm">03. Get ₹1,000 Instant</div>
+          <p class="text-zinc-400 leading-relaxed">As soon as your friend places an order, a direct ₹1,000 reward will be sent straight to your UPI or bank account.</p>
+        </div>
+      </div>
+
+      <div class="pt-6 border-t border-zinc-900 text-center">
+        <a href="store.html" class="inline-block bg-white hover:bg-zinc-200 text-black font-black px-10 py-4 text-xs uppercase tracking-[0.25em] transition shadow-2xl">
+          Start Shopping & Get Referral Link
+        </a>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-black text-zinc-600 py-16 border-t border-zinc-900 text-center text-[10px] uppercase tracking-[0.3em] space-y-4">
+    <p>© 2026 Moonland Store. All Rights Reserved.</p>
+    <div class="flex justify-center space-x-8 text-zinc-500">
+      <a href="index.html" class="hover:text-white transition">Store Home</a>
+      <a href="referral.html" class="hover:text-white transition">Refer & Earn</a>
+      <a href="track.html" class="hover:text-white transition">Track Order</a>
+      <a href="about.html" class="hover:text-white transition">About Us</a>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+  <script>
+    function toggleMobileMenu() {
+      const dropdown = document.getElementById('mobileMenuDropdown');
+      if (dropdown) dropdown.classList.toggle('hidden');
+    }
+
+    function openCartModal() {
+      window.location.href = 'order.html';
+    }
+
+    const liveTickerEarnings = [
+      "₹1,000 sent to Shruti Jain (Mumbai)",
+      "₹1,000 sent to Shraddha Patil. (Pune)",
+      "₹1,000 sent to Sahil K. (Panipat)",
+      "₹1,000 sent to Mahesh R. (Tirupathi)",
+      "₹1,000 sent to Deepak K. (Surat)",
+      "₹1,000 sent to Sneha D. (Noida)",
+      "₹1,000 sent to Vikram J. (Solapur)",
+      "₹1,000 sent to Rohan M. (Kalyan)",
+      "₹1,000 sent to Priyanka S. (Kolhapur)",
+      "₹1,000 sent to Imran Q. (Aurangabad)",
+      "₹1,000 sent to Akash G. (Bengluru)",
+      "₹1,000 sent to Neha K. (Rishikesh)",
+      "₹1,000 sent to Sameer J. (Chandigarh)",
+      "₹1,000 sent to Tanvi P. (Jalgaon)",
+      "₹1,000 sent to Kiran W. (Satara)"
+    ];
+
+    function startLiveTicker() {
+      const tickerEl = document.getElementById('liveTickerText');
+      if (!tickerEl) return;
+
+      let idx = 0;
+      setInterval(() => {
+        tickerEl.innerText = liveTickerEarnings[idx];
+        idx = (idx + 1) % liveTickerEarnings.length;
+      }, 3500);
+    }
+
+    function showCustomPopup(title, message, isError = false) {
+      let existing = document.getElementById('customLuxuryModal');
+      if (existing) existing.remove();
+
+      let borderColor = isError ? 'border-red-500/50' : 'border-yellow-400/50';
+      let iconColor = isError ? 'text-red-400 bg-red-400/20' : 'text-yellow-400 bg-yellow-400/20';
+      let iconClass = isError ? 'fa-triangle-exclamation' : 'fa-circle-check';
+
+      let modalHtml = `
+        <div id="customLuxuryModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/85 backdrop-blur-md p-4">
+          <div class="bg-[#0c0c0c] border ${borderColor} p-6 sm:p-8 max-w-sm w-full shadow-2xl space-y-5 text-center relative">
+            <div class="w-14 h-14 ${iconColor} rounded-full flex items-center justify-center mx-auto text-xl">
+              <i class="fa-solid ${iconClass}"></i>
+            </div>
+            <div class="space-y-2">
+              <h3 class="text-xs font-bold text-white uppercase tracking-widest">${title}</h3>
+              <p class="text-xs text-zinc-300 font-light leading-relaxed">${message}</p>
+            </div>
+            <button onclick="document.getElementById('customLuxuryModal').remove()" class="w-full bg-white hover:bg-zinc-200 text-black font-black py-3.5 text-xs uppercase tracking-[0.2em] transition">
+              OK, Got It
+            </button>
+          </div>
+        </div>
+      `;
+      document.body.insertAdjacentHTML('beforeend', modalHtml);
+    }
+
+    async function fetchExistingRefLink() {
+      const val = document.getElementById('userReferralInput').value.trim();
+      const container = document.getElementById('generatedLinkContainer');
+      
+      if(!val) {
+        showCustomPopup('Missing Information', 'Please enter your registered mobile number.', true);
+        container.classList.add('hidden');
+        return;
+      }
+
+      try {
+        const response = await fetch('/api/referral-lookup', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ phone: val })
+        });
+        const result = await response.json();
+
+        if (response.ok && result.success && result.userRefCode) {
+          const fullUrl = window.location.origin + '/store.html?ref=' + result.userRefCode;
+          document.getElementById('displayRefUrl').innerText = fullUrl;
+          container.classList.remove('hidden');
+          showCustomPopup('Success!', 'Your referral link has been fetched successfully.');
+        } else {
+          showCustomPopup('Record Not Found', result.error || 'No active referral code generated yet. Place a verified order first.', true);
+          container.classList.add('hidden');
+          document.getElementById('displayRefUrl').innerText = '';
+        }
+      } catch (err) {
+        console.error('Referral lookup error:', err);
+        showCustomPopup('Server Error', 'Failed to lookup referral code. Please try again.', true);
+        container.classList.add('hidden');
+      }
+    }
+
+    function copyRefLink() {
+      const urlText = document.getElementById('displayRefUrl').innerText;
+      if (!urlText) return;
+      navigator.clipboard.writeText(urlText);
+      showCustomPopup('Copied!', 'Referral link copied to clipboard successfully.');
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      startLiveTicker();
+
+      const inputField = document.getElementById('userReferralInput');
+      if (inputField) {
+        inputField.addEventListener('keypress', function(event) {
+          if (event.key === 'Enter') {
+            event.preventDefault();
+            fetchExistingRefLink();
+          }
+        });
+      }
+
+      const urlParams = new URLSearchParams(window.location.search);
+      const refCode = urlParams.get('ref');
+      if (refCode) {
+        localStorage.setItem('moonland_active_ref', refCode);
+      }
+
+      const cart = JSON.parse(localStorage.getItem('moonland_cart') || '[]');
+      const totalItems = cart.reduce((sum, item) => sum + (item.quantity || 1), 0);
+      const badge = document.getElementById('cartCountBadge');
+      if (badge) badge.innerText = totalItems;
+    });
+  </script>
+</body>
+</html>

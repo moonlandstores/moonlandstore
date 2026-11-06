@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Store Products | MOONLAND STORE</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .carousel-slide { display: none; }
+    .carousel-slide.active { display: block; }
+
+    @keyframes offerGlow {
+      0% { border-color: rgba(255, 255, 255, 0.1); box-shadow: 0 0 10px rgba(0, 0, 0, 0.9); }
+      50% { border-color: rgba(255, 255, 255, 0.6); box-shadow: 0 0 35px rgba(255, 255, 255, 0.15); }
+      100% { border-color: rgba(255, 255, 255, 0.1); box-shadow: 0 0 10px rgba(0, 0, 0, 0.9); }
+    }
+    .luxury-glow-card { animation: offerGlow 5s ease-in-out infinite; }
+  </style>
+</head>
+<body class="bg-[#050505] text-white font-sans antialiased min-h-screen flex flex-col justify-between selection:bg-white selection:text-black">
+
+  <!-- Top Announcement Bar -->
+  <div class="bg-black text-zinc-300 text-center py-2.5 px-4 text-[10px] font-bold tracking-[0.25em] uppercase border-b border-zinc-900 flex justify-center items-center gap-2 overflow-hidden whitespace-nowrap">
+    <marquee behavior="scroll" direction="left" scrollamount="5">
+      <span class="inline-flex items-center gap-2 mx-6"><i class="fa-solid fa-bolt text-yellow-400"></i> MOONLAND SPECIAL: UNLIMITED REFER & EARN ₹1,000 INSTANT UPI CASHBACK PER REFERRAL!</span>
+    </marquee>
+  </div>
+
+  <!-- Header / Navbar -->
+  <header class="sticky top-0 z-40 bg-black/90 backdrop-blur-xl border-b border-zinc-900">
+    <div class="max-w-7xl mx-auto px-6 sm:px-12 flex justify-between items-center h-24">
+      <a href="index.html" class="flex items-center space-x-4 group">
+        <div class="w-8 h-8 border border-white flex items-center justify-center font-black text-xs tracking-widest text-white group-hover:bg-white group-hover:text-black transition duration-500">M</div>
+        <div class="flex flex-col">
+          <span class="font-bold text-base tracking-[0.4em] uppercase text-white">MOONLAND</span>
+          <span class="text-[7px] tracking-[0.55em] text-zinc-400 uppercase font-bold">STORE</span>
+        </div>
+      </a>
+
+      <nav class="hidden md:flex items-center space-x-12 font-medium text-[11px] uppercase tracking-[0.25em] text-zinc-400">
+        <a href="index.html" class="text-white border-b border-white pb-1 tracking-[0.3em] font-bold">Store</a>
+        <a href="referral.html" class="hover:text-white transition pb-1">Refer & Earn</a>
+        <a href="track.html" class="hover:text-white transition pb-1">Track Order</a>
+        <a href="about.html" class="hover:text-white transition pb-1">About Us</a>
+      </nav>
+
+      <div class="flex items-center space-x-6">
+        <button onclick="openCartModal()" class="flex items-center space-x-2 text-[11px] uppercase tracking-[0.2em] font-medium text-zinc-400 hover:text-white transition">
+          <i class="fa-solid fa-bag-shopping text-sm"></i>
+          <span id="cartCountBadge" class="bg-white text-black text-[9px] px-1.5 py-0.2 rounded-full font-bold ml-1">0</span>
+        </button>
+        <button onclick="toggleMobileMenu()" class="md:hidden text-white text-lg"><i class="fa-solid fa-bars"></i></button>
+      </div>
+    </div>
+
+    <!-- Mobile Menu Dropdown -->
+    <div id="mobileMenuDropdown" class="hidden md:hidden bg-black border-b border-zinc-900 px-8 py-6 space-y-5 text-xs uppercase font-medium tracking-[0.25em]">
+      <a href="index.html" class="block text-white font-bold">Store Home</a>
+      <a href="referral.html" class="block text-zinc-400 hover:text-white">Refer & Earn</a>
+      <a href="track.html" class="block text-zinc-400 hover:text-white">Track Order</a>
+      <a href="about.html" class="block text-zinc-400 hover:text-white">About Us</a>
+    </div>
+  </header>
+
+  <!-- Main Store Catalog Content -->
+  <main class="max-w-7xl mx-auto px-6 sm:px-12 py-20 w-full flex-grow space-y-12">
+    <div class="text-center max-w-3xl mx-auto space-y-4">
+      <span class="inline-block text-[10px] font-bold uppercase tracking-[0.4em] text-zinc-400 border border-zinc-700 px-3.5 py-1.5 bg-zinc-900">
+        COMPLETE INVENTORY
+      </span>
+      <h1 class="text-3xl sm:text-5xl font-black uppercase tracking-[0.1em] text-white">
+        Store Products Catalog
+      </h1>
+      <p class="text-xs sm:text-sm text-zinc-400 font-light tracking-wide">
+        Browse our full inventory with multiple high-definition views and instant seamless checkout.
+      </p>
+    </div>
+
+    <div id="storeProductsContainer" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+      <!-- Dynamically loaded from Backend API -->
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-black text-zinc-600 py-16 border-t border-zinc-900 text-center text-[10px] uppercase tracking-[0.3em] space-y-4">
+    <p>© 2026 Moonland Store. All Rights Reserved.</p>
+    <div class="flex justify-center space-x-8 text-zinc-500">
+      <a href="index.html" class="hover:text-white transition">Store Home</a>
+      <a href="referral.html" class="hover:text-white transition">Refer & Earn</a>
+      <a href="track.html" class="hover:text-white transition">Track Order</a>
+      <a href="about.html" class="hover:text-white transition">About Us</a>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+  <script>
+    let cachedProducts = [];
+
+    document.addEventListener("DOMContentLoaded", () => {
+        loadStoreCatalog();
+        updateGlobalCartCount();
+    });
+
+    function toggleMobileMenu() {
+      document.getElementById('mobileMenuDropdown').classList.toggle('hidden');
+    }
+
+    async function loadStoreCatalog() {
+        const container = document.getElementById('storeProductsContainer');
+        container.innerHTML = `<div class="col-span-full text-center text-zinc-500 py-12 uppercase tracking-widest text-xs border border-zinc-900 bg-[#0c0c0c]">Loading products...</div>`;
+
+        try {
+            const res = await fetch('/api/products');
+            if (res.ok) {
+                cachedProducts = await res.json();
+            } else {
+                cachedProducts = [];
+            }
+        } catch (err) {
+            console.error('Failed to load products from server:', err);
+            cachedProducts = [];
+        }
+        
+        if(cachedProducts.length === 0) {
+            container.innerHTML = `<div class="col-span-full text-center text-zinc-500 py-12 uppercase tracking-widest text-xs border border-zinc-900 bg-[#0c0c0c]">No products found in store catalog.</div>`;
+            return;
+        }
+
+        container.innerHTML = cachedProducts.map((p, pIdx) => {
+            const images = p.images && p.images.length > 0 ? p.images : ['https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&w=600&q=80'];
+            const price = Number(p.price) || 0;
+            
+            return `
+                <div class="bg-[#0c0c0c] border border-zinc-800 p-6 shadow-2xl flex flex-col justify-between group hover:border-zinc-500 transition duration-500">
+                    <div class="space-y-4">
+                        <!-- Image Carousel Slider -->
+                        <div class="relative h-60 bg-black overflow-hidden border border-zinc-900">
+                            ${images.map((img, iIdx) => `
+                                <div class="carousel-slide ${iIdx === 0 ? 'active' : ''}" id="p_slide_${pIdx}_${iIdx}">
+                                    <img src="${img}" class="w-full h-60 object-cover opacity-90 group-hover:scale-105 transition duration-700">
+                                </div>
+                            `).join('')}
+
+                            ${images.length > 1 ? `
+                                <button onclick="switchProductSlide(${pIdx}, -1, ${images.length})" class="absolute left-2 top-1/2 -translate-y-1/2 bg-black/80 text-white p-2 text-xs hover:bg-white hover:text-black transition"><i class="fa-solid fa-chevron-left"></i></button>
+                                <button onclick="switchProductSlide(${pIdx}, 1, ${images.length})" class="absolute right-2 top-1/2 -translate-y-1/2 bg-black/80 text-white p-2 text-xs hover:bg-white hover:text-black transition"><i class="fa-solid fa-chevron-right"></i></button>
+                            ` : ''}
+                            <span class="absolute top-3 right-3 bg-white text-black text-[9px] font-bold px-2.5 py-1 uppercase tracking-widest shadow">₹${price.toLocaleString('en-IN')}</span>
+                        </div>
+
+                        <div class="space-y-2">
+                            <h3 class="text-base font-normal uppercase tracking-[0.1em] text-white">${p.name}</h3>
+                            <p class="text-xs text-zinc-400 font-light tracking-wide line-clamp-2">${p.keyFeatures || p.desc || 'Premium high-performance product.'}</p>
+                        </div>
+                    </div>
+
+                    <div class="pt-6 border-t border-zinc-900 mt-6 space-y-3">
+                        <div class="font-mono text-base text-white">₹${price.toLocaleString('en-IN')}</div>
+                        <button onclick="addCatalogItemToCart('${p.id}')" class="w-full bg-white hover:bg-zinc-200 text-black py-3 font-bold text-[10px] uppercase tracking-[0.2em] transition flex items-center justify-center space-x-2">
+                            <i class="fa-solid fa-bag-shopping"></i><span>Add to Cart</span>
+                        </button>
+                    </div>
+                </div>
+            `;
+        }).join('');
+    }
+
+    let slideState = {};
+    function switchProductSlide(pIdx, direction, total) {
+        if(!(pIdx in slideState)) slideState[pIdx] = 0;
+        document.getElementById(`p_slide_${pIdx}_${slideState[pIdx]}`).classList.remove('active');
+        slideState[pIdx] = (slideState[pIdx] + direction + total) % total;
+        document.getElementById(`p_slide_${pIdx}_${slideState[pIdx]}`).classList.add('active');
+    }
+
+    function addCatalogItemToCart(prodId) {
+        const p = cachedProducts.find(item => item.id === prodId);
+        if(!p) return;
+        let cart = JSON.parse(localStorage.getItem('moonland_cart') || '[]');
+        let existing = cart.find(i => i.id === p.id || i.title === p.name);
+        if (existing) {
+            existing.id = p.id;
+            existing.quantity = (existing.quantity || 1) + 1;
+        } else {
+            cart.push({ id: p.id, title: p.name, name: p.name, price: p.price, quantity: 1 });
+        }
+        localStorage.setItem('moonland_cart', JSON.stringify(cart));
+        updateGlobalCartCount();
+        alert('Product cart mein add ho gaya hai!');
+    }
+
+    function updateGlobalCartCount() {
+        let cart = JSON.parse(localStorage.getItem('moonland_cart') || '[]');
+        let totalCount = cart.reduce((sum, item) => sum + (item.quantity || item.qty || 1), 0);
+        const badge = document.getElementById('cartCountBadge');
+        if (badge) badge.innerText = totalCount;
+    }
+  </script>
+</body>
+</html>
