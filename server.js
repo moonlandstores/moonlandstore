@@ -12,7 +12,6 @@ const PORT = process.env.PORT || 3000;
 
 app.set('trust proxy', 1);
 
-// Enable CORS for all origins
 app.use(cors());
 
 const ADMIN_PASSCODE = process.env.ADMIN_PASSCODE;
@@ -23,7 +22,6 @@ if (!ADMIN_PASSCODE || !SESSION_SECRET) {
   process.exit(1);
 }
 
-// Global body limit updated to 10mb
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
@@ -39,11 +37,10 @@ app.use(session({
     secure: process.env.NODE_ENV === 'production',
     httpOnly: true, 
     sameSite: 'strict',
-    maxAge: 24 * 60 * 60 * 1000 // 1 Day
+    maxAge: 24 * 60 * 60 * 1000
   }
 }));
 
-// Absolute path configuration for public directory
 const publicDir = path.join(__dirname, 'public');
 app.use(express.static(publicDir, {
   extensions: ['html']
@@ -106,8 +103,6 @@ function loginRateLimiter(req, res, next) {
   next();
 }
 
-// ==================== ADMIN AUTHENTICATION API ====================
-
 app.post('/api/admin/login', loginRateLimiter, (req, res) => {
   const { passcode } = req.body;
   if (!passcode) {
@@ -149,8 +144,6 @@ app.post('/api/admin/logout', (req, res) => {
     return res.json({ success: true, message: 'Logged out successfully' });
   });
 });
-
-// ==================== ADMIN ANALYTICS & STATS API ====================
 
 app.get('/api/admin/stats', requireAdmin, async (req, res) => {
   try {
@@ -237,8 +230,6 @@ app.get('/api/admin/stats', requireAdmin, async (req, res) => {
   }
 });
 
-// ==================== SETTINGS & GATEWAYS API ====================
-
 app.get('/api/settings', async (req, res) => {
   try {
     if (!db) return res.status(503).json({ error: 'Database service unavailable' });
@@ -269,8 +260,6 @@ app.put('/api/settings', requireAdmin, adminBodyParser, adminUrlParser, async (r
     res.status(500).json({ success: false, error: 'Failed to update settings' });
   }
 });
-
-// ==================== PRODUCTS API ====================
 
 app.get('/api/products', async (req, res) => {
   try {
@@ -350,8 +339,6 @@ app.delete('/api/products/:id', requireAdmin, async (req, res) => {
   }
 });
 
-// ==================== TRACK ORDER API ====================
-
 app.post('/api/track', publicApiLimiter, async (req, res) => {
   try {
     const { query } = req.body;
@@ -391,8 +378,6 @@ app.post('/api/track', publicApiLimiter, async (req, res) => {
     res.status(500).json({ success: false, error: 'Failed to track order' });
   }
 });
-
-// ==================== ORDERS API ====================
 
 app.get('/api/orders', requireAdmin, async (req, res) => {
   try {
@@ -514,7 +499,6 @@ app.put('/api/orders/:id/approve', requireAdmin, async (req, res) => {
   }
 });
 
-// ==================== EXPLICIT ROUTING FOR ALL HTML PAGES ====================
 const allHtmlPages = [
   'admin-login.html',
   'dash-analytics-9x81.html',
@@ -538,10 +522,10 @@ allHtmlPages.forEach(page => {
   });
 });
 
-// Catch-all fallback route for index.html
 app.get('*', (req, res) => {
   res.sendFile(path.join(publicDir, 'index.html'));
 });
 
 app.listen(PORT, () => {
   console.log(`Server running securely at http://localhost:${PORT}`);
+});
