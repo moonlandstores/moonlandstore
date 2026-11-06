@@ -480,11 +480,17 @@ app.put('/api/orders/:id', requireAdmin, adminBodyParser, adminUrlParser, async 
 
     if (!db) return res.status(503).json({ success: false, error: 'Database unavailable' });
 
-    const orderRef = db.collection('orders').doc(orderId);
-    const doc = await orderRef.get();
+    const cleanId = orderId.trim();
+    let orderRef = db.collection('orders').doc(cleanId);
+    let doc = await orderRef.get();
 
     if (!doc.exists) {
-      return res.status(404).json({ success: false, error: 'Order not found' });
+      const querySnap = await db.collection('orders').where('id', '==', cleanId).limit(1).get();
+      if (!querySnap.empty) {
+        orderRef = querySnap.docs[0].ref;
+      } else {
+        return res.status(404).json({ success: false, error: 'Order not found' });
+      }
     }
 
     const updateData = {
@@ -504,7 +510,7 @@ app.put('/api/orders/:id', requireAdmin, adminBodyParser, adminUrlParser, async 
   }
 });
 
-// 2. Bulk Update Orders Status (Fixed with batch.set merge)
+// 2. Bulk Update Orders Status (Robust Resolution for Document/Field IDs)
 app.put('/api/orders/bulk-status', requireAdmin, adminBodyParser, adminUrlParser, async (req, res) => {
   try {
     const { ids, status } = req.body;
@@ -518,11 +524,32 @@ app.put('/api/orders/bulk-status', requireAdmin, adminBodyParser, adminUrlParser
     const batch = db.batch();
     for (const orderId of ids) {
       if (!orderId) continue;
-      const orderRef = db.collection('orders').doc(orderId.trim());
-      batch.set(orderRef, {
-        status: status.trim(),
-        updatedAt: new Date().toISOString()
-      }, { merge: true });
+      const cleanId = orderId.trim();
+      
+      const orderRef = db.collection('orders').doc(cleanId);
+      const docSnap = await orderRef.get();
+
+      if (docSnap.exists) {
+        batch.update(orderRef, {
+          status: status.trim(),
+          updatedAt: new Date().toISOString()
+        });
+      } else {
+        const querySnap = await db.collection('orders').where('id', '==', cleanId).get();
+        if (!querySnap.empty) {
+          querySnap.forEach(matchedDoc => {
+            batch.update(matchedDoc.ref, {
+              status: status.trim(),
+              updatedAt: new Date().toISOString()
+            });
+          });
+        } else {
+          batch.set(orderRef, {
+            status: status.trim(),
+            updatedAt: new Date().toISOString()
+          }, { merge: true });
+        }
+      }
     }
 
     await batch.commit();
