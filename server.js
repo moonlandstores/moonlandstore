@@ -466,6 +466,74 @@ app.post('/api/orders', publicApiLimiter, async (req, res) => {
   }
 });
 
+// ==================== NEW ADDED ROUTES FOR ORDER STATUS UPDATE ====================
+
+// 1. Update Single Order Status (or Cancel)
+app.put('/api/orders/:id', requireAdmin, adminBodyParser, adminUrlParser, async (req, res) => {
+  try {
+    const orderId = req.params.id;
+    const { status, cancelReason } = req.body;
+
+    if (!status) {
+      return res.status(400).json({ success: false, error: 'Status is required' });
+    }
+
+    if (!db) return res.status(503).json({ success: false, error: 'Database unavailable' });
+
+    const orderRef = db.collection('orders').doc(orderId);
+    const doc = await orderRef.get();
+
+    if (!doc.exists) {
+      return res.status(404).json({ success: false, error: 'Order not found' });
+    }
+
+    const updateData = {
+      status: status.trim(),
+      updatedAt: new Date().toISOString()
+    };
+
+    if (cancelReason !== undefined) {
+      updateData.cancelReason = cancelReason;
+    }
+
+    await orderRef.update(updateData);
+    res.json({ success: true, message: 'Order status updated successfully' });
+  } catch (err) {
+    console.error('Error updating order status:', err);
+    res.status(500).json({ success: false, error: err.message || 'Failed to update order status' });
+  }
+});
+
+// 2. Bulk Update Orders Status
+app.put('/api/orders/bulk-status', requireAdmin, adminBodyParser, adminUrlParser, async (req, res) => {
+  try {
+    const { ids, status } = req.body;
+
+    if (!ids || !Array.isArray(ids) || ids.length === 0 || !status) {
+      return res.status(400).json({ success: false, error: 'Invalid data provided for bulk update' });
+    }
+
+    if (!db) return res.status(503).json({ success: false, error: 'Database unavailable' });
+
+    const batch = db.batch();
+    for (const orderId of ids) {
+      const orderRef = db.collection('orders').doc(orderId);
+      batch.update(orderRef, {
+        status: status.trim(),
+        updatedAt: new Date().toISOString()
+      });
+    }
+
+    await batch.commit();
+    res.json({ success: true, message: 'Bulk status updated successfully' });
+  } catch (err) {
+    console.error('Error in bulk update:', err);
+    res.status(500).json({ success: false, error: err.message || 'Bulk update failed' });
+  }
+});
+
+// ==================================================================================
+
 app.put('/api/orders/:id/approve', requireAdmin, async (req, res) => {
   try {
     if (!db) return res.status(503).json({ success: false, error: 'Database unavailable' });

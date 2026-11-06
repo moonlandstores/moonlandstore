@@ -1,15 +1,25 @@
-/* 3D Perspective & Smooth Floating Animation */
+/* 3D Perspective & Enhanced Smooth Floating Animation */
 .perspective-container {
-  perspective: 1000px;
+  perspective: 1200px;
+  perspective-origin: center center;
 }
+
 .card-3d {
-  transition: transform 0.1s ease-out;
+  transition: transform 0.15s cubic-bezier(0.03, 0.98, 0.52, 0.99);
   transform-style: preserve-3d;
+  will-change: transform;
 }
+
 @keyframes float {
-  0%, 100% { transform: translateY(0px) rotateX(0deg) rotateY(0deg); }
-  50% { transform: translateY(-8px) rotateX(2deg) rotateY(-2deg); }
+  0%, 100% { 
+    transform: translateY(0px) rotateX(0deg) rotateY(0deg); 
+  }
+  50% { 
+    transform: translateY(-10px) rotateX(3deg) rotateY(-3deg); 
+  }
 }
+
 .floating-element {
-  animation: float 5s ease-in-out infinite;
+  animation: float 6s ease-in-out infinite;
+  will-change: transform;
 }
