@@ -183,7 +183,6 @@
                 const rawDate = ord.createdAt || ord.timestamp || ord.date;
                 const formattedDate = rawDate ? new Date(rawDate).toLocaleString('en-IN') : 'N/A';
                 
-                // Detailed Product & Quantity handling
                 let itemsListHtml = '';
                 if (ord.items && Array.isArray(ord.items) && ord.items.length > 0) {
                     itemsListHtml = ord.items.map(item => `
@@ -225,7 +224,6 @@
                         </div>
                     </div>
 
-                    <!-- Products & Quantities Section -->
                     <div class="space-y-1">
                         <span class="text-zinc-500 text-[10px] uppercase font-bold tracking-wider block">Ordered Products & Quantities:</span>
                         <div class="space-y-1">${itemsListHtml}</div>
@@ -243,7 +241,7 @@
                     <div class="pt-3 border-t border-zinc-900 flex flex-col sm:flex-row items-center justify-between gap-4">
                         <div class="flex flex-wrap items-center gap-3 w-full sm:w-auto">
                             <label class="text-zinc-400 font-bold uppercase tracking-widest text-[10px]">Update Status:</label>
-                            <select id="statusSelect_${index}" class="bg-black border border-zinc-800 px-4 py-2.5 text-xs text-white focus:outline-none focus:border-cyan-400 font-mono uppercase">
+                            <select id="statusSelect_${index}" class="single-status-select bg-black border border-zinc-800 px-4 py-2.5 text-xs text-white focus:outline-none focus:border-cyan-400 font-mono uppercase">
                                 <option value="Order Placed" ${currentStatus === 'Order Placed' ? 'selected' : ''}>1. Order Placed</option>
                                 <option value="Processing" ${currentStatus === 'Processing' ? 'selected' : ''}>2. Processing</option>
                                 <option value="Packed" ${currentStatus === 'Packed' ? 'selected' : ''}>3. Packed</option>
@@ -254,7 +252,7 @@
                                 <option value="custom" ${!isPreset ? 'selected' : ''}>Custom Status...</option>
                             </select>
 
-                            <input type="text" id="customStatusInput_${index}" value="${!isPreset ? escapeHtml(currentStatus) : ''}" placeholder="Type custom status..." class="bg-black border border-zinc-800 px-4 py-2.5 text-xs text-white focus:outline-none focus:border-cyan-400 font-mono ${isPreset ? 'hidden' : ''}">
+                            <input type="text" id="customStatusInput_${index}" value="${!isPreset ? escapeHtml(currentStatus) : ''}" placeholder="Type custom status..." class="single-custom-input bg-black border border-zinc-800 px-4 py-2.5 text-xs text-white focus:outline-none focus:border-cyan-400 font-mono ${isPreset ? 'hidden' : ''}">
                         </div>
 
                         <button class="save-status-btn bg-cyan-400 hover:bg-cyan-300 text-black font-black px-6 py-2.5 uppercase tracking-wider transition w-full sm:w-auto shadow-lg">Save Status</button>
