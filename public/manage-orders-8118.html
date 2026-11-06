@@ -332,7 +332,6 @@
                 input.focus();
             } else {
                 input.classList.add('hidden');
-                input.value = select.value;
             }
         }
 
@@ -368,6 +367,7 @@
 
             const select = document.getElementById('bulkStatusSelect');
             const input = document.getElementById('bulkCustomStatusInput');
+            
             let bulkStatus = select.value === 'custom' ? input.value.trim() : select.value;
 
             if (!bulkStatus) return showToast('Error', 'Kripya valid bulk status enter kijiye!');
@@ -381,14 +381,16 @@
                     body: JSON.stringify({ ids: idsToUpdate, status: bulkStatus })
                 });
 
-                if (res.ok) {
+                const result = await res.json();
+                if (res.ok && result.success) {
                     showToast('Bulk Success', 'Selected orders ka status update ho gaya hai!');
                     document.getElementById('selectAllCheckbox').checked = false;
                     fetchOrders();
                 } else {
-                    showToast('Error', 'Bulk update failed');
+                    showToast('Error', result.error || 'Bulk update failed');
                 }
             } catch (err) {
+                console.error('Bulk update error:', err);
                 showToast('Error', 'Server connection error');
             }
         }

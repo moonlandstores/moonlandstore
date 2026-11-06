@@ -466,7 +466,7 @@ app.post('/api/orders', publicApiLimiter, async (req, res) => {
   }
 });
 
-// ==================== NEW ADDED ROUTES FOR ORDER STATUS UPDATE ====================
+// ==================== ORDER STATUS UPDATE ROUTES ====================
 
 // 1. Update Single Order Status (or Cancel)
 app.put('/api/orders/:id', requireAdmin, adminBodyParser, adminUrlParser, async (req, res) => {
@@ -504,7 +504,7 @@ app.put('/api/orders/:id', requireAdmin, adminBodyParser, adminUrlParser, async 
   }
 });
 
-// 2. Bulk Update Orders Status
+// 2. Bulk Update Orders Status (Fixed)
 app.put('/api/orders/bulk-status', requireAdmin, adminBodyParser, adminUrlParser, async (req, res) => {
   try {
     const { ids, status } = req.body;
@@ -532,7 +532,7 @@ app.put('/api/orders/bulk-status', requireAdmin, adminBodyParser, adminUrlParser
   }
 });
 
-// ==================================================================================
+// ===================================================================
 
 app.put('/api/orders/:id/approve', requireAdmin, async (req, res) => {
   try {
