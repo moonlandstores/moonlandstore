@@ -183,8 +183,26 @@
                 const rawDate = ord.createdAt || ord.timestamp || ord.date;
                 const formattedDate = rawDate ? new Date(rawDate).toLocaleString('en-IN') : 'N/A';
                 
-                const productsText = ord.product || (ord.items ? ord.items.map(i => i.name).join(', ') : 'Appliance Product');
-                
+                // Detailed Product & Quantity handling
+                let itemsListHtml = '';
+                if (ord.items && Array.isArray(ord.items) && ord.items.length > 0) {
+                    itemsListHtml = ord.items.map(item => `
+                        <div class="flex justify-between items-center bg-zinc-900/50 border border-zinc-800/80 px-3 py-2 my-1">
+                            <span class="text-white font-bold uppercase"><i class="fa-solid fa-box text-cyan-400 mr-2"></i>${escapeHtml(item.name || item.title)}</span>
+                            <span class="text-cyan-400 font-mono font-bold">Qty: ${item.quantity || item.qty || 1}</span>
+                        </div>
+                    `).join('');
+                } else {
+                    const singleProdName = ord.product || ord.productName || 'Standard Item';
+                    const singleQty = ord.quantity || ord.qty || 1;
+                    itemsListHtml = `
+                        <div class="flex justify-between items-center bg-zinc-900/50 border border-zinc-800/80 px-3 py-2 my-1">
+                            <span class="text-white font-bold uppercase"><i class="fa-solid fa-box text-cyan-400 mr-2"></i>${escapeHtml(singleProdName)}</span>
+                            <span class="text-cyan-400 font-mono font-bold">Qty: ${singleQty}</span>
+                        </div>
+                    `;
+                }
+
                 const card = document.createElement('div');
                 card.className = "bg-[rgba(12,12,12,0.7)] border border-white/10 p-6 space-y-4 text-xs relative shadow-xl rounded-none";
                 
@@ -198,7 +216,6 @@
                         <div class="flex items-center space-x-3">
                             <input type="checkbox" class="order-checkbox w-4 h-4 bg-black border-zinc-800 text-cyan-400 focus:ring-0 cursor-pointer" data-id="${escapeHtml(ord.id)}">
                             <div>
-                                <strong class="text-white text-sm uppercase tracking-wider">${escapeHtml(productsText)}</strong><br>
                                 <span class="text-zinc-400 font-mono">Order ID: <span class="text-cyan-400 font-bold">${escapeHtml(ord.id)}</span> | Time: ${escapeHtml(formattedDate)}</span>
                             </div>
                         </div>
@@ -206,6 +223,12 @@
                             <span class="bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-3 py-1 font-bold uppercase tracking-wider text-[10px]"><i class="fa-solid fa-check mr-1"></i>Verified</span>
                             <button class="whatsapp-btn bg-emerald-500 hover:bg-emerald-400 text-black font-black px-3 py-1.5 uppercase tracking-wider text-[10px] flex items-center gap-1.5 transition shadow"><i class="fa-brands fa-whatsapp text-sm"></i> WhatsApp Alert</button>
                         </div>
+                    </div>
+
+                    <!-- Products & Quantities Section -->
+                    <div class="space-y-1">
+                        <span class="text-zinc-500 text-[10px] uppercase font-bold tracking-wider block">Ordered Products & Quantities:</span>
+                        <div class="space-y-1">${itemsListHtml}</div>
                     </div>
 
                     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 text-zinc-300 bg-black border border-zinc-800 p-4 font-mono">
@@ -418,7 +441,6 @@
 
         function filterOrders() {
             const query = document.getElementById('orderSearchInput').value.toLowerCase().trim();
-            // Fixed bracket bug here from ] to )
             const statusFilter = document.getElementById('statusFilterSelect').value;
             const dateVal = document.getElementById('orderDateFilter').value;
 
