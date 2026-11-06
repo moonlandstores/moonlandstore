@@ -1,4 +1,119 @@
-<script>
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Referral Payout History | Moonland & Ninja Admin</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script>
+    fetch('/api/admin/check-session').then(res => res.json()).then(data => {
+      if (!data.authenticated) window.location.href = 'admin-login.html';
+    }).catch(() => {
+      window.location.href = 'admin-login.html';
+    });
+  </script>
+</head>
+<body class="bg-[#050505] text-slate-100 min-h-screen font-sans p-6 sm:p-10 space-y-8 selection:bg-white selection:text-black">
+  <div class="max-w-7xl mx-auto space-y-8">
+    
+    <!-- Header & Locked Single-Line Navigation Bar -->
+    <div class="flex flex-col xl:flex-row justify-between items-start xl:items-center gap-6 pb-6 border-b border-zinc-900">
+      <div>
+        <h1 class="text-2xl font-black text-white uppercase tracking-wider flex items-center gap-3">
+          <span class="w-3 h-3 bg-cyan-400 rounded-full animate-pulse"></span>
+          Referral Payouts & Cashback History
+        </h1>
+        <p class="text-xs text-zinc-400 tracking-wide mt-1">Track upline referrers, send ₹1,000 cash rewards & update payout history status from Firestore</p>
+      </div>
+      
+      <!-- Locked Single-Row Navigation Bar (Unified Across All Pages) -->
+      <nav class="flex flex-row flex-nowrap items-center gap-0.5 text-[9.5px] font-bold uppercase tracking-wider whitespace-nowrap overflow-x-auto max-w-full pb-1">
+        <a href="dash-analytics-9x81.html" class="bg-black text-zinc-400 hover:text-white border border-zinc-800 px-2.5 py-2 transition">Dashboard</a>
+        <a href="utr-verification.html" class="bg-black text-zinc-400 hover:text-white border border-zinc-800 px-2.5 py-2 transition">UTR Verification</a>
+        <a href="manage-orders-8118.html" class="bg-black text-zinc-400 hover:text-white border border-zinc-800 px-2.5 py-2 transition">Orders</a>
+        <a href="inventory-products.html" class="bg-black text-zinc-400 hover:text-white border border-zinc-800 px-2.5 py-2 transition">Products</a>
+        <a href="customers-crm.html" class="bg-black text-zinc-400 hover:text-white border border-zinc-800 px-2.5 py-2 transition">Customers</a>
+        <a href="referral-payouts.html" class="bg-cyan-400 text-black border border-cyan-400 px-2.5 py-2 shadow-[0_0_15px_rgba(34,211,238,0.3)] transition">Referrals</a>
+        <a href="settings-gateways.html" class="bg-black text-zinc-400 hover:text-white border border-zinc-800 px-2.5 py-2 transition">Settings</a>
+      </nav>
+    </div>
+
+    <!-- Analytics Summary Cards -->
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+      <div class="bg-[rgba(12,12,12,0.7)] border border-white/10 p-6 space-y-2 shadow-xl rounded-none">
+        <p class="text-[10px] text-zinc-400 uppercase tracking-[0.2em] font-bold">Total Payouts Done</p>
+        <h3 id="statTotalPaidAmount" class="text-3xl font-mono font-black text-emerald-400">₹0</h3>
+      </div>
+      <div class="bg-[rgba(12,12,12,0.7)] border border-white/10 p-6 space-y-2 shadow-xl rounded-none">
+        <p class="text-[10px] text-zinc-400 uppercase tracking-[0.2em] font-bold">Pending Payouts Count</p>
+        <h3 id="statPendingCount" class="text-3xl font-mono font-black text-amber-400">0</h3>
+      </div>
+      <div class="bg-[rgba(12,12,12,0.7)] border border-white/10 p-6 space-y-2 shadow-xl rounded-none">
+        <p class="text-[10px] text-zinc-400 uppercase tracking-[0.2em] font-bold">Paid Payouts Count</p>
+        <h3 id="statPaidCount" class="text-3xl font-mono font-black text-cyan-400">0</h3>
+      </div>
+    </div>
+
+    <!-- Filters, Search & Sort Bar -->
+    <div class="flex flex-col lg:flex-row items-center justify-between gap-4 bg-[rgba(12,12,12,0.7)] border border-white/10 p-5 rounded-none shadow-xl">
+      <div class="flex flex-wrap items-center gap-2 w-full lg:w-auto">
+        <span class="text-xs font-bold text-zinc-400 uppercase tracking-widest mr-2"><i class="fa-solid fa-filter mr-1"></i> Status:</span>
+        <button onclick="setPayoutFilter('All')" id="filterBtnAll" class="bg-cyan-400 text-black font-black px-4 py-2.5 text-xs uppercase tracking-wider transition shadow-[0_0_15px_rgba(34,211,238,0.2)]">All</button>
+        <button onclick="setPayoutFilter('Pending')" id="filterBtnPending" class="bg-black border border-zinc-800 text-zinc-400 hover:text-white font-bold px-4 py-2.5 text-xs uppercase tracking-wider transition">Pending</button>
+        <button onclick="setPayoutFilter('Paid')" id="filterBtnPaid" class="bg-black border border-zinc-800 text-zinc-400 hover:text-white font-bold px-4 py-2.5 text-xs uppercase tracking-wider transition">Paid</button>
+        
+        <!-- Direct vs Referral Type Filter -->
+        <select id="typeFilterSelect" onchange="renderPayoutsHistory()" class="bg-black border border-zinc-800 px-3 py-2.5 text-xs text-zinc-300 font-mono uppercase focus:outline-none focus:border-cyan-400 ml-2">
+          <option value="all">All Orders (Direct + Referral)</option>
+          <option value="direct">Direct / Organic Only</option>
+          <option value="referral">Referral Only</option>
+        </select>
+      </div>
+
+      <!-- Search Input -->
+      <div class="relative w-full lg:w-60">
+        <i class="fa-solid fa-magnifying-glass absolute left-4 top-3.5 text-zinc-500 text-xs"></i>
+        <input type="text" id="payoutSearchInput" oninput="renderPayoutsHistory()" placeholder="Search referrer, buyer..." class="w-full bg-black border border-zinc-800 pl-10 pr-4 py-3 text-xs text-white focus:outline-none focus:border-cyan-400 transition font-medium">
+      </div>
+
+      <div class="flex flex-wrap items-center gap-3 w-full lg:w-auto justify-end">
+        <div class="flex items-center gap-2">
+          <span class="text-xs text-zinc-400 font-bold uppercase tracking-widest"><i class="fa-solid fa-trophy text-amber-400 mr-1"></i> Sort:</span>
+          <select id="payoutSortSelect" onchange="renderPayoutsHistory()" class="bg-black border border-zinc-800 px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-cyan-400 font-mono uppercase">
+            <option value="newest">Newest First</option>
+            <option value="oldest">Oldest First</option>
+            <option value="topEarners">🏆 Top Referrers (Most Paid)</option>
+            <option value="lowEarners">📉 Lowest Referrers (Least Paid)</option>
+          </select>
+        </div>
+
+        <div class="flex items-center gap-2">
+          <input type="date" id="payoutDateFilter" onchange="renderPayoutsHistory()" class="bg-black border border-zinc-800 px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-cyan-400 font-mono">
+          <button onclick="clearFilters()" class="bg-zinc-900 hover:bg-zinc-800 text-zinc-300 hover:text-white border border-zinc-800 px-4 py-2.5 text-xs font-bold uppercase tracking-wider transition">Clear</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Payout History Container -->
+    <div id="payoutHistoryContainer" class="space-y-4"></div>
+  </div>
+
+  <!-- Custom Toast Notification -->
+  <div id="customToast" class="fixed bottom-6 right-6 z-50 transform translate-y-24 opacity-0 transition-all duration-300 pointer-events-none">
+    <div class="bg-[rgba(12,12,12,0.95)] border border-cyan-400/40 px-6 py-4 shadow-2xl flex items-center gap-3">
+        <div class="w-8 h-8 bg-cyan-400/20 text-cyan-400 flex items-center justify-center font-bold">
+            <i class="fa-solid fa-circle-check"></i>
+        </div>
+        <div>
+            <h4 class="text-xs font-bold text-white uppercase tracking-wider" id="toastTitle">Success</h4>
+            <p class="text-[11px] text-zinc-400" id="toastMessage">Payout status update ho gaya hai!</p>
+        </div>
+    </div>
+  </div>
+
+  <script>
     let currentFilter = 'All';
     let cachedOrders = [];
 
@@ -138,15 +253,13 @@
         
         const paidTimeText = o.payoutPaidAt ? `<span class="text-emerald-400 ml-2 font-mono">| Paid At: ${o.payoutPaidAt}</span>` : '';
 
-        let referrer = orders.find(item => item.userRefCode && item.userRefCode.toLowerCase() === enteredCode.toLowerCase());
+        let referrer = orders.find(item => item.userRefCode === enteredCode);
         let referrerName = referrer ? (referrer.customer || referrer.name) : 'Direct / Unknown Referrer';
-        let referrerUpi = referrer ? (referrer.upiId || 'N/A') : 'N/A';
-        let buyerName = o.customer || o.name;
-        let buyerPhone = o.phone;
-        let referrerPhone = referrer ? referrer.phone : buyerPhone;
+        let referrerUpi = referrer ? referrer.upiId : (o.upiId || 'N/A');
+        let referrerPhone = referrer ? referrer.phone : o.phone;
 
         const whatsappButtonHtml = payoutStatus === 'Paid' ? `
-          <button onclick="sendPayoutWhatsApp('${referrerName}', '${buyerName}', '${referrerUpi}', '${referrerPhone}')" class="bg-cyan-400 hover:bg-cyan-300 text-black font-black px-4 py-2.5 flex items-center gap-2 shadow-lg transition uppercase tracking-wider text-[11px]">
+          <button onclick="sendPayoutWhatsApp('${referrerName}', '${o.customer || o.name}', '${referrerUpi}', '${referrerPhone}')" class="bg-cyan-400 hover:bg-cyan-300 text-black font-black px-4 py-2.5 flex items-center gap-2 shadow-lg transition uppercase tracking-wider text-[11px]">
             <i class="fa-brands fa-whatsapp text-sm"></i> WhatsApp Alert
           </button>
         ` : '';
@@ -158,8 +271,8 @@
                 <span class="w-2.5 h-2.5 rounded-none ${payoutStatus === 'Paid' ? 'bg-emerald-400' : 'bg-amber-400'}"></span>
                 <strong class="text-white text-sm uppercase tracking-wider">Payout Target: ${referrerName}</strong>
               </div>
-              <p class="text-zinc-400 font-mono">Referral Code Used: <code class="text-cyan-400 font-bold">${enteredCode}</code> | Referrer UPI ID: <span class="text-amber-300 font-bold">${referrerUpi}</span></p>
-              <p class="text-zinc-500 font-mono text-[11px]">Buyer: ${buyerName} (${buyerPhone}) | Order ID: <span class="text-cyan-400 font-mono">${o.id}</span></p>
+              <p class="text-zinc-400 font-mono">Referral Code Used: <code class="text-cyan-400 font-bold">${enteredCode}</code> | UPI ID: <span class="text-amber-300 font-bold">${referrerUpi}</span></p>
+              <p class="text-zinc-500 font-mono text-[11px]">Buyer: ${o.customer || o.name} (${o.phone}) | Order ID: <span class="text-cyan-400 font-mono">${o.id}</span></p>
               <p class="text-[10px] text-zinc-400 font-mono"><i class="fa-solid fa-clock text-cyan-400 mr-1"></i> Order Time: <span class="text-slate-300 font-medium">${orderDate}</span> ${paidTimeText}</p>
             </div>
 
@@ -210,3 +323,5 @@
       window.open(`https://wa.me/91${phone}?text=${encodeURIComponent(msg)}`, '_blank');
     }
   </script>
+</body>
+</html>

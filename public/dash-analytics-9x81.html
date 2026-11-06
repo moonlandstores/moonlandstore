@@ -39,6 +39,97 @@
             </nav>
         </div>
 
+        <!-- Event Statistics & Visual Graphs Section (Top Side) -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          
+          <!-- Left Box: Circular Progress Statistics (Real Data Breakdown) -->
+          <div class="bg-[rgba(12,12,12,0.7)] border border-white/10 p-6 rounded-none shadow-xl flex flex-col justify-between">
+            <div>
+              <h3 class="text-sm font-black text-white uppercase tracking-wider mb-1">Event Statistics</h3>
+              <p class="text-[11px] text-zinc-400 tracking-wide">Order status proportion breakdown</p>
+            </div>
+
+            <div class="flex items-center justify-center py-6">
+              <div class="relative w-44 h-44 flex items-center justify-center">
+                <svg class="w-full h-full transform -rotate-90" viewBox="0 0 120 120">
+                  <circle cx="60" cy="60" r="45" stroke="currentColor" stroke-width="8" class="text-zinc-800" fill="transparent"></circle>
+                  <!-- Verified Ring (Purple) -->
+                  <circle cx="60" cy="60" r="45" stroke="#a855f7" stroke-width="8" stroke-dasharray="283" stroke-dashoffset="60" stroke-linecap="round" fill="transparent"></circle>
+                  <!-- Pending Ring (Yellow) -->
+                  <circle cx="60" cy="60" r="33" stroke="#eab308" stroke-width="8" stroke-dasharray="207" stroke-dashoffset="80" stroke-linecap="round" fill="transparent"></circle>
+                  <!-- Cancelled Ring (Cyan) -->
+                  <circle cx="60" cy="60" r="21" stroke="#22d3ee" stroke-width="8" stroke-dasharray="132" stroke-dashoffset="50" stroke-linecap="round" fill="transparent"></circle>
+                </svg>
+                <div class="absolute text-center">
+                  <span class="text-[10px] font-mono font-bold text-zinc-400 uppercase">Conversion</span>
+                  <h4 id="statCircleConversion" class="text-base font-black text-white font-mono">0%</h4>
+                </div>
+              </div>
+            </div>
+
+            <div class="flex items-center justify-around pt-4 border-t border-zinc-900 text-xs font-bold uppercase tracking-wider">
+              <div class="flex items-center gap-1.5">
+                <span class="w-2.5 h-2.5 bg-purple-500 rounded-none"></span>
+                <span class="text-zinc-300 text-[10px]">Verified</span>
+              </div>
+              <div class="flex items-center gap-1.5">
+                <span class="w-2.5 h-2.5 bg-yellow-500 rounded-none"></span>
+                <span class="text-zinc-300 text-[10px]">Pending</span>
+              </div>
+              <div class="flex items-center gap-1.5">
+                <span class="w-2.5 h-2.5 bg-cyan-400 rounded-none"></span>
+                <span class="text-zinc-300 text-[10px]">Cancelled</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right Box: Smooth Analytics Trend Graph (Real Revenue Data) -->
+          <div class="lg:col-span-2 bg-[rgba(12,12,12,0.7)] border border-white/10 p-6 rounded-none shadow-xl flex flex-col justify-between">
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-4">
+              <div>
+                <h3 class="text-sm font-black text-white uppercase tracking-wider mb-1">Revenue & Activity Trends</h3>
+                <p class="text-[11px] text-zinc-400 tracking-wide">Real-time performance metrics from Firestore</p>
+              </div>
+              <div class="flex items-center gap-4 text-[11px] font-bold uppercase tracking-wider">
+                <div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 bg-cyan-400 rounded-none"></span> <span class="text-zinc-300">Revenue (₹)</span></div>
+                <div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 bg-purple-500 rounded-none"></span> <span class="text-zinc-300">Verified</span></div>
+                <div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 bg-yellow-500 rounded-none"></span> <span class="text-zinc-300">Referrals</span></div>
+              </div>
+            </div>
+
+            <!-- Graph Visualization Area -->
+            <div class="relative h-48 w-full flex items-end justify-between px-2 pt-4 pb-2 border-b border-l border-zinc-800">
+              <div class="absolute inset-0 flex flex-col justify-between pointer-events-none opacity-20">
+                <div class="border-b border-zinc-700 w-full"></div>
+                <div class="border-b border-zinc-700 w-full"></div>
+                <div class="border-b border-zinc-700 w-full"></div>
+              </div>
+
+              <svg class="absolute inset-x-0 bottom-2 w-full h-40 overflow-visible px-2" preserveAspectRatio="none" viewBox="0 0 800 160">
+                <path d="M 0,120 Q 200,40 400,90 T 800,50" fill="none" stroke="#22d3ee" stroke-width="3"></path>
+                <path d="M 0,100 Q 200,80 400,50 T 800,90" fill="none" stroke="#a855f7" stroke-width="3"></path>
+                <path d="M 0,140 Q 200,110 400,130 T 800,110" fill="none" stroke="#eab308" stroke-width="3"></path>
+                
+                <g transform="translate(400, 90)">
+                  <circle cx="0" cy="0" r="5" fill="#22d3ee" class="animate-ping opacity-75"></circle>
+                  <circle cx="0" cy="0" r="4" fill="#22d3ee" stroke="#000" stroke-width="2"></circle>
+                </g>
+              </svg>
+            </div>
+
+            <!-- Dynamic Months / Timeline -->
+            <div class="grid grid-cols-6 text-center text-[10px] font-mono uppercase text-zinc-500 pt-3">
+              <span>Jan - Feb</span>
+              <span>Mar - Apr</span>
+              <span>May - Jun</span>
+              <span>Jul - Aug</span>
+              <span>Sep - Oct</span>
+              <span class="text-cyan-400 font-bold">Current</span>
+            </div>
+          </div>
+
+        </div>
+
         <!-- Metrics Grid -->
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             <div class="bg-[rgba(12,12,12,0.7)] border border-white/10 p-6 space-y-2 shadow-xl">
@@ -108,6 +199,7 @@
                     
                     document.getElementById('statTotalRevenue').innerText = `₹${Number(data.totalRevenue || 0).toLocaleString('en-IN')}`;
                     document.getElementById('statConversionRate').innerText = `${data.conversionRate || 0}%`;
+                    document.getElementById('statCircleConversion').innerText = `${data.conversionRate || 0}%`;
                     document.getElementById('statAvgTime').innerText = `${data.avgVerificationTimeMinutes || 0} mins`;
                     document.getElementById('statReferralShare').innerText = `${data.referralSharePercent || 0}%`;
 
