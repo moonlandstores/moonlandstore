@@ -56,7 +56,7 @@
             </div>
 
             <div class="space-y-1 text-xs">
-                <label class="text-zinc-400 font-bold uppercase tracking-wider text-[10px]">Upload Multiple Product Images</label>
+                <label class="text-zinc-400 font-bold uppercase tracking-wider text-[10px]">Upload Multiple Product Images (Any Size Supported)</label>
                 <input type="file" id="newProdImageFiles" accept="image/*" multiple class="w-full bg-black border border-zinc-800 px-3.5 py-3 text-zinc-400 font-mono">
             </div>
 
@@ -156,6 +156,45 @@
             }, 3000);
         }
 
+        // Smart image compressor to handle any size image seamlessly
+        function compressImage(file) {
+            return new Promise((resolve) => {
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = (event) => {
+                    const img = new Image();
+                    img.src = event.target.result;
+                    img.onload = () => {
+                        const canvas = document.createElement('canvas');
+                        let width = img.width;
+                        let height = img.height;
+
+                        const MAX_WIDTH = 1200;
+                        const MAX_HEIGHT = 1200;
+
+                        if (width > height) {
+                            if (width > MAX_WIDTH) {
+                                height *= MAX_WIDTH / width;
+                                width = MAX_WIDTH;
+                            }
+                        } else {
+                            if (height > MAX_HEIGHT) {
+                                width *= MAX_HEIGHT / height;
+                                height = MAX_HEIGHT;
+                            }
+                        }
+
+                        canvas.width = width;
+                        canvas.height = height;
+                        const ctx = canvas.getContext('2d');
+                        ctx.drawImage(img, 0, 0, width, height);
+
+                        resolve(canvas.toDataURL('image/jpeg', 0.8));
+                    };
+                };
+            });
+        }
+
         async function getStoredProducts() {
             try {
                 let response = await fetch('/api/products');
@@ -231,12 +270,8 @@
             if (fileInput.files && fileInput.files.length > 0) {
                 imagesArray = [];
                 for (let file of fileInput.files) {
-                    const base64 = await new Promise((resolve) => {
-                        const reader = new FileReader();
-                        reader.onload = (e) => resolve(e.target.result);
-                        reader.readAsDataURL(file);
-                    });
-                    imagesArray.push(base64);
+                    const compressedBase64 = await compressImage(file);
+                    imagesArray.push(compressedBase64);
                 }
             }
 
@@ -301,12 +336,8 @@
             if (fileInput.files && fileInput.files.length > 0) {
                 let imagesArray = [];
                 for (let file of fileInput.files) {
-                    const base64 = await new Promise((resolve) => {
-                        const reader = new FileReader();
-                        reader.onload = (e) => resolve(e.target.result);
-                        reader.readAsDataURL(file);
-                    });
-                    imagesArray.push(base64);
+                    const compressedBase64 = await compressImage(file);
+                    imagesArray.push(compressedBase64);
                 }
                 p.images = imagesArray;
             }

@@ -22,11 +22,11 @@ if (!ADMIN_PASSCODE || !SESSION_SECRET) {
   process.exit(1);
 }
 
-app.use(express.json({ limit: '10mb' }));
-app.use(express.urlencoded({ extended: true, limit: '10mb' }));
+app.use(express.json({ limit: '50mb' }));
+app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 
-const adminBodyParser = express.json({ limit: '10mb' });
-const adminUrlParser = express.urlencoded({ extended: true, limit: '10mb' });
+const adminBodyParser = express.json({ limit: '50mb' });
+const adminUrlParser = express.urlencoded({ extended: true, limit: '50mb' });
 
 app.use(session({
   secret: SESSION_SECRET,
