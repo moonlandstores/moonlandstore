@@ -11,13 +11,76 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="style.css">
   <style>
+    /* Smooth theme transition */
+    body { transition: background-color 0.4s ease, color 0.4s ease; }
+
+    /* DAYLIGHT MODE (WHITE + CLOUDS + BLACK ACCENTS) */
+    html.light body { background-color: #ffffff !important; color: #09090b !important; }
+    html.light header { background-color: rgba(255, 255, 255, 0.95) !important; border-bottom-color: #e4e4e7 !important; }
+    html.light .marquee-bar { background-color: #09090b !important; color: #f4f4f5 !important; border-bottom-color: #27272a !important; }
+    html.light .brand-logo-box { border-color: #09090b !important; background-color: #09090b !important; color: #ffffff !important; }
+    html.light nav a, html.light header button { color: #52525b !important; }
+    html.light nav a:hover, html.light header button:hover, html.light nav a.active-link { color: #09090b !important; }
+    html.light .clouds-bg { display: block !important; }
+    html.light .product-card { background-color: #f8fafc !important; border-color: #e2e8f0 !important; }
+    html.light .product-card h3 { color: #0f172a !important; }
+    html.light .product-card p { color: #475569 !important; }
+    html.light .product-price { color: #09090b !important; }
+    html.light .btn-outline { border-color: #cbd5e1 !important; color: #0f172a !important; }
+    html.light .btn-outline:hover { border-color: #09090b !important; background-color: #09090b !important; color: #ffffff !important; }
+    html.light .btn-solid { background-color: #09090b !important; color: #ffffff !important; }
+    html.light footer { background-color: #f1f5f9 !important; border-top-color: #e2e8f0 !important; color: #475569 !important; }
+
+    /* NIGHT MODE (DARK + STARS) */
+    html.dark body { background-color: #050505 !important; color: #ffffff !important; }
+    html.dark .clouds-bg { display: none !important; }
+
+    /* Soft Floating Clouds Animation */
+    @keyframes cloudDrift1 {
+      0% { transform: translateX(-100px); opacity: 0.3; }
+      50% { opacity: 0.6; }
+      100% { transform: translateX(1100px); opacity: 0.3; }
+    }
+    @keyframes cloudDrift2 {
+      0% { transform: translateX(800px); opacity: 0.2; }
+      50% { opacity: 0.5; }
+      100% { transform: translateX(-200px); opacity: 0.2; }
+    }
+    .cloud-elem-1 { animation: cloudDrift1 35s linear infinite; }
+    .cloud-elem-2 { animation: cloudDrift2 45s linear infinite; }
+
     .carousel-slide { display: none; }
     .carousel-slide.active { display: block; }
   </style>
-</head>
-<body class="bg-[#050505] text-white font-sans antialiased min-h-screen flex flex-col justify-between selection:bg-white selection:text-black">
 
-  <div class="bg-black text-zinc-300 py-2.5 px-4 text-[10px] font-bold tracking-[0.25em] uppercase border-b border-zinc-900 overflow-hidden whitespace-nowrap">
+  <!-- AUTO THEME SWITCHER SCRIPT -->
+  <script>
+    function applyAutoTheme() {
+      const currentHour = new Date().getHours();
+      // Din: 6 AM se 6 PM (6 to 18)
+      const isDayTime = currentHour >= 6 && currentHour < 18;
+      const savedTheme = localStorage.getItem('moonland_theme');
+
+      if (savedTheme === 'light' || (!savedTheme && isDayTime)) {
+        document.documentElement.classList.add('light');
+        document.documentElement.classList.remove('dark');
+      } else {
+        document.documentElement.classList.add('dark');
+        document.documentElement.classList.remove('light');
+      }
+    }
+    document.addEventListener('DOMContentLoaded', applyAutoTheme);
+  </script>
+</head>
+<body class="bg-[#050505] text-white font-sans antialiased min-h-screen flex flex-col justify-between selection:bg-white selection:text-black relative">
+
+  <!-- Daylight Clouds Background Overlay -->
+  <div class="clouds-bg hidden absolute inset-0 pointer-events-none z-0 overflow-hidden h-full">
+    <div class="absolute top-24 left-[-50px] w-72 h-24 bg-zinc-300/40 rounded-full blur-xl cloud-elem-1"></div>
+    <div class="absolute top-96 right-[-40px] w-96 h-32 bg-zinc-300/30 rounded-full blur-2xl cloud-elem-2"></div>
+  </div>
+
+  <div class="marquee-bar bg-black text-zinc-300 py-2.5 px-4 text-[10px] font-bold tracking-[0.25em] uppercase border-b border-zinc-900 overflow-hidden whitespace-nowrap z-20">
     <marquee behavior="scroll" direction="left" scrollamount="5">
       <span class="inline-flex items-center gap-2 mx-6"><i class="fa-solid fa-bolt text-yellow-400"></i> MOONLAND SPECIAL: UNLIMITED REFER & EARN ₹1,000 INSTANT UPI CASHBACK PER REFERRAL!</span>
     </marquee>
@@ -27,7 +90,7 @@
   <header class="sticky top-0 z-50 bg-black/90 backdrop-blur-xl border-b border-zinc-900">
     <div class="max-w-7xl mx-auto px-6 sm:px-12 flex justify-between items-center h-24 relative">
       <a href="index.html" class="flex items-center space-x-4 group">
-        <div class="w-8 h-8 border border-white flex items-center justify-center font-black text-xs tracking-widest text-white group-hover:bg-white group-hover:text-black transition duration-500">M</div>
+        <div class="brand-logo-box w-8 h-8 border border-white flex items-center justify-center font-black text-xs tracking-widest text-white group-hover:bg-white group-hover:text-black transition duration-500">M</div>
         <div class="flex flex-col">
           <span class="font-bold text-base tracking-[0.4em] uppercase text-white">MOONLAND</span>
           <span class="text-[7px] tracking-[0.55em] text-zinc-400 uppercase font-bold">STORE</span>
@@ -35,7 +98,7 @@
       </a>
 
       <nav class="hidden md:flex items-center space-x-12 font-medium text-[11px] uppercase tracking-[0.25em] text-zinc-400">
-        <a href="store.html" class="text-white border-b border-white pb-1 tracking-[0.3em] font-bold">Store</a>
+        <a href="store.html" class="text-white border-b border-white pb-1 tracking-[0.3em] font-bold active-link">Store</a>
         <a href="referral.html" class="hover:text-white transition pb-1">Refer & Earn</a>
         <a href="track.html" class="hover:text-white transition pb-1">Track Order</a>
         <a href="about.html" class="hover:text-white transition pb-1">About Us</a>
@@ -59,7 +122,7 @@
     </div>
   </header>
 
-  <main class="flex-grow max-w-7xl mx-auto px-6 sm:px-12 py-16 w-full space-y-12">
+  <main class="flex-grow max-w-7xl mx-auto px-6 sm:px-12 py-16 w-full space-y-12 relative z-10">
     <div class="flex flex-col md:flex-row justify-between items-start md:items-end border-b border-zinc-900 pb-6 gap-6">
       <div class="space-y-2">
         <span class="text-[10px] font-semibold uppercase tracking-[0.4em] text-zinc-500">Curated Lineup</span>
@@ -171,7 +234,7 @@
     </div>
   </div>
 
-  <footer class="bg-black text-zinc-600 py-16 border-t border-zinc-900 text-center text-[10px] uppercase tracking-[0.3em] space-y-4">
+  <footer class="bg-black text-zinc-600 py-16 border-t border-zinc-900 text-center text-[10px] uppercase tracking-[0.3em] space-y-4 relative z-10">
     <p>© 2026 Moonland Store. All Rights Reserved.</p>
   </footer>
 
@@ -305,7 +368,7 @@
         let pPrice = Number(p.price) || 0;
 
         let card = document.createElement('div');
-        card.className = `product-item group bg-[#0c0c0c] border border-zinc-900 p-6 flex flex-col justify-between space-y-6 hover:border-zinc-500 transition duration-500 cursor-pointer`;
+        card.className = `product-item product-card group bg-[#0c0c0c] border border-zinc-900 p-6 flex flex-col justify-between space-y-6 hover:border-zinc-500 transition duration-500 cursor-pointer`;
         card.innerHTML = `
           <div onclick="openProductDetail('${p.id}')" class="h-60 overflow-hidden bg-black flex items-center justify-center relative">
             <span class="absolute top-3 left-3 z-10 bg-white text-black text-[8px] font-bold uppercase px-2 py-0.5 tracking-[0.2em]">STORE ITEM</span>
@@ -316,10 +379,10 @@
             <p class="text-xs text-zinc-400 font-light tracking-wide line-clamp-1">${p.keyFeatures || 'Certified Product'}</p>
           </div>
           <div class="space-y-4 pt-4 border-t border-zinc-900">
-            <span class="font-mono text-lg text-zinc-200">₹${pPrice.toLocaleString('en-IN')}</span>
+            <span class="product-price font-mono text-lg text-zinc-200">₹${pPrice.toLocaleString('en-IN')}</span>
             <div class="grid grid-cols-2 gap-2">
-              <button onclick="event.stopPropagation(); addToCartDirect('${p.id}')" class="w-full border border-zinc-800 hover:border-white text-white font-medium py-2.5 text-[10px] uppercase tracking-[0.2em]">Add To Cart</button>
-              <button onclick="event.stopPropagation(); buyNowDirect('${p.id}')" class="w-full bg-white hover:bg-zinc-200 text-black font-semibold py-2.5 text-[10px] uppercase tracking-[0.2em] text-center flex items-center justify-center">Buy Now</button>
+              <button onclick="event.stopPropagation(); addToCartDirect('${p.id}')" class="btn-outline w-full border border-zinc-800 hover:border-white text-white font-medium py-2.5 text-[10px] uppercase tracking-[0.2em]">Add To Cart</button>
+              <button onclick="event.stopPropagation(); buyNowDirect('${p.id}')" class="btn-solid w-full bg-white hover:bg-zinc-200 text-black font-semibold py-2.5 text-[10px] uppercase tracking-[0.2em] text-center flex items-center justify-center">Buy Now</button>
             </div>
           </div>
         `;

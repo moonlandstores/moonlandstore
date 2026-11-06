@@ -4,10 +4,52 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Privileges & Referral Rewards | MOONLAND STORE</title>
+  <!-- Browser Tab Favicon Logo -->
+  <link rel="icon" type="image/png" href="logo.png?v=999">
+  <link rel="shortcut icon" href="logo.png?v=999">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="style.css">
   <style>
+    /* Smooth theme transition */
+    body { transition: background-color 0.4s ease, color 0.4s ease; }
+
+    /* DAYLIGHT MODE (WHITE + CLOUDS + BLACK ACCENTS) */
+    html.light body { background-color: #ffffff !important; color: #09090b !important; }
+    html.light header { background-color: rgba(255, 255, 255, 0.95) !important; border-bottom-color: #e4e4e7 !important; }
+    html.light .marquee-bar { background-color: #09090b !important; color: #f4f4f5 !important; border-bottom-color: #27272a !important; }
+    html.light .brand-logo-box { border-color: #09090b !important; background-color: #09090b !important; color: #ffffff !important; }
+    html.light nav a, html.light header button { color: #52525b !important; }
+    html.light nav a:hover, html.light header button:hover, html.light nav a.active-link { color: #09090b !important; }
+    html.light .clouds-bg { display: block !important; }
+    html.light .moon-graphic { filter: invert(1); opacity: 0.85; }
+    html.light .referral-card { background-color: #f8fafc !important; border-color: #e2e8f0 !important; }
+    html.light .referral-card h3, html.light .referral-card h2 { color: #0f172a !important; }
+    html.light .referral-card p { color: #475569 !important; }
+    html.light .referral-input { background-color: #ffffff !important; border-color: #cbd5e1 !important; color: #09090b !important; }
+    html.light .referral-input::placeholder { color: #64748b !important; }
+    html.light footer { background-color: #f1f5f9 !important; border-top-color: #e2e8f0 !important; color: #475569 !important; }
+    html.light footer a { color: #475569 !important; }
+    html.light footer a:hover { color: #000000 !important; }
+
+    /* NIGHT MODE (DARK + STARS) */
+    html.dark body { background-color: #050505 !important; color: #ffffff !important; }
+    html.dark .clouds-bg { display: none !important; }
+
+    /* Soft Floating Clouds Animation */
+    @keyframes cloudDrift1 {
+      0% { transform: translateX(-100px); opacity: 0.3; }
+      50% { opacity: 0.6; }
+      100% { transform: translateX(1100px); opacity: 0.3; }
+    }
+    @keyframes cloudDrift2 {
+      0% { transform: translateX(800px); opacity: 0.2; }
+      50% { opacity: 0.5; }
+      100% { transform: translateX(-200px); opacity: 0.2; }
+    }
+    .cloud-elem-1 { animation: cloudDrift1 35s linear infinite; }
+    .cloud-elem-2 { animation: cloudDrift2 45s linear infinite; }
+
     @keyframes offerGlow {
       0% { border-color: rgba(255, 255, 255, 0.1); box-shadow: 0 0 10px rgba(0, 0, 0, 0.9); }
       50% { border-color: rgba(234, 179, 8, 0.7); box-shadow: 0 0 40px rgba(234, 179, 8, 0.25); }
@@ -52,11 +94,36 @@
       animation: redGlowBorder 4s ease-in-out infinite;
     }
   </style>
+
+  <!-- AUTO THEME SWITCHER SCRIPT -->
+  <script>
+    function applyAutoTheme() {
+      const currentHour = new Date().getHours();
+      // Din: 6 AM se 6 PM (6 to 18)
+      const isDayTime = currentHour >= 6 && currentHour < 18;
+      const savedTheme = localStorage.getItem('moonland_theme');
+
+      if (savedTheme === 'light' || (!savedTheme && isDayTime)) {
+        document.documentElement.classList.add('light');
+        document.documentElement.classList.remove('dark');
+      } else {
+        document.documentElement.classList.add('dark');
+        document.documentElement.classList.remove('light');
+      }
+    }
+    document.addEventListener('DOMContentLoaded', applyAutoTheme);
+  </script>
 </head>
-<body class="bg-[#050505] text-white font-sans antialiased min-h-screen flex flex-col justify-between selection:bg-white selection:text-black">
+<body class="bg-[#050505] text-white font-sans antialiased min-h-screen flex flex-col justify-between selection:bg-white selection:text-black relative">
+
+  <!-- Daylight Clouds Background Overlay -->
+  <div class="clouds-bg hidden absolute inset-0 pointer-events-none z-0 overflow-hidden h-full">
+    <div class="absolute top-24 left-[-50px] w-72 h-24 bg-zinc-300/40 rounded-full blur-xl cloud-elem-1"></div>
+    <div class="absolute top-96 right-[-40px] w-96 h-32 bg-zinc-300/30 rounded-full blur-2xl cloud-elem-2"></div>
+  </div>
 
   <!-- Top Announcement Bar -->
-  <div class="bg-black text-zinc-300 py-2.5 px-4 text-[10px] font-bold tracking-[0.25em] uppercase border-b border-zinc-900 overflow-hidden whitespace-nowrap">
+  <div class="marquee-bar bg-black text-zinc-300 py-2.5 px-4 text-[10px] font-bold tracking-[0.25em] uppercase border-b border-zinc-900 overflow-hidden whitespace-nowrap z-20">
     <marquee behavior="scroll" direction="left" scrollamount="5">
       <span class="inline-flex items-center gap-2 mx-6"><i class="fa-solid fa-bolt text-yellow-400"></i> MOONLAND SPECIAL: UNLIMITED REFER & EARN ₹1,000 INSTANT UPI CASHBACK PER REFERRAL!</span>
     </marquee>
@@ -66,7 +133,7 @@
   <header class="sticky top-0 z-40 bg-black/90 backdrop-blur-xl border-b border-zinc-900">
     <div class="max-w-7xl mx-auto px-6 sm:px-12 flex justify-between items-center h-24">
       <a href="index.html" class="flex items-center space-x-4 group">
-        <div class="w-8 h-8 border border-white flex items-center justify-center font-black text-xs tracking-widest text-white group-hover:bg-white group-hover:text-black transition duration-500">M</div>
+        <div class="brand-logo-box w-8 h-8 border border-white flex items-center justify-center font-black text-xs tracking-widest text-white group-hover:bg-white group-hover:text-black transition duration-500">M</div>
         <div class="flex flex-col">
           <span class="font-bold text-base tracking-[0.4em] uppercase text-white">MOONLAND</span>
           <span class="text-[7px] tracking-[0.55em] text-zinc-400 uppercase font-bold">STORE</span>
@@ -75,7 +142,7 @@
 
       <nav class="hidden md:flex items-center space-x-12 font-medium text-[11px] uppercase tracking-[0.25em] text-zinc-400">
         <a href="store.html" class="hover:text-white transition pb-1">Store</a>
-        <a href="referral.html" class="text-white border-b border-white pb-1 tracking-[0.3em] font-bold">Refer & Earn</a>
+        <a href="referral.html" class="text-white border-b border-white pb-1 tracking-[0.3em] font-bold active-link">Refer & Earn</a>
         <a href="track.html" class="hover:text-white transition pb-1">Track Order</a>
         <a href="about.html" class="hover:text-white transition pb-1">About Us</a>
       </nav>
@@ -99,14 +166,14 @@
   </header>
 
   <!-- Main Content -->
-  <main class="max-w-5xl mx-auto px-6 sm:px-12 py-16 w-full space-y-12 flex-grow">
+  <main class="max-w-5xl mx-auto px-6 sm:px-12 py-16 w-full space-y-12 flex-grow relative z-10">
     
     <!-- Page Title with Animated Motivation Badge -->
     <div class="text-center space-y-4 max-w-2xl mx-auto">
       <span class="inline-block text-[10px] font-bold uppercase tracking-[0.4em] text-yellow-400 border border-yellow-400/30 px-4 py-2 bg-yellow-400/10 animate-badge-pulse shadow-[0_0_20px_rgba(234,179,8,0.2)]">
         <i class="fa-solid fa-fire-flame-curved text-yellow-400 mr-1.5"></i> UNLIMITED MONEY MAKER PROGRAM • LIVE PAYOUTS
       </span>
-      <h1 class="text-3xl sm:text-6xl font-black uppercase tracking-[0.1em] text-white">
+      <h1 class="text-3xl sm:text-6xl font-black uppercase tracking-[0.1em]">
         REFER & EARN <span class="text-yellow-400 font-light animate-coin inline-block">₹1,000 UPI</span>
       </h1>
       <p class="text-xs sm:text-sm text-zinc-400 font-light tracking-wide leading-relaxed">
@@ -115,7 +182,7 @@
     </div>
 
     <!-- Live Earnings Social Proof Ticker Box -->
-    <div class="bg-[#0c0c0c] border border-emerald-500/30 p-4 max-w-xl mx-auto flex items-center justify-between shadow-lg">
+    <div class="referral-card bg-[#0c0c0c] border border-emerald-500/30 p-4 max-w-xl mx-auto flex items-center justify-between shadow-lg">
       <div class="flex items-center space-x-3">
         <div class="w-8 h-8 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-xs">
           <i class="fa-solid fa-bolt"></i>
@@ -132,14 +199,14 @@
       </span>
     </div>
 
-    <!-- NEWLY ADDED SECTION: WHY ARE WE RUNNING THIS REFERRAL PROGRAM? -->
-    <div class="bg-[#0b0505] border border-red-500/40 p-8 sm:p-12 space-y-6 clearance-reason-card text-center sm:text-left relative overflow-hidden">
+    <!-- WHY ARE WE RUNNING THIS REFERRAL PROGRAM? -->
+    <div class="referral-card bg-[#0b0505] border border-red-500/40 p-8 sm:p-12 space-y-6 clearance-reason-card text-center sm:text-left relative overflow-hidden">
       <div class="flex flex-col sm:flex-row items-center justify-between gap-6 border-b border-red-500/20 pb-6">
         <div class="space-y-2">
           <span class="text-[10px] font-extrabold uppercase tracking-[0.35em] text-red-500 bg-red-950/80 px-3.5 py-1 border border-red-500/40 rounded-full inline-block">
             <i class="fa-solid fa-fire mr-1.5"></i> MEGA STOCK CLEARANCE REASON
           </span>
-          <h2 class="text-2xl sm:text-4xl font-black uppercase tracking-wide text-white">
+          <h2 class="text-2xl sm:text-4xl font-black uppercase tracking-wide">
             WHY ARE WE GIVING <span class="text-yellow-400">₹1,000 PER REFERRAL?</span>
           </h2>
         </div>
@@ -174,12 +241,12 @@
     </div>
 
     <!-- Interactive Referral Link Fetcher Box -->
-    <div class="bg-[#0c0c0c] border border-yellow-500/40 p-6 sm:p-8 luxury-glow-card space-y-4 text-center">
+    <div class="referral-card bg-[#0c0c0c] border border-yellow-500/40 p-6 sm:p-8 luxury-glow-card space-y-4 text-center">
       <h3 class="text-xs font-bold uppercase tracking-[0.2em] text-yellow-400">
         <i class="fa-solid fa-link mr-2"></i> Get Your Registered Referral Link
       </h3>
       <div class="flex flex-col sm:flex-row gap-3 max-w-2xl mx-auto">
-        <input type="text" id="userReferralInput" placeholder="Enter your registered Mobile Number..." class="flex-1 bg-black border border-zinc-800 px-4 py-3.5 text-xs font-mono uppercase tracking-widest text-white focus:outline-none focus:border-yellow-400 transition">
+        <input type="text" id="userReferralInput" placeholder="Enter your registered Mobile Number..." class="referral-input flex-1 bg-black border border-zinc-800 px-4 py-3.5 text-xs font-mono uppercase tracking-widest text-white focus:outline-none focus:border-yellow-400 transition">
         <button onclick="fetchExistingRefLink()" class="bg-yellow-400 hover:bg-yellow-300 text-black font-black px-6 py-3.5 text-xs uppercase tracking-[0.2em] transition shadow-lg">
           Fetch Link
         </button>
@@ -195,36 +262,36 @@
 
     <!-- Referral Reward Slabs with Glow Animation -->
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-      <div class="bg-[#0c0c0c] border border-zinc-900 p-8 text-center space-y-3 hover:border-zinc-700 transition">
+      <div class="referral-card bg-[#0c0c0c] border border-zinc-900 p-8 text-center space-y-3 hover:border-zinc-700 transition">
         <span class="text-[10px] uppercase tracking-widest text-zinc-500 font-bold">Milestone 1</span>
-        <div class="text-2xl font-mono font-black text-white">10 Refers</div>
+        <div class="text-2xl font-mono font-black">10 Refers</div>
         <div class="text-3xl font-black text-yellow-400 font-mono">₹10,000</div>
         <p class="text-[11px] text-zinc-400 uppercase tracking-wider font-semibold pt-2 border-t border-zinc-900">Instant Bank Transfer</p>
       </div>
 
-      <div class="bg-[#0c0c0c] border border-yellow-500/50 p-8 text-center space-y-3 shadow-[0_0_30px_rgba(234,179,8,0.15)] luxury-glow-card">
+      <div class="referral-card bg-[#0c0c0c] border border-yellow-500/50 p-8 text-center space-y-3 shadow-[0_0_30px_rgba(234,179,8,0.15)] luxury-glow-card">
         <span class="text-[10px] uppercase tracking-widest text-yellow-400 font-bold">Milestone 2 (Popular)</span>
-        <div class="text-2xl font-mono font-black text-white">25 Refers</div>
+        <div class="text-2xl font-mono font-black">25 Refers</div>
         <div class="text-3xl font-black text-yellow-400 font-mono">₹25,000</div>
         <p class="text-[11px] text-zinc-400 uppercase tracking-wider font-semibold pt-2 border-t border-zinc-900">Instant Bank Transfer</p>
       </div>
 
-      <div class="bg-[#0c0c0c] border border-zinc-900 p-8 text-center space-y-3 hover:border-zinc-700 transition">
+      <div class="referral-card bg-[#0c0c0c] border border-zinc-900 p-8 text-center space-y-3 hover:border-zinc-700 transition">
         <span class="text-[10px] uppercase tracking-widest text-zinc-500 font-bold">Milestone 3</span>
-        <div class="text-2xl font-mono font-black text-white">50 Refers</div>
+        <div class="text-2xl font-mono font-black">50 Refers</div>
         <div class="text-3xl font-black text-yellow-400 font-mono">₹50,000</div>
         <p class="text-[11px] text-zinc-400 uppercase tracking-wider font-semibold pt-2 border-t border-zinc-900">Instant Bank Transfer</p>
       </div>
     </div>
 
     <!-- How It Works Card -->
-    <div class="bg-[#0c0c0c] border border-zinc-800 p-8 sm:p-12 space-y-8">
+    <div class="referral-card bg-[#0c0c0c] border border-zinc-800 p-8 sm:p-12 space-y-8">
       <div class="flex items-center space-x-4 border-b border-zinc-900 pb-6">
         <div class="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center text-yellow-400 text-xl font-black animate-coin">
           <i class="fa-solid fa-gift"></i>
         </div>
         <div>
-          <h3 class="text-lg font-bold uppercase tracking-wider text-white">How Referral Works</h3>
+          <h3 class="text-lg font-bold uppercase tracking-wider">How Referral Works</h3>
           <p class="text-xs text-zinc-400 tracking-wide">3 simple steps to start earning instant cash</p>
         </div>
       </div>
@@ -254,7 +321,7 @@
   </main>
 
   <!-- Footer -->
-  <footer class="bg-black text-zinc-600 py-16 border-t border-zinc-900 text-center text-[10px] uppercase tracking-[0.3em] space-y-4">
+  <footer class="bg-black text-zinc-600 py-16 border-t border-zinc-900 text-center text-[10px] uppercase tracking-[0.3em] space-y-4 relative z-10">
     <p>© 2026 Moonland Store. All Rights Reserved.</p>
     <div class="flex justify-center space-x-8 text-zinc-500">
       <a href="index.html" class="hover:text-white transition">Store Home</a>
