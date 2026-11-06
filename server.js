@@ -466,7 +466,7 @@ app.post('/api/orders', publicApiLimiter, async (req, res) => {
   }
 });
 
-// ==================== ORDER STATUS UPDATE ROUTES ====================
+// ==================== ORDER STATUS & CRM UPDATE ROUTES ====================
 
 // 1. Bulk Update Orders Status (MUST be placed BEFORE /api/orders/:id)
 app.put('/api/orders/bulk-status', requireAdmin, adminBodyParser, adminUrlParser, async (req, res) => {
@@ -518,15 +518,11 @@ app.put('/api/orders/bulk-status', requireAdmin, adminBodyParser, adminUrlParser
   }
 });
 
-// 2. Update Single Order Status (or Cancel)
+// 2. Update Single Order or Customer CRM Details (or Cancel)
 app.put('/api/orders/:id', requireAdmin, adminBodyParser, adminUrlParser, async (req, res) => {
   try {
     const orderId = req.params.id;
-    const { status, cancelReason } = req.body;
-
-    if (!status) {
-      return res.status(400).json({ success: false, error: 'Status is required' });
-    }
+    const { customer, name, phone, address, referralId, status, cancelReason } = req.body;
 
     if (!db) return res.status(503).json({ success: false, error: 'Database unavailable' });
 
@@ -544,19 +540,49 @@ app.put('/api/orders/:id', requireAdmin, adminBodyParser, adminUrlParser, async 
     }
 
     const updateData = {
-      status: status.trim(),
       updatedAt: new Date().toISOString()
     };
 
-    if (cancelReason !== undefined) {
-      updateData.cancelReason = cancelReason;
-    }
+    if (customer !== undefined) updateData.customer = customer.trim();
+    if (name !== undefined) updateData.name = name.trim();
+    if (phone !== undefined) updateData.phone = phone.trim();
+    if (address !== undefined) updateData.address = address.trim();
+    if (referralId !== undefined) updateData.userRefCode = referralId.trim();
+    if (status !== undefined) updateData.status = status.trim();
+    if (cancelReason !== undefined) updateData.cancelReason = cancelReason;
 
     await orderRef.update(updateData);
-    res.json({ success: true, message: 'Order status updated successfully' });
+    res.json({ success: true, message: 'Details updated successfully' });
   } catch (err) {
-    console.error('Error updating order status:', err);
-    res.status(500).json({ success: false, error: err.message || 'Failed to update order status' });
+    console.error('Error updating details:', err);
+    res.status(500).json({ success: false, error: err.message || 'Failed to update customer details on server' });
+  }
+});
+
+// 3. Delete Order / Customer Record
+app.delete('/api/orders/:id', requireAdmin, async (req, res) => {
+  try {
+    const orderId = req.params.id;
+    if (!db) return res.status(503).json({ success: false, error: 'Database unavailable' });
+
+    const cleanId = orderId.trim();
+    let orderRef = db.collection('orders').doc(cleanId);
+    let doc = await orderRef.get();
+
+    if (!doc.exists) {
+      const querySnap = await db.collection('orders').where('id', '==', cleanId).limit(1).get();
+      if (!querySnap.empty) {
+        orderRef = querySnap.docs[0].ref;
+      } else {
+        return res.status(404).json({ success: false, error: 'Order not found' });
+      }
+    }
+
+    await orderRef.delete();
+    res.json({ success: true, message: 'Record deleted successfully' });
+  } catch (err) {
+    console.error('Error deleting record:', err);
+    res.status(500).json({ success: false, error: err.message || 'Failed to delete record on server' });
   }
 });
 
