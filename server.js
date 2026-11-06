@@ -43,8 +43,9 @@ app.use(session({
   }
 }));
 
-// Serve static files from public directory with explicit options
-app.use(express.static(path.join(__dirname, 'public'), {
+// Absolute path configuration for public directory
+const publicDir = path.join(__dirname, 'public');
+app.use(express.static(publicDir, {
   extensions: ['html']
 }));
 
@@ -513,9 +514,8 @@ app.put('/api/orders/:id/approve', requireAdmin, async (req, res) => {
   }
 });
 
-// ==================== EXPLICIT ROUTING FOR ADMIN PAGES ====================
-// Yeh ensure karega ki koi bhi admin file direct URL se hit karne par serve ho jaye
-const adminPages = [
+// ==================== EXPLICIT ROUTING FOR ALL HTML PAGES ====================
+const allHtmlPages = [
   'admin-login.html',
   'dash-analytics-9x81.html',
   'manage-orders-8118.html',
@@ -527,20 +527,21 @@ const adminPages = [
   'referral-payouts.html',
   'settings-gateways.html',
   'customers-crm.html',
-  'utr-verification.html'
+  'utr-verification.html',
+  'about.html',
+  'order.html'
 ];
 
-adminPages.forEach(page => {
+allHtmlPages.forEach(page => {
   app.get(`/${page}`, (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', page));
+    res.sendFile(path.join(publicDir, page));
   });
 });
 
-// Catch-all fallback route for SPA index.html
+// Catch-all fallback route for index.html
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+  res.sendFile(path.join(publicDir, 'index.html'));
 });
 
 app.listen(PORT, () => {
   console.log(`Server running securely at http://localhost:${PORT}`);
-});
