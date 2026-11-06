@@ -468,49 +468,7 @@ app.post('/api/orders', publicApiLimiter, async (req, res) => {
 
 // ==================== ORDER STATUS UPDATE ROUTES ====================
 
-// 1. Update Single Order Status (or Cancel)
-app.put('/api/orders/:id', requireAdmin, adminBodyParser, adminUrlParser, async (req, res) => {
-  try {
-    const orderId = req.params.id;
-    const { status, cancelReason } = req.body;
-
-    if (!status) {
-      return res.status(400).json({ success: false, error: 'Status is required' });
-    }
-
-    if (!db) return res.status(503).json({ success: false, error: 'Database unavailable' });
-
-    const cleanId = orderId.trim();
-    let orderRef = db.collection('orders').doc(cleanId);
-    let doc = await orderRef.get();
-
-    if (!doc.exists) {
-      const querySnap = await db.collection('orders').where('id', '==', cleanId).limit(1).get();
-      if (!querySnap.empty) {
-        orderRef = querySnap.docs[0].ref;
-      } else {
-        return res.status(404).json({ success: false, error: 'Order not found' });
-      }
-    }
-
-    const updateData = {
-      status: status.trim(),
-      updatedAt: new Date().toISOString()
-    };
-
-    if (cancelReason !== undefined) {
-      updateData.cancelReason = cancelReason;
-    }
-
-    await orderRef.update(updateData);
-    res.json({ success: true, message: 'Order status updated successfully' });
-  } catch (err) {
-    console.error('Error updating order status:', err);
-    res.status(500).json({ success: false, error: err.message || 'Failed to update order status' });
-  }
-});
-
-// 2. Bulk Update Orders Status (Robust Resolution for Document/Field IDs)
+// 1. Bulk Update Orders Status (MUST be placed BEFORE /api/orders/:id)
 app.put('/api/orders/bulk-status', requireAdmin, adminBodyParser, adminUrlParser, async (req, res) => {
   try {
     const { ids, status } = req.body;
@@ -557,6 +515,48 @@ app.put('/api/orders/bulk-status', requireAdmin, adminBodyParser, adminUrlParser
   } catch (err) {
     console.error('Error in bulk update:', err);
     res.status(500).json({ success: false, error: err.message || 'Bulk update failed' });
+  }
+});
+
+// 2. Update Single Order Status (or Cancel)
+app.put('/api/orders/:id', requireAdmin, adminBodyParser, adminUrlParser, async (req, res) => {
+  try {
+    const orderId = req.params.id;
+    const { status, cancelReason } = req.body;
+
+    if (!status) {
+      return res.status(400).json({ success: false, error: 'Status is required' });
+    }
+
+    if (!db) return res.status(503).json({ success: false, error: 'Database unavailable' });
+
+    const cleanId = orderId.trim();
+    let orderRef = db.collection('orders').doc(cleanId);
+    let doc = await orderRef.get();
+
+    if (!doc.exists) {
+      const querySnap = await db.collection('orders').where('id', '==', cleanId).limit(1).get();
+      if (!querySnap.empty) {
+        orderRef = querySnap.docs[0].ref;
+      } else {
+        return res.status(404).json({ success: false, error: 'Order not found' });
+      }
+    }
+
+    const updateData = {
+      status: status.trim(),
+      updatedAt: new Date().toISOString()
+    };
+
+    if (cancelReason !== undefined) {
+      updateData.cancelReason = cancelReason;
+    }
+
+    await orderRef.update(updateData);
+    res.json({ success: true, message: 'Order status updated successfully' });
+  } catch (err) {
+    console.error('Error updating order status:', err);
+    res.status(500).json({ success: false, error: err.message || 'Failed to update order status' });
   }
 });
 
