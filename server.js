@@ -526,7 +526,7 @@ app.put('/api/orders/bulk-status', requireAdmin, adminBodyParser, adminUrlParser
   }
 });
 
-// 2. Update Referral Payout Status (Updated to handle payoutPaidAt timestamp)
+// 2. Update Referral Payout Status
 app.put('/api/referrals/:id', requireAdmin, adminBodyParser, adminUrlParser, async (req, res) => {
   try {
     const orderId = req.params.id;
@@ -607,7 +607,7 @@ app.put('/api/orders/:id', requireAdmin, adminBodyParser, adminUrlParser, async 
   }
 });
 
-// 4. Delete Order / Customer Record
+// 4. Update Order Status to 'Rejected' (Instead of Deleting)
 app.delete('/api/orders/:id', requireAdmin, async (req, res) => {
   try {
     const orderId = req.params.id;
@@ -626,11 +626,16 @@ app.delete('/api/orders/:id', requireAdmin, async (req, res) => {
       }
     }
 
-    await orderRef.delete();
-    res.json({ success: true, message: 'Record deleted successfully' });
+    await orderRef.update({
+      status: 'Rejected',
+      utrVerified: false,
+      updatedAt: new Date().toISOString()
+    });
+
+    res.json({ success: true, message: 'Order rejected successfully' });
   } catch (err) {
-    console.error('Error deleting record:', err);
-    res.status(500).json({ success: false, error: err.message || 'Failed to delete record on server' });
+    console.error('Error rejecting record:', err);
+    res.status(500).json({ success: false, error: err.message || 'Failed to reject record on server' });
   }
 });
 
