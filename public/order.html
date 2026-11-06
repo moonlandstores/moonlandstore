@@ -78,7 +78,7 @@ SECURE CHECKOUT
 Complete Your Order
 </h1>
 <p class="text-xs sm:text-sm text-zinc-400 font-light tracking-wide">
-Verify your items, transfer via QR code, and submit your UTR for swift delivery.
+Fill your delivery details, proceed to payment scanner, and submit UTR.
 </p>
 </div>
 
@@ -91,27 +91,31 @@ Verify your items, transfer via QR code, and submit your UTR for swift delivery.
 <div id="checkoutCartList" class="space-y-3 text-xs"></div>
 </div>
 
+<!-- Multi-Step Form Wrapper -->
 <form onsubmit="submitOrderForm(event)" class="space-y-6 pt-4 border-t border-zinc-900 text-xs">
+
+<!-- STEP 1: Customer Details & Next Button -->
+<div id="checkoutStep1" class="space-y-6">
 <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
 <div class="space-y-2">
 <label class="block text-[10px] font-bold uppercase tracking-[0.2em] text-zinc-400">Full Name *</label>
-<input type="text" id="orderName" required placeholder="Enter full name" class="w-full bg-black border border-zinc-800 px-4 py-3.5 text-xs uppercase tracking-widest text-white focus:outline-none focus:border-white transition">
+<input type="text" id="orderName" required placeholder="Enter full name" class="w-full bg-black border border-zinc-800 px-4 py-3.5 text-xs text-white focus:outline-none focus:border-white transition">
 </div>
 <div class="space-y-2">
 <label class="block text-[10px] font-bold uppercase tracking-[0.2em] text-zinc-400">Mobile Number (10 Digits) *</label>
-<input type="tel" id="orderPhone" required maxlength="10" pattern="[0-9]{10}" placeholder="10-digit mobile" class="w-full bg-black border border-zinc-800 px-4 py-3.5 text-xs uppercase tracking-widest text-white focus:outline-none focus:border-white transition">
+<input type="tel" id="orderPhone" required maxlength="10" pattern="[0-9]{10}" placeholder="10-digit mobile" class="w-full bg-black border border-zinc-800 px-4 py-3.5 text-xs text-white focus:outline-none focus:border-white transition">
 </div>
 </div>
 
 <div class="space-y-2">
 <label class="block text-[10px] font-bold uppercase tracking-[0.2em] text-zinc-400">Delivery Address *</label>
-<textarea id="orderAddress" required rows="2" placeholder="House No, Street, City, Pincode" class="w-full bg-black border border-zinc-800 px-4 py-3.5 text-xs uppercase tracking-widest text-white focus:outline-none focus:border-white transition"></textarea>
+<textarea id="orderAddress" required rows="2" placeholder="House No, Street, City, Pincode" class="w-full bg-black border border-zinc-800 px-4 py-3.5 text-xs text-white focus:outline-none focus:border-white transition"></textarea>
 </div>
 
 <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
 <div class="space-y-2">
 <label class="block text-[10px] font-bold uppercase tracking-[0.2em] text-zinc-400">Your UPI ID (For Cashback)</label>
-<input type="text" id="orderUpi" placeholder="yourname@upi" class="w-full bg-black border border-zinc-800 px-4 py-3.5 text-xs uppercase tracking-widest text-white focus:outline-none focus:border-white transition">
+<input type="text" id="orderUpi" placeholder="yourname@upi" class="w-full bg-black border border-zinc-800 px-4 py-3.5 text-xs text-white focus:outline-none focus:border-white transition">
 <p class="text-[10px] text-cyan-400/90 font-mono tracking-wide pt-1">
 <i class="fa-solid fa-circle-info mr-1"></i> We need your UPI ID here to transfer your <strong>Referral & Earn cashback</strong> directly!
 </p>
@@ -120,6 +124,18 @@ Verify your items, transfer via QR code, and submit your UTR for swift delivery.
 <label class="block text-[10px] font-bold uppercase tracking-[0.2em] text-zinc-400">Referral Code (Optional)</label>
 <input type="text" id="orderRef" placeholder="REF-XXXXXX" class="w-full bg-black border border-zinc-800 px-4 py-3.5 text-xs font-mono uppercase tracking-widest text-white focus:outline-none focus:border-white transition">
 </div>
+</div>
+
+<button type="button" onclick="proceedToPaymentScanner()" class="w-full bg-white hover:bg-zinc-200 text-black py-4 text-xs uppercase tracking-[0.2em] font-black transition shadow-2xl flex items-center justify-center gap-2">
+<span>Proceed to Payment Scanner</span> <i class="fa-solid fa-arrow-right"></i>
+</button>
+</div>
+
+<!-- STEP 2: Payment Scanner & UTR Submission (Hidden by Default) -->
+<div id="checkoutStep2" class="space-y-6 hidden">
+<div class="flex items-center justify-between bg-zinc-900 border border-zinc-800 p-3">
+<span class="text-zinc-400 text-[11px]">Details filled successfully.</span>
+<button type="button" onclick="backToStep1()" class="text-xs text-cyan-400 hover:underline uppercase font-bold tracking-wider"><i class="fa-solid fa-pen text-[10px] mr-1"></i> Edit Details</button>
 </div>
 
 <!-- Payment Scanner Box -->
@@ -141,12 +157,14 @@ Verify your items, transfer via QR code, and submit your UTR for swift delivery.
 
 <div class="space-y-2">
 <label class="block text-[10px] font-bold uppercase tracking-[0.2em] text-zinc-400">UTR / Transaction Reference Number (12 Digits) *</label>
-<input type="text" id="orderUtr" required maxlength="12" pattern="[0-9]{12}" placeholder="12-digit UTR reference number" class="w-full bg-black border border-zinc-800 px-4 py-3.5 text-xs font-mono uppercase tracking-widest text-white focus:outline-none focus:border-white transition">
+<input type="text" id="orderUtr" maxlength="12" pattern="[0-9]{12}" placeholder="12-digit UTR reference number" class="w-full bg-black border border-zinc-800 px-4 py-3.5 text-xs font-mono uppercase tracking-widest text-white focus:outline-none focus:border-white transition">
 </div>
 
-<button type="submit" class="w-full bg-white hover:bg-zinc-200 text-black py-4 text-xs uppercase tracking-[0.2em] font-black transition shadow-2xl">
-Submit UTR for Verification
+<button type="submit" class="w-full bg-emerald-500 hover:bg-emerald-400 text-black py-4 text-xs uppercase tracking-[0.2em] font-black transition shadow-2xl flex items-center justify-center gap-2">
+<i class="fa-solid fa-shield-check"></i> Submit UTR for Verification
 </button>
+</div>
+
 </form>
 </div>
 </main>
@@ -235,7 +253,7 @@ return `
 <div class="flex justify-between items-center bg-black p-4 border border-zinc-900">
 <div>
 <span class="text-white font-bold uppercase tracking-wider block">${item.title || item.name}</span>
-<span class="text-[10px] text-zinc-400 font-mono">Qty: ${qty} | GST: Included (0%)</span>
+<span class="text-[10px] text-zinc-400 font-mono">Qty: ${qty} | GST: Included</span>
 </div>
 <div class="flex items-center space-x-6">
 <span class="text-white font-mono font-bold">₹${itemPrice * qty}</span>
@@ -255,7 +273,7 @@ return `
 </div>
 <div class="flex justify-between text-zinc-400">
 <span>GST / Taxes</span>
-<span class="text-emerald-400 font-bold uppercase">Included (₹0)</span>
+<span class="text-emerald-400 font-bold uppercase">Included</span>
 </div>
 <div class="pt-3 border-t border-zinc-800 flex justify-between font-black text-sm uppercase tracking-wider text-white">
 <span>Total Payable Amount</span>
@@ -272,6 +290,34 @@ localStorage.setItem('moonland_cart', JSON.stringify(cart));
 renderCheckoutCart();
 let cartBadge = document.getElementById('cartCountBadge');
 if(cartBadge) cartBadge.innerText = cart.length;
+}
+
+// Step Switch Functions
+function proceedToPaymentScanner() {
+const name = document.getElementById('orderName').value.trim();
+const phone = document.getElementById('orderPhone').value.trim();
+const address = document.getElementById('orderAddress').value.trim();
+
+if (!name || !phone || !address) {
+alert('Please fill in all required delivery details (Name, Phone, Address)!');
+return;
+}
+
+if (phone.length !== 10) {
+alert('Mobile number must be exactly 10 digits!');
+return;
+}
+
+document.getElementById('checkoutStep1').classList.add('hidden');
+document.getElementById('checkoutStep2').classList.remove('hidden');
+document.getElementById('orderUtr').required = true;
+window.scrollTo({ top: 200, behavior: 'smooth' });
+}
+
+function backToStep1() {
+document.getElementById('checkoutStep2').classList.add('hidden');
+document.getElementById('checkoutStep1').classList.remove('hidden');
+document.getElementById('orderUtr').required = false;
 }
 
 async function loadPaymentScannerSettings() {
@@ -292,7 +338,6 @@ return;
 console.error('Failed to load settings from server', err);
 }
 
-// Fallback to default if API fails
 document.getElementById('displayAdminUpi').innerText = 'paymoonland@upi';
 document.getElementById('displayMerchantName').innerText = 'Moonland Store';
 document.getElementById('dynamicQrContainer').innerHTML = `<div class="w-36 h-36 bg-zinc-900 border border-zinc-800 flex items-center justify-center text-zinc-500 text-[10px] uppercase tracking-widest">QR Unavailable</div>`;
@@ -336,14 +381,7 @@ alert('Your cart is empty!');
 return;
 }
 
-const phoneVal = document.getElementById('orderPhone').value.trim();
 const utrVal = document.getElementById('orderUtr').value.trim();
-
-if (phoneVal.length !== 10) {
-alert('Mobile number must be exactly 10 digits!');
-return;
-}
-
 if (utrVal.length !== 12) {
 alert('UTR number must be exactly 12 digits!');
 return;
@@ -351,7 +389,7 @@ return;
 
 const orderPayload = {
 customer: document.getElementById('orderName').value.trim(),
-phone: phoneVal,
+phone: document.getElementById('orderPhone').value.trim(),
 address: document.getElementById('orderAddress').value.trim(),
 upiId: document.getElementById('orderUpi').value.trim(),
 enteredRefCode: document.getElementById('orderRef').value.trim() || 'None',
@@ -359,7 +397,6 @@ utr: utrVal,
 items: cart
 };
 
-// Backend Firestore database par order save karne ke liye secure API call
 try {
 const response = await fetch('/api/orders', {
 method: 'POST',
