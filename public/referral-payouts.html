@@ -143,6 +143,7 @@
         let referrerUpi = referrer ? (referrer.upiId || 'N/A') : 'N/A';
         let buyerName = o.customer || o.name;
         let buyerPhone = o.phone;
+        let referrerPhone = referrer ? referrer.phone : buyerPhone;
 
         const whatsappButtonHtml = payoutStatus === 'Paid' ? `
           <button onclick="sendPayoutWhatsApp('${referrerName}', '${buyerName}', '${referrerUpi}', '${referrerPhone}')" class="bg-cyan-400 hover:bg-cyan-300 text-black font-black px-4 py-2.5 flex items-center gap-2 shadow-lg transition uppercase tracking-wider text-[11px]">
