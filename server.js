@@ -518,7 +518,40 @@ app.put('/api/orders/bulk-status', requireAdmin, adminBodyParser, adminUrlParser
   }
 });
 
-// 2. Update Single Order or Customer CRM Details (or Cancel)
+// 2. Update Referral Payout Status
+app.put('/api/referrals/:id', requireAdmin, adminBodyParser, adminUrlParser, async (req, res) => {
+  try {
+    const orderId = req.params.id;
+    const { payoutStatus } = req.body;
+
+    if (!db) return res.status(503).json({ success: false, error: 'Database unavailable' });
+
+    const cleanId = orderId.trim();
+    let orderRef = db.collection('orders').doc(cleanId);
+    let doc = await orderRef.get();
+
+    if (!doc.exists) {
+      const querySnap = await db.collection('orders').where('id', '==', cleanId).limit(1).get();
+      if (!querySnap.empty) {
+        orderRef = querySnap.docs[0].ref;
+      } else {
+        return res.status(404).json({ success: false, error: 'Order not found' });
+      }
+    }
+
+    await orderRef.update({
+      payoutStatus: payoutStatus ? payoutStatus.trim() : 'Paid',
+      updatedAt: new Date().toISOString()
+    });
+
+    res.json({ success: true, message: 'Payout status updated successfully' });
+  } catch (err) {
+    console.error('Error updating payout status:', err);
+    res.status(500).json({ success: false, error: err.message || 'Failed to update payout status' });
+  }
+});
+
+// 3. Update Single Order or Customer CRM Details (or Cancel)
 app.put('/api/orders/:id', requireAdmin, adminBodyParser, adminUrlParser, async (req, res) => {
   try {
     const orderId = req.params.id;
@@ -559,7 +592,7 @@ app.put('/api/orders/:id', requireAdmin, adminBodyParser, adminUrlParser, async 
   }
 });
 
-// 3. Delete Order / Customer Record
+// 4. Delete Order / Customer Record
 app.delete('/api/orders/:id', requireAdmin, async (req, res) => {
   try {
     const orderId = req.params.id;
