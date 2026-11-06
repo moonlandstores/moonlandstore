@@ -1,25 +1,42 @@
-/* 3D Perspective & Enhanced Smooth Floating Animation */
-.perspective-container {
-  perspective: 1200px;
-  perspective-origin: center center;
+// script.js - Moonland Store Shared Functions
+
+function getCart() {
+    return JSON.parse(localStorage.getItem('moonland_cart') || '[]');
 }
 
-.card-3d {
-  transition: transform 0.15s cubic-bezier(0.03, 0.98, 0.52, 0.99);
-  transform-style: preserve-3d;
-  will-change: transform;
+function saveCart(cart) {
+    localStorage.setItem('moonland_cart', JSON.stringify(cart));
+    updateGlobalCartCount();
 }
 
-@keyframes float {
-  0%, 100% { 
-    transform: translateY(0px) rotateX(0deg) rotateY(0deg); 
-  }
-  50% { 
-    transform: translateY(-10px) rotateX(3deg) rotateY(-3deg); 
-  }
+function updateGlobalCartCount() {
+    let cart = getCart();
+    let totalCount = cart.reduce((sum, item) => sum + (Number(item.quantity || item.qty || 1)), 0);
+    const badges = document.querySelectorAll('#cartCountBadge');
+    badges.forEach(badge => {
+        badge.innerText = totalCount;
+    });
 }
 
-.floating-element {
-  animation: float 6s ease-in-out infinite;
-  will-change: transform;
+function addToCart(title, price, quantity = 1) {
+    let cart = getCart();
+    let existing = cart.find(i => (i.title === title || i.name === title));
+    if (existing) {
+        existing.quantity = (Number(existing.quantity || existing.qty || 1)) + Number(quantity);
+    } else {
+        cart.push({ title: title, name: title, price: Number(price), quantity: Number(quantity) });
+    }
+    saveCart(cart);
+    alert('Product successfully cart mein add ho gaya hai!');
 }
+
+window.addEventListener('DOMContentLoaded', () => {
+    // Capture and save referral code globally from any page URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const refParam = urlParams.get('ref');
+    if (refParam) {
+        localStorage.setItem('moonland_ref_code', refParam);
+    }
+
+    updateGlobalCartCount();
+});

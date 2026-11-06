@@ -219,9 +219,16 @@ ORDER SUCCESSFULLY SUBMITTED
 <script>
 document.addEventListener("DOMContentLoaded", () => {
 const urlParams = new URLSearchParams(window.location.search);
-const refParam = urlParams.get('ref');
+let refParam = urlParams.get('ref');
+
+if (refParam) {
+    localStorage.setItem('moonland_ref_code', refParam);
+} else {
+    refParam = localStorage.getItem('moonland_ref_code');
+}
+
 if(refParam) {
-document.getElementById('orderRef').value = refParam;
+    document.getElementById('orderRef').value = refParam;
 }
 
 renderCheckoutCart();
@@ -406,6 +413,7 @@ body: JSON.stringify(orderPayload)
 const result = await response.json();
 if (response.ok && result.success) {
 localStorage.removeItem('moonland_cart');
+localStorage.removeItem('moonland_ref_code'); // Clear after order placed
 document.getElementById('orderSuccessModal').classList.remove('hidden');
 } else {
 alert(result.error || 'Order submission failed.');
