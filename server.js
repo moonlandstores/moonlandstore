@@ -414,7 +414,15 @@ app.post('/api/orders', publicApiLimiter, async (req, res) => {
 
     let verifiedItems = [];
     let calculatedTotal = 0;
+    
+    // FIX: Properly validate and extract enteredRefCode from req.body
     let validRefCode = 'None';
+    if (enteredRefCode && typeof enteredRefCode === 'string') {
+      const trimmedCode = enteredRefCode.trim();
+      if (trimmedCode !== '' && trimmedCode.toLowerCase() !== 'none' && trimmedCode.toLowerCase() !== 'direct') {
+        validRefCode = trimmedCode;
+      }
+    }
 
     await db.runTransaction(async (transaction) => {
       const utrQuery = await transaction.get(db.collection('orders').where('utr', '==', utr.trim()).limit(1));
@@ -448,10 +456,11 @@ app.post('/api/orders', publicApiLimiter, async (req, res) => {
         customer: customer.trim(),
         phone: phone.trim(),
         address: address.trim(),
+        upiId: upiId ? upiId.trim() : '',
         utr: utr.trim(),
         items: verifiedItems,
         totalAmount: calculatedTotal,
-        enteredRefCode: validRefCode,
+        enteredRefCode: validRefCode, // FIX: Now saves the actual referral code correctly!
         utrVerified: false,
         status: 'Payment Verification Pending',
         createdAt: new Date().toISOString()
@@ -555,7 +564,7 @@ app.put('/api/referrals/:id', requireAdmin, adminBodyParser, adminUrlParser, asy
 app.put('/api/orders/:id', requireAdmin, adminBodyParser, adminUrlParser, async (req, res) => {
   try {
     const orderId = req.params.id;
-    const { customer, name, phone, address, referralId, status, cancelReason } = req.body;
+    const { customer, name, phone, address, referralId, enteredRefCode, status, cancelReason } = req.body;
 
     if (!db) return res.status(503).json({ success: false, error: 'Database unavailable' });
 
@@ -581,6 +590,7 @@ app.put('/api/orders/:id', requireAdmin, adminBodyParser, adminUrlParser, async 
     if (phone !== undefined) updateData.phone = phone.trim();
     if (address !== undefined) updateData.address = address.trim();
     if (referralId !== undefined) updateData.userRefCode = referralId.trim();
+    if (enteredRefCode !== undefined) updateData.enteredRefCode = enteredRefCode.trim();
     if (status !== undefined) updateData.status = status.trim();
     if (cancelReason !== undefined) updateData.cancelReason = cancelReason;
 
