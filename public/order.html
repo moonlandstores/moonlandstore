@@ -153,6 +153,15 @@ Fill your delivery details, proceed to payment, and submit UTR.
 <button type="button" onclick="backToStep1()" class="text-xs text-blue-600 hover:underline uppercase font-bold tracking-wider"><i class="fa-solid fa-pen text-[10px] mr-1"></i> Edit Details</button>
 </div>
 
+<!-- Collapsible Toggle Header for Scanner & Payment Options -->
+<div class="border rounded-xl overflow-hidden shadow-sm">
+<button type="button" onclick="toggleScannerAccordion()" class="w-full p-4 flex items-center justify-between font-bold uppercase tracking-wider text-xs transition bg-opacity-10 hover:opacity-80" id="scannerAccordionHeader">
+<span class="flex items-center gap-2"><i class="fa-solid fa-lock text-emerald-500"></i> Tap to View UPI QR & App Pay Options</span>
+<i class="fa-solid fa-chevron-down transition-transform duration-300" id="scannerChevron"></i>
+</button>
+
+<!-- Collapsible Content Body -->
+<div id="scannerAccordionBody" class="p-6 space-y-6 border-t hidden">
 <!-- 1. UPI QR Scanner Box (Admin Managed) -->
 <div id="qrScannerBox" class="p-6 border text-center space-y-4 rounded-xl shadow-sm">
 <p class="text-[10px] font-bold uppercase tracking-[0.2em] opacity-80">Scan QR Code to Pay Total Amount</p>
@@ -183,6 +192,8 @@ Fill your delivery details, proceed to payment, and submit UTR.
 <a id="gpayIntentBtn" href="#" class="w-full bg-white hover:bg-zinc-200 text-black border border-zinc-300 py-3.5 px-4 rounded-xl font-bold text-xs uppercase tracking-widest flex items-center justify-center gap-3 transition shadow-lg">
 <i class="fa-brands fa-google-pay text-lg"></i> Pay Via Google Pay
 </a>
+</div>
+</div>
 </div>
 
 <!-- 3. UTR 12-Digit Input -->
@@ -273,6 +284,7 @@ function applySystemThemeOrder() {
   const step1Btn = document.getElementById('step1Btn');
   const step2TopBar = document.getElementById('step2TopBar');
   
+  const scannerAccordionHeader = document.getElementById('scannerAccordionHeader');
   const qrScannerBox = document.getElementById('qrScannerBox');
   const copyUpiBtn = document.getElementById('copyUpiBtn');
   const submitOrderBtn = document.getElementById('submitOrderBtn');
@@ -300,6 +312,7 @@ function applySystemThemeOrder() {
     step1Btn.className = "w-full bg-blue-600 hover:bg-blue-700 text-white py-4 text-xs uppercase tracking-[0.2em] font-black transition shadow-lg flex items-center justify-center gap-2 rounded-xl";
     step2TopBar.className = "bg-blue-50 border border-blue-200 p-3 flex items-center justify-between text-blue-950 rounded-xl";
 
+    scannerAccordionHeader.className = "w-full p-4 flex items-center justify-between font-bold uppercase tracking-wider text-xs transition bg-blue-50 text-blue-950 border-blue-200 hover:bg-blue-100";
     qrScannerBox.className = "bg-white p-6 border border-blue-100 text-center space-y-4 rounded-xl shadow-sm";
     copyUpiBtn.className = "bg-blue-600 text-white hover:bg-blue-700 px-4 py-2.5 text-[10px] uppercase tracking-widest font-bold transition rounded-lg";
     submitOrderBtn.className = "w-full bg-emerald-600 hover:bg-emerald-700 text-white py-4 text-xs uppercase tracking-[0.2em] font-black transition shadow-lg flex items-center justify-center gap-2 rounded-xl";
@@ -331,6 +344,7 @@ function applySystemThemeOrder() {
     step1Btn.className = "w-full bg-white hover:bg-zinc-200 text-black py-4 text-xs uppercase tracking-[0.2em] font-black transition shadow-2xl flex items-center justify-center gap-2";
     step2TopBar.className = "bg-zinc-900 border border-zinc-800 p-3 flex items-center justify-between text-white";
 
+    scannerAccordionHeader.className = "w-full p-4 flex items-center justify-between font-bold uppercase tracking-wider text-xs transition bg-zinc-900 text-white border-zinc-800 hover:bg-zinc-800";
     qrScannerBox.className = "bg-black p-6 border border-zinc-800 text-center space-y-4";
     copyUpiBtn.className = "bg-white text-black hover:bg-zinc-200 px-4 py-2.5 text-[10px] uppercase tracking-widest font-bold transition";
     submitOrderBtn.className = "w-full bg-emerald-500 hover:bg-emerald-400 text-black py-4 text-xs uppercase tracking-[0.2em] font-black transition shadow-2xl flex items-center justify-center gap-2";
@@ -374,6 +388,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
 function toggleMobileMenu() {
   document.getElementById('mobileMenuDropdown').classList.toggle('hidden');
+}
+
+function toggleScannerAccordion() {
+  const body = document.getElementById('scannerAccordionBody');
+  const chevron = document.getElementById('scannerChevron');
+  body.classList.toggle('hidden');
+  chevron.classList.toggle('rotate-180');
 }
 
 function renderCheckoutCart() {
@@ -456,7 +477,7 @@ function updateUpiIntentLinks() {
 function proceedToPaymentScanner() {
   const cart = JSON.parse(localStorage.getItem('moonland_cart') || '[]');
   if (cart.length === 0) {
-    alert('Aapka cart khali hai! Pehle store se product add karein.');
+    alert('Aapka cart khali hai! Pehle store से product add karein.');
     return;
   }
 
