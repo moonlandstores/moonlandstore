@@ -13,32 +13,50 @@
   <style>
     /* Smooth theme transition & flash prevention */
     html { background-color: #050505; color: #ffffff; }
-    html.light { background-color: #ffffff; color: #09090b; }
+    html.light { background-color: #f8fafc; color: #0f172a; }
     body { background-color: #050505 !important; color: #ffffff !important; transition: background-color 0.4s ease, color 0.4s ease; }
 
-    /* DAYLIGHT MODE (WHITE + CLOUDS + BLACK ACCENTS) */
-    html.light body { background-color: #ffffff !important; color: #09090b !important; }
-    html.light header { background-color: rgba(255, 255, 255, 0.95) !important; border-bottom-color: #e4e4e7 !important; }
-    html.light .marquee-bar { background-color: #09090b !important; color: #f4f4f5 !important; border-bottom-color: #27272a !important; }
-    html.light .brand-logo-box { border-color: #09090b !important; background-color: #09090b !important; color: #ffffff !important; }
-    html.light nav a, html.light header button { color: #52525b !important; }
-    html.light nav a:hover, html.light header button:hover, html.light nav a.active-link { color: #09090b !important; }
+    /* DAYLIGHT MODE (HIGH CONTRAST & CLEAR VISIBILITY FIXES) */
+    html.light body { background-color: #f8fafc !important; color: #0f172a !important; }
+    html.light header { background-color: rgba(255, 255, 255, 0.95) !important; border-bottom-color: #cbd5e1 !important; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); }
+    
+    /* High Visibility Marquee Bar for Daylight */
+    html.light .marquee-bar { 
+      background: linear-gradient(135deg, #0f172a, #1e293b) !important; 
+      color: #f8fafc !important; 
+      border-bottom: 2px solid #38bdf8 !important; 
+      font-weight: 800 !important;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    
+    html.light .brand-logo-box { border-color: #0f172a !important; background-color: #0f172a !important; color: #ffffff !important; }
+    html.light nav a, html.light header button { color: #334155 !important; font-weight: 700 !important; }
+    html.light nav a:hover, html.light header button:hover, html.light nav a.active-link { color: #0f172a !important; }
     html.light .clouds-bg { display: block !important; }
-    html.light .product-card { background-color: #f8fafc !important; border-color: #e2e8f0 !important; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); }
-    html.light .product-card h3 { color: #0f172a !important; }
-    html.light .product-card p { color: #475569 !important; }
-    html.light .product-price { color: #0f172a !important; font-weight: 800; }
-    html.light .btn-outline { border-color: #cbd5e1 !important; color: #0f172a !important; background-color: #ffffff !important; }
-    html.light .btn-outline:hover { border-color: #09090b !important; background-color: #09090b !important; color: #ffffff !important; }
-    html.light .btn-solid { background-color: #09090b !important; color: #ffffff !important; }
-    html.light footer { background-color: #f1f5f9 !important; border-top-color: #e2e8f0 !important; color: #475569 !important; }
+    
+    /* Rich Daylight Product Cards */
+    html.light .product-card { 
+      background-color: #ffffff !important; 
+      border-color: #cbd5e1 !important; 
+      box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.08), 0 8px 10px -6px rgba(15, 23, 42, 0.06); 
+    }
+    html.light .product-card h3 { color: #0f172a !important; font-weight: 800 !important; }
+    html.light .product-card p { color: #475569 !important; font-weight: 600 !important; }
+    html.light .product-price { color: #059669 !important; font-weight: 900; }
+    
+    html.light .btn-outline { border-color: #0f172a !important; color: #0f172a !important; background-color: #ffffff !important; font-weight: 800; }
+    html.light .btn-outline:hover { background-color: #0f172a !important; color: #ffffff !important; }
+    html.light .btn-solid { background-color: #0f172a !important; color: #ffffff !important; font-weight: 800; box-shadow: 0 4px 12px rgba(15, 23, 42, 0.25); }
+    html.light .btn-solid:hover { background-color: #1e293b !important; }
+    
+    html.light footer { background-color: #e2e8f0 !important; border-top-color: #cbd5e1 !important; color: #334155 !important; font-weight: 600; }
     
     /* DAYLIGHT MODE MODAL OVERRIDES */
-    html.light .store-modal-box { background: #ffffff !important; border-color: #cbd5e1 !important; color: #0f172a !important; }
+    html.light .store-modal-box { background: #ffffff !important; border-color: #cbd5e1 !important; color: #0f172a !important; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); }
     html.light .store-modal-box h2, html.light .store-modal-box h3 { color: #0f172a !important; }
-    html.light .store-modal-inner { background: #f8fafc !important; border-color: #e2e8f0 !important; color: #0f172a !important; }
+    html.light .store-modal-inner { background: #f8fafc !important; border-color: #cbd5e1 !important; color: #0f172a !important; }
 
-    /* NIGHT MODE (DARK + STARS) */
+    /* NIGHT MODE (PRESERVED EXACTLY AS YOU LIKED IT) */
     html.dark body { background-color: #050505 !important; color: #ffffff !important; }
     html.dark .clouds-bg { display: none !important; }
     html.dark .store-modal-box { background: rgba(12,12,12,0.98) !important; border-color: rgba(255,255,255,0.2) !important; color: #ffffff !important; }
@@ -82,11 +100,12 @@
 
   <!-- Daylight Clouds Background Overlay -->
   <div class="clouds-bg hidden absolute inset-0 pointer-events-none z-0 overflow-hidden h-full">
-    <div class="absolute top-24 left-[-50px] w-72 h-24 bg-zinc-300/40 rounded-full blur-xl cloud-elem-1"></div>
-    <div class="absolute top-96 right-[-40px] w-96 h-32 bg-zinc-300/30 rounded-full blur-2xl cloud-elem-2"></div>
+    <div class="absolute top-24 left-[-50px] w-72 h-24 bg-sky-200/40 rounded-full blur-xl cloud-elem-1"></div>
+    <div class="absolute top-96 right-[-40px] w-96 h-32 bg-blue-200/30 rounded-full blur-2xl cloud-elem-2"></div>
   </div>
 
-  <div class="marquee-bar bg-black text-zinc-300 py-2.5 px-4 text-[10px] font-bold tracking-[0.25em] uppercase border-b border-zinc-900 overflow-hidden whitespace-nowrap z-20">
+  <!-- Highly Visible Marquee Bar -->
+  <div class="marquee-bar bg-black text-zinc-300 py-3 px-4 text-[11px] font-extrabold tracking-[0.25em] uppercase border-b overflow-hidden whitespace-nowrap z-20">
     <marquee behavior="scroll" direction="left" scrollamount="5">
       <span class="inline-flex items-center gap-2 mx-6"><i class="fa-solid fa-bolt text-yellow-400"></i> MOONLAND SPECIAL: UNLIMITED REFER & EARN ₹1,000 INSTANT UPI CASHBACK PER REFERRAL!</span>
     </marquee>
@@ -129,10 +148,10 @@
   </header>
 
   <main class="flex-grow max-w-7xl mx-auto px-6 sm:px-12 py-16 w-full space-y-12 relative z-10">
-    <div class="flex flex-col md:flex-row justify-between items-start md:items-end border-b border-zinc-200 dark:border-zinc-900 pb-6 gap-6">
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-end border-b border-zinc-300 dark:border-zinc-900 pb-6 gap-6">
       <div class="space-y-2">
-        <span class="text-[10px] font-semibold uppercase tracking-[0.4em] opacity-70">Curated Lineup</span>
-        <h2 class="text-3xl sm:text-5xl font-light uppercase tracking-[0.15em]">Masterpieces</h2>
+        <span class="text-[10px] font-extrabold uppercase tracking-[0.4em] text-cyan-600 dark:text-cyan-400 bg-cyan-500/10 px-3.5 py-1.5 border border-cyan-500/20 rounded-full">Curated Lineup</span>
+        <h2 class="text-3xl sm:text-5xl font-black uppercase tracking-[0.15em] pt-2">Masterpieces</h2>
       </div>
     </div>
 
@@ -162,14 +181,14 @@
           <p id="modalPrice" class="text-3xl font-mono font-black text-emerald-600 dark:text-emerald-400"></p>
           
           <div id="keyFeaturesContainer" class="space-y-2 pt-2 border-t border-zinc-200 dark:border-zinc-900 hidden">
-            <h3 class="text-[10px] opacity-70 font-bold uppercase tracking-[0.2em] flex items-center gap-1.5">
+            <h3 class="text-[10px] opacity-80 font-bold uppercase tracking-[0.2em] flex items-center gap-1.5">
               <i class="fa-solid fa-star text-yellow-500"></i> Key Features
             </h3>
             <div id="modalKeyFeaturesGrid" class="grid grid-cols-2 gap-2 max-h-40 overflow-y-auto pr-1"></div>
           </div>
 
           <div id="productDetailsContainer" class="space-y-2 pt-2 border-t border-zinc-200 dark:border-zinc-900 hidden">
-            <h3 class="text-[10px] opacity-70 font-bold uppercase tracking-[0.2em] flex items-center gap-1.5">
+            <h3 class="text-[10px] opacity-80 font-bold uppercase tracking-[0.2em] flex items-center gap-1.5">
               <i class="fa-solid fa-circle-info text-cyan-500"></i> Product Details
             </h3>
             <div id="modalDetailsGrid" class="grid grid-cols-2 gap-2 max-h-40 overflow-y-auto pr-1"></div>
@@ -177,7 +196,7 @@
 
           <div class="pt-4 border-t border-zinc-200 dark:border-zinc-900 space-y-4">
             <div class="flex items-center gap-3">
-              <span class="text-xs font-bold uppercase tracking-widest opacity-80">Quantity:</span>
+              <span class="text-xs font-bold uppercase tracking-widest opacity-90">Quantity:</span>
               <div class="flex items-center border border-zinc-300 dark:border-zinc-800 bg-white dark:bg-black rounded-xl overflow-hidden shadow-sm">
                 <button onclick="adjustQty(-1)" class="px-3.5 py-2 font-mono hover:bg-zinc-100 dark:hover:bg-zinc-900">-</button>
                 <span id="modalQty" class="px-5 py-2 font-mono text-xs font-bold">1</span>
@@ -204,7 +223,7 @@
       <div class="space-y-2">
         <span class="text-[9px] font-extrabold uppercase tracking-[0.3em] text-cyan-600 dark:text-cyan-400 bg-cyan-500/10 px-2.5 py-1 border border-cyan-500/20 rounded-full">Successfully Added</span>
         <h3 id="addedItemTitle" class="text-sm font-bold uppercase tracking-wider">Product Name</h3>
-        <p class="text-[11px] opacity-70 font-light">The item has been successfully added to your cart.</p>
+        <p class="text-[11px] opacity-80 font-light">The item has been successfully added to your cart.</p>
       </div>
       <div class="grid grid-cols-2 gap-3 pt-2">
         <button onclick="closeAddToCartModal()" class="border font-bold py-3 text-[10px] uppercase tracking-wider transition rounded-xl shadow-sm">
@@ -229,9 +248,9 @@
       </div>
       
       <div class="pt-6 border-t border-zinc-200 dark:border-zinc-900 space-y-4">
-        <div class="flex justify-between text-xs font-mono uppercase opacity-80">
+        <div class="flex justify-between text-xs font-mono uppercase opacity-90 font-bold">
           <span>Total Amount:</span>
-          <span id="cartDrawerTotal" class="font-bold">₹0</span>
+          <span id="cartDrawerTotal" class="font-bold text-emerald-600 dark:text-emerald-400">₹0</span>
         </div>
         <button onclick="proceedToCheckout()" class="w-full btn-solid py-3.5 text-xs uppercase tracking-[0.2em] font-black transition rounded-xl shadow-lg">
           Proceed to Checkout
@@ -296,13 +315,14 @@
       let cart = JSON.parse(localStorage.getItem('moonland_cart') || '[]');
       
       if(cart.length === 0) {
-        container.innerHTML = `<p class="text-xs opacity-60 uppercase tracking-widest text-center py-8">Your cart is empty.</p>`;
+        container.innerHTML = `<p class="text-xs opacity-70 uppercase tracking-widest text-center py-8 font-medium">Your cart is empty.</p>`;
         totalContainer.innerText = `₹0`;
         return;
       }
 
       const currentHour = new Date().getHours();
-      const isDay = currentHour >= 6 && currentHour < 18;
+      const savedTheme = localStorage.getItem('moonland_theme');
+      const isLight = savedTheme === 'light' || (!savedTheme && currentHour >= 6 && currentHour < 18);
 
       let total = 0;
       container.innerHTML = cart.map((item, idx) => {
@@ -310,10 +330,10 @@
         let qty = Number(item.quantity || item.qty || 1);
         total += itemPrice * qty;
         return `
-          <div class="flex justify-between items-center ${isDay ? 'bg-white border-blue-200 text-slate-900 shadow-sm' : 'bg-black border-zinc-800 text-white'} p-4 border rounded-xl text-xs">
+          <div class="flex justify-between items-center ${isLight ? 'bg-white border-zinc-200 text-zinc-900 shadow-sm' : 'bg-black border-zinc-800 text-white'} p-4 border rounded-xl text-xs">
             <div>
               <div class="font-bold uppercase tracking-wider">${item.title || item.name}</div>
-              <div class="opacity-70 font-mono mt-1">₹${itemPrice} x ${qty}</div>
+              <div class="opacity-80 font-mono mt-1">₹${itemPrice} x ${qty}</div>
             </div>
             <button onclick="removeFromCart(${idx})" class="text-zinc-400 hover:text-red-500 p-2"><i class="fa-solid fa-trash text-xs"></i></button>
           </div>
@@ -371,27 +391,31 @@
       if(!grid) return;
       grid.innerHTML = '';
 
+      const savedTheme = localStorage.getItem('moonland_theme');
+      const currentHour = new Date().getHours();
+      const isLight = savedTheme === 'light' || (!savedTheme && currentHour >= 6 && currentHour < 18);
+
       products.forEach((p, index) => {
         let imgList = (p.images && p.images.length > 0) ? p.images : ['https://images.unsplash.com/photo-1556911220-e15b29be8c8f?auto=format&fit=crop&q=80&w=400'];
         let pName = p.name || 'Product';
         let pPrice = Number(p.price) || 0;
 
         let card = document.createElement('div');
-        card.className = `product-item product-card group border p-6 flex flex-col justify-between space-y-6 transition duration-500 cursor-pointer rounded-2xl shadow-sm`;
+        card.className = `product-item product-card group border p-6 flex flex-col justify-between space-y-6 transition duration-500 cursor-pointer rounded-2xl shadow-md`;
         card.innerHTML = `
-          <div onclick="openProductDetail('${p.id}')" class="h-60 overflow-hidden bg-zinc-100 dark:bg-black flex items-center justify-center relative rounded-xl">
-            <span class="absolute top-3 left-3 z-10 bg-black text-white dark:bg-white dark:text-black text-[8px] font-bold uppercase px-2 py-0.5 tracking-[0.2em] rounded">STORE ITEM</span>
+          <div onclick="openProductDetail('${p.id}')" class="h-60 overflow-hidden bg-zinc-100 dark:bg-black flex items-center justify-center relative rounded-xl shadow-inner">
+            <span class="absolute top-3 left-3 z-10 bg-black text-white dark:bg-white dark:text-black text-[8px] font-bold uppercase px-2.5 py-1 tracking-[0.2em] rounded-md shadow">STORE ITEM</span>
             <img id="storeImg_${index}" src="${imgList[0]}" class="w-full h-full object-cover group-hover:scale-105 transition duration-700 opacity-95">
           </div>
           <div onclick="openProductDetail('${p.id}')" class="space-y-2">
             <h3 class="text-lg font-bold uppercase tracking-[0.1em]">${pName}</h3>
-            <p class="text-xs opacity-70 font-light tracking-wide line-clamp-1">${p.keyFeatures || 'Certified Product'}</p>
+            <p class="text-xs opacity-90 font-medium tracking-wide line-clamp-1">${p.keyFeatures || 'Certified Product'}</p>
           </div>
-          <div class="space-y-4 pt-4 border-t border-zinc-200 dark:border-zinc-900">
+          <div class="space-y-4 pt-4 border-t ${isLight ? 'border-zinc-200' : 'border-zinc-900'}">
             <span class="product-price font-mono text-lg font-bold">₹${pPrice.toLocaleString('en-IN')}</span>
             <div class="grid grid-cols-2 gap-2">
               <button onclick="event.stopPropagation(); addToCartDirect('${p.id}')" class="btn-outline w-full border font-bold py-2.5 text-[10px] uppercase tracking-[0.2em] transition rounded-xl">Add To Cart</button>
-              <button onclick="event.stopPropagation(); buyNowDirect('${p.id}')" class="btn-solid w-full font-bold py-2.5 text-[10px] uppercase tracking-[0.2em] text-center flex items-center justify-center transition rounded-xl">Buy Now</button>
+              <button onclick="event.stopPropagation(); buyNowDirect('${p.id}')" class="btn-solid w-full font-bold py-2.5 text-[10px] uppercase tracking-[0.2em] text-center flex items-center justify-center transition rounded-xl shadow-md">Buy Now</button>
             </div>
           </div>
         `;
@@ -428,8 +452,8 @@
           let label = parts[0] ? parts[0].trim() : 'Feature';
           let val = parts[1] ? parts[1].trim() : item.trim();
           return `
-            <div class="store-modal-inner border p-2.5 flex flex-col justify-between space-y-1 rounded-xl">
-              <span class="text-[9px] opacity-60 uppercase tracking-widest font-semibold">${label}</span>
+            <div class="store-modal-inner border p-2.5 flex flex-col justify-between space-y-1 rounded-xl shadow-sm">
+              <span class="text-[9px] opacity-80 uppercase tracking-widest font-bold">${label}</span>
               <span class="text-xs font-bold uppercase">${val}</span>
             </div>
           `;
@@ -447,8 +471,8 @@
           let label = parts[0] ? parts[0].trim() : 'Detail';
           let val = parts[1] ? parts[1].trim() : item.trim();
           return `
-            <div class="store-modal-inner border p-2.5 flex flex-col justify-between space-y-1 rounded-xl">
-              <span class="text-[9px] opacity-60 uppercase tracking-widest font-semibold">${label}</span>
+            <div class="store-modal-inner border p-2.5 flex flex-col justify-between space-y-1 rounded-xl shadow-sm">
+              <span class="text-[9px] opacity-80 uppercase tracking-widest font-bold">${label}</span>
               <span class="text-xs font-bold uppercase">${val}</span>
             </div>
           `;
@@ -461,7 +485,7 @@
       document.getElementById('modalMainImg').src = imgList[0];
       
       document.getElementById('modalThumbnails').innerHTML = imgList.map((img, idx) => `
-        <img src="${img}" onclick="document.getElementById('modalMainImg').src='${img}'" class="w-16 h-16 object-cover border ${idx === 0 ? 'border-cyan-500' : 'border-zinc-300 dark:border-zinc-800'} cursor-pointer rounded-lg">
+        <img src="${img}" onclick="document.getElementById('modalMainImg').src='${img}'" class="w-16 h-16 object-cover border ${idx === 0 ? 'border-cyan-500' : 'border-zinc-300 dark:border-zinc-800'} cursor-pointer rounded-lg shadow-sm">
       `).join('');
 
       document.getElementById('productDetailModal').classList.remove('hidden');
