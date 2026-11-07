@@ -49,9 +49,9 @@ body { background-color: #050505 !important; color: #ffffff !important; transiti
 <!-- AUTO THEME SWITCHER SCRIPT -->
 <script>
   (function() {
+    const savedTheme = localStorage.getItem('moonland_theme');
     const currentHour = new Date().getHours();
     const isDayTime = currentHour >= 6 && currentHour < 18;
-    const savedTheme = localStorage.getItem('moonland_theme');
 
     if (savedTheme === 'light' || (!savedTheme && isDayTime)) {
       document.documentElement.classList.add('light');
@@ -117,7 +117,7 @@ SECURE CHECKOUT
 <h1 id="mainHeading" class="text-3xl sm:text-5xl font-black uppercase tracking-[0.1em]">
 Complete Your Order
 </h1>
-<p id="mainDesc" class="text-xs sm:text-sm font-medium tracking-wide opacity-90">
+<p id="mainDesc" class="text-xs sm:text-sm font-semibold tracking-wide">
 Fill your delivery details, proceed to payment, and submit UTR.
 </p>
 </div>
@@ -138,30 +138,30 @@ Fill your delivery details, proceed to payment, and submit UTR.
 <div id="checkoutStep1" class="space-y-5">
 <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
 <div class="space-y-1.5">
-<label class="block text-[10px] font-bold uppercase tracking-[0.2em] opacity-90">Full Name *</label>
+<label class="block text-[10px] font-bold uppercase tracking-[0.2em]">Full Name *</label>
 <input type="text" id="orderName" required placeholder="Enter full name" class="form-input-elem w-full border px-4 py-3.5 text-xs focus:outline-none transition rounded-xl">
 </div>
 <div class="space-y-1.5">
-<label class="block text-[10px] font-bold uppercase tracking-[0.2em] opacity-90">Mobile Number (10 Digits) *</label>
+<label class="block text-[10px] font-bold uppercase tracking-[0.2em]">Mobile Number (10 Digits) *</label>
 <input type="tel" id="orderPhone" required maxlength="10" pattern="[0-9]{10}" placeholder="10-digit mobile" class="form-input-elem w-full border px-4 py-3.5 text-xs focus:outline-none transition rounded-xl">
 </div>
 </div>
 
 <div class="space-y-1.5">
-<label class="block text-[10px] font-bold uppercase tracking-[0.2em] opacity-90">Delivery Address *</label>
+<label class="block text-[10px] font-bold uppercase tracking-[0.2em]">Delivery Address *</label>
 <textarea id="orderAddress" required rows="2" placeholder="House No, Street, City, Pincode" class="form-input-elem w-full border px-4 py-3 text-xs focus:outline-none transition rounded-xl"></textarea>
 </div>
 
 <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
 <div class="space-y-1.5">
-<label class="block text-[10px] font-bold uppercase tracking-[0.2em] opacity-90">Your UPI ID (For Cashback)</label>
+<label class="block text-[10px] font-bold uppercase tracking-[0.2em]">Your UPI ID (For Cashback)</label>
 <input type="text" id="orderUpi" placeholder="yourname@upi" class="form-input-elem w-full border px-4 py-3.5 text-xs focus:outline-none transition rounded-xl">
-<p class="text-[10px] font-mono tracking-wide pt-1 opacity-80 font-medium">
+<p class="text-[10px] font-mono tracking-wide pt-1 font-semibold opacity-80">
 <i class="fa-solid fa-circle-info mr-1"></i> Required to transfer your <strong>Referral & Earn cashback</strong>!
 </p>
 </div>
 <div class="space-y-1.5">
-<label class="block text-[10px] font-bold uppercase tracking-[0.2em] opacity-90">Referral Code (Optional)</label>
+<label class="block text-[10px] font-bold uppercase tracking-[0.2em]">Referral Code (Optional)</label>
 <input type="text" id="orderRef" placeholder="REF-XXXXXX" class="form-input-elem w-full border px-4 py-3.5 text-xs font-mono uppercase tracking-widest focus:outline-none transition rounded-xl">
 </div>
 </div>
@@ -174,13 +174,13 @@ Fill your delivery details, proceed to payment, and submit UTR.
 <!-- STEP 2: Payment Options & UTR Submission (Hidden by Default) -->
 <div id="checkoutStep2" class="space-y-5 hidden">
 <div id="step2TopBar" class="border p-3.5 flex items-center justify-between rounded-xl shadow-sm">
-<span class="text-[11px] font-bold opacity-90">Details filled successfully.</span>
+<span class="text-[11px] font-bold">Details filled successfully.</span>
 <button type="button" onclick="backToStep1()" class="text-xs hover:underline uppercase font-bold tracking-wider flex items-center gap-1"><i class="fa-solid fa-pen text-[10px]"></i> Edit Details</button>
 </div>
 
 <!-- Direct App Buttons (PhonePe & GPay Always Visible) -->
 <div class="space-y-2.5 pt-1">
-<p class="text-[10px] font-bold uppercase tracking-[0.2em] opacity-90 text-center">Direct Pay Via App (Mobile Only)</p>
+<p class="text-[10px] font-bold uppercase tracking-[0.2em] text-center">Direct Pay Via App (Mobile Only)</p>
 
 <a id="phonepeIntentBtn" href="#" class="w-full bg-[#5f259f] hover:bg-[#4b1d7f] text-white py-3.5 px-4 rounded-xl font-bold text-xs uppercase tracking-widest flex items-center justify-center gap-3 transition shadow-lg">
 <i class="fa-solid fa-mobile-screen-button text-sm"></i> Pay Via PhonePe
@@ -200,7 +200,7 @@ Fill your delivery details, proceed to payment, and submit UTR.
 
 <!-- Collapsible QR Body -->
 <div id="scannerAccordionBody" class="p-5 space-y-3 border-t hidden text-center">
-<p class="text-[10px] font-bold uppercase tracking-[0.2em] opacity-90">Scan QR Code to Pay Total Amount</p>
+<p class="text-[10px] font-bold uppercase tracking-[0.2em]">Scan QR Code to Pay Total Amount</p>
 <div class="space-y-1">
 <span class="text-[8px] uppercase tracking-widest font-bold opacity-70">Pay to Merchant:</span>
 <h3 id="displayMerchantName" class="text-xs font-black uppercase tracking-widest">Moonland Store</h3>
@@ -218,7 +218,7 @@ Fill your delivery details, proceed to payment, and submit UTR.
 
 <!-- 3. UTR 12-Digit Input -->
 <div class="space-y-1.5 pt-2">
-<label class="block text-[10px] font-bold uppercase tracking-[0.2em] opacity-90">UTR / Transaction Reference Number (12 Digits) *</label>
+<label class="block text-[10px] font-bold uppercase tracking-[0.2em]">UTR / Transaction Reference Number (12 Digits) *</label>
 <input type="text" id="orderUtr" maxlength="12" pattern="[0-9]{12}" placeholder="Enter 12-digit UTR reference number" class="form-input-elem w-full border px-4 py-3.5 text-xs font-mono uppercase tracking-widest focus:outline-none transition rounded-xl">
 </div>
 
@@ -285,9 +285,9 @@ let currentAdminUpi = "paymoonland@upi";
 let currentMerchantName = "Moonland Store";
 
 function applySystemThemeOrder() {
+  const savedTheme = localStorage.getItem('moonland_theme');
   const currentHour = new Date().getHours();
   const isDayTime = currentHour >= 6 && currentHour < 18;
-  const savedTheme = localStorage.getItem('moonland_theme');
   const isLight = savedTheme === 'light' || (!savedTheme && isDayTime);
 
   const bodyTag = document.getElementById('orderBodyTag');
@@ -328,31 +328,35 @@ function applySystemThemeOrder() {
     brandTitle.className = "font-bold text-base tracking-[0.4em] uppercase text-zinc-900";
     mobileMenu.className = "hidden md:hidden bg-white border-b border-zinc-200 px-8 py-6 space-y-5 text-xs uppercase font-medium tracking-[0.25em] text-zinc-900 shadow-2xl z-50";
 
-    secBadge.className = "inline-block text-[10px] font-extrabold uppercase tracking-[0.4em] text-cyan-800 border border-cyan-500/50 px-4 py-2 bg-cyan-100 rounded-full shadow-sm";
-    mainHeading.className = "text-3xl sm:text-5xl font-black uppercase tracking-[0.1em] text-zinc-900";
-    mainDesc.className = "text-xs sm:text-sm text-zinc-700 font-semibold tracking-wide";
-    checkoutCardBox.className = "order-card bg-white border border-zinc-200 p-6 sm:p-10 space-y-6 shadow-xl rounded-2xl";
-    cartSummaryTitle.className = "text-xs font-bold uppercase tracking-[0.2em] text-zinc-900 border-b border-zinc-200 pb-3 flex justify-between items-center";
+    secBadge.className = "inline-block text-[10px] font-extrabold uppercase tracking-[0.4em] text-cyan-900 border border-cyan-500/60 px-4 py-2 bg-cyan-100 rounded-full shadow-sm";
+    mainHeading.className = "text-3xl sm:text-5xl font-black uppercase tracking-[0.1em] text-slate-900";
+    mainDesc.className = "text-xs sm:text-sm text-slate-800 font-bold tracking-wide";
+    checkoutCardBox.className = "order-card bg-white border border-zinc-200 p-6 sm:p-10 space-y-6 shadow-xl rounded-2xl text-slate-900";
+    cartSummaryTitle.className = "text-xs font-bold uppercase tracking-[0.2em] text-slate-900 border-b border-zinc-200 pb-3 flex justify-between items-center";
     step1Btn.className = "w-full bg-zinc-900 hover:bg-black text-white py-4 text-xs uppercase tracking-[0.2em] font-black transition shadow-lg flex items-center justify-center gap-2 rounded-xl";
-    step2TopBar.className = "bg-zinc-50 border border-zinc-200 p-3.5 flex items-center justify-between text-zinc-900 rounded-xl shadow-sm";
-    gpayIntentBtn.className = "w-full bg-white hover:bg-zinc-50 text-zinc-900 border border-zinc-300 py-3.5 px-4 rounded-xl font-bold text-xs uppercase tracking-widest flex items-center justify-center gap-3 transition shadow-md";
+    step2TopBar.className = "bg-zinc-50 border border-zinc-200 p-3.5 flex items-center justify-between text-slate-900 rounded-xl shadow-sm font-semibold";
+    gpayIntentBtn.className = "w-full bg-white hover:bg-zinc-50 text-slate-900 border border-zinc-300 py-3.5 px-4 rounded-xl font-bold text-xs uppercase tracking-widest flex items-center justify-center gap-3 transition shadow-md";
 
-    scannerAccordionHeader.className = "w-full p-3.5 flex items-center justify-between font-bold uppercase tracking-wider text-xs transition bg-zinc-50 text-zinc-900 border border-zinc-200 hover:bg-zinc-100 rounded-xl shadow-sm";
-    scannerAccordionBody.className = "p-5 space-y-3 border-t border-zinc-200 bg-white text-zinc-900 hidden text-center rounded-b-xl shadow-inner";
-    displayMerchantName.className = "text-xs font-black uppercase tracking-widest text-zinc-900";
-    displayAdminUpi.className = "font-mono text-[11px] bg-zinc-100 border border-zinc-300 px-4 py-2.5 rounded-xl font-bold text-zinc-900";
+    scannerAccordionHeader.className = "w-full p-3.5 flex items-center justify-between font-bold uppercase tracking-wider text-xs transition bg-zinc-50 text-slate-900 border border-zinc-200 hover:bg-zinc-100 rounded-xl shadow-sm";
+    scannerAccordionBody.className = "p-5 space-y-3 border-t border-zinc-200 bg-white text-slate-900 hidden text-center rounded-b-xl shadow-inner";
+    displayMerchantName.className = "text-xs font-black uppercase tracking-widest text-slate-900";
+    displayAdminUpi.className = "font-mono text-[11px] bg-zinc-100 border border-zinc-300 px-4 py-2.5 rounded-xl font-bold text-slate-900";
     copyUpiBtn.className = "bg-zinc-900 text-white hover:bg-black px-4 py-2.5 text-[10px] uppercase tracking-widest font-bold transition rounded-xl shadow-sm";
     submitOrderBtn.className = "w-full bg-emerald-600 hover:bg-emerald-700 text-white py-4 text-xs uppercase tracking-[0.2em] font-black transition shadow-lg flex items-center justify-center gap-2 rounded-xl";
 
-    successPopupBox.className = "relative w-full max-w-lg bg-white border border-zinc-200 p-8 shadow-2xl text-center space-y-6 rounded-2xl overflow-hidden text-zinc-900";
-    successInfoBox.className = "bg-zinc-50 border border-zinc-200 p-4 text-xs font-mono leading-relaxed space-y-2.5 text-left relative z-10 text-zinc-800 rounded-xl";
-    successBadgeSpan.className = "text-[10px] font-extrabold uppercase tracking-[0.3em] text-cyan-800 bg-cyan-100 px-3.5 py-1.5 border border-cyan-500/30 rounded-full";
+    successPopupBox.className = "relative w-full max-w-lg bg-white border border-zinc-200 p-8 shadow-2xl text-center space-y-6 rounded-2xl overflow-hidden text-slate-900";
+    successInfoBox.className = "bg-zinc-50 border border-zinc-200 p-4 text-xs font-mono leading-relaxed space-y-2.5 text-left relative z-10 text-slate-800 rounded-xl";
+    successBadgeSpan.className = "text-[10px] font-extrabold uppercase tracking-[0.3em] text-cyan-900 bg-cyan-100 px-3.5 py-1.5 border border-cyan-500/40 rounded-full";
     smokeEffectDiv.className = "absolute w-48 h-24 bg-gradient-to-r from-cyan-500/20 via-slate-300/40 to-blue-500/20 rounded-full rocket-smoke-exhaust";
     storeHomeBtn.className = "bg-zinc-900 hover:bg-black text-white font-black py-3.5 text-[11px] uppercase tracking-wider transition text-center flex items-center justify-center gap-2 rounded-xl shadow-md";
-    footer.className = "bg-zinc-100 text-zinc-700 py-16 border-t border-zinc-200 text-center text-[10px] uppercase tracking-[0.3em] space-y-4 font-bold relative z-10";
+    footer.className = "bg-zinc-100 text-slate-700 py-16 border-t border-zinc-200 text-center text-[10px] uppercase tracking-[0.3em] space-y-4 font-bold relative z-10";
 
-    document.querySelectorAll('.form-input-elem').forEach(el => {
-      el.className = "form-input-elem w-full bg-white border border-zinc-300 px-4 py-3.5 text-xs text-zinc-900 font-semibold focus:outline-none focus:border-zinc-900 transition rounded-xl shadow-sm placeholder:text-zinc-400";
+    document.querySelectorAll('.form-input-elem, label').forEach(el => {
+      if(el.tagName === 'LABEL') {
+        el.className = "block text-[10px] font-extrabold uppercase tracking-[0.2em] text-slate-900";
+      } else {
+        el.className = "form-input-elem w-full bg-white border border-zinc-300 px-4 py-3.5 text-xs text-slate-900 font-semibold focus:outline-none focus:border-zinc-900 transition rounded-xl shadow-sm placeholder:text-zinc-400";
+      }
     });
   } else {
     // --- NIGHT MODE (PRESERVED EXACTLY AS YOU LIKED IT) ---
@@ -366,7 +370,7 @@ function applySystemThemeOrder() {
     secBadge.className = "inline-block text-[10px] font-bold uppercase tracking-[0.4em] text-zinc-400 border border-zinc-700 px-4 py-2 bg-zinc-900 rounded-full";
     mainHeading.className = "text-3xl sm:text-5xl font-black uppercase tracking-[0.1em] text-white";
     mainDesc.className = "text-xs sm:text-sm text-zinc-400 font-light tracking-wide";
-    checkoutCardBox.className = "order-card bg-[#0c0c0c] border border-zinc-800 p-6 sm:p-10 space-y-6 shadow-2xl rounded-2xl";
+    checkoutCardBox.className = "order-card bg-[#0c0c0c] border border-zinc-800 p-6 sm:p-10 space-y-6 shadow-2xl rounded-2xl text-white";
     cartSummaryTitle.className = "text-xs font-bold uppercase tracking-[0.2em] text-zinc-300 border-b border-zinc-900 pb-3 flex justify-between items-center";
     step1Btn.className = "w-full bg-white hover:bg-zinc-200 text-black py-4 text-xs uppercase tracking-[0.2em] font-black transition shadow-2xl flex items-center justify-center gap-2 rounded-xl";
     step2TopBar.className = "bg-zinc-900 border border-zinc-800 p-3.5 flex items-center justify-between text-white rounded-xl shadow-sm";
@@ -386,8 +390,12 @@ function applySystemThemeOrder() {
     storeHomeBtn.className = "bg-white hover:bg-zinc-200 text-black font-black py-3.5 text-[11px] uppercase tracking-wider transition text-center flex items-center justify-center gap-2 rounded-xl shadow-lg";
     footer.className = "bg-black text-zinc-600 py-16 border-t border-zinc-900 text-center text-[10px] uppercase tracking-[0.3em] space-y-4 relative z-10";
 
-    document.querySelectorAll('.form-input-elem').forEach(el => {
-      el.className = "form-input-elem w-full bg-[#141414] border border-zinc-700 px-4 py-3.5 text-xs text-white font-medium focus:outline-none focus:border-white transition rounded-xl shadow-sm placeholder:text-zinc-500";
+    document.querySelectorAll('.form-input-elem, label').forEach(el => {
+      if(el.tagName === 'LABEL') {
+        el.className = "block text-[10px] font-bold uppercase tracking-[0.2em]";
+      } else {
+        el.className = "form-input-elem w-full bg-[#141414] border border-zinc-700 px-4 py-3.5 text-xs text-white font-medium focus:outline-none focus:border-white transition rounded-xl shadow-sm placeholder:text-zinc-500";
+      }
     });
   }
 }
@@ -452,7 +460,7 @@ function renderCheckoutCart() {
     let lineTotal = itemPrice * qty;
     subtotal += lineTotal;
     return `
-      <div class="flex justify-between items-center ${isLight ? 'bg-white border-zinc-200 text-zinc-900 shadow-sm' : 'bg-black border-zinc-800 text-white'} p-4 border rounded-xl">
+      <div class="flex justify-between items-center ${isLight ? 'bg-white border-zinc-200 text-slate-900 shadow-sm' : 'bg-black border-zinc-800 text-white'} p-4 border rounded-xl">
         <div>
           <span class="font-bold uppercase tracking-wider block text-xs">${itemName}</span>
           <span class="text-[10px] opacity-80 font-mono font-semibold">Qty: ${qty} | GST: Included</span>
@@ -464,7 +472,7 @@ function renderCheckoutCart() {
       </div>
     `;
   }).join('') + `
-    <div class="${isLight ? 'bg-white border-zinc-200 text-zinc-900 shadow-sm' : 'bg-black border-zinc-800 text-white'} p-4 border space-y-2 font-mono text-xs mt-3 rounded-xl">
+    <div class="${isLight ? 'bg-white border-zinc-200 text-slate-900 shadow-sm' : 'bg-black border-zinc-800 text-white'} p-4 border space-y-2 font-mono text-xs mt-3 rounded-xl">
       <div class="flex justify-between opacity-90 font-semibold">
         <span>Subtotal</span>
         <span>₹${subtotal.toLocaleString('en-IN')}</span>
@@ -584,7 +592,7 @@ function showCopySuccessPopup(upiId) {
 
   let modalHtml = `
     <div id="customCopyModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
-      <div class="${isLight ? 'bg-white text-zinc-900 border-zinc-200' : 'bg-[#0c0c0c] text-white border-cyan-400/40'} border p-6 max-w-sm w-full shadow-2xl space-y-4 text-center relative rounded-2xl">
+      <div class="${isLight ? 'bg-white text-slate-900 border-zinc-200' : 'bg-[#0c0c0c] text-white border-cyan-400/40'} border p-6 max-w-sm w-full shadow-2xl space-y-4 text-center relative rounded-2xl">
         <div class="w-12 h-12 bg-cyan-500/20 text-cyan-600 rounded-full flex items-center justify-center mx-auto text-lg">
           <i class="fa-solid fa-clipboard-check"></i>
         </div>
