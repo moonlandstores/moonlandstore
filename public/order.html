@@ -146,24 +146,37 @@ Fill your delivery details, proceed to payment, and submit UTR.
 </button>
 </div>
 
-<!-- STEP 2: Payment Scanner, PhonePe, GPay & UTR Submission (Hidden by Default) -->
+<!-- STEP 2: Payment Options & UTR Submission (Hidden by Default) -->
 <div id="checkoutStep2" class="space-y-6 hidden">
 <div id="step2TopBar" class="border p-3 flex items-center justify-between rounded-lg">
 <span class="text-[11px] opacity-80">Details filled successfully.</span>
 <button type="button" onclick="backToStep1()" class="text-xs text-blue-600 hover:underline uppercase font-bold tracking-wider"><i class="fa-solid fa-pen text-[10px] mr-1"></i> Edit Details</button>
 </div>
 
-<!-- Collapsible Toggle Header for Scanner & Payment Options -->
-<div class="border rounded-xl overflow-hidden shadow-sm">
+<!-- Direct App Buttons (PhonePe & GPay Always Visible at Top) -->
+<div class="space-y-3 pt-2">
+<p class="text-[10px] font-bold uppercase tracking-[0.2em] opacity-80 text-center">Direct Pay Via App (Mobile Only)</p>
+
+<!-- Pay via PhonePe Button -->
+<a id="phonepeIntentBtn" href="#" class="w-full bg-[#5f259f] hover:bg-[#4b1d7f] text-white py-3.5 px-4 rounded-xl font-bold text-xs uppercase tracking-widest flex items-center justify-center gap-3 transition shadow-lg">
+<i class="fa-solid fa-mobile-screen-button text-sm"></i> Pay Via PhonePe
+</a>
+
+<!-- Pay via Google Pay Button -->
+<a id="gpayIntentBtn" href="#" class="w-full bg-white hover:bg-zinc-200 text-black border border-zinc-300 py-3.5 px-4 rounded-xl font-bold text-xs uppercase tracking-widest flex items-center justify-center gap-3 transition shadow-lg">
+<i class="fa-brands fa-google-pay text-lg"></i> Pay Via Google Pay
+</a>
+</div>
+
+<!-- Collapsible Toggle Header ONLY for UPI QR Scanner -->
+<div class="border rounded-xl overflow-hidden shadow-sm pt-2">
 <button type="button" onclick="toggleScannerAccordion()" class="w-full p-4 flex items-center justify-between font-bold uppercase tracking-wider text-xs transition bg-opacity-10 hover:opacity-80" id="scannerAccordionHeader">
-<span class="flex items-center gap-2"><i class="fa-solid fa-lock text-emerald-500"></i> Tap to View UPI QR & App Pay Options</span>
+<span class="flex items-center gap-2"><i class="fa-solid fa-lock text-emerald-500"></i> Tap to View UPI QR Code & ID</span>
 <i class="fa-solid fa-chevron-down transition-transform duration-300" id="scannerChevron"></i>
 </button>
 
-<!-- Collapsible Content Body -->
-<div id="scannerAccordionBody" class="p-6 space-y-6 border-t hidden">
-<!-- 1. UPI QR Scanner Box (Admin Managed) -->
-<div id="qrScannerBox" class="p-6 border text-center space-y-4 rounded-xl shadow-sm">
+<!-- Collapsible QR Body -->
+<div id="scannerAccordionBody" class="p-6 space-y-4 border-t hidden text-center">
 <p class="text-[10px] font-bold uppercase tracking-[0.2em] opacity-80">Scan QR Code to Pay Total Amount</p>
 <div class="space-y-1">
 <span class="text-[8px] uppercase tracking-widest font-bold opacity-60">Pay to Merchant:</span>
@@ -176,22 +189,6 @@ Fill your delivery details, proceed to payment, and submit UTR.
 <div class="flex items-center justify-center gap-3 pt-2">
 <span id="displayAdminUpi" class="font-mono text-[11px] border px-4 py-2.5 rounded-lg">Loading UPI...</span>
 <button type="button" onclick="copyAdminUpi()" id="copyUpiBtn" class="px-4 py-2.5 text-[10px] uppercase tracking-widest font-bold transition rounded-lg">Copy UPI</button>
-</div>
-</div>
-
-<!-- 2. Direct App Buttons (PhonePe & GPay Vertical Layout) -->
-<div class="space-y-3 pt-2">
-<p class="text-[10px] font-bold uppercase tracking-[0.2em] opacity-80 text-center">Or Direct Pay Via App (Mobile Only)</p>
-
-<!-- Pay via PhonePe Button -->
-<a id="phonepeIntentBtn" href="#" class="w-full bg-[#5f259f] hover:bg-[#4b1d7f] text-white py-3.5 px-4 rounded-xl font-bold text-xs uppercase tracking-widest flex items-center justify-center gap-3 transition shadow-lg">
-<i class="fa-solid fa-mobile-screen-button text-sm"></i> Pay Via PhonePe
-</a>
-
-<!-- Pay via Google Pay Button -->
-<a id="gpayIntentBtn" href="#" class="w-full bg-white hover:bg-zinc-200 text-black border border-zinc-300 py-3.5 px-4 rounded-xl font-bold text-xs uppercase tracking-widest flex items-center justify-center gap-3 transition shadow-lg">
-<i class="fa-brands fa-google-pay text-lg"></i> Pay Via Google Pay
-</a>
 </div>
 </div>
 </div>
@@ -477,7 +474,7 @@ function updateUpiIntentLinks() {
 function proceedToPaymentScanner() {
   const cart = JSON.parse(localStorage.getItem('moonland_cart') || '[]');
   if (cart.length === 0) {
-    alert('Aapka cart khali hai! Pehle store से product add karein.');
+    alert('Aapka cart khali hai! Pehle store se product add karein.');
     return;
   }
 
