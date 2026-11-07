@@ -18,16 +18,36 @@ function updateGlobalCartCount() {
     });
 }
 
-function addToCart(title, price, quantity = 1) {
+function addToCart(productOrTitle, price, quantity = 1) {
     let cart = getCart();
-    let existing = cart.find(i => (i.title === title || i.name === title));
-    if (existing) {
-        existing.quantity = (Number(existing.quantity || existing.qty || 1)) + Number(quantity);
+    
+    let newItem;
+    if (typeof productOrTitle === 'object' && productOrTitle !== null) {
+        newItem = {
+            id: productOrTitle.id || '',
+            title: productOrTitle.title || productOrTitle.name || 'Product',
+            name: productOrTitle.name || productOrTitle.title || 'Product',
+            price: Number(productOrTitle.price) || 0,
+            quantity: Number(productOrTitle.quantity || productOrTitle.qty || quantity)
+        };
     } else {
-        cart.push({ title: title, name: title, price: Number(price), quantity: Number(quantity) });
+        newItem = {
+            title: productOrTitle,
+            name: productOrTitle,
+            price: Number(price) || 0,
+            quantity: Number(quantity) || 1
+        };
     }
+
+    let existing = cart.find(i => (i.id && newItem.id && i.id === newItem.id) || (i.title === newItem.title || i.name === newItem.name));
+    
+    if (existing) {
+        existing.quantity = Number(existing.quantity || existing.qty || 1) + Number(newItem.quantity);
+    } else {
+        cart.push(newItem);
+    }
+    
     saveCart(cart);
-    alert('Product successfully cart mein add ho gaya hai!');
 }
 
 // Compact & Responsive Key Features / Specifications Renderer for Mobile & Desktop
