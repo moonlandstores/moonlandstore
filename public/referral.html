@@ -11,10 +11,12 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="style.css">
   <style>
-    /* Smooth theme transition */
-    body { transition: background-color 0.4s ease, color 0.4s ease; }
+    /* Smooth theme transition & flash prevention */
+    html { background-color: #050505; color: #ffffff; }
+    html.light { background-color: #ffffff; color: #09090b; }
+    body { background-color: #050505 !important; color: #ffffff !important; transition: background-color 0.4s ease, color 0.4s ease; }
 
-    /* DAYLIGHT MODE (WHITE + CLOUDS + BLACK ACCENTS) */
+    /* DAYLIGHT MODE OVERRIDES */
     html.light body { background-color: #ffffff !important; color: #09090b !important; }
     html.light header { background-color: rgba(255, 255, 255, 0.95) !important; border-bottom-color: #e4e4e7 !important; }
     html.light .marquee-bar { background-color: #09090b !important; color: #f4f4f5 !important; border-bottom-color: #27272a !important; }
@@ -23,16 +25,14 @@
     html.light nav a:hover, html.light header button:hover, html.light nav a.active-link { color: #09090b !important; }
     html.light .clouds-bg { display: block !important; }
     html.light .moon-graphic { filter: invert(1); opacity: 0.85; }
-    html.light .referral-card { background-color: #f8fafc !important; border-color: #e2e8f0 !important; }
-    html.light .referral-card h3, html.light .referral-card h2 { color: #0f172a !important; }
-    html.light .referral-card p { color: #475569 !important; }
+    html.light .referral-card { background-color: #f8fafc !important; border-color: #e2e8f0 !important; color: #0f172a !important; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); }
     html.light .referral-input { background-color: #ffffff !important; border-color: #cbd5e1 !important; color: #09090b !important; }
-    html.light .referral-input::placeholder { color: #64748b !important; }
+    html.light .referral-input::placeholder { color: #94a3b8 !important; }
     html.light footer { background-color: #f1f5f9 !important; border-top-color: #e2e8f0 !important; color: #475569 !important; }
     html.light footer a { color: #475569 !important; }
     html.light footer a:hover { color: #000000 !important; }
 
-    /* NIGHT MODE (DARK + STARS) */
+    /* NIGHT MODE OVERRIDES */
     html.dark body { background-color: #050505 !important; color: #ffffff !important; }
     html.dark .clouds-bg { display: none !important; }
 
@@ -97,9 +97,8 @@
 
   <!-- AUTO THEME SWITCHER SCRIPT -->
   <script>
-    function applyAutoTheme() {
+    (function() {
       const currentHour = new Date().getHours();
-      // Din: 6 AM se 6 PM (6 to 18)
       const isDayTime = currentHour >= 6 && currentHour < 18;
       const savedTheme = localStorage.getItem('moonland_theme');
 
@@ -110,11 +109,10 @@
         document.documentElement.classList.add('dark');
         document.documentElement.classList.remove('light');
       }
-    }
-    document.addEventListener('DOMContentLoaded', applyAutoTheme);
+    })();
   </script>
 </head>
-<body class="bg-[#050505] text-white font-sans antialiased min-h-screen flex flex-col justify-between selection:bg-white selection:text-black relative">
+<body class="font-sans antialiased min-h-screen flex flex-col justify-between selection:bg-white selection:text-black relative">
 
   <!-- Daylight Clouds Background Overlay -->
   <div class="clouds-bg hidden absolute inset-0 pointer-events-none z-0 overflow-hidden h-full">
@@ -129,39 +127,39 @@
     </marquee>
   </div>
 
-  <!-- Header / Navbar perfectly matched with Store -->
+  <!-- Header / Navbar -->
   <header class="sticky top-0 z-40 bg-black/90 backdrop-blur-xl border-b border-zinc-900">
     <div class="max-w-7xl mx-auto px-6 sm:px-12 flex justify-between items-center h-24">
       <a href="index.html" class="flex items-center space-x-4 group">
-        <div class="brand-logo-box w-8 h-8 border border-white flex items-center justify-center font-black text-xs tracking-widest text-white group-hover:bg-white group-hover:text-black transition duration-500">M</div>
+        <div class="brand-logo-box w-8 h-8 border border-white flex items-center justify-center font-black text-xs tracking-widest text-white group-hover:bg-white group-hover:text-black transition duration-500 rounded-lg">M</div>
         <div class="flex flex-col">
-          <span class="font-bold text-base tracking-[0.4em] uppercase text-white">MOONLAND</span>
+          <span class="font-bold text-base tracking-[0.4em] uppercase">MOONLAND</span>
           <span class="text-[7px] tracking-[0.55em] text-zinc-400 uppercase font-bold">STORE</span>
         </div>
       </a>
 
       <nav class="hidden md:flex items-center space-x-12 font-medium text-[11px] uppercase tracking-[0.25em] text-zinc-400">
-        <a href="store.html" class="hover:text-white transition pb-1">Store</a>
-        <a href="referral.html" class="text-white border-b border-white pb-1 tracking-[0.3em] font-bold active-link">Refer & Earn</a>
-        <a href="track.html" class="hover:text-white transition pb-1">Track Order</a>
-        <a href="about.html" class="hover:text-white transition pb-1">About Us</a>
+        <a href="store.html" class="hover:opacity-75 transition pb-1">Store</a>
+        <a href="referral.html" class="border-b pb-1 tracking-[0.3em] font-bold active-link">Refer & Earn</a>
+        <a href="track.html" class="hover:opacity-75 transition pb-1">Track Order</a>
+        <a href="about.html" class="hover:opacity-75 transition pb-1">About Us</a>
       </nav>
 
       <div class="flex items-center space-x-6">
-        <button onclick="openCartModal()" class="flex items-center space-x-2 text-[11px] uppercase tracking-[0.2em] font-medium text-zinc-400 hover:text-white transition">
+        <button onclick="openCartModal()" class="flex items-center space-x-2 text-[11px] uppercase tracking-[0.2em] font-medium transition hover:opacity-75">
           <i class="fa-solid fa-bag-shopping text-sm"></i>
-          <span id="cartCountBadge" class="bg-white text-black text-[9px] px-1.5 py-0.2 rounded-full font-bold ml-1">0</span>
+          <span id="cartCountBadge" class="bg-black text-white dark:bg-white dark:text-black text-[9px] px-1.5 py-0.2 rounded-full font-bold ml-1">0</span>
         </button>
-        <button onclick="toggleMobileMenu()" class="md:hidden text-white text-lg"><i class="fa-solid fa-bars"></i></button>
+        <button onclick="toggleMobileMenu()" class="md:hidden text-lg p-2 cursor-pointer"><i class="fa-solid fa-bars"></i></button>
       </div>
     </div>
 
     <!-- Mobile Menu Dropdown -->
-    <div id="mobileMenuDropdown" class="hidden md:hidden bg-black border-b border-zinc-900 px-8 py-6 space-y-5 text-xs uppercase font-medium tracking-[0.25em]">
-      <a href="store.html" class="block text-zinc-400 hover:text-white">Store</a>
-      <a href="referral.html" class="block text-white font-bold">Refer & Earn</a>
-      <a href="track.html" class="block text-zinc-400 hover:text-white">Track Order</a>
-      <a href="about.html" class="block text-zinc-400 hover:text-white">About Us</a>
+    <div id="mobileMenuDropdown" class="hidden md:hidden bg-white dark:bg-black border-b border-zinc-200 dark:border-zinc-900 px-8 py-6 space-y-5 text-xs uppercase font-medium tracking-[0.25em] shadow-2xl z-50">
+      <a href="store.html" class="block opacity-80 hover:opacity-100">Store</a>
+      <a href="referral.html" class="block font-bold">Refer & Earn</a>
+      <a href="track.html" class="block opacity-80 hover:opacity-100">Track Order</a>
+      <a href="about.html" class="block opacity-80 hover:opacity-100">About Us</a>
     </div>
   </header>
 
@@ -170,149 +168,149 @@
     
     <!-- Page Title with Animated Motivation Badge -->
     <div class="text-center space-y-4 max-w-2xl mx-auto">
-      <span class="inline-block text-[10px] font-bold uppercase tracking-[0.4em] text-yellow-400 border border-yellow-400/30 px-4 py-2 bg-yellow-400/10 animate-badge-pulse shadow-[0_0_20px_rgba(234,179,8,0.2)]">
-        <i class="fa-solid fa-fire-flame-curved text-yellow-400 mr-1.5"></i> UNLIMITED MONEY MAKER PROGRAM • LIVE PAYOUTS
+      <span class="inline-block text-[10px] font-bold uppercase tracking-[0.4em] text-yellow-600 dark:text-yellow-400 border border-yellow-500/30 px-4 py-2 bg-yellow-500/10 animate-badge-pulse rounded-full shadow-sm">
+        <i class="fa-solid fa-fire-flame-curved text-yellow-500 mr-1.5"></i> UNLIMITED MONEY MAKER PROGRAM • LIVE PAYOUTS
       </span>
       <h1 class="text-3xl sm:text-6xl font-black uppercase tracking-[0.1em]">
-        REFER & EARN <span class="text-yellow-400 font-light animate-coin inline-block">₹1,000 UPI</span>
+        REFER & EARN <span class="text-yellow-600 dark:text-yellow-400 font-light animate-coin inline-block">₹1,000 UPI</span>
       </h1>
-      <p class="text-xs sm:text-sm text-zinc-400 font-light tracking-wide leading-relaxed">
+      <p class="text-xs sm:text-sm opacity-70 font-light tracking-wide leading-relaxed">
         Share your referral link and get a direct ₹1,000 instant cashback on every successful order straight into your bank account or UPI. No limits, infinite earnings!
       </p>
     </div>
 
     <!-- Live Earnings Social Proof Ticker Box -->
-    <div class="referral-card bg-[#0c0c0c] border border-emerald-500/30 p-4 max-w-xl mx-auto flex items-center justify-between shadow-lg">
+    <div class="referral-card border p-4 max-w-xl mx-auto flex items-center justify-between shadow-lg rounded-2xl">
       <div class="flex items-center space-x-3">
-        <div class="w-8 h-8 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-xs">
+        <div class="w-8 h-8 rounded-full bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-xs">
           <i class="fa-solid fa-bolt"></i>
         </div>
         <div class="text-xs">
-          <span class="text-zinc-500 uppercase tracking-widest block text-[9px] font-bold">Live Payout Alert</span>
-          <p id="liveTickerText" class="text-zinc-200 font-mono font-medium ticker-animation">Loading live earnings...</p>
+          <span class="opacity-60 uppercase tracking-widest block text-[9px] font-bold">Live Payout Alert</span>
+          <p id="liveTickerText" class="font-mono font-medium ticker-animation">Loading live earnings...</p>
         </div>
       </div>
       
       <!-- INSTANT PAYOUT BADGE -->
-      <span class="text-[10px] font-mono text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-3 py-1 uppercase tracking-widest font-bold flex items-center gap-1.5 shadow-[0_0_15px_rgba(16,185,129,0.15)]">
-        <i class="fa-solid fa-bolt text-yellow-400"></i> INSTANT PAYOUT
+      <span class="text-[10px] font-mono text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-3 py-1 uppercase tracking-widest font-bold flex items-center gap-1.5 rounded-full shadow-sm">
+        <i class="fa-solid fa-bolt text-yellow-500"></i> INSTANT PAYOUT
       </span>
     </div>
 
     <!-- WHY ARE WE RUNNING THIS REFERRAL PROGRAM? -->
-    <div class="referral-card bg-[#0b0505] border border-red-500/40 p-8 sm:p-12 space-y-6 clearance-reason-card text-center sm:text-left relative overflow-hidden">
+    <div class="referral-card border border-red-500/40 p-8 sm:p-12 space-y-6 clearance-reason-card text-center sm:text-left relative overflow-hidden rounded-2xl">
       <div class="flex flex-col sm:flex-row items-center justify-between gap-6 border-b border-red-500/20 pb-6">
         <div class="space-y-2">
-          <span class="text-[10px] font-extrabold uppercase tracking-[0.35em] text-red-500 bg-red-950/80 px-3.5 py-1 border border-red-500/40 rounded-full inline-block">
+          <span class="text-[10px] font-extrabold uppercase tracking-[0.35em] text-red-600 dark:text-red-500 bg-red-100 dark:bg-red-950/80 px-3.5 py-1 border border-red-500/40 rounded-full inline-block">
             <i class="fa-solid fa-fire mr-1.5"></i> MEGA STOCK CLEARANCE REASON
           </span>
           <h2 class="text-2xl sm:text-4xl font-black uppercase tracking-wide">
-            WHY ARE WE GIVING <span class="text-yellow-400">₹1,000 PER REFERRAL?</span>
+            WHY ARE WE GIVING <span class="text-yellow-600 dark:text-yellow-400">₹1,000 PER REFERRAL?</span>
           </h2>
         </div>
-        <div class="w-16 h-16 rounded-full bg-red-500/10 border border-red-500/30 flex items-center justify-center text-red-400 text-2xl font-black shrink-0">
+        <div class="w-16 h-16 rounded-full bg-red-500/10 border border-red-500/30 flex items-center justify-center text-red-500 text-2xl font-black shrink-0">
           <i class="fa-solid fa-box-open"></i>
         </div>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-xs text-zinc-300 leading-relaxed font-light">
-        <div class="bg-black/60 border border-zinc-800 p-6 space-y-3">
-          <div class="flex items-center gap-2 text-white font-bold uppercase tracking-wider text-xs">
-            <i class="fa-solid fa-bullhorn text-red-400"></i> ZERO AD AGENCY SPEND
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-xs leading-relaxed font-light">
+        <div class="border p-6 space-y-3 rounded-xl">
+          <div class="flex items-center gap-2 font-bold uppercase tracking-wider text-xs">
+            <i class="fa-solid fa-bullhorn text-red-500"></i> ZERO AD AGENCY SPEND
           </div>
-          <p class="text-zinc-400">
+          <p class="opacity-80">
             Instead of spending millions on expensive TV or social media ads, we redirect 100% of our marketing budget directly into our customers' pockets.
           </p>
         </div>
 
-        <div class="bg-black/60 border border-zinc-800 p-6 space-y-3">
-          <div class="flex items-center gap-2 text-white font-bold uppercase tracking-wider text-xs">
-            <i class="fa-solid fa-warehouse text-yellow-400"></i> FAST WAREHOUSE CLEARANCE
+        <div class="border p-6 space-y-3 rounded-xl">
+          <div class="flex items-center gap-2 font-bold uppercase tracking-wider text-xs">
+            <i class="fa-solid fa-warehouse text-yellow-500"></i> FAST WAREHOUSE CLEARANCE
           </div>
-          <p class="text-zinc-400">
+          <p class="opacity-80">
             We are quickly clearing out our present inventory for upcoming model upgrades. Fast sales help us empty stock faster while rewarding you directly!
           </p>
         </div>
       </div>
 
-      <div class="pt-2 text-center text-[11px] uppercase tracking-[0.25em] text-zinc-400 font-medium">
+      <div class="pt-2 text-center text-[11px] uppercase tracking-[0.25em] opacity-80 font-medium">
         🔥 Win-Win Deal: You help us clear inventory, and we pay you instant ₹1,000 cash.
       </div>
     </div>
 
     <!-- Interactive Referral Link Fetcher Box -->
-    <div class="referral-card bg-[#0c0c0c] border border-yellow-500/40 p-6 sm:p-8 luxury-glow-card space-y-4 text-center">
-      <h3 class="text-xs font-bold uppercase tracking-[0.2em] text-yellow-400">
+    <div class="referral-card border border-yellow-500/40 p-6 sm:p-8 luxury-glow-card space-y-4 text-center rounded-2xl">
+      <h3 class="text-xs font-bold uppercase tracking-[0.2em] text-yellow-600 dark:text-yellow-400">
         <i class="fa-solid fa-link mr-2"></i> Get Your Registered Referral Link
       </h3>
       <div class="flex flex-col sm:flex-row gap-3 max-w-2xl mx-auto">
-        <input type="text" id="userReferralInput" placeholder="Enter your registered Mobile Number..." class="referral-input flex-1 bg-black border border-zinc-800 px-4 py-3.5 text-xs font-mono uppercase tracking-widest text-white focus:outline-none focus:border-yellow-400 transition">
-        <button onclick="fetchExistingRefLink()" class="bg-yellow-400 hover:bg-yellow-300 text-black font-black px-6 py-3.5 text-xs uppercase tracking-[0.2em] transition shadow-lg">
+        <input type="text" id="userReferralInput" placeholder="Enter your registered Mobile Number..." class="referral-input flex-1 border px-4 py-3.5 text-xs font-mono uppercase tracking-widest focus:outline-none transition rounded-xl shadow-sm">
+        <button onclick="fetchExistingRefLink()" class="bg-yellow-500 hover:bg-yellow-400 text-black font-black px-6 py-3.5 text-xs uppercase tracking-[0.2em] transition shadow-lg rounded-xl">
           Fetch Link
         </button>
       </div>
       <!-- Container starts hidden -->
       <div id="generatedLinkContainer" class="hidden pt-2 space-y-2">
-        <div class="flex items-center justify-between bg-black border border-zinc-800 px-4 py-3 text-xs font-mono text-yellow-400">
+        <div class="flex items-center justify-between border px-4 py-3 text-xs font-mono text-yellow-600 dark:text-yellow-400 rounded-xl">
           <span id="displayRefUrl" class="truncate pr-4"></span>
-          <button onclick="copyRefLink()" class="bg-white text-black px-3 py-1 text-[10px] uppercase font-bold tracking-wider hover:bg-zinc-200 transition">Copy</button>
+          <button onclick="copyRefLink()" class="bg-black text-white dark:bg-white dark:text-black px-3 py-1 text-[10px] uppercase font-bold tracking-wider hover:opacity-80 transition rounded-lg">Copy</button>
         </div>
       </div>
     </div>
 
     <!-- Referral Reward Slabs with Glow Animation -->
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-      <div class="referral-card bg-[#0c0c0c] border border-zinc-900 p-8 text-center space-y-3 hover:border-zinc-700 transition">
-        <span class="text-[10px] uppercase tracking-widest text-zinc-500 font-bold">Milestone 1</span>
+      <div class="referral-card border p-8 text-center space-y-3 rounded-2xl">
+        <span class="text-[10px] uppercase tracking-widest opacity-60 font-bold">Milestone 1</span>
         <div class="text-2xl font-mono font-black">10 Refers</div>
-        <div class="text-3xl font-black text-yellow-400 font-mono">₹10,000</div>
-        <p class="text-[11px] text-zinc-400 uppercase tracking-wider font-semibold pt-2 border-t border-zinc-900">Instant Bank Transfer</p>
+        <div class="text-3xl font-black text-yellow-600 dark:text-yellow-400 font-mono">₹10,000</div>
+        <p class="text-[11px] opacity-70 uppercase tracking-wider font-semibold pt-2 border-t">Instant Bank Transfer</p>
       </div>
 
-      <div class="referral-card bg-[#0c0c0c] border border-yellow-500/50 p-8 text-center space-y-3 shadow-[0_0_30px_rgba(234,179,8,0.15)] luxury-glow-card">
-        <span class="text-[10px] uppercase tracking-widest text-yellow-400 font-bold">Milestone 2 (Popular)</span>
+      <div class="referral-card border border-yellow-500/50 p-8 text-center space-y-3 shadow-lg luxury-glow-card rounded-2xl">
+        <span class="text-[10px] uppercase tracking-widest text-yellow-600 dark:text-yellow-400 font-bold">Milestone 2 (Popular)</span>
         <div class="text-2xl font-mono font-black">25 Refers</div>
-        <div class="text-3xl font-black text-yellow-400 font-mono">₹25,000</div>
-        <p class="text-[11px] text-zinc-400 uppercase tracking-wider font-semibold pt-2 border-t border-zinc-900">Instant Bank Transfer</p>
+        <div class="text-3xl font-black text-yellow-600 dark:text-yellow-400 font-mono">₹25,000</div>
+        <p class="text-[11px] opacity-70 uppercase tracking-wider font-semibold pt-2 border-t">Instant Bank Transfer</p>
       </div>
 
-      <div class="referral-card bg-[#0c0c0c] border border-zinc-900 p-8 text-center space-y-3 hover:border-zinc-700 transition">
-        <span class="text-[10px] uppercase tracking-widest text-zinc-500 font-bold">Milestone 3</span>
+      <div class="referral-card border p-8 text-center space-y-3 rounded-2xl">
+        <span class="text-[10px] uppercase tracking-widest opacity-60 font-bold">Milestone 3</span>
         <div class="text-2xl font-mono font-black">50 Refers</div>
-        <div class="text-3xl font-black text-yellow-400 font-mono">₹50,000</div>
-        <p class="text-[11px] text-zinc-400 uppercase tracking-wider font-semibold pt-2 border-t border-zinc-900">Instant Bank Transfer</p>
+        <div class="text-3xl font-black text-yellow-600 dark:text-yellow-400 font-mono">₹50,000</div>
+        <p class="text-[11px] opacity-70 uppercase tracking-wider font-semibold pt-2 border-t">Instant Bank Transfer</p>
       </div>
     </div>
 
     <!-- How It Works Card -->
-    <div class="referral-card bg-[#0c0c0c] border border-zinc-800 p-8 sm:p-12 space-y-8">
-      <div class="flex items-center space-x-4 border-b border-zinc-900 pb-6">
-        <div class="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center text-yellow-400 text-xl font-black animate-coin">
+    <div class="referral-card border p-8 sm:p-12 space-y-8 rounded-2xl">
+      <div class="flex items-center space-x-4 border-b pb-6">
+        <div class="w-12 h-12 bg-yellow-500/10 rounded-full flex items-center justify-center text-yellow-500 text-xl font-black animate-coin">
           <i class="fa-solid fa-gift"></i>
         </div>
         <div>
           <h3 class="text-lg font-bold uppercase tracking-wider">How Referral Works</h3>
-          <p class="text-xs text-zinc-400 tracking-wide">3 simple steps to start earning instant cash</p>
+          <p class="text-xs opacity-70 tracking-wide">3 simple steps to start earning instant cash</p>
         </div>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-xs text-zinc-300">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-xs">
         <div class="space-y-2">
-          <div class="text-yellow-400 font-mono font-bold text-sm">01. Place Order</div>
-          <p class="text-zinc-400 leading-relaxed">Place any order from our store. Once your order is verified, you will receive your unique referral link.</p>
+          <div class="text-yellow-600 dark:text-yellow-400 font-mono font-bold text-sm">01. Place Order</div>
+          <p class="opacity-80 leading-relaxed">Place any order from our store. Once your order is verified, you will receive your unique referral link.</p>
         </div>
         <div class="space-y-2">
-          <div class="text-yellow-400 font-mono font-bold text-sm">02. Share Link</div>
-          <p class="text-zinc-400 leading-relaxed">Share your referral link with your friends and on social media. Anyone who buys using your link will be tracked.</p>
+          <div class="text-yellow-600 dark:text-yellow-400 font-mono font-bold text-sm">02. Share Link</div>
+          <p class="opacity-80 leading-relaxed">Share your referral link with your friends and on social media. Anyone who buys using your link will be tracked.</p>
         </div>
         <div class="space-y-2">
-          <div class="text-yellow-400 font-mono font-bold text-sm">03. Get ₹1,000 Instant</div>
-          <p class="text-zinc-400 leading-relaxed">As soon as your friend places an order, a direct ₹1,000 reward will be sent straight to your UPI or bank account.</p>
+          <div class="text-yellow-600 dark:text-yellow-400 font-mono font-bold text-sm">03. Get ₹1,000 Instant</div>
+          <p class="opacity-80 leading-relaxed">As soon as your friend places an order, a direct ₹1,000 reward will be sent straight to your UPI or bank account.</p>
         </div>
       </div>
 
-      <div class="pt-6 border-t border-zinc-900 text-center">
-        <a href="store.html" class="inline-block bg-white hover:bg-zinc-200 text-black font-black px-10 py-4 text-xs uppercase tracking-[0.25em] transition shadow-2xl">
+      <div class="pt-6 border-t text-center">
+        <a href="store.html" class="inline-block bg-black text-white dark:bg-white dark:text-black font-black px-10 py-4 text-xs uppercase tracking-[0.25em] transition shadow-2xl rounded-xl">
           Start Shopping & Get Referral Link
         </a>
       </div>
@@ -321,13 +319,13 @@
   </main>
 
   <!-- Footer -->
-  <footer class="bg-black text-zinc-600 py-16 border-t border-zinc-900 text-center text-[10px] uppercase tracking-[0.3em] space-y-4 relative z-10">
+  <footer class="py-16 border-t text-center text-[10px] uppercase tracking-[0.3em] space-y-4 relative z-10">
     <p>© 2026 Moonland Store. All Rights Reserved.</p>
-    <div class="flex justify-center space-x-8 text-zinc-500">
-      <a href="index.html" class="hover:text-white transition">Store Home</a>
-      <a href="referral.html" class="hover:text-white transition">Refer & Earn</a>
-      <a href="track.html" class="hover:text-white transition">Track Order</a>
-      <a href="about.html" class="hover:text-white transition">About Us</a>
+    <div class="flex justify-center space-x-8 opacity-80">
+      <a href="index.html" class="hover:opacity-100 transition">Store Home</a>
+      <a href="referral.html" class="hover:opacity-100 transition">Refer & Earn</a>
+      <a href="track.html" class="hover:opacity-100 transition">Track Order</a>
+      <a href="about.html" class="hover:opacity-100 transition">About Us</a>
     </div>
   </footer>
 
@@ -376,20 +374,20 @@
       if (existing) existing.remove();
 
       let borderColor = isError ? 'border-red-500/50' : 'border-yellow-400/50';
-      let iconColor = isError ? 'text-red-400 bg-red-400/20' : 'text-yellow-400 bg-yellow-400/20';
+      let iconColor = isError ? 'text-red-500 bg-red-500/10' : 'text-yellow-600 dark:text-yellow-400 bg-yellow-500/10';
       let iconClass = isError ? 'fa-triangle-exclamation' : 'fa-circle-check';
 
       let modalHtml = `
-        <div id="customLuxuryModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/85 backdrop-blur-md p-4">
-          <div class="bg-[#0c0c0c] border ${borderColor} p-6 sm:p-8 max-w-sm w-full shadow-2xl space-y-5 text-center relative">
+        <div id="customLuxuryModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
+          <div class="referral-card border ${borderColor} p-6 sm:p-8 max-w-sm w-full shadow-2xl space-y-5 text-center relative rounded-2xl">
             <div class="w-14 h-14 ${iconColor} rounded-full flex items-center justify-center mx-auto text-xl">
               <i class="fa-solid ${iconClass}"></i>
             </div>
             <div class="space-y-2">
-              <h3 class="text-xs font-bold text-white uppercase tracking-widest">${title}</h3>
-              <p class="text-xs text-zinc-300 font-light leading-relaxed">${message}</p>
+              <h3 class="text-xs font-bold uppercase tracking-widest">${title}</h3>
+              <p class="text-xs opacity-80 font-light leading-relaxed">${message}</p>
             </div>
-            <button onclick="document.getElementById('customLuxuryModal').remove()" class="w-full bg-white hover:bg-zinc-200 text-black font-black py-3.5 text-xs uppercase tracking-[0.2em] transition">
+            <button onclick="document.getElementById('customLuxuryModal').remove()" class="w-full bg-black text-white dark:bg-white dark:text-black font-black py-3.5 text-xs uppercase tracking-[0.2em] transition rounded-xl shadow-lg">
               OK, Got It
             </button>
           </div>

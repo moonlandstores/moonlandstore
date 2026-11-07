@@ -4,10 +4,18 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Register & Order | MOONLAND STORE</title>
+<!-- Browser Tab Favicon Logo -->
+<link rel="icon" type="image/png" href="logo.png?v=999">
+<link rel="shortcut icon" href="logo.png?v=999">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <script src="https://cdn.tailwindcss.com"></script>
 <link rel="stylesheet" href="style.css">
 <style>
+/* Smooth theme transition & flash prevention */
+html { background-color: #050505; color: #ffffff; }
+html.light { background-color: #f8fafc; color: #0f172a; }
+body { background-color: #050505 !important; color: #ffffff !important; transition: background-color 0.4s ease, color 0.4s ease; }
+
 @keyframes rocketLaunch {
 0% { transform: translateY(80px) scale(1.2); opacity: 0; }
 20% { opacity: 1; }
@@ -37,28 +45,45 @@
   animation: cloudFloatAnimation 40s linear infinite;
 }
 </style>
+
+<!-- AUTO THEME SWITCHER SCRIPT -->
+<script>
+  (function() {
+    const currentHour = new Date().getHours();
+    const isDayTime = currentHour >= 6 && currentHour < 18;
+    const savedTheme = localStorage.getItem('moonland_theme');
+
+    if (savedTheme === 'light' || (!savedTheme && isDayTime)) {
+      document.documentElement.classList.add('light');
+      document.documentElement.classList.remove('dark');
+    } else {
+      document.documentElement.classList.add('dark');
+      document.documentElement.classList.remove('light');
+    }
+  })();
+</script>
 </head>
-<body id="orderBodyTag" class="font-sans antialiased min-h-screen flex flex-col justify-between">
+<body id="orderBodyTag" class="font-sans antialiased min-h-screen flex flex-col justify-between selection:bg-white selection:text-black relative">
 
 <!-- Top Announcement Bar -->
-<div id="topAnnouncementBar" class="py-2.5 px-4 text-[10px] font-bold tracking-[0.25em] uppercase border-b overflow-hidden whitespace-nowrap">
+<div id="topAnnouncementBar" class="marquee-bar bg-black text-zinc-300 py-2.5 px-4 text-[10px] font-bold tracking-[0.25em] uppercase border-b border-zinc-900 overflow-hidden whitespace-nowrap z-20">
 <marquee behavior="scroll" direction="left" scrollamount="5">
 <span class="inline-flex items-center gap-2 mx-6"><i class="fa-solid fa-bolt text-yellow-500"></i> MOONLAND SPECIAL: UNLIMITED REFER & EARN ₹1,000 INSTANT UPI CASHBACK PER REFERRAL!</span>
 </marquee>
 </div>
 
 <!-- Header / Navbar -->
-<header id="orderHeader" class="sticky top-0 z-45 backdrop-blur-xl border-b">
+<header id="orderHeader" class="sticky top-0 z-45 bg-black/90 backdrop-blur-xl border-b border-zinc-900">
 <div class="max-w-7xl mx-auto px-6 sm:px-12 flex justify-between items-center h-24">
 <a href="index.html" class="flex items-center space-x-4 group">
-<div id="logoBox" class="w-8 h-8 border flex items-center justify-center font-black text-xs tracking-widest transition duration-500 rounded-lg">M</div>
+<div id="logoBox" class="brand-logo-box w-8 h-8 border border-white flex items-center justify-center font-black text-xs tracking-widest text-white group-hover:bg-white group-hover:text-black transition duration-500 rounded-lg">M</div>
 <div class="flex flex-col">
 <span id="brandTitle" class="font-bold text-base tracking-[0.4em] uppercase">MOONLAND</span>
-<span class="text-[7px] tracking-[0.55em] text-zinc-500 uppercase font-bold">STORE</span>
+<span class="text-[7px] tracking-[0.55em] text-zinc-400 uppercase font-bold">STORE</span>
 </div>
 </a>
 
-<nav class="hidden md:flex items-center space-x-12 font-medium text-[11px] uppercase tracking-[0.25em]">
+<nav class="hidden md:flex items-center space-x-12 font-medium text-[11px] uppercase tracking-[0.25em] text-zinc-400">
 <a href="store.html" class="hover:opacity-75 transition pb-1">Store</a>
 <a href="referral.html" class="hover:opacity-75 transition pb-1">Refer & Earn</a>
 <a href="track.html" class="hover:opacity-75 transition pb-1">Track Order</a>
@@ -68,25 +93,25 @@
 <div class="flex items-center space-x-6">
 <button onclick="openCartModal()" class="flex items-center space-x-2 text-[11px] uppercase tracking-[0.2em] font-medium transition hover:opacity-75">
 <i class="fa-solid fa-bag-shopping text-sm"></i>
-<span id="cartCountBadge" class="text-[9px] px-1.5 py-0.2 rounded-full font-bold ml-1">0</span>
+<span id="cartCountBadge" class="bg-black text-white dark:bg-white dark:text-black text-[9px] px-1.5 py-0.2 rounded-full font-bold ml-1">0</span>
 </button>
-<button onclick="toggleMobileMenu()" class="md:hidden text-lg"><i class="fa-solid fa-bars"></i></button>
+<button onclick="toggleMobileMenu()" class="md:hidden text-lg p-2 cursor-pointer"><i class="fa-solid fa-bars"></i></button>
 </div>
 </div>
 
 <!-- Mobile Menu Dropdown -->
-<div id="mobileMenuDropdown" class="hidden md:hidden border-b px-8 py-6 space-y-5 text-xs uppercase font-medium tracking-[0.25em] z-50">
-<a href="store.html" class="block">Store</a>
-<a href="referral.html" class="block">Refer & Earn</a>
-<a href="track.html" class="block">Track Order</a>
-<a href="about.html" class="block">About Us</a>
+<div id="mobileMenuDropdown" class="hidden md:hidden bg-white dark:bg-black border-b border-zinc-200 dark:border-zinc-900 px-8 py-6 space-y-5 text-xs uppercase font-medium tracking-[0.25em] shadow-2xl z-50">
+<a href="store.html" class="block opacity-80 hover:opacity-100">Store</a>
+<a href="referral.html" class="block opacity-80 hover:opacity-100">Refer & Earn</a>
+<a href="track.html" class="block opacity-80 hover:opacity-100">Track Order</a>
+<a href="about.html" class="block opacity-80 hover:opacity-100">About Us</a>
 </div>
 </header>
 
 <!-- Main Checkout Content -->
 <main class="max-w-3xl mx-auto px-6 sm:px-12 py-20 w-full flex-grow space-y-12 relative z-10">
 <div class="text-center space-y-4">
-<span id="secBadge" class="inline-block text-[10px] font-bold uppercase tracking-[0.4em] border px-4 py-2 rounded-full">
+<span id="secBadge" class="inline-block text-[10px] font-bold uppercase tracking-[0.4em] border px-4 py-2 rounded-full shadow-sm">
 SECURE CHECKOUT
 </span>
 <h1 id="mainHeading" class="text-3xl sm:text-5xl font-black uppercase tracking-[0.1em]">
@@ -97,11 +122,11 @@ Fill your delivery details, proceed to payment, and submit UTR.
 </p>
 </div>
 
-<div id="checkoutCardBox" class="border p-8 sm:p-12 space-y-8 shadow-2xl backdrop-blur-md rounded-2xl">
+<div id="checkoutCardBox" class="order-card border p-8 sm:p-12 space-y-8 shadow-2xl backdrop-blur-md rounded-2xl">
 <div class="space-y-4">
 <h2 id="cartSummaryTitle" class="text-xs font-bold uppercase tracking-[0.2em] border-b pb-3 flex justify-between items-center">
 <span><i class="fa-solid fa-bag-shopping mr-2"></i> Cart Summary</span>
-<span class="text-[10px] text-emerald-500 font-mono tracking-wider px-2.5 py-1 rounded-md border border-emerald-500/20 bg-emerald-500/10">Inclusive of All GST & Taxes</span>
+<span class="text-[10px] text-emerald-600 dark:text-emerald-400 font-mono tracking-wider px-2.5 py-1 rounded-md border border-emerald-500/20 bg-emerald-500/10">Inclusive of All GST & Taxes</span>
 </h2>
 <div id="checkoutCartList" class="space-y-3 text-xs"></div>
 </div>
@@ -131,7 +156,7 @@ Fill your delivery details, proceed to payment, and submit UTR.
 <div class="space-y-2">
 <label class="block text-[10px] font-bold uppercase tracking-[0.2em] opacity-80">Your UPI ID (For Cashback)</label>
 <input type="text" id="orderUpi" placeholder="yourname@upi" class="form-input-elem w-full border px-4 py-3.5 text-xs focus:outline-none transition rounded-xl">
-<p class="text-[10px] font-mono tracking-wide pt-1 opacity-80">
+<p class="text-[10px] font-mono tracking-wide pt-1 opacity-70">
 <i class="fa-solid fa-circle-info mr-1"></i> We need your UPI ID here to transfer your <strong>Referral & Earn cashback</strong> directly!
 </p>
 </div>
@@ -262,6 +287,8 @@ let currentMerchantName = "Moonland Store";
 function applySystemThemeOrder() {
   const currentHour = new Date().getHours();
   const isDayTime = currentHour >= 6 && currentHour < 18;
+  const savedTheme = localStorage.getItem('moonland_theme');
+  const isLight = savedTheme === 'light' || (!savedTheme && isDayTime);
 
   const bodyTag = document.getElementById('orderBodyTag');
   const topBar = document.getElementById('topAnnouncementBar');
@@ -289,51 +316,51 @@ function applySystemThemeOrder() {
   const storeHomeBtn = document.getElementById('storeHomeBtn');
   const footer = document.getElementById('orderFooter');
 
-  if (isDayTime) {
+  if (isLight) {
     // --- DAYLIGHT THEME ---
-    bodyTag.className = "daylight-sky-clouds text-slate-900 font-sans antialiased min-h-screen flex flex-col justify-between selection:bg-black selection:text-white";
-    topBar.className = "bg-blue-100/90 backdrop-blur-md text-blue-900 py-2.5 px-4 text-[10px] font-bold tracking-[0.25em] uppercase border-b border-blue-200 overflow-hidden whitespace-nowrap";
-    header.className = "sticky top-0 z-45 bg-white/90 backdrop-blur-xl border-b border-blue-200 shadow-sm";
-    logoBox.className = "w-8 h-8 border border-blue-900 flex items-center justify-center font-black text-xs tracking-widest text-blue-900 hover:bg-blue-900 hover:text-white transition duration-500 rounded-lg";
-    brandTitle.className = "font-bold text-base tracking-[0.4em] uppercase text-blue-950";
-    mobileMenu.className = "hidden md:hidden bg-white/95 backdrop-blur-md border-b border-blue-200 px-8 py-6 space-y-5 text-xs uppercase font-medium tracking-[0.25em] text-blue-950 shadow-xl";
+    bodyTag.className = "daylight-sky-clouds text-slate-900 font-sans antialiased min-h-screen flex flex-col justify-between selection:bg-black selection:text-white relative";
+    topBar.className = "marquee-bar bg-[#09090b] text-[#f4f4f5] py-2.5 px-4 text-[10px] font-bold tracking-[0.25em] uppercase border-b border-[#27272a] overflow-hidden whitespace-nowrap z-20";
+    header.className = "sticky top-0 z-45 bg-white/95 backdrop-blur-xl border-b border-zinc-200";
+    logoBox.className = "brand-logo-box w-8 h-8 border border-zinc-900 bg-zinc-900 text-white flex items-center justify-center font-black text-xs tracking-widest rounded-lg";
+    brandTitle.className = "font-bold text-base tracking-[0.4em] uppercase text-zinc-900";
+    mobileMenu.className = "hidden md:hidden bg-white border-b border-zinc-200 px-8 py-6 space-y-5 text-xs uppercase font-medium tracking-[0.25em] text-zinc-900 shadow-2xl z-50";
 
-    secBadge.className = "inline-block text-[10px] font-bold uppercase tracking-[0.4em] text-blue-700 border border-blue-300 px-4 py-2 bg-blue-50/80 rounded-full";
-    mainHeading.className = "text-3xl sm:text-5xl font-black uppercase tracking-[0.1em] text-blue-950";
-    mainDesc.className = "text-xs sm:text-sm text-slate-600 font-light tracking-wide";
-    checkoutCardBox.className = "bg-white/95 backdrop-blur-md border border-blue-100 p-8 sm:p-12 space-y-8 shadow-2xl rounded-2xl";
-    cartSummaryTitle.className = "text-xs font-bold uppercase tracking-[0.2em] text-blue-950 border-b border-blue-100 pb-3 flex justify-between items-center";
-    step1Btn.className = "w-full bg-blue-600 hover:bg-blue-700 text-white py-4 text-xs uppercase tracking-[0.2em] font-black transition shadow-lg flex items-center justify-center gap-2 rounded-xl";
-    step2TopBar.className = "bg-blue-50 border border-blue-200 p-3.5 flex items-center justify-between text-blue-950 rounded-xl shadow-sm";
-    gpayIntentBtn.className = "w-full bg-white hover:bg-slate-50 text-slate-900 border border-slate-300 py-4 px-4 rounded-xl font-bold text-xs uppercase tracking-widest flex items-center justify-center gap-3 transition shadow-md";
+    secBadge.className = "inline-block text-[10px] font-bold uppercase tracking-[0.4em] text-cyan-700 border border-cyan-500/40 px-4 py-2 bg-cyan-500/10 rounded-full shadow-sm";
+    mainHeading.className = "text-3xl sm:text-5xl font-black uppercase tracking-[0.1em] text-zinc-900";
+    mainDesc.className = "text-xs sm:text-sm text-zinc-600 font-light tracking-wide";
+    checkoutCardBox.className = "order-card bg-white border border-zinc-200 p-8 sm:p-12 space-y-8 shadow-xl rounded-2xl";
+    cartSummaryTitle.className = "text-xs font-bold uppercase tracking-[0.2em] text-zinc-900 border-b border-zinc-200 pb-3 flex justify-between items-center";
+    step1Btn.className = "w-full bg-zinc-900 hover:bg-black text-white py-4 text-xs uppercase tracking-[0.2em] font-black transition shadow-lg flex items-center justify-center gap-2 rounded-xl";
+    step2TopBar.className = "bg-zinc-50 border border-zinc-200 p-3.5 flex items-center justify-between text-zinc-900 rounded-xl shadow-sm";
+    gpayIntentBtn.className = "w-full bg-white hover:bg-zinc-50 text-zinc-900 border border-zinc-300 py-4 px-4 rounded-xl font-bold text-xs uppercase tracking-widest flex items-center justify-center gap-3 transition shadow-md";
 
-    scannerAccordionHeader.className = "w-full p-4 flex items-center justify-between font-bold uppercase tracking-wider text-xs transition bg-blue-50/80 text-blue-950 border border-blue-200 hover:bg-blue-100 rounded-xl shadow-sm";
-    copyUpiBtn.className = "bg-blue-600 text-white hover:bg-blue-700 px-4 py-2.5 text-[10px] uppercase tracking-widest font-bold transition rounded-lg shadow-sm";
-    submitOrderBtn.className = "w-full bg-emerald-600 hover:bg-emerald-700 text-white py-4 text-xs uppercase tracking-[0.2em] font-black transition shadow-xl flex items-center justify-center gap-2 rounded-xl";
+    scannerAccordionHeader.className = "w-full p-4 flex items-center justify-between font-bold uppercase tracking-wider text-xs transition bg-zinc-50 text-zinc-900 border border-zinc-200 hover:bg-zinc-100 rounded-xl shadow-sm";
+    copyUpiBtn.className = "bg-zinc-900 text-white hover:bg-black px-4 py-2.5 text-[10px] uppercase tracking-widest font-bold transition rounded-xl shadow-sm";
+    submitOrderBtn.className = "w-full bg-emerald-600 hover:bg-emerald-700 text-white py-4 text-xs uppercase tracking-[0.2em] font-black transition shadow-lg flex items-center justify-center gap-2 rounded-xl";
 
-    successPopupBox.className = "relative w-full max-w-lg bg-white border border-blue-200 p-8 shadow-2xl text-center space-y-6 rounded-2xl overflow-hidden text-slate-900";
-    successInfoBox.className = "bg-blue-50 border border-blue-100 p-4 text-xs font-mono leading-relaxed space-y-2.5 text-left relative z-10 text-slate-800 rounded-xl";
-    successBadgeSpan.className = "text-[10px] font-extrabold uppercase tracking-[0.3em] text-blue-600 bg-blue-500/10 px-3.5 py-1.5 border border-blue-500/30 rounded-full";
-    smokeEffectDiv.className = "absolute w-48 h-24 bg-gradient-to-r from-blue-400/30 via-white/50 to-cyan-500/30 rounded-full rocket-smoke-exhaust";
-    storeHomeBtn.className = "bg-blue-600 hover:bg-blue-700 text-white font-black py-3.5 text-[11px] uppercase tracking-wider transition text-center flex items-center justify-center gap-2 rounded-xl shadow-lg";
-    footer.className = "bg-white/80 backdrop-blur-md text-slate-600 py-16 border-t border-blue-100 text-center text-[10px] uppercase tracking-[0.3em] space-y-4";
+    successPopupBox.className = "relative w-full max-w-lg bg-white border border-zinc-200 p-8 shadow-2xl text-center space-y-6 rounded-2xl overflow-hidden text-zinc-900";
+    successInfoBox.className = "bg-zinc-50 border border-zinc-200 p-4 text-xs font-mono leading-relaxed space-y-2.5 text-left relative z-10 text-zinc-800 rounded-xl";
+    successBadgeSpan.className = "text-[10px] font-extrabold uppercase tracking-[0.3em] text-cyan-700 bg-cyan-500/10 px-3.5 py-1.5 border border-cyan-500/30 rounded-full";
+    smokeEffectDiv.className = "absolute w-48 h-24 bg-gradient-to-r from-cyan-500/20 via-slate-300/40 to-blue-500/20 rounded-full rocket-smoke-exhaust";
+    storeHomeBtn.className = "bg-zinc-900 hover:bg-black text-white font-black py-3.5 text-[11px] uppercase tracking-wider transition text-center flex items-center justify-center gap-2 rounded-xl shadow-md";
+    footer.className = "bg-zinc-100 text-zinc-600 py-16 border-t border-zinc-200 text-center text-[10px] uppercase tracking-[0.3em] space-y-4 relative z-10";
 
     document.querySelectorAll('.form-input-elem').forEach(el => {
-      el.className = "form-input-elem w-full bg-white border border-blue-300 px-4 py-3.5 text-xs text-slate-900 font-medium focus:outline-none focus:border-blue-600 transition rounded-xl shadow-sm placeholder:text-slate-400";
+      el.className = "form-input-elem w-full bg-white border border-zinc-300 px-4 py-3.5 text-xs text-zinc-900 font-medium focus:outline-none focus:border-zinc-900 transition rounded-xl shadow-sm placeholder:text-zinc-400";
     });
   } else {
-    // --- NIGHT MODE ---
-    bodyTag.className = "bg-[#050505] text-white font-sans antialiased min-h-screen flex flex-col justify-between selection:bg-white selection:text-black";
-    topBar.className = "bg-black text-zinc-300 py-2.5 px-4 text-[10px] font-bold tracking-[0.25em] uppercase border-b border-zinc-900 overflow-hidden whitespace-nowrap";
+    // --- NIGHT MODE (PRESERVED EXACTLY AS YOU LIKED IT) ---
+    bodyTag.className = "bg-[#050505] text-white font-sans antialiased min-h-screen flex flex-col justify-between selection:bg-white selection:text-black relative";
+    topBar.className = "marquee-bar bg-black text-zinc-300 py-2.5 px-4 text-[10px] font-bold tracking-[0.25em] uppercase border-b border-zinc-900 overflow-hidden whitespace-nowrap z-20";
     header.className = "sticky top-0 z-45 bg-black/90 backdrop-blur-xl border-b border-zinc-900";
-    logoBox.className = "w-8 h-8 border border-white flex items-center justify-center font-black text-xs tracking-widest text-white hover:bg-white hover:text-black transition duration-500 rounded-lg";
+    logoBox.className = "brand-logo-box w-8 h-8 border border-white flex items-center justify-center font-black text-xs tracking-widest text-white group-hover:bg-white group-hover:text-black transition duration-500 rounded-lg";
     brandTitle.className = "font-bold text-base tracking-[0.4em] uppercase text-white";
-    mobileMenu.className = "hidden md:hidden bg-black border-b border-zinc-900 px-8 py-6 space-y-5 text-xs uppercase font-medium tracking-[0.25em] text-white shadow-2xl";
+    mobileMenu.className = "hidden md:hidden bg-black border-b border-zinc-900 px-8 py-6 space-y-5 text-xs uppercase font-medium tracking-[0.25em] text-white shadow-2xl z-50";
 
     secBadge.className = "inline-block text-[10px] font-bold uppercase tracking-[0.4em] text-zinc-400 border border-zinc-700 px-4 py-2 bg-zinc-900 rounded-full";
     mainHeading.className = "text-3xl sm:text-5xl font-black uppercase tracking-[0.1em] text-white";
     mainDesc.className = "text-xs sm:text-sm text-zinc-400 font-light tracking-wide";
-    checkoutCardBox.className = "bg-[#0c0c0c] border border-zinc-800 p-8 sm:p-12 space-y-8 shadow-2xl rounded-2xl";
+    checkoutCardBox.className = "order-card bg-[#0c0c0c] border border-zinc-800 p-8 sm:p-12 space-y-8 shadow-2xl rounded-2xl";
     cartSummaryTitle.className = "text-xs font-bold uppercase tracking-[0.2em] text-zinc-300 border-b border-zinc-900 pb-3 flex justify-between items-center";
     step1Btn.className = "w-full bg-white hover:bg-zinc-200 text-black py-4 text-xs uppercase tracking-[0.2em] font-black transition shadow-2xl flex items-center justify-center gap-2 rounded-xl";
     step2TopBar.className = "bg-zinc-900 border border-zinc-800 p-3.5 flex items-center justify-between text-white rounded-xl shadow-sm";
@@ -348,7 +375,7 @@ function applySystemThemeOrder() {
     successBadgeSpan.className = "text-[10px] font-extrabold uppercase tracking-[0.3em] text-cyan-400 bg-cyan-500/10 px-3.5 py-1.5 border border-cyan-500/30 rounded-full";
     smokeEffectDiv.className = "absolute w-48 h-24 bg-gradient-to-r from-cyan-500/30 via-white/20 to-blue-500/30 rounded-full rocket-smoke-exhaust";
     storeHomeBtn.className = "bg-white hover:bg-zinc-200 text-black font-black py-3.5 text-[11px] uppercase tracking-wider transition text-center flex items-center justify-center gap-2 rounded-xl shadow-lg";
-    footer.className = "bg-black text-zinc-600 py-16 border-t border-zinc-900 text-center text-[10px] uppercase tracking-[0.3em] space-y-4";
+    footer.className = "bg-black text-zinc-600 py-16 border-t border-zinc-900 text-center text-[10px] uppercase tracking-[0.3em] space-y-4 relative z-10";
 
     document.querySelectorAll('.form-input-elem').forEach(el => {
       el.className = "form-input-elem w-full bg-[#141414] border border-zinc-700 px-4 py-3.5 text-xs text-white font-medium focus:outline-none focus:border-white transition rounded-xl shadow-sm placeholder:text-zinc-500";
@@ -398,10 +425,11 @@ function renderCheckoutCart() {
   if(!container) return;
 
   const currentHour = new Date().getHours();
-  const isDay = currentHour >= 6 && currentHour < 18;
+  const savedTheme = localStorage.getItem('moonland_theme');
+  const isLight = savedTheme === 'light' || (!savedTheme && currentHour >= 6 && currentHour < 18);
 
   if(cart.length === 0) {
-    container.innerHTML = `<p class="text-zinc-500 uppercase tracking-widest text-center py-6 font-semibold">Your cart is empty. <a href="store.html" class="underline text-blue-500 font-bold ml-1">Add products</a></p>`;
+    container.innerHTML = `<p class="opacity-60 uppercase tracking-widest text-center py-6 font-semibold">Your cart is empty. <a href="store.html" class="underline font-bold ml-1">Add products</a></p>`;
     currentTotalSubtotal = 0;
     updateUpiIntentLinks();
     return;
@@ -415,7 +443,7 @@ function renderCheckoutCart() {
     let lineTotal = itemPrice * qty;
     subtotal += lineTotal;
     return `
-      <div class="flex justify-between items-center ${isDay ? 'bg-white border-blue-200 text-slate-900 shadow-sm' : 'bg-black border-zinc-800 text-white'} p-4 border rounded-xl">
+      <div class="flex justify-between items-center ${isLight ? 'bg-white border-zinc-200 text-zinc-900 shadow-sm' : 'bg-black border-zinc-800 text-white'} p-4 border rounded-xl">
         <div>
           <span class="font-bold uppercase tracking-wider block text-xs">${itemName}</span>
           <span class="text-[10px] opacity-70 font-mono">Qty: ${qty} | GST: Included</span>
@@ -427,7 +455,7 @@ function renderCheckoutCart() {
       </div>
     `;
   }).join('') + `
-    <div class="${isDay ? 'bg-white border-blue-200 text-slate-900 shadow-sm' : 'bg-black border-zinc-800 text-white'} p-4 border space-y-2 font-mono text-xs mt-3 rounded-xl">
+    <div class="${isLight ? 'bg-white border-zinc-200 text-zinc-900 shadow-sm' : 'bg-black border-zinc-800 text-white'} p-4 border space-y-2 font-mono text-xs mt-3 rounded-xl">
       <div class="flex justify-between opacity-80">
         <span>Subtotal</span>
         <span>₹${subtotal.toLocaleString('en-IN')}</span>
@@ -440,7 +468,7 @@ function renderCheckoutCart() {
         <span>GST / Taxes</span>
         <span class="text-emerald-500 font-bold uppercase">Included</span>
       </div>
-      <div class="pt-3 border-t ${isDay ? 'border-blue-100' : 'border-zinc-800'} flex justify-between font-black text-sm uppercase tracking-wider">
+      <div class="pt-3 border-t ${isLight ? 'border-zinc-100' : 'border-zinc-800'} flex justify-between font-black text-sm uppercase tracking-wider">
         <span>Total Payable Amount</span>
         <span class="font-mono text-emerald-500 text-base">₹${subtotal.toLocaleString('en-IN')}</span>
       </div>
@@ -505,7 +533,6 @@ function backToStep1() {
 }
 
 async function loadPaymentScannerSettings() {
-  // Direct default fallback so it displays instantly without waiting for network
   currentAdminUpi = "paymoonland@upi";
   currentMerchantName = "Moonland Store";
   document.getElementById('displayAdminUpi').innerText = currentAdminUpi;
@@ -543,19 +570,20 @@ function showCopySuccessPopup(upiId) {
   if (existing) existing.remove();
 
   const currentHour = new Date().getHours();
-  const isDay = currentHour >= 6 && currentHour < 18;
+  const savedTheme = localStorage.getItem('moonland_theme');
+  const isLight = savedTheme === 'light' || (!savedTheme && currentHour >= 6 && currentHour < 18);
 
   let modalHtml = `
     <div id="customCopyModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
-      <div class="${isDay ? 'bg-white text-slate-900 border-blue-200' : 'bg-[#0c0c0c] text-white border-cyan-400/40'} border p-6 max-w-sm w-full shadow-2xl space-y-4 text-center relative rounded-2xl">
+      <div class="${isLight ? 'bg-white text-zinc-900 border-zinc-200' : 'bg-[#0c0c0c] text-white border-cyan-400/40'} border p-6 max-w-sm w-full shadow-2xl space-y-4 text-center relative rounded-2xl">
         <div class="w-12 h-12 bg-cyan-500/20 text-cyan-600 rounded-full flex items-center justify-center mx-auto text-lg">
           <i class="fa-solid fa-clipboard-check"></i>
         </div>
         <div class="space-y-1">
           <h3 class="text-xs font-bold uppercase tracking-widest">UPI ID Copied!</h3>
-          <p class="text-[11px] text-cyan-600 font-mono break-all ${isDay ? 'bg-blue-50 border-blue-200' : 'bg-black border-zinc-800'} p-2.5 border rounded-xl">${upiId}</p>
+          <p class="text-[11px] text-cyan-600 font-mono break-all ${isLight ? 'bg-zinc-50 border-zinc-200' : 'bg-black border-zinc-800'} p-2.5 border rounded-xl">${upiId}</p>
         </div>
-        <button onclick="document.getElementById('customCopyModal').remove()" class="w-full ${isDay ? 'bg-blue-600 text-white hover:bg-blue-700' : 'bg-white text-black hover:bg-zinc-200'} font-black py-3 text-xs uppercase tracking-[0.2em] transition rounded-xl">
+        <button onclick="document.getElementById('customCopyModal').remove()" class="w-full ${isLight ? 'bg-zinc-900 text-white hover:bg-black' : 'bg-white text-black hover:bg-zinc-200'} font-black py-3 text-xs uppercase tracking-[0.2em] transition rounded-xl">
           OK, Paid
         </button>
       </div>

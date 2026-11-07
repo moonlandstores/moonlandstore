@@ -11,8 +11,10 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="style.css">
   <style>
-    /* Smooth theme transition */
-    body { transition: background-color 0.4s ease, color 0.4s ease; }
+    /* Smooth theme transition & flash prevention */
+    html { background-color: #050505; color: #ffffff; }
+    html.light { background-color: #ffffff; color: #09090b; }
+    body { background-color: #050505 !important; color: #ffffff !important; transition: background-color 0.4s ease, color 0.4s ease; }
 
     /* DAYLIGHT MODE (WHITE + CLOUDS + BLACK ACCENTS) */
     html.light body { background-color: #ffffff !important; color: #09090b !important; }
@@ -24,9 +26,9 @@
     html.light .clouds-bg { display: block !important; }
     html.light .moon-graphic { filter: invert(1); opacity: 0.85; }
     html.light .moon-courier-rocket { color: #09090b !important; filter: drop-shadow(0 0 4px rgba(0,0,0,0.3)) !important; }
-    html.light .track-card { background-color: #f8fafc !important; border-color: #e2e8f0 !important; }
-    html.light .track-input { background-color: #ffffff !important; border-color: #cbd5e1 !important; color: #09090b !important; }
-    html.light .track-input::placeholder { color: #64748b !important; }
+    html.light .track-card { background-color: #f8fafc !important; border-color: #e2e8f0 !important; color: #0f172a !important; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); }
+    html.light .track-input { background-color: #ffffff !important; border-color: #cbd5e1 !important; color: #0f172a !important; }
+    html.light .track-input::placeholder { color: #94a3b8 !important; }
     html.light .track-btn { background-color: #09090b !important; color: #ffffff !important; }
     html.light footer { background-color: #f1f5f9 !important; border-top-color: #e2e8f0 !important; color: #475569 !important; }
     html.light footer a { color: #475569 !important; }
@@ -103,9 +105,8 @@
 
   <!-- AUTO THEME SWITCHER SCRIPT -->
   <script>
-    function applyAutoTheme() {
+    (function() {
       const currentHour = new Date().getHours();
-      // Din: 6 AM se 6 PM (6 to 18)
       const isDayTime = currentHour >= 6 && currentHour < 18;
       const savedTheme = localStorage.getItem('moonland_theme');
 
@@ -116,11 +117,10 @@
         document.documentElement.classList.add('dark');
         document.documentElement.classList.remove('light');
       }
-    }
-    document.addEventListener('DOMContentLoaded', applyAutoTheme);
+    })();
   </script>
 </head>
-<body class="bg-[#050505] text-white font-sans antialiased min-h-screen flex flex-col justify-between selection:bg-white selection:text-black relative">
+<body class="font-sans antialiased min-h-screen flex flex-col justify-between selection:bg-white selection:text-black relative">
 
   <!-- Daylight Clouds Background Overlay -->
   <div class="clouds-bg hidden absolute inset-0 pointer-events-none z-0 overflow-hidden h-full">
@@ -139,34 +139,34 @@
   <header class="sticky top-0 z-40 bg-black/90 backdrop-blur-xl border-b border-zinc-900">
     <div class="max-w-7xl mx-auto px-6 sm:px-12 flex justify-between items-center h-24">
       <a href="index.html" class="flex items-center space-x-4 group">
-        <div class="brand-logo-box w-8 h-8 border border-white flex items-center justify-center font-black text-xs tracking-widest text-white group-hover:bg-white group-hover:text-black transition duration-500">M</div>
+        <div class="brand-logo-box w-8 h-8 border border-white flex items-center justify-center font-black text-xs tracking-widest text-white group-hover:bg-white group-hover:text-black transition duration-500 rounded-lg">M</div>
         <div class="flex flex-col">
-          <span class="font-bold text-base tracking-[0.4em] uppercase text-white">MOONLAND</span>
+          <span class="font-bold text-base tracking-[0.4em] uppercase">MOONLAND</span>
           <span class="text-[7px] tracking-[0.55em] text-zinc-400 uppercase font-bold">STORE</span>
         </div>
       </a>
 
       <nav class="hidden md:flex items-center space-x-12 font-medium text-[11px] uppercase tracking-[0.25em] text-zinc-400">
-        <a href="store.html" class="hover:text-white transition pb-1">Store</a>
-        <a href="referral.html" class="hover:text-white transition pb-1">Refer & Earn</a>
-        <a href="track.html" class="text-white border-b border-white pb-1 tracking-[0.3em] font-bold active-link">Track Order</a>
-        <a href="about.html" class="hover:text-white transition pb-1">About Us</a>
+        <a href="store.html" class="hover:opacity-75 transition pb-1">Store</a>
+        <a href="referral.html" class="hover:opacity-75 transition pb-1">Refer & Earn</a>
+        <a href="track.html" class="border-b pb-1 tracking-[0.3em] font-bold active-link">Track Order</a>
+        <a href="about.html" class="hover:opacity-75 transition pb-1">About Us</a>
       </nav>
 
       <div class="flex items-center space-x-6">
-        <button onclick="openCartModal()" class="flex items-center space-x-2 text-[11px] uppercase tracking-[0.2em] font-medium text-zinc-400 hover:text-white transition">
+        <button onclick="openCartModal()" class="flex items-center space-x-2 text-[11px] uppercase tracking-[0.2em] font-medium transition hover:opacity-75">
           <i class="fa-solid fa-bag-shopping text-sm"></i>
-          <span id="cartCountBadge" class="bg-white text-black text-[9px] px-1.5 py-0.2 rounded-full font-bold ml-1">0</span>
+          <span id="cartCountBadge" class="bg-black text-white dark:bg-white dark:text-black text-[9px] px-1.5 py-0.2 rounded-full font-bold ml-1">0</span>
         </button>
-        <button onclick="toggleMobileMenu()" class="md:hidden text-white text-lg"><i class="fa-solid fa-bars"></i></button>
+        <button onclick="toggleMobileMenu()" class="md:hidden text-lg p-2 cursor-pointer"><i class="fa-solid fa-bars"></i></button>
       </div>
     </div>
 
-    <div id="mobileMenuDropdown" class="hidden md:hidden bg-black border-b border-zinc-900 px-8 py-6 space-y-5 text-xs uppercase font-medium tracking-[0.25em]">
-      <a href="store.html" class="block text-zinc-400 hover:text-white">Store</a>
-      <a href="referral.html" class="block text-zinc-400 hover:text-white">Refer & Earn</a>
-      <a href="track.html" class="block text-white font-bold">Track Order</a>
-      <a href="about.html" class="block text-zinc-400 hover:text-white">About Us</a>
+    <div id="mobileMenuDropdown" class="hidden md:hidden bg-white dark:bg-black border-b border-zinc-200 dark:border-zinc-900 px-8 py-6 space-y-5 text-xs uppercase font-medium tracking-[0.25em] shadow-2xl z-50">
+      <a href="store.html" class="block opacity-80 hover:opacity-100">Store</a>
+      <a href="referral.html" class="block opacity-80 hover:opacity-100">Refer & Earn</a>
+      <a href="track.html" class="block font-bold">Track Order</a>
+      <a href="about.html" class="block opacity-80 hover:opacity-100">About Us</a>
     </div>
   </header>
 
@@ -180,23 +180,23 @@
 
     <div class="text-center space-y-4 relative z-10">
       <!-- LIVE ANIMATED TRACKING BADGE -->
-      <div class="inline-flex items-center gap-2.5 text-[10px] font-black uppercase tracking-[0.3em] text-emerald-400 border border-emerald-500/40 px-4 py-2 bg-emerald-950/40 live-badge-glow rounded-full">
-        <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 live-radar-dot inline-block"></span>
+      <div class="inline-flex items-center gap-2.5 text-[10px] font-black uppercase tracking-[0.3em] text-emerald-600 dark:text-emerald-400 border border-emerald-500/40 px-4 py-2 bg-emerald-100 dark:bg-emerald-950/40 live-badge-glow rounded-full">
+        <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 live-radar-dot inline-block"></span>
         <span>LIVE ORDER RADAR ACTIVE</span>
       </div>
 
       <h1 class="text-3xl sm:text-5xl font-black uppercase tracking-[0.1em]">
         Track Your Order
       </h1>
-      <p class="text-xs sm:text-sm text-zinc-400 font-light tracking-wide">
+      <p class="text-xs sm:text-sm opacity-70 font-light tracking-wide">
         Enter your Mobile Number or Order ID to check live real-time status.
       </p>
     </div>
 
-    <div class="track-card bg-[#0c0c0c] border border-zinc-800 p-6 sm:p-10 rounded-none shadow-2xl space-y-6 luxury-glow-card relative z-10">
+    <div class="track-card bg-[#0c0c0c] border border-zinc-800 p-6 sm:p-10 rounded-2xl shadow-2xl space-y-6 luxury-glow-card relative z-10">
       <div class="flex gap-3">
-        <input type="text" id="trackQueryInput" placeholder="Enter Order ID or Mobile Number..." class="track-input flex-1 bg-black border border-zinc-800 rounded-none px-4 py-3.5 text-xs text-white placeholder-zinc-600 focus:outline-none focus:border-white transition font-mono">
-        <button onclick="searchOrderStatus()" class="track-btn bg-white hover:bg-zinc-200 text-black font-black px-8 py-3.5 rounded-none text-xs uppercase tracking-[0.2em] transition">Search</button>
+        <input type="text" id="trackQueryInput" placeholder="Enter Order ID or Mobile Number..." class="track-input flex-1 border rounded-xl px-4 py-3.5 text-xs focus:outline-none transition font-mono shadow-sm">
+        <button onclick="searchOrderStatus()" class="track-btn font-black px-8 py-3.5 rounded-xl text-xs uppercase tracking-[0.2em] transition shadow-lg">Search</button>
       </div>
 
       <div id="trackingResultContainer" class="space-y-4 pt-4">
@@ -207,20 +207,21 @@
   </main>
 
   <!-- Footer -->
-  <footer class="bg-black text-zinc-600 py-16 border-t border-zinc-900 text-center text-[10px] uppercase tracking-[0.3em] space-y-4 relative z-10">
+  <footer class="py-16 border-t text-center text-[10px] uppercase tracking-[0.3em] space-y-4 relative z-10">
     <p>© 2026 Moonland Store. All Rights Reserved.</p>
-    <div class="flex justify-center space-x-8 text-zinc-500">
-      <a href="index.html" class="hover:text-white transition">Store Home</a>
-      <a href="referral.html" class="hover:text-white transition">Refer & Earn</a>
-      <a href="track.html" class="hover:text-white transition">Track Order</a>
-      <a href="about.html" class="hover:text-white transition">About Us</a>
+    <div class="flex justify-center space-x-8 opacity-80">
+      <a href="index.html" class="transition">Store Home</a>
+      <a href="referral.html" class="transition">Refer & Earn</a>
+      <a href="track.html" class="transition">Track Order</a>
+      <a href="about.html" class="transition">About Us</a>
     </div>
   </footer>
 
   <script src="script.js"></script>
   <script>
     function toggleMobileMenu() {
-      document.getElementById('mobileMenuDropdown').classList.toggle('hidden');
+      const dropdown = document.getElementById('mobileMenuDropdown');
+      if(dropdown) dropdown.classList.toggle('hidden');
     }
 
     function openCartModal() {
@@ -252,7 +253,10 @@
         return;
       }
 
-      container.innerHTML = `<div class="bg-black p-6 border border-zinc-900 text-center text-emerald-400 text-xs tracking-widest uppercase animate-pulse flex items-center justify-center gap-2"><i class="fa-solid fa-satellite-dish fa-spin"></i> Fetching Live Status from Firestore Database...</div>`;
+      const currentHour = new Date().getHours();
+      const isDay = currentHour >= 6 && currentHour < 18;
+
+      container.innerHTML = `<div class="${isDay ? 'bg-white border-blue-200 text-slate-900' : 'bg-black border-zinc-900 text-emerald-400'} p-6 border text-center text-xs tracking-widest uppercase animate-pulse flex items-center justify-center gap-2 rounded-xl"><i class="fa-solid fa-satellite-dish fa-spin"></i> Fetching Live Status from Database...</div>`;
 
       try {
         const response = await fetch('/api/track', {
@@ -264,27 +268,27 @@
         const data = await response.json();
 
         if (!response.ok || !data.success || !data.orders || data.orders.length === 0) {
-          container.innerHTML = `<div class="bg-black p-6 border border-zinc-900 text-center text-rose-400 text-xs tracking-wider uppercase">${data.error || 'Koi record nahi mila.'}</div>`;
+          container.innerHTML = `<div class="${isDay ? 'bg-white border-blue-200 text-rose-600' : 'bg-black border-zinc-900 text-rose-400'} p-6 border text-center text-xs tracking-wider uppercase rounded-xl">${data.error || 'Koi record nahi mila.'}</div>`;
           return;
         }
 
         container.innerHTML = data.orders.map(ord => `
-          <div class="bg-black p-6 border border-zinc-800 space-y-4 text-xs font-mono">
-            <div class="flex justify-between items-center border-b border-zinc-900 pb-3">
-              <span class="font-bold text-white text-sm tracking-wider">Order ID: <code class="text-yellow-400">${ord.id}</code></span>
-              <span class="bg-emerald-400/10 text-emerald-400 border border-emerald-400/20 px-3 py-1 font-bold uppercase tracking-wider text-[9px] flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span>${ord.status}</span>
+          <div class="${isDay ? 'bg-white border-blue-200 text-slate-900 shadow-sm' : 'bg-black border-zinc-800 text-white'} p-6 border space-y-4 text-xs font-mono rounded-xl">
+            <div class="flex justify-between items-center border-b ${isDay ? 'border-blue-100' : 'border-zinc-900'} pb-3">
+              <span class="font-bold text-sm tracking-wider">Order ID: <code class="${isDay ? 'text-blue-600' : 'text-yellow-400'}">${ord.id}</code></span>
+              <span class="bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 px-3 py-1 font-bold uppercase tracking-wider text-[9px] flex items-center gap-1.5 rounded-full"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-ping"></span>${ord.status}</span>
             </div>
 
-            <div class="space-y-2 text-zinc-300">
-              <p>Customer Name: <strong class="text-white uppercase">${ord.customer}</strong></p>
-              <p>Delivery Status: <strong class="text-emerald-400 uppercase">${ord.status}</strong></p>
+            <div class="space-y-2 opacity-90">
+              <p>Customer Name: <strong class="uppercase">${ord.customer}</strong></p>
+              <p>Delivery Status: <strong class="text-emerald-600 dark:text-emerald-400 uppercase">${ord.status}</strong></p>
             </div>
           </div>
         `).join('');
 
       } catch (err) {
         console.error('Tracking error:', err);
-        container.innerHTML = `<div class="bg-black p-6 border border-zinc-900 text-center text-rose-400 text-xs tracking-wider uppercase">Server connection error. Please try again.</div>`;
+        container.innerHTML = `<div class="p-6 border text-center text-rose-500 text-xs tracking-wider uppercase rounded-xl">Server connection error. Please try again.</div>`;
       }
     }
   </script>

@@ -4,10 +4,46 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>About Us | MOONLAND STORE</title>
+  <!-- Browser Tab Favicon Logo -->
+  <link rel="icon" type="image/png" href="logo.png?v=999">
+  <link rel="shortcut icon" href="logo.png?v=999">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="style.css">
   <style>
+    /* Smooth theme transition & flash prevention */
+    html { background-color: #050505; color: #ffffff; }
+    html.light { background-color: #f8fafc; color: #0f172a; }
+    body { background-color: #050505 !important; color: #ffffff !important; transition: background-color 0.4s ease, color 0.4s ease; }
+
+    /* DAYLIGHT MODE OVERRIDES (HIGH CONTRAST & PREMIUM READABILITY) */
+    html.light body { background-color: #f8fafc !important; color: #0f172a !important; }
+    html.light header { background-color: rgba(255, 255, 255, 0.95) !important; border-bottom-color: #cbd5e1 !important; }
+    html.light .marquee-bar { background-color: #0f172a !important; color: #f8fafc !important; border-bottom-color: #334155 !important; }
+    html.light .brand-logo-box { border-color: #0f172a !important; background-color: #0f172a !important; color: #ffffff !important; }
+    html.light nav a, html.light header button { color: #334155 !important; }
+    html.light nav a:hover, html.light header button:hover, html.light nav a.active-link { color: #0f172a !important; }
+    html.light .clouds-bg { display: block !important; }
+    html.light .moon-graphic { filter: invert(1); opacity: 0.85; }
+    
+    /* Clean Daylight Cards with Sharp High-Contrast Text */
+    html.light .about-card { 
+      background-color: #ffffff !important; 
+      border-color: #cbd5e1 !important; 
+      color: #0f172a !important; 
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.08) !important; 
+    }
+    html.light .about-card p, html.light .about-card span { color: #334155 !important; }
+    html.light .about-card h2, html.light .about-card h3 { color: #0f172a !important; }
+
+    html.light footer { background-color: #e2e8f0 !important; border-top-color: #cbd5e1 !important; color: #334155 !important; }
+    html.light footer a { color: #334155 !important; }
+    html.light footer a:hover { color: #0f172a !important; }
+
+    /* NIGHT MODE OVERRIDES (PRESERVED AS REQUESTED) */
+    html.dark body { background-color: #050505 !important; color: #ffffff !important; }
+    html.dark .clouds-bg { display: none !important; }
+
     @keyframes moonFloat {
       0%, 100% { transform: translateY(0px) scale(1); opacity: 0.85; }
       50% { transform: translateY(-12px) scale(1.03); opacity: 1; }
@@ -15,9 +51,9 @@
     .animated-moon { animation: moonFloat 12s ease-in-out infinite; }
 
     @keyframes offerGlow {
-      0% { border-color: rgba(0, 0, 0, 0.1); box-shadow: 0 0 10px rgba(0, 0, 0, 0.05); }
-      50% { border-color: rgba(0, 0, 0, 0.4); box-shadow: 0 0 35px rgba(0, 0, 0, 0.1); }
-      100% { border-color: rgba(0, 0, 0, 0.1); box-shadow: 0 0 10px rgba(0, 0, 0, 0.05); }
+      0% { border-color: rgba(15, 23, 42, 0.1); box-shadow: 0 0 15px rgba(0, 0, 0, 0.05); }
+      50% { border-color: rgba(234, 179, 8, 0.6); box-shadow: 0 0 35px rgba(234, 179, 8, 0.2); }
+      100% { border-color: rgba(15, 23, 42, 0.1); box-shadow: 0 0 15px rgba(0, 0, 0, 0.05); }
     }
     .luxury-glow-card-day { animation: offerGlow 5s ease-in-out infinite; }
 
@@ -44,68 +80,85 @@
       filter: drop-shadow(0 0 8px rgba(0,0,0,0.5));
     }
   </style>
+
+  <!-- AUTO THEME SWITCHER SCRIPT -->
+  <script>
+    (function() {
+      const currentHour = new Date().getHours();
+      const isDayTime = currentHour >= 6 && currentHour < 18;
+      const savedTheme = localStorage.getItem('moonland_theme');
+
+      if (savedTheme === 'light' || (!savedTheme && isDayTime)) {
+        document.documentElement.classList.add('light');
+        document.documentElement.classList.remove('dark');
+      } else {
+        document.documentElement.classList.add('dark');
+        document.documentElement.classList.remove('light');
+      }
+    })();
+  </script>
 </head>
-<body id="aboutBodyTag" class="font-sans antialiased min-h-screen flex flex-col justify-between">
+<body id="aboutBodyTag" class="font-sans antialiased min-h-screen flex flex-col justify-between selection:bg-white selection:text-black relative">
 
   <!-- Top Announcement Bar -->
-  <div id="topAnnouncementBar" class="py-2.5 px-4 text-[10px] font-bold tracking-[0.25em] uppercase border-b overflow-hidden whitespace-nowrap">
+  <div id="topAnnouncementBar" class="marquee-bar bg-black text-zinc-300 py-2.5 px-4 text-[10px] font-bold tracking-[0.25em] uppercase border-b border-zinc-900 overflow-hidden whitespace-nowrap z-20">
     <marquee behavior="scroll" direction="left" scrollamount="5">
       <span class="inline-flex items-center gap-2 mx-6"><i class="fa-solid fa-bolt text-yellow-500"></i> MOONLAND SPECIAL: UNLIMITED REFER & EARN ₹1,000 INSTANT UPI CASHBACK PER REFERRAL!</span>
     </marquee>
   </div>
 
   <!-- Header / Navbar -->
-  <header id="aboutHeader" class="sticky top-0 z-40 backdrop-blur-xl border-b">
+  <header id="aboutHeader" class="sticky top-0 z-40 bg-black/90 backdrop-blur-xl border-b border-zinc-900">
     <div class="max-w-7xl mx-auto px-6 sm:px-12 flex justify-between items-center h-24">
       <a href="index.html" class="flex items-center space-x-4 group">
-        <div id="logoBox" class="w-8 h-8 border flex items-center justify-center font-black text-xs tracking-widest transition duration-500">M</div>
+        <div id="logoBox" class="brand-logo-box w-8 h-8 border border-white flex items-center justify-center font-black text-xs tracking-widest text-white group-hover:bg-white group-hover:text-black transition duration-500 rounded-lg">M</div>
         <div class="flex flex-col">
           <span id="brandTitle" class="font-bold text-base tracking-[0.4em] uppercase">MOONLAND</span>
-          <span class="text-[7px] tracking-[0.55em] text-zinc-500 uppercase font-bold">STORE</span>
+          <span class="text-[7px] tracking-[0.55em] text-zinc-400 uppercase font-bold">STORE</span>
         </div>
       </a>
 
-      <nav class="hidden md:flex items-center space-x-12 font-medium text-[11px] uppercase tracking-[0.25em]">
+      <nav class="hidden md:flex items-center space-x-12 font-medium text-[11px] uppercase tracking-[0.25em] text-zinc-400">
         <a href="store.html" class="hover:opacity-75 transition pb-1">Store</a>
         <a href="referral.html" class="hover:opacity-75 transition pb-1">Refer & Earn</a>
         <a href="track.html" class="hover:opacity-75 transition pb-1">Track Order</a>
-        <a href="about.html" id="navActiveLink" class="border-b pb-1 tracking-[0.3em] font-bold">About Us</a>
+        <a href="about.html" id="navActiveLink" class="border-b pb-1 tracking-[0.3em] font-bold active-link">About Us</a>
       </nav>
 
       <div class="flex items-center space-x-6">
         <button onclick="openCartModal()" class="flex items-center space-x-2 text-[11px] uppercase tracking-[0.2em] font-medium transition hover:opacity-75">
           <i class="fa-solid fa-bag-shopping text-sm"></i>
-          <span id="cartCountBadge" class="text-[9px] px-1.5 py-0.2 rounded-full font-bold ml-1">0</span>
+          <span id="cartCountBadge" class="bg-black text-white dark:bg-white dark:text-black text-[9px] px-1.5 py-0.2 rounded-full font-bold ml-1">0</span>
         </button>
-        <button onclick="toggleMobileMenu()" class="md:hidden text-lg"><i class="fa-solid fa-bars"></i></button>
+        <button onclick="toggleMobileMenu()" class="md:hidden text-lg p-2 cursor-pointer"><i class="fa-solid fa-bars"></i></button>
       </div>
     </div>
 
     <!-- Mobile Dropdown Menu -->
-    <div id="mobileMenuDropdown" class="hidden md:hidden border-b px-8 py-6 space-y-5 text-xs uppercase font-medium tracking-[0.25em]">
-      <a href="store.html" class="block">Store</a>
-      <a href="referral.html" class="block">Refer & Earn</a>
-      <a href="track.html" class="block">Track Order</a>
+    <div id="mobileMenuDropdown" class="hidden md:hidden bg-white dark:bg-black border-b border-zinc-200 dark:border-zinc-900 px-8 py-6 space-y-5 text-xs uppercase font-medium tracking-[0.25em] shadow-2xl z-50">
+      <a href="store.html" class="block opacity-80 hover:opacity-100">Store</a>
+      <a href="referral.html" class="block opacity-80 hover:opacity-100">Refer & Earn</a>
+      <a href="track.html" class="block opacity-80 hover:opacity-100">Track Order</a>
       <a href="about.html" class="block font-bold">About Us</a>
     </div>
   </header>
 
   <!-- Main About Content -->
-  <main class="max-w-5xl mx-auto px-6 sm:px-12 py-20 space-y-20 flex-grow relative overflow-hidden">
+  <main class="max-w-5xl mx-auto px-6 sm:px-12 py-20 space-y-20 flex-grow relative overflow-hidden z-10">
     
-    <div class="absolute top-10 right-0 w-52 h-52 rounded-full bg-gradient-to-br from-slate-200 via-zinc-400 to-zinc-800 shadow-[0_0_80px_rgba(0,0,0,0.1)] z-0 pointer-events-none animated-moon opacity-30">
+    <div class="moon-graphic absolute top-10 right-0 w-52 h-52 rounded-full bg-gradient-to-br from-slate-200 via-zinc-400 to-zinc-800 shadow-[0_0_80px_rgba(0,0,0,0.1)] z-0 pointer-events-none animated-moon opacity-30">
       <div class="w-full h-full rounded-full opacity-30 bg-[radial-gradient(#fff_15%,transparent_16%)] bg-[size:16px_16px]"></div>
       <i class="fa-solid fa-rocket moon-courier-rocket"></i>
     </div>
 
     <section class="text-center space-y-6 relative z-10">
-      <span id="badgeTag" class="inline-block text-[10px] font-bold uppercase tracking-[0.45em] border px-4 py-1.5">
+      <span id="badgeTag" class="inline-block text-[10px] font-bold uppercase tracking-[0.45em] border px-4 py-1.5 rounded-full shadow-sm">
         <i class="fa-solid fa-rocket mr-1 text-yellow-500"></i> BEYOND BOUNDARIES & PERFECTION
       </span>
       <h1 id="heroTitle" class="text-4xl sm:text-7xl font-black uppercase tracking-[0.12em] leading-tight">
-        SOCH CHAND PAR <br><span class="text-zinc-400 font-light">LAND KRNE JAISI</span>
+        SOCH CHAND PAR <br><span class="opacity-60 font-light">LAND KRNE JAISI</span>
       </h1>
-      <p id="heroDesc" class="text-xs sm:text-sm tracking-[0.15em] max-w-2xl mx-auto font-light leading-relaxed">
+      <p id="heroDesc" class="text-xs sm:text-sm tracking-[0.15em] max-w-2xl mx-auto font-light leading-relaxed opacity-90">
         Just like the Moon revolves around the Earth, our happy clients stay connected to us with complete trust and strong community support.
       </p>
     </section>
@@ -114,67 +167,67 @@
       <!-- Cards dynamically styled via JS -->
     </section>
 
-    <section id="trustSection" class="border p-8 sm:p-12 space-y-8 relative z-10 text-center">
+    <section id="trustSection" class="about-card border p-8 sm:p-12 space-y-8 relative z-10 text-center rounded-2xl">
       <div class="space-y-3 max-w-2xl mx-auto">
-        <span class="text-[10px] font-bold uppercase tracking-[0.4em] text-yellow-500">100% SECURE & TRUSTED</span>
+        <span class="text-[10px] font-bold uppercase tracking-[0.4em] text-yellow-600 dark:text-yellow-400">100% SECURE & TRUSTED</span>
         <h2 class="text-2xl sm:text-4xl font-black uppercase tracking-[0.1em]">Our Happy Clients & Trust</h2>
-        <p class="text-xs font-light leading-relaxed opacity-80">
+        <p class="text-xs font-light leading-relaxed opacity-90">
           Thousands of satisfied customers trust Moonland for quality products, fast delivery, and verified instant reward payouts.
         </p>
       </div>
 
       <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 pt-4">
-        <div id="box1" class="border p-6 space-y-2">
+        <div id="box1" class="about-card border p-6 space-y-2 rounded-xl shadow-sm">
           <span class="block text-3xl font-mono font-black">10,000+</span>
-          <span class="block text-[10px] uppercase tracking-widest font-bold opacity-70">Happy Clients Worldwide</span>
+          <span class="block text-[10px] uppercase tracking-widest font-bold opacity-80">Happy Clients Worldwide</span>
         </div>
-        <div id="box2" class="border p-6 space-y-2">
-          <span class="block text-3xl font-mono font-black text-yellow-500">₹10 Lakh+</span>
-          <span class="block text-[10px] uppercase tracking-widest text-yellow-600 font-bold">Cashback Paid Instantly</span>
+        <div id="box2" class="about-card border p-6 space-y-2 rounded-xl shadow-sm">
+          <span class="block text-3xl font-mono font-black text-yellow-600 dark:text-yellow-400">₹10 Lakh+</span>
+          <span class="block text-[10px] uppercase tracking-widest text-yellow-700 dark:text-yellow-400 font-bold">Cashback Paid Instantly</span>
         </div>
-        <div id="box3" class="border p-6 space-y-2">
+        <div id="box3" class="about-card border p-6 space-y-2 rounded-xl shadow-sm">
           <span class="block text-3xl font-mono font-black">100%</span>
-          <span class="block text-[10px] uppercase tracking-widest font-bold opacity-70">Secure UTR & UPI Verification</span>
+          <span class="block text-[10px] uppercase tracking-widest font-bold opacity-80">Secure UTR & UPI Verification</span>
         </div>
       </div>
     </section>
 
-    <section id="modelSection" class="border p-8 sm:p-12 space-y-6 relative z-10">
+    <section id="modelSection" class="about-card border p-8 sm:p-12 space-y-6 relative z-10 rounded-2xl shadow-sm">
       <h2 class="text-2xl sm:text-3xl font-black uppercase tracking-[0.1em]">The Moonland Business Model</h2>
-      <p class="text-xs sm:text-sm font-light leading-relaxed opacity-90">
+      <p class="text-xs sm:text-sm font-light leading-relaxed opacity-95">
         At Moonland Store, our core philosophy is volume-driven success: <strong>"Selling higher quantities to build mutual growth!"</strong> Instead of charging heavy margins on individual products, we offer mastercrafted items at volume-optimized pricing. This guarantees that every customer enjoys premium quality without overpaying, allowing our ecosystem to expand rapidly.
       </p>
-      <p class="text-xs sm:text-sm font-light leading-relaxed opacity-80">
+      <p class="text-xs sm:text-sm font-light leading-relaxed opacity-90">
         We also empower our community to earn real cash through our referral program. Share your link, help others discover our store, and receive instant payouts straight to your UPI.
       </p>
     </section>
 
     <!-- Contact & Helpline Section -->
-    <section id="contactSection" class="border p-8 sm:p-12 space-y-8 relative z-10">
+    <section id="contactSection" class="about-card border p-8 sm:p-12 space-y-8 relative z-10 rounded-2xl shadow-sm">
       <div class="text-center space-y-2 max-w-xl mx-auto">
-        <span class="text-[10px] font-bold uppercase tracking-[0.4em] text-yellow-500">24/7 SUPPORT & ASSISTANCE</span>
+        <span class="text-[10px] font-bold uppercase tracking-[0.4em] text-yellow-600 dark:text-yellow-400">24/7 SUPPORT & ASSISTANCE</span>
         <h2 class="text-2xl sm:text-3xl font-black uppercase tracking-[0.1em]">Need Help? Contact Us</h2>
-        <p class="text-xs font-light opacity-80">Have questions about your order, UTR verification, or referral payouts? Our support team is here to assist you.</p>
+        <p class="text-xs font-light opacity-90">Have questions about your order, UTR verification, or referral payouts? Our support team is here to assist you.</p>
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
-        <div id="contactBox1" class="border p-6 flex items-center space-x-5">
-          <div class="w-12 h-12 bg-yellow-500/10 text-yellow-600 border border-yellow-500/30 flex items-center justify-center text-xl shrink-0">
+        <div id="contactBox1" class="about-card border p-6 flex items-center space-x-5 rounded-xl shadow-sm">
+          <div class="w-12 h-12 bg-yellow-500/10 text-yellow-600 dark:text-yellow-400 border border-yellow-500/30 flex items-center justify-center text-xl shrink-0 rounded-xl">
             <i class="fa-solid fa-headset"></i>
           </div>
           <div class="space-y-1">
-            <span class="block text-[10px] font-bold uppercase tracking-widest opacity-60">Helpline / WhatsApp</span>
-            <a href="https://wa.me/919876543210" target="_blank" class="block font-mono text-sm font-bold hover:text-yellow-500 transition">+91 98765 43210</a>
+            <span class="block text-[10px] font-bold uppercase tracking-widest opacity-70">Helpline / WhatsApp</span>
+            <a href="https://wa.me/919876543210" target="_blank" class="block font-mono text-sm font-bold text-yellow-700 dark:text-yellow-400 hover:underline transition">+91 98765 43210</a>
           </div>
         </div>
 
-        <div id="contactBox2" class="border p-6 flex items-center space-x-5">
-          <div class="w-12 h-12 border flex items-center justify-center text-xl shrink-0">
+        <div id="contactBox2" class="about-card border p-6 flex items-center space-x-5 rounded-xl shadow-sm">
+          <div class="w-12 h-12 border border-slate-300 dark:border-zinc-700 flex items-center justify-center text-xl shrink-0 rounded-xl">
             <i class="fa-solid fa-envelope"></i>
           </div>
           <div class="space-y-1">
-            <span class="block text-[10px] font-bold uppercase tracking-widest opacity-60">Email Support</span>
-            <a href="mailto:support@moonlandstore.com" class="block font-mono text-sm font-bold hover:text-yellow-500 transition">support@moonlandstore.com</a>
+            <span class="block text-[10px] font-bold uppercase tracking-widest opacity-70">Email Support</span>
+            <a href="mailto:support@moonlandstore.com" class="block font-mono text-sm font-bold hover:underline transition">support@moonlandstore.com</a>
           </div>
         </div>
       </div>
@@ -183,9 +236,9 @@
   </main>
 
   <!-- Footer -->
-  <footer id="aboutFooter" class="py-16 border-t text-center text-[10px] uppercase tracking-[0.3em] space-y-4">
+  <footer id="aboutFooter" class="py-16 border-t text-center text-[10px] uppercase tracking-[0.3em] space-y-4 relative z-10">
     <p>© 2026 Moonland Store. All Rights Reserved.</p>
-    <div class="flex justify-center space-x-8 opacity-80">
+    <div class="flex justify-center space-x-8 opacity-90 font-medium">
       <a href="index.html" class="hover:opacity-100 transition">Store Home</a>
       <a href="referral.html" class="hover:opacity-100 transition">Refer & Earn</a>
       <a href="track.html" class="hover:opacity-100 transition">Track Order</a>
@@ -193,121 +246,52 @@
     </div>
   </footer>
 
+  <script src="script.js"></script>
   <script>
-    // System Time Based Theme Switcher (6 AM - 6 PM = White Mode / Night 6 PM - 6 AM = Dark Mode)
-    function applySystemThemeAbout() {
+    function renderAboutCards() {
       const currentHour = new Date().getHours();
       const isDayTime = currentHour >= 6 && currentHour < 18;
-
-      const bodyTag = document.getElementById('aboutBodyTag');
-      const topBar = document.getElementById('topAnnouncementBar');
-      const header = document.getElementById('aboutHeader');
-      const logoBox = document.getElementById('logoBox');
-      const brandTitle = document.getElementById('brandTitle');
-      const navActiveLink = document.getElementById('navActiveLink');
-      const mobileMenu = document.getElementById('mobileMenuDropdown');
-      
-      const badgeTag = document.getElementById('badgeTag');
-      const heroTitle = document.getElementById('heroTitle');
-      const heroDesc = document.getElementById('heroDesc');
       const cardsGrid = document.getElementById('cardsGrid');
-      
-      const trustSection = document.getElementById('trustSection');
-      const box1 = document.getElementById('box1');
-      const box2 = document.getElementById('box2');
-      const box3 = document.getElementById('box3');
-
-      const modelSection = document.getElementById('modelSection');
-      const contactSection = document.getElementById('contactSection');
-      const contactBox1 = document.getElementById('contactBox1');
-      const contactBox2 = document.getElementById('contactBox2');
-      const footer = document.getElementById('aboutFooter');
+      const badgeTag = document.getElementById('badgeTag');
 
       if (isDayTime) {
-        // --- WHITE / DAY MODE ---
-        bodyTag.className = "bg-white text-black font-sans antialiased min-h-screen flex flex-col justify-between selection:bg-black selection:text-white";
-        topBar.className = "bg-zinc-100 text-zinc-900 py-2.5 px-4 text-[10px] font-bold tracking-[0.25em] uppercase border-b border-zinc-200 overflow-hidden whitespace-nowrap";
-        header.className = "sticky top-0 z-40 bg-white/95 backdrop-blur-xl border-b border-zinc-200";
-        logoBox.className = "w-8 h-8 border border-black flex items-center justify-center font-black text-xs tracking-widest text-black hover:bg-black hover:text-white transition duration-500";
-        brandTitle.className = "font-bold text-base tracking-[0.4em] uppercase text-black";
-        navActiveLink.className = "text-black border-b border-black pb-1 tracking-[0.3em] font-bold";
-        mobileMenu.className = "hidden md:hidden bg-white border-b border-zinc-200 px-8 py-6 space-y-5 text-xs uppercase font-medium tracking-[0.25em] text-black";
-
-        badgeTag.className = "inline-block text-[10px] font-bold uppercase tracking-[0.45em] text-yellow-700 border border-yellow-500/40 px-4 py-1.5 bg-yellow-500/10";
-        heroTitle.className = "text-4xl sm:text-7xl font-black uppercase tracking-[0.12em] text-black leading-tight";
-        heroDesc.className = "text-zinc-700 text-xs sm:text-sm tracking-[0.15em] max-w-2xl mx-auto font-light leading-relaxed";
-
+        badgeTag.className = "inline-block text-[10px] font-bold uppercase tracking-[0.45em] text-yellow-800 border border-yellow-500/50 px-4 py-1.5 bg-yellow-100 rounded-full shadow-sm";
         cardsGrid.innerHTML = `
-          <div class="bg-zinc-50 border border-zinc-200 p-8 space-y-4 luxury-glow-card-day shadow-sm">
-            <div class="w-12 h-12 bg-black text-white flex items-center justify-center font-black text-lg">01</div>
-            <h3 class="text-lg font-bold uppercase tracking-[0.15em] text-black">High Quantity Sales</h3>
-            <p class="text-xs text-zinc-600 font-light leading-relaxed">We focus on high-volume sales with affordable pricing. By selling in large quantities, we deliver the best value to everyone.</p>
+          <div class="about-card border p-8 space-y-4 luxury-glow-card-day rounded-2xl">
+            <div class="w-12 h-12 bg-slate-900 text-white flex items-center justify-center font-black text-lg rounded-xl shadow-sm">01</div>
+            <h3 class="text-lg font-bold uppercase tracking-[0.15em] text-slate-900">High Quantity Sales</h3>
+            <p class="text-xs text-slate-700 font-medium leading-relaxed">We focus on high-volume sales with affordable pricing. By selling in large quantities, we deliver the best value to everyone.</p>
           </div>
-          <div class="bg-zinc-50 border border-yellow-500/40 p-8 space-y-4 luxury-glow-card-day shadow-sm">
-            <div class="w-12 h-12 bg-yellow-500 text-black flex items-center justify-center font-black text-lg">02</div>
-            <h3 class="text-lg font-bold uppercase tracking-[0.15em] text-yellow-700">Earth & Moon Orbit</h3>
-            <p class="text-xs text-zinc-600 font-light leading-relaxed">Just as the moon orbits closely around the earth, we keep every customer and partner connected in a strong, growing network.</p>
+          <div class="about-card border border-yellow-500/50 p-8 space-y-4 luxury-glow-card-day rounded-2xl">
+            <div class="w-12 h-12 bg-yellow-500 text-slate-950 flex items-center justify-center font-black text-lg rounded-xl shadow-sm">02</div>
+            <h3 class="text-lg font-bold uppercase tracking-[0.15em] text-yellow-800">Earth & Moon Orbit</h3>
+            <p class="text-xs text-slate-700 font-medium leading-relaxed">Just as the moon orbits closely around the earth, we keep every customer and partner connected in a strong, growing network.</p>
           </div>
-          <div class="bg-zinc-50 border border-zinc-200 p-8 space-y-4 luxury-glow-card-day shadow-sm">
-            <div class="w-12 h-12 bg-black text-white flex items-center justify-center font-black text-lg">03</div>
-            <h3 class="text-lg font-bold uppercase tracking-[0.15em] text-black">Refer & Earn Rewards</h3>
-            <p class="text-xs text-zinc-600 font-light leading-relaxed">Earn ₹1,000 instant UPI cashback directly in your bank account on every successful referral. No limits on earnings!</p>
+          <div class="about-card border p-8 space-y-4 luxury-glow-card-day rounded-2xl">
+            <div class="w-12 h-12 bg-slate-900 text-white flex items-center justify-center font-black text-lg rounded-xl shadow-sm">03</div>
+            <h3 class="text-lg font-bold uppercase tracking-[0.15em] text-slate-900">Refer & Earn Rewards</h3>
+            <p class="text-xs text-slate-700 font-medium leading-relaxed">Earn ₹1,000 instant UPI cashback directly in your bank account on every successful referral. No limits on earnings!</p>
           </div>
         `;
-
-        trustSection.className = "bg-zinc-50 border border-zinc-200 p-8 sm:p-12 space-y-8 relative z-10 text-center shadow-sm";
-        box1.className = "bg-white border border-zinc-200 p-6 space-y-2 shadow-sm text-black";
-        box2.className = "bg-white border border-yellow-500/30 p-6 space-y-2 shadow-sm text-black";
-        box3.className = "bg-white border border-zinc-200 p-6 space-y-2 shadow-sm text-black";
-
-        modelSection.className = "bg-zinc-50 border border-zinc-200 p-8 sm:p-12 space-y-6 relative z-10 shadow-sm text-black";
-        contactSection.className = "bg-zinc-50 border border-yellow-500/30 p-8 sm:p-12 space-y-8 relative z-10 shadow-sm";
-        contactBox1.className = "bg-white border border-zinc-200 p-6 flex items-center space-x-5 shadow-sm text-black";
-        contactBox2.className = "bg-white border border-zinc-200 p-6 flex items-center space-x-5 shadow-sm text-black";
-        footer.className = "bg-zinc-100 text-zinc-600 py-16 border-t border-zinc-200 text-center text-[10px] uppercase tracking-[0.3em] space-y-4";
-
       } else {
-        // --- DARK / NIGHT MODE ---
-        bodyTag.className = "bg-[#050505] text-white font-sans antialiased min-h-screen flex flex-col justify-between selection:bg-white selection:text-black";
-        topBar.className = "bg-black text-zinc-300 py-2.5 px-4 text-[10px] font-bold tracking-[0.25em] uppercase border-b border-zinc-900 overflow-hidden whitespace-nowrap";
-        header.className = "sticky top-0 z-40 bg-black/90 backdrop-blur-xl border-b border-zinc-900";
-        logoBox.className = "w-8 h-8 border border-white flex items-center justify-center font-black text-xs tracking-widest text-white hover:bg-white hover:text-black transition duration-500";
-        brandTitle.className = "font-bold text-base tracking-[0.4em] uppercase text-white";
-        navActiveLink.className = "text-white border-b border-white pb-1 tracking-[0.3em] font-bold";
-        mobileMenu.className = "hidden md:hidden bg-black border-b border-zinc-900 px-8 py-6 space-y-5 text-xs uppercase font-medium tracking-[0.25em] text-white";
-
-        badgeTag.className = "inline-block text-[10px] font-bold uppercase tracking-[0.45em] text-yellow-400 border border-yellow-500/40 px-4 py-1.5 bg-yellow-400/10";
-        heroTitle.className = "text-4xl sm:text-7xl font-black uppercase tracking-[0.12em] text-white leading-tight";
-        heroDesc.className = "text-zinc-300 text-xs sm:text-sm tracking-[0.15em] max-w-2xl mx-auto font-light leading-relaxed";
-
+        badgeTag.className = "inline-block text-[10px] font-bold uppercase tracking-[0.45em] text-yellow-400 border border-yellow-500/40 px-4 py-1.5 bg-yellow-400/10 rounded-full";
         cardsGrid.innerHTML = `
-          <div class="bg-[#0c0c0c] border border-zinc-800 p-8 space-y-4 luxury-glow-card-night">
-            <div class="w-12 h-12 bg-white text-black flex items-center justify-center font-black text-lg">01</div>
+          <div class="about-card border border-zinc-800 p-8 space-y-4 luxury-glow-card-night rounded-2xl">
+            <div class="w-12 h-12 bg-white text-black flex items-center justify-center font-black text-lg rounded-xl">01</div>
             <h3 class="text-lg font-bold uppercase tracking-[0.15em] text-white">High Quantity Sales</h3>
             <p class="text-xs text-zinc-400 font-light leading-relaxed">We focus on high-volume sales with affordable pricing. By selling in large quantities, we deliver the best value to everyone.</p>
           </div>
-          <div class="bg-[#0c0c0c] border border-yellow-500/40 p-8 space-y-4 luxury-glow-card-night">
-            <div class="w-12 h-12 bg-yellow-400 text-black flex items-center justify-center font-black text-lg">02</div>
+          <div class="about-card border border-yellow-500/40 p-8 space-y-4 luxury-glow-card-night rounded-2xl">
+            <div class="w-12 h-12 bg-yellow-400 text-black flex items-center justify-center font-black text-lg rounded-xl">02</div>
             <h3 class="text-lg font-bold uppercase tracking-[0.15em] text-yellow-400">Earth & Moon Orbit</h3>
             <p class="text-xs text-zinc-400 font-light leading-relaxed">Just as the moon orbits closely around the earth, we keep every customer and partner connected in a strong, growing network.</p>
           </div>
-          <div class="bg-[#0c0c0c] border border-zinc-800 p-8 space-y-4 luxury-glow-card-night">
-            <div class="w-12 h-12 bg-white text-black flex items-center justify-center font-black text-lg">03</div>
+          <div class="about-card border border-zinc-800 p-8 space-y-4 luxury-glow-card-night rounded-2xl">
+            <div class="w-12 h-12 bg-white text-black flex items-center justify-center font-black text-lg rounded-xl">03</div>
             <h3 class="text-lg font-bold uppercase tracking-[0.15em] text-white">Refer & Earn Rewards</h3>
             <p class="text-xs text-zinc-400 font-light leading-relaxed">Earn ₹1,000 instant UPI cashback directly in your bank account on every successful referral. No limits on earnings!</p>
           </div>
         `;
-
-        trustSection.className = "bg-[#0c0c0c] border border-zinc-800 p-8 sm:p-12 space-y-8 relative z-10 text-center";
-        box1.className = "bg-black border border-zinc-900 p-6 space-y-2 text-white";
-        box2.className = "bg-black border border-yellow-500/30 p-6 space-y-2 text-white";
-        box3.className = "bg-black border border-zinc-900 p-6 space-y-2 text-white";
-
-        modelSection.className = "bg-[#0c0c0c] border border-zinc-800 p-8 sm:p-12 space-y-6 relative z-10 text-white";
-        contactSection.className = "bg-[#0c0c0c] border border-yellow-500/30 p-8 sm:p-12 space-y-8 relative z-10";
-        contactBox1.className = "bg-black border border-zinc-800 p-6 flex items-center space-x-5 text-white";
-        contactBox2.className = "bg-black border border-zinc-800 p-6 flex items-center space-x-5 text-white";
-        footer.className = "bg-black text-zinc-600 py-16 border-t border-zinc-900 text-center text-[10px] uppercase tracking-[0.3em] space-y-4";
       }
     }
 
@@ -321,7 +305,7 @@
     }
 
     document.addEventListener('DOMContentLoaded', () => {
-      applySystemThemeAbout();
+      renderAboutCards();
       const cart = JSON.parse(localStorage.getItem('moonland_cart') || '[]');
       const totalItems = cart.reduce((sum, item) => sum + (item.quantity || 1), 0);
       const badge = document.getElementById('cartCountBadge');

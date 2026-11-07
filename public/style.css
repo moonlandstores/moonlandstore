@@ -18,16 +18,59 @@ function updateGlobalCartCount() {
     });
 }
 
-function addToCart(title, price, quantity = 1) {
+function addToCart(productOrTitle, price, quantity = 1) {
     let cart = getCart();
-    let existing = cart.find(i => (i.title === title || i.name === title));
-    if (existing) {
-        existing.quantity = (Number(existing.quantity || existing.qty || 1)) + Number(quantity);
+    let newItem;
+
+    if (typeof productOrTitle === 'object' && productOrTitle !== null) {
+        newItem = {
+            id: productOrTitle.id || productOrTitle._id || '',
+            title: productOrTitle.title || productOrTitle.name || 'Product',
+            name: productOrTitle.name || productOrTitle.title || 'Product',
+            price: Number(productOrTitle.price) || 0,
+            quantity: Number(productOrTitle.quantity || productOrTitle.qty || quantity || 1)
+        };
     } else {
-        cart.push({ title: title, name: title, price: Number(price), quantity: Number(quantity) });
+        newItem = {
+            title: productOrTitle,
+            name: productOrTitle,
+            price: Number(price) || 0,
+            quantity: Number(quantity) || 1
+        };
     }
+
+    let existing = cart.find(i => 
+        (i.id && newItem.id && String(i.id) === String(newItem.id)) || 
+        (i.title === newItem.title || i.name === newItem.name)
+    );
+
+    if (existing) {
+        existing.quantity = Number(existing.quantity || existing.qty || 1) + Number(newItem.quantity);
+        if (newItem.id && !existing.id) existing.id = newItem.id;
+    } else {
+        cart.push(newItem);
+    }
+
     saveCart(cart);
-    alert('Product successfully cart mein add ho gaya hai!');
+}
+
+// Compact & Responsive Key Features / Specifications Renderer
+function renderCompactSpecs(specsStr) {
+    if (!specsStr) return '<p class="text-zinc-500 dark:text-zinc-400 text-[11px]">None</p>';
+    
+    let items = specsStr.split(',');
+    return `<div class="grid grid-cols-2 gap-2">` + items.map(item => {
+        let parts = item.split(':');
+        let label = parts[0] ? parts[0].trim() : '';
+        let val = parts[1] ? parts[1].trim() : '';
+        if (!label) return '';
+        return `
+            <div class="border p-2 space-y-0.5 rounded-lg shadow-sm">
+                <div class="text-[9px] uppercase tracking-wider opacity-60 font-bold">${label}</div>
+                <div class="text-[11px] font-medium">${val}</div>
+            </div>
+        `;
+    }).join('') + `</div>`;
 }
 
 window.addEventListener('DOMContentLoaded', () => {

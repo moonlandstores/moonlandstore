@@ -11,8 +11,10 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="style.css">
   <style>
-    /* Smooth theme transition */
-    body { transition: background-color 0.4s ease, color 0.4s ease; }
+    /* Smooth theme transition & flash prevention */
+    html { background-color: #050505; color: #ffffff; }
+    html.light { background-color: #ffffff; color: #09090b; }
+    body { background-color: #050505 !important; color: #ffffff !important; transition: background-color 0.4s ease, color 0.4s ease; }
 
     /* DAYLIGHT MODE (WHITE + CLOUDS + BLACK ROCKET) */
     html.light body { background-color: #ffffff !important; color: #09090b !important; }
@@ -39,11 +41,18 @@
     html.light footer a { color: #475569 !important; }
     html.light footer a:hover { color: #000000 !important; }
 
+    /* DAYLIGHT MODE POPUP OVERRIDES */
+    html.light .promo-popup-box { background: #ffffff !important; border-color: #cbd5e1 !important; color: #0f172a !important; }
+    html.light .promo-popup-box h2 { color: #0f172a !important; }
+    html.light .promo-popup-inner-card { background: #f1f5f9 !important; border-color: #e2e8f0 !important; color: #0f172a !important; }
+
     /* NIGHT MODE (DARK + STARS + WHITE ROCKET) */
     html.dark body { background-color: #050505 !important; color: #ffffff !important; }
     html.dark .clouds-bg { display: none !important; }
     html.dark .white-rocket-visible { color: #ffffff !important; filter: drop-shadow(0 0 8px rgba(255,255,255,0.8)) !important; }
     html.dark .rocket-smoke-exhaust { background: linear-gradient(to bottom, rgba(255,255,255,0.9), rgba(0,255,255,0.4), transparent) !important; }
+    html.dark .promo-popup-box { background: linear-gradient(to bottom, #140505, #090505, #050505) !important; border-color: rgba(239, 68, 68, 0.4) !important; color: #ffffff !important; }
+    html.dark .promo-popup-inner-card { background: rgba(0,0,0,0.9) !important; border-color: #27272a !important; color: #ffffff !important; }
 
     /* Animations */
     @keyframes moonFloat {
@@ -131,9 +140,8 @@
 
   <!-- AUTO THEME SWITCHER LOGIC -->
   <script>
-    function applyAutoTheme() {
+    (function() {
       const currentHour = new Date().getHours();
-      // Din: 6 AM se 6 PM (6 to 18)
       const isDayTime = currentHour >= 6 && currentHour < 18;
       const savedTheme = localStorage.getItem('moonland_theme');
 
@@ -144,11 +152,10 @@
         document.documentElement.classList.add('dark');
         document.documentElement.classList.remove('light');
       }
-    }
-    document.addEventListener('DOMContentLoaded', applyAutoTheme);
+    })();
   </script>
 </head>
-<body class="bg-[#050505] text-white font-sans antialiased min-h-screen flex flex-col justify-between selection:bg-white selection:text-black">
+<body class="font-sans antialiased min-h-screen flex flex-col justify-between selection:bg-white selection:text-black">
 
   <div class="marquee-bar bg-black text-zinc-300 py-2.5 px-4 text-[10px] font-bold tracking-[0.25em] uppercase border-b border-zinc-900 overflow-hidden whitespace-nowrap">
     <marquee behavior="scroll" direction="left" scrollamount="5">
@@ -346,45 +353,45 @@
   </footer>
 
   <!-- PROMO MODAL -->
-  <div id="promoModalOverlay" class="fixed inset-0 z-50 bg-black/90 backdrop-blur-md flex items-center justify-center p-4 opacity-0 invisible">
-    <div class="relative w-full max-w-xl bg-gradient-to-b from-[#140505] via-[#090505] to-[#050505] border border-red-500/40 p-6 sm:p-10 jaguar-popup-card shadow-2xl text-center space-y-6">
+  <div id="promoModalOverlay" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-md flex items-center justify-center p-4 opacity-0 invisible">
+    <div class="relative w-full max-w-xl promo-popup-box border p-6 sm:p-10 jaguar-popup-card shadow-2xl text-center space-y-6 rounded-2xl">
       
-      <button onclick="closePromoModal()" class="absolute top-4 right-4 w-8 h-8 border border-zinc-700 hover:border-white text-zinc-400 hover:text-white flex items-center justify-center transition rounded-full">
+      <button onclick="closePromoModal()" class="absolute top-4 right-4 w-8 h-8 border border-zinc-400 dark:border-zinc-700 hover:border-black dark:hover:border-white text-zinc-600 dark:text-zinc-400 hover:text-black dark:hover:text-white flex items-center justify-center transition rounded-full">
         <i class="fa-solid fa-xmark text-sm"></i>
       </button>
 
-      <div class="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.3em] text-yellow-400 bg-red-950/80 px-4 py-1.5 border border-red-500/50 rounded-full shadow-lg">
+      <div class="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.3em] text-red-600 dark:text-yellow-400 bg-red-100 dark:bg-red-950/80 px-4 py-1.5 border border-red-300 dark:border-red-500/50 rounded-full shadow-lg">
         <i class="fa-solid fa-fire text-red-500 animate-pulse"></i> MEGA STOCK CLEARANCE SALE IS LIVE
       </div>
 
       <div class="space-y-2">
-        <h2 class="text-3xl sm:text-5xl font-black uppercase tracking-tight text-white leading-tight">
+        <h2 class="text-3xl sm:text-5xl font-black uppercase tracking-tight leading-tight">
           GET UP TO <span class="text-red-500 drop-shadow-[0_0_15px_rgba(239,68,68,0.8)]">70% OFF</span>
         </h2>
-        <p class="text-xs uppercase tracking-[0.25em] text-yellow-400 font-bold">LIMITED TIME OFFERS ON ALL IN-HOUSE PRODUCTS</p>
+        <p class="text-xs uppercase tracking-[0.25em] text-amber-600 dark:text-yellow-400 font-bold">LIMITED TIME OFFERS ON ALL IN-HOUSE PRODUCTS</p>
       </div>
 
       <div class="grid grid-cols-3 gap-3 pt-2">
-        <div class="bg-black/90 border border-zinc-800 p-3 sm:p-4 rounded">
-          <span class="block text-[9px] uppercase tracking-widest text-zinc-400 font-bold">DISCOUNT</span>
-          <span class="block text-lg font-mono font-black text-red-400 mt-1">UP TO 70%</span>
+        <div class="promo-popup-inner-card border p-3 sm:p-4 rounded-xl shadow-sm">
+          <span class="block text-[9px] uppercase tracking-widest opacity-70 font-bold">DISCOUNT</span>
+          <span class="block text-lg font-mono font-black text-red-500 mt-1">UP TO 70%</span>
         </div>
-        <div class="bg-black/90 border border-yellow-500/40 p-3 sm:p-4 rounded">
-          <span class="block text-[9px] uppercase tracking-widest text-yellow-400 font-bold">REFER BONUS</span>
-          <span class="block text-lg font-mono font-black text-yellow-400 mt-1">₹1,000 CASH</span>
+        <div class="promo-popup-inner-card border p-3 sm:p-4 rounded-xl shadow-sm">
+          <span class="block text-[9px] uppercase tracking-widest text-amber-600 dark:text-yellow-400 font-bold">REFER BONUS</span>
+          <span class="block text-lg font-mono font-black text-amber-600 dark:text-yellow-400 mt-1">₹1,000 CASH</span>
         </div>
-        <div class="bg-black/90 border border-zinc-800 p-3 sm:p-4 rounded">
-          <span class="block text-[9px] uppercase tracking-widest text-zinc-400 font-bold">WARRANTY</span>
-          <span class="block text-lg font-mono font-black text-white mt-1">1 YEAR</span>
+        <div class="promo-popup-inner-card border p-3 sm:p-4 rounded-xl shadow-sm">
+          <span class="block text-[9px] uppercase tracking-widest opacity-70 font-bold">WARRANTY</span>
+          <span class="block text-lg font-mono font-black mt-1">1 YEAR</span>
         </div>
       </div>
 
-      <p class="text-xs text-zinc-300 font-light tracking-wide leading-relaxed">
-        Huge discounts on premium custom appliances! Order today and earn <strong class="text-yellow-400">₹1,000 direct bank cashback</strong> on every referral.
+      <p class="text-xs font-light tracking-wide leading-relaxed opacity-90">
+        Huge discounts on premium custom appliances! Order today and earn <strong class="text-amber-600 dark:text-yellow-400">₹1,000 direct bank cashback</strong> on every referral.
       </p>
 
       <div class="pt-2">
-        <a href="store.html" onclick="closePromoModal()" class="block w-full bg-gradient-to-r from-red-600 to-yellow-500 hover:from-red-500 hover:to-yellow-400 text-black font-black py-4 text-xs uppercase tracking-[0.25em] transition shadow-2xl text-center rounded">
+        <a href="store.html" onclick="closePromoModal()" class="block w-full bg-black dark:bg-gradient-to-r dark:from-red-600 dark:to-yellow-500 text-white dark:text-black hover:opacity-90 font-black py-4 text-xs uppercase tracking-[0.25em] transition shadow-2xl text-center rounded-xl">
           Shop Clearance Sale Now <i class="fa-solid fa-arrow-right ml-1"></i>
         </a>
       </div>
@@ -494,8 +501,7 @@
     function closePromoModal() {
       const modal = document.getElementById('promoModalOverlay');
       if(modal) {
-        modal.classList.remove('opacity-100');
-        modal.classList.add('opacity-0', 'invisible');
+        window.location.href = 'index.html'; // Popup close hone par index.html reload/navigate karega
       }
     }
 
