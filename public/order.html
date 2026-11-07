@@ -153,7 +153,7 @@ Fill your delivery details, proceed to payment scanner, and submit UTR.
 <button type="button" onclick="backToStep1()" class="text-xs text-blue-600 hover:underline uppercase font-bold tracking-wider"><i class="fa-solid fa-pen text-[10px] mr-1"></i> Edit Details</button>
 </div>
 
-<!-- Payment Scanner Box -->
+<!-- Payment Scanner Box (Admin Managed) -->
 <div id="qrScannerBox" class="p-6 border text-center space-y-4 rounded-xl shadow-sm">
 <p class="text-[10px] font-bold uppercase tracking-[0.2em] opacity-80">Scan QR Code to Pay Total Amount</p>
 <div class="space-y-1">
@@ -344,7 +344,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   renderCheckoutCart();
-  loadPaymentScannerSettings();
+  loadPaymentScannerSettings(); // Fetches Admin UPI & QR from backend
 
   let cart = JSON.parse(localStorage.getItem('moonland_cart') || '[]');
   const badge = document.getElementById('cartCountBadge');
@@ -442,6 +442,7 @@ function backToStep1() {
   document.getElementById('orderUtr').required = false;
 }
 
+// Fetch Admin Settings for QR Scanner, UPI ID & Merchant Name
 async function loadPaymentScannerSettings() {
   try {
     const res = await fetch('/api/settings');
@@ -453,13 +454,14 @@ async function loadPaymentScannerSettings() {
 
       document.getElementById('displayAdminUpi').innerText = upi;
       document.getElementById('displayMerchantName').innerText = merchant;
-      document.getElementById('dynamicQrContainer').innerHTML = `<img src="${qr}" class="w-36 h-36 object-cover border shadow rounded-lg">`;
+      document.getElementById('dynamicQrContainer').innerHTML = `<img src="${qr}" class="w-36 h-36 object-cover border shadow rounded-lg" alt="Admin QR Code">`;
       return;
     }
   } catch(err) {
     console.error('Failed to load settings from server', err);
   }
 
+  // Fallback defaults
   document.getElementById('displayAdminUpi').innerText = 'paymoonland@upi';
   document.getElementById('displayMerchantName').innerText = 'Moonland Store';
   document.getElementById('dynamicQrContainer').innerHTML = `<div class="w-36 h-36 border flex items-center justify-center text-[10px] uppercase tracking-widest opacity-60 rounded-lg">QR Unavailable</div>`;
