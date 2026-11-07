@@ -16,6 +16,9 @@ html { background-color: #050505; color: #ffffff; }
 html.light { background-color: #f8fafc; color: #0f172a; }
 body { background-color: #050505 !important; color: #ffffff !important; transition: background-color 0.4s ease, color 0.4s ease; }
 
+/* Daylight Body Fix */
+html.light body { background-color: #f8fafc !important; color: #0f172a !important; }
+
 @keyframes rocketLaunch {
 0% { transform: translateY(80px) scale(1.2); opacity: 0; }
 20% { opacity: 1; }
@@ -91,11 +94,11 @@ body { background-color: #050505 !important; color: #ffffff !important; transiti
 </nav>
 
 <div class="flex items-center space-x-6">
-<button onclick="openCartModal()" class="flex items-center space-x-2 text-[11px] uppercase tracking-[0.2em] font-medium transition hover:opacity-75">
+<button id="cartBtnElement" onclick="openCartModal()" class="flex items-center space-x-2 text-[11px] uppercase tracking-[0.2em] font-medium transition hover:opacity-75">
 <i class="fa-solid fa-bag-shopping text-sm"></i>
 <span id="cartCountBadge" class="bg-black text-white dark:bg-white dark:text-black text-[9px] px-1.5 py-0.2 rounded-full font-bold ml-1">0</span>
 </button>
-<button onclick="toggleMobileMenu()" class="md:hidden text-lg p-2 cursor-pointer"><i class="fa-solid fa-bars"></i></button>
+<button id="mobileMenuBtn" onclick="toggleMobileMenu()" class="md:hidden text-lg p-2 cursor-pointer"><i class="fa-solid fa-bars"></i></button>
 </div>
 </div>
 
@@ -297,6 +300,9 @@ function applySystemThemeOrder() {
   const brandTitle = document.getElementById('brandTitle');
   const mobileMenu = document.getElementById('mobileMenuDropdown');
 
+  const cartBtnElement = document.getElementById('cartBtnElement');
+  const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+
   const secBadge = document.getElementById('secBadge');
   const mainHeading = document.getElementById('mainHeading');
   const mainDesc = document.getElementById('mainDesc');
@@ -327,6 +333,9 @@ function applySystemThemeOrder() {
     logoBox.className = "brand-logo-box w-8 h-8 border border-zinc-900 bg-zinc-900 text-white flex items-center justify-center font-black text-xs tracking-widest rounded-lg";
     brandTitle.className = "font-bold text-base tracking-[0.4em] uppercase text-zinc-900";
     mobileMenu.className = "hidden md:hidden bg-white border-b border-zinc-200 px-8 py-6 space-y-5 text-xs uppercase font-medium tracking-[0.25em] text-zinc-900 shadow-2xl z-50";
+
+    if(cartBtnElement) cartBtnElement.className = "flex items-center space-x-2 text-[11px] uppercase tracking-[0.2em] font-extrabold text-slate-900 transition hover:opacity-75";
+    if(mobileMenuBtn) mobileMenuBtn.className = "md:hidden text-lg p-2 cursor-pointer text-slate-900 font-black";
 
     secBadge.className = "inline-block text-[10px] font-extrabold uppercase tracking-[0.4em] text-cyan-900 border border-cyan-500/60 px-4 py-2 bg-cyan-100 rounded-full shadow-sm";
     mainHeading.className = "text-3xl sm:text-5xl font-black uppercase tracking-[0.1em] text-slate-900";
@@ -366,6 +375,9 @@ function applySystemThemeOrder() {
     logoBox.className = "brand-logo-box w-8 h-8 border border-white flex items-center justify-center font-black text-xs tracking-widest text-white group-hover:bg-white group-hover:text-black transition duration-500 rounded-lg";
     brandTitle.className = "font-bold text-base tracking-[0.4em] uppercase text-white";
     mobileMenu.className = "hidden md:hidden bg-black border-b border-zinc-900 px-8 py-6 space-y-5 text-xs uppercase font-medium tracking-[0.25em] text-white shadow-2xl z-50";
+
+    if(cartBtnElement) cartBtnElement.className = "flex items-center space-x-2 text-[11px] uppercase tracking-[0.2em] font-medium transition hover:opacity-75 text-white";
+    if(mobileMenuBtn) mobileMenuBtn.className = "md:hidden text-lg p-2 cursor-pointer text-white";
 
     secBadge.className = "inline-block text-[10px] font-bold uppercase tracking-[0.4em] text-zinc-400 border border-zinc-700 px-4 py-2 bg-zinc-900 rounded-full";
     mainHeading.className = "text-3xl sm:text-5xl font-black uppercase tracking-[0.1em] text-white";
