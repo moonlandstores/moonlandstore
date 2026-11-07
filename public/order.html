@@ -101,7 +101,7 @@ Fill your delivery details, proceed to payment, and submit UTR.
 <div class="space-y-4">
 <h2 id="cartSummaryTitle" class="text-xs font-bold uppercase tracking-[0.2em] border-b pb-3 flex justify-between items-center">
 <span><i class="fa-solid fa-bag-shopping mr-2"></i> Cart Summary</span>
-<span class="text-[10px] text-emerald-600 font-mono tracking-wider px-2.5 py-1 rounded-md border">Inclusive of All GST & Taxes</span>
+<span class="text-[10px] text-emerald-500 font-mono tracking-wider px-2.5 py-1 rounded-md border border-emerald-500/20 bg-emerald-500/10">Inclusive of All GST & Taxes</span>
 </h2>
 <div id="checkoutCartList" class="space-y-3 text-xs"></div>
 </div>
@@ -259,7 +259,6 @@ let currentTotalSubtotal = 0;
 let currentAdminUpi = "paymoonland@upi";
 let currentMerchantName = "Moonland Store";
 
-// System Time Based Theme Switcher (6 AM - 6 PM = Daylight Clouds / Night 6 PM - 6 AM = Dark Mode)
 function applySystemThemeOrder() {
   const currentHour = new Date().getHours();
   const isDayTime = currentHour >= 6 && currentHour < 18;
@@ -292,7 +291,7 @@ function applySystemThemeOrder() {
   const footer = document.getElementById('orderFooter');
 
   if (isDayTime) {
-    // --- DAYLIGHT WITH CLOUD EFFECT (6 AM to 6 PM) ---
+    // --- DAYLIGHT THEME ---
     bodyTag.className = "daylight-sky-clouds text-slate-900 font-sans antialiased min-h-screen flex flex-col justify-between selection:bg-black selection:text-white";
     topBar.className = "bg-blue-100/90 backdrop-blur-md text-blue-900 py-2.5 px-4 text-[10px] font-bold tracking-[0.25em] uppercase border-b border-blue-200 overflow-hidden whitespace-nowrap";
     header.className = "sticky top-0 z-45 bg-white/90 backdrop-blur-xl border-b border-blue-200 shadow-sm";
@@ -322,10 +321,10 @@ function applySystemThemeOrder() {
     footer.className = "bg-white/80 backdrop-blur-md text-slate-600 py-16 border-t border-blue-100 text-center text-[10px] uppercase tracking-[0.3em] space-y-4";
 
     document.querySelectorAll('.form-input-elem').forEach(el => {
-      el.className = "form-input-elem w-full bg-white border border-blue-200 px-4 py-3.5 text-xs text-slate-900 focus:outline-none focus:border-blue-600 transition rounded-xl shadow-sm";
+      el.className = "form-input-elem w-full bg-white border border-blue-300 px-4 py-3.5 text-xs text-slate-900 font-medium focus:outline-none focus:border-blue-600 transition rounded-xl shadow-sm placeholder:text-slate-400";
     });
   } else {
-    // --- DARK / NIGHT MODE (6 PM to 6 AM) ---
+    // --- NIGHT MODE (BLACK + HIGH VISIBILITY TEXT & INPUTS) ---
     bodyTag.className = "bg-[#050505] text-white font-sans antialiased min-h-screen flex flex-col justify-between selection:bg-white selection:text-black";
     topBar.className = "bg-black text-zinc-300 py-2.5 px-4 text-[10px] font-bold tracking-[0.25em] uppercase border-b border-zinc-900 overflow-hidden whitespace-nowrap";
     header.className = "sticky top-0 z-45 bg-black/90 backdrop-blur-xl border-b border-zinc-900";
@@ -355,7 +354,7 @@ function applySystemThemeOrder() {
     footer.className = "bg-black text-zinc-600 py-16 border-t border-zinc-900 text-center text-[10px] uppercase tracking-[0.3em] space-y-4";
 
     document.querySelectorAll('.form-input-elem').forEach(el => {
-      el.className = "form-input-elem w-full bg-black border border-zinc-800 px-4 py-3.5 text-xs text-white focus:outline-none focus:border-white transition rounded-xl shadow-sm";
+      el.className = "form-input-elem w-full bg-[#141414] border border-zinc-700 px-4 py-3.5 text-xs text-white font-medium focus:outline-none focus:border-white transition rounded-xl shadow-sm placeholder:text-zinc-500";
     });
   }
 }
@@ -373,7 +372,8 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   if(refParam) {
-      document.getElementById('orderRef').value = refParam;
+      const refInput = document.getElementById('orderRef');
+      if(refInput) refInput.value = refParam;
   }
 
   renderCheckoutCart();
@@ -400,39 +400,40 @@ function renderCheckoutCart() {
   const container = document.getElementById('checkoutCartList');
   if(!container) return;
 
+  const currentHour = new Date().getHours();
+  const isDay = currentHour >= 6 && currentHour < 18;
+
   if(cart.length === 0) {
-    container.innerHTML = `<p class="text-zinc-500 uppercase tracking-widest text-center py-4">Your cart is empty. <a href="store.html" class="underline font-bold">Add products</a></p>`;
+    container.innerHTML = `<p class="text-zinc-500 uppercase tracking-widest text-center py-6 font-semibold">Your cart is empty. <a href="store.html" class="underline text-blue-500 font-bold ml-1">Add products</a></p>`;
     currentTotalSubtotal = 0;
     updateUpiIntentLinks();
     return;
   }
-
-  const currentHour = new Date().getHours();
-  const isDay = currentHour >= 6 && currentHour < 18;
 
   let subtotal = 0;
   container.innerHTML = cart.map((item, idx) => {
     let itemPrice = Number(item.price) || 0;
     let qty = Number(item.quantity || item.qty || 1);
     let itemName = item.title || item.name || 'Product';
-    subtotal += itemPrice * qty;
+    let lineTotal = itemPrice * qty;
+    subtotal += lineTotal;
     return `
-      <div class="flex justify-between items-center ${isDay ? 'bg-white/90 border-blue-200 text-slate-950 shadow-sm' : 'bg-black border-zinc-800 text-white'} p-4 border rounded-xl">
+      <div class="flex justify-between items-center ${isDay ? 'bg-white border-blue-200 text-slate-900 shadow-sm' : 'bg-black border-zinc-800 text-white'} p-4 border rounded-xl">
         <div>
-          <span class="font-bold uppercase tracking-wider block">${itemName}</span>
+          <span class="font-bold uppercase tracking-wider block text-xs">${itemName}</span>
           <span class="text-[10px] opacity-70 font-mono">Qty: ${qty} | GST: Included</span>
         </div>
         <div class="flex items-center space-x-6">
-          <span class="font-mono font-bold">₹${itemPrice * qty}</span>
+          <span class="font-mono font-bold text-sm">₹${lineTotal.toLocaleString('en-IN')}</span>
           <button type="button" onclick="removeFromCheckoutCart(${idx})" class="text-zinc-500 hover:text-red-500 p-1"><i class="fa-solid fa-trash text-xs"></i></button>
         </div>
       </div>
     `;
   }).join('') + `
-    <div class="${isDay ? 'bg-white/90 border-blue-200 text-slate-950 shadow-sm' : 'bg-black border-zinc-800 text-white'} p-4 border space-y-2 font-mono text-xs mt-3 rounded-xl">
+    <div class="${isDay ? 'bg-white border-blue-200 text-slate-900 shadow-sm' : 'bg-black border-zinc-800 text-white'} p-4 border space-y-2 font-mono text-xs mt-3 rounded-xl">
       <div class="flex justify-between opacity-80">
         <span>Subtotal</span>
-        <span>₹${subtotal}</span>
+        <span>₹${subtotal.toLocaleString('en-IN')}</span>
       </div>
       <div class="flex justify-between opacity-80">
         <span>Delivery Charges</span>
@@ -444,7 +445,7 @@ function renderCheckoutCart() {
       </div>
       <div class="pt-3 border-t ${isDay ? 'border-blue-100' : 'border-zinc-800'} flex justify-between font-black text-sm uppercase tracking-wider">
         <span>Total Payable Amount</span>
-        <span class="font-mono text-emerald-500">₹${subtotal}</span>
+        <span class="font-mono text-emerald-500 text-base">₹${subtotal.toLocaleString('en-IN')}</span>
       </div>
     </div>
   `;
