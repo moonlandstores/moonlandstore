@@ -44,10 +44,18 @@
     html.light .product-card p { color: #475569 !important; font-weight: 600 !important; }
     html.light .product-price { color: #059669 !important; font-weight: 900; }
     
-    html.light .btn-outline { border-color: #0f172a !important; color: #0f172a !important; background-color: #ffffff !important; font-weight: 800; }
-    html.light .btn-outline:hover { background-color: #0f172a !important; color: #ffffff !important; }
-    html.light .btn-solid { background-color: #0f172a !important; color: #ffffff !important; font-weight: 800; box-shadow: 0 4px 12px rgba(15, 23, 42, 0.25); }
-    html.light .btn-solid:hover { background-color: #1e293b !important; }
+    /* Uniform Button Style for both Add to Cart & Buy Now */
+    html.light .btn-outline { 
+      border-color: #0f172a !important; 
+      color: #0f172a !important; 
+      background-color: #ffffff !important; 
+      font-weight: 800; 
+      border-radius: 0.75rem;
+    }
+    html.light .btn-outline:hover { 
+      background-color: #0f172a !important; 
+      color: #ffffff !important; 
+    }
     
     html.light footer { background-color: #e2e8f0 !important; border-top-color: #cbd5e1 !important; color: #334155 !important; font-weight: 600; }
     
@@ -62,22 +70,17 @@
     html.dark .store-modal-box { background: rgba(12,12,12,0.98) !important; border-color: rgba(255,255,255,0.2) !important; color: #ffffff !important; }
     html.dark .store-modal-inner { background: #000000 !important; border-color: #27272a !important; color: #ffffff !important; }
 
-    /* NIGHT MODE BUTTON OVERRIDES (FIXED VISIBILITY) */
-    html.dark .modal-btn-outline {
-      background-color: #18181b !important;
-      border-color: #3f3f46 !important;
+    /* NIGHT MODE UNIFORM BUTTON OVERRIDES (BOX OUTLINE STYLE FOR BOTH) */
+    html.dark .btn-outline {
+      background-color: transparent !important;
+      border-color: rgba(255, 255, 255, 0.8) !important;
       color: #ffffff !important;
+      font-weight: 700;
+      border-radius: 0.75rem;
     }
-    html.dark .modal-btn-outline:hover {
-      background-color: #27272a !important;
-      color: #38bdf8 !important;
-    }
-    html.dark .modal-btn-solid {
+    html.dark .btn-outline:hover {
       background-color: #ffffff !important;
       color: #000000 !important;
-    }
-    html.dark .modal-btn-solid:hover {
-      background-color: #e4e4e7 !important;
     }
 
     /* Fix for 3-line mobile menu in Dark Mode */
@@ -142,7 +145,7 @@
     </marquee>
   </div>
 
-  <!-- Header with Fixed Mobile Menu Dropdown Positioning (Height updated to h-20) -->
+  <!-- Header with Fixed Mobile Menu Dropdown Positioning -->
   <header class="sticky top-0 z-50 bg-black/90 backdrop-blur-xl border-b border-zinc-900">
     <div class="max-w-7xl mx-auto px-6 sm:px-12 flex justify-between items-center h-20 relative">
       <a href="index.html" class="flex items-center space-x-3 group">
@@ -191,7 +194,7 @@
     <div id="dynamicProductsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8"></div>
   </main>
 
-  <!-- Product Detail Modal (Fixed Layout & Sizing) -->
+  <!-- Product Detail Modal -->
   <div id="productDetailModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md hidden p-4">
     <div class="store-modal-box border max-w-3xl w-full p-6 sm:p-8 relative shadow-2xl rounded-2xl space-y-5 max-h-[85vh] overflow-y-auto">
       <button onclick="closeProductModal()" class="absolute top-4 right-4 text-zinc-400 hover:text-white text-lg border border-zinc-700 w-9 h-9 flex items-center justify-center transition rounded-full">
@@ -238,8 +241,8 @@
             </div>
 
             <div class="flex gap-3 pt-1">
-              <button onclick="addCurrentToCart()" class="flex-1 modal-btn-outline border font-bold py-3 uppercase tracking-wider text-xs transition rounded-xl shadow-sm">Add to Cart</button>
-              <button onclick="buyCurrentNow()" class="flex-1 modal-btn-solid font-black py-3 uppercase tracking-wider text-xs transition shadow-lg rounded-xl">Buy Now</button>
+              <button onclick="addCurrentToCart()" class="flex-1 btn-outline border font-bold py-3 uppercase tracking-wider text-xs transition shadow-sm text-center">Add to Cart</button>
+              <button onclick="buyCurrentNow()" class="flex-1 btn-outline border font-bold py-3 uppercase tracking-wider text-xs transition shadow-sm text-center">Buy Now</button>
             </div>
           </div>
         </div>
@@ -259,10 +262,10 @@
         <p class="text-[11px] opacity-80 font-light">The item has been successfully added to your cart.</p>
       </div>
       <div class="grid grid-cols-2 gap-3 pt-2">
-        <button onclick="closeAddToCartModal()" class="border modal-btn-outline font-bold py-3 text-[10px] uppercase tracking-wider transition rounded-xl shadow-sm">
+        <button onclick="closeAddToCartModal()" class="border btn-outline font-bold py-3 text-[10px] uppercase tracking-wider transition rounded-xl shadow-sm">
           Continue
         </button>
-        <button onclick="window.location.href='order.html'" class="modal-btn-solid font-black py-3 text-[10px] uppercase tracking-wider transition shadow-lg flex items-center justify-center gap-1.5 rounded-xl">
+        <button onclick="window.location.href='order.html'" class="border btn-outline font-black py-3 text-[10px] uppercase tracking-wider transition shadow-lg flex items-center justify-center gap-1.5 rounded-xl">
           <i class="fa-solid fa-arrow-right"></i> View Cart
         </button>
       </div>
@@ -285,7 +288,7 @@
           <span>Total Amount:</span>
           <span id="cartDrawerTotal" class="font-bold text-emerald-600 dark:text-emerald-400">₹0</span>
         </div>
-        <button onclick="proceedToCheckout()" class="w-full btn-solid py-3.5 text-xs uppercase tracking-[0.2em] font-black transition rounded-xl shadow-lg">
+        <button onclick="proceedToCheckout()" class="w-full btn-outline border py-3.5 text-xs uppercase tracking-[0.2em] font-black transition rounded-xl shadow-lg">
           Proceed to Checkout
         </button>
       </div>
@@ -448,7 +451,7 @@
             <span class="product-price font-mono text-lg font-bold">₹${pPrice.toLocaleString('en-IN')}</span>
             <div class="grid grid-cols-2 gap-2">
               <button onclick="event.stopPropagation(); addToCartDirect('${p.id}')" class="btn-outline w-full border font-bold py-2.5 text-[10px] uppercase tracking-[0.2em] transition rounded-xl">Add To Cart</button>
-              <button onclick="event.stopPropagation(); buyNowDirect('${p.id}')" class="btn-solid w-full font-bold py-2.5 text-[10px] uppercase tracking-[0.2em] text-center flex items-center justify-center transition rounded-xl shadow-md">Buy Now</button>
+              <button onclick="event.stopPropagation(); buyNowDirect('${p.id}')" class="btn-outline w-full border font-bold py-2.5 text-[10px] uppercase tracking-[0.2em] text-center flex items-center justify-center transition rounded-xl shadow-md">Buy Now</button>
             </div>
           </div>
         `;
