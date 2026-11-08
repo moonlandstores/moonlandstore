@@ -20,7 +20,6 @@
     html.light body { background-color: #f8fafc !important; color: #0f172a !important; }
     html.light header { background-color: rgba(255, 255, 255, 0.95) !important; border-bottom-color: #cbd5e1 !important; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); }
     
-    /* High Visibility Marquee Bar for Daylight */
     html.light .marquee-bar { 
       background: linear-gradient(135deg, #0f172a, #1e293b) !important; 
       color: #f8fafc !important; 
@@ -44,10 +43,10 @@
     html.light .main-cta-btn { background-color: #0f172a !important; color: #ffffff !important; border-color: #0f172a !important; box-shadow: 0 10px 15px -3px rgba(15, 23, 42, 0.2); }
     html.light .main-cta-btn i.arrow-nudge { color: #ffffff !important; }
     
-    /* Daylight Cards & Refer & Earn Fixes */
-    html.light .guide-card, html.light .story-card { background-color: #ffffff !important; border-color: #cbd5e1 !important; box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.08); }
-    html.light .guide-card h3, html.light .story-card h3 { color: #0f172a !important; font-weight: 800 !important; }
-    html.light .guide-card p, html.light .story-card p { color: #475569 !important; font-weight: 600 !important; }
+    /* Daylight Cards & Slider Fixes */
+    html.light .guide-card, html.light .story-card, html.light .home-product-card { background-color: #ffffff !important; border-color: #cbd5e1 !important; box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.08); }
+    html.light .guide-card h3, html.light .story-card h3, html.light .home-product-card h3 { color: #0f172a !important; font-weight: 800 !important; }
+    html.light .guide-card p, html.light .story-card p, html.light .home-product-card p { color: #475569 !important; font-weight: 600 !important; }
     html.light .guide-number { background-color: #0f172a !important; color: #ffffff !important; }
     html.light .referral-banner-card { background: linear-gradient(to right, #ffffff, #f8fafc, #ffffff) !important; border-color: #cbd5e1 !important; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.08); }
     html.light .referral-banner-card h2 { color: #0f172a !important; }
@@ -56,9 +55,9 @@
     html.light footer { background-color: #e2e8f0 !important; border-top-color: #cbd5e1 !important; color: #334155 !important; font-weight: 600; }
 
     /* DAYLIGHT MODE POPUP & DRAWER OVERRIDES */
-    html.light .promo-popup-box { background: #ffffff !important; border-color: #cbd5e1 !important; color: #0f172a !important; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); }
-    html.light .promo-popup-box h2 { color: #0f172a !important; }
-    html.light .promo-popup-inner-card { background: #f8fafc !important; border-color: #cbd5e1 !important; color: #0f172a !important; }
+    html.light .promo-popup-box, html.light .store-modal-box { background: #ffffff !important; border-color: #cbd5e1 !important; color: #0f172a !important; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); }
+    html.light .promo-popup-box h2, html.light .store-modal-box h2 { color: #0f172a !important; }
+    html.light .promo-popup-inner-card, html.light .store-modal-inner { background: #f8fafc !important; border-color: #cbd5e1 !important; color: #0f172a !important; }
     html.light .cart-drawer-box { background-color: #ffffff !important; border-left-color: #cbd5e1 !important; color: #0f172a !important; }
 
     /* NIGHT MODE (PRESERVED EXACTLY AS IT WAS) */
@@ -66,9 +65,10 @@
     html.dark .clouds-bg { display: none !important; }
     html.dark .white-rocket-visible { color: #ffffff !important; filter: drop-shadow(0 0 8px rgba(255,255,255,0.8)) !important; }
     html.dark .rocket-smoke-exhaust { background: linear-gradient(to bottom, rgba(255,255,255,0.9), rgba(0,255,255,0.4), transparent) !important; }
-    html.dark .promo-popup-box { background: rgba(12,12,12,0.98) !important; border-color: rgba(255,255,255,0.2) !important; color: #ffffff !important; }
-    html.dark .promo-popup-inner-card { background: #000000 !important; border-color: #27272a !important; color: #ffffff !important; }
+    html.dark .promo-popup-box, html.dark .store-modal-box { background: rgba(12,12,12,0.98) !important; border-color: rgba(255,255,255,0.2) !important; color: #ffffff !important; }
+    html.dark .promo-popup-inner-card, html.dark .store-modal-inner { background: #000000 !important; border-color: #27272a !important; color: #ffffff !important; }
     html.dark .cart-drawer-box { background-color: #0c0c0c !important; border-left-color: #27272a !important; color: #ffffff !important; }
+    html.dark .home-product-card { background-color: #000000 !important; border-color: #27272a !important; color: #ffffff !important; }
 
     /* Animations */
     @keyframes moonFloat {
@@ -152,6 +152,9 @@
     .arrow-nudge { animation: arrowNudge 1.5s infinite; }
 
     #promoModalOverlay, #cartDrawerOverlay { transition: opacity 0.4s ease, visibility 0.4s ease; }
+    
+    /* Product Auto-Slider Animation */
+    .slider-track { transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1); }
   </style>
 
   <!-- AUTO THEME SWITCHER LOGIC -->
@@ -185,7 +188,7 @@
     </marquee>
   </div>
 
-  <!-- Optimized Compact Header / Navbar -->
+  <!-- Header / Navbar -->
   <header class="sticky top-0 z-50 bg-black/90 backdrop-blur-xl border-b border-zinc-900">
     <div class="max-w-7xl mx-auto px-6 sm:px-12 flex justify-between items-center h-20 relative">
       <a href="index.html" class="flex items-center space-x-3 group">
@@ -213,7 +216,7 @@
       </div>
     </div>
 
-    <!-- Mobile Dropdown Menu Absolute Overlay -->
+    <!-- Mobile Dropdown Menu -->
     <div id="mobileMenuDropdown" class="hidden absolute top-full left-0 w-full bg-white dark:bg-black border-b border-zinc-200 dark:border-zinc-900 px-8 py-6 space-y-5 text-xs uppercase font-medium tracking-[0.25em] shadow-2xl z-50">
       <a href="index.html" class="block font-bold">Home</a>
       <a href="store.html" class="block opacity-80 hover:opacity-100">Store</a>
@@ -226,11 +229,8 @@
   <main class="flex-grow relative z-10">
     <!-- Hero Section -->
     <section class="hero-section relative h-[85vh] flex items-center justify-center text-center px-6 overflow-hidden bg-black border-b border-zinc-900">
-      
-      <!-- Night Mode Canvas Stars -->
       <canvas id="moonStarCanvas" class="absolute inset-0 z-0 pointer-events-none bg-light-flashing"></canvas>
       
-      <!-- Daylight Clouds (Visible only in Light Mode) -->
       <div class="clouds-bg hidden absolute inset-0 pointer-events-none z-0 overflow-hidden">
         <div class="absolute top-16 left-[-50px] w-72 h-24 bg-sky-200/40 rounded-full blur-xl cloud-elem-1"></div>
         <div class="absolute top-44 right-[-40px] w-96 h-32 bg-blue-200/30 rounded-full blur-2xl cloud-elem-2"></div>
@@ -257,7 +257,6 @@
           Custom home appliances built to last. Comes with 1-year free replacement warranty.
         </p>
         
-        <!-- CTA BUTTON WITH DYNAMIC ROCKET -->
         <div class="flex flex-col items-center gap-2 pt-2">
           <span class="hero-sub text-[9px] uppercase tracking-[0.3em] font-bold flex items-center gap-1">
             <i class="fa-solid fa-arrow-down text-cyan-400 animate-bounce"></i> Click below to view all items
@@ -271,6 +270,27 @@
             <i class="fa-solid fa-arrow-right text-xs arrow-nudge"></i>
           </a>
         </div>
+      </div>
+    </section>
+
+    <!-- NEW FEATURED PRODUCTS AUTO-SLIDER (2 SEC ROTATION) -->
+    <section class="max-w-7xl mx-auto px-6 sm:px-12 py-16 border-b border-zinc-200 dark:border-zinc-900">
+      <div class="text-center space-y-3 mb-10">
+        <span class="text-[10px] font-extrabold uppercase tracking-[0.4em] text-red-600 dark:text-yellow-400 bg-red-100 dark:bg-yellow-400/10 px-3.5 py-1.5 border border-red-300 dark:border-yellow-400/20 rounded-full">
+          <i class="fa-solid fa-fire mr-1 text-red-500 animate-pulse"></i> FEATURED DEALS
+        </span>
+        <h2 class="hero-title text-2xl sm:text-4xl font-black uppercase tracking-wider">TOP TRENDING PRODUCTS</h2>
+        <p class="hero-sub text-xs max-w-md mx-auto font-medium">Click on any product to view details & buy directly.</p>
+      </div>
+
+      <!-- Slider Main Window -->
+      <div class="relative overflow-hidden rounded-2xl border border-zinc-200 dark:border-zinc-800 shadow-xl bg-white dark:bg-black p-4 sm:p-8">
+        <div id="homeProductSliderTrack" class="flex slider-track transition-transform duration-500 gap-6">
+          <!-- Products will be injected dynamically via JS -->
+        </div>
+
+        <!-- Slider Progress Indicators -->
+        <div id="sliderDotsContainer" class="flex justify-center items-center gap-2 pt-6"></div>
       </div>
     </section>
 
@@ -367,6 +387,62 @@
     </section>
   </main>
 
+  <!-- Product Detail Modal (Direct Buy from Home Page) -->
+  <div id="productDetailModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md hidden p-4">
+    <div class="store-modal-box border max-w-4xl w-full p-6 sm:p-10 relative shadow-2xl rounded-2xl space-y-6 max-h-[90vh] overflow-y-auto">
+      <button onclick="closeProductModal()" class="absolute top-4 right-4 text-zinc-500 dark:text-zinc-400 hover:text-black dark:hover:text-white text-lg border border-zinc-300 dark:border-zinc-800 w-10 h-10 flex items-center justify-center transition rounded-full">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
+        <div class="space-y-4">
+          <div class="h-80 bg-zinc-100 dark:bg-black border border-zinc-200 dark:border-zinc-800 overflow-hidden relative shadow-inner rounded-xl">
+            <img id="modalMainImg" src="" class="w-full h-full object-cover">
+          </div>
+          <div id="modalThumbnails" class="flex gap-2 overflow-x-auto pb-1"></div>
+        </div>
+
+        <div class="space-y-6">
+          <div>
+            <span class="bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 border border-cyan-500/20 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider rounded-md">Store Item</span>
+            <h2 id="modalTitle" class="text-2xl font-black uppercase tracking-wider mt-2"></h2>
+          </div>
+          <p id="modalPrice" class="text-3xl font-mono font-black text-emerald-600 dark:text-emerald-400"></p>
+          
+          <div id="keyFeaturesContainer" class="space-y-2 pt-2 border-t border-zinc-200 dark:border-zinc-900 hidden">
+            <h3 class="text-[10px] opacity-80 font-bold uppercase tracking-[0.2em] flex items-center gap-1.5">
+              <i class="fa-solid fa-star text-yellow-500"></i> Key Features
+            </h3>
+            <div id="modalKeyFeaturesGrid" class="grid grid-cols-2 gap-2 max-h-40 overflow-y-auto pr-1"></div>
+          </div>
+
+          <div id="productDetailsContainer" class="space-y-2 pt-2 border-t border-zinc-200 dark:border-zinc-900 hidden">
+            <h3 class="text-[10px] opacity-80 font-bold uppercase tracking-[0.2em] flex items-center gap-1.5">
+              <i class="fa-solid fa-circle-info text-cyan-500"></i> Product Details
+            </h3>
+            <div id="modalDetailsGrid" class="grid grid-cols-2 gap-2 max-h-40 overflow-y-auto pr-1"></div>
+          </div>
+
+          <div class="pt-4 border-t border-zinc-200 dark:border-zinc-900 space-y-4">
+            <div class="flex items-center gap-3">
+              <span class="text-xs font-bold uppercase tracking-widest opacity-90">Quantity:</span>
+              <div class="flex items-center border border-zinc-300 dark:border-zinc-800 bg-white dark:bg-black rounded-xl overflow-hidden shadow-sm">
+                <button onclick="adjustQty(-1)" class="px-3.5 py-2 font-mono hover:bg-zinc-100 dark:hover:bg-zinc-900">-</button>
+                <span id="modalQty" class="px-5 py-2 font-mono text-xs font-bold">1</span>
+                <button onclick="adjustQty(1)" class="px-3.5 py-2 font-mono hover:bg-zinc-100 dark:hover:bg-zinc-900">+</button>
+              </div>
+            </div>
+
+            <div class="flex gap-3 pt-2">
+              <button onclick="addCurrentToCart()" class="flex-1 bg-white border border-zinc-300 dark:border-zinc-700 font-bold py-3.5 uppercase tracking-wider text-xs transition rounded-xl shadow-sm text-slate-900 dark:text-white">Add to Cart</button>
+              <button onclick="buyCurrentNow()" class="flex-1 bg-zinc-900 dark:bg-white text-white dark:text-black font-black py-3.5 uppercase tracking-wider text-xs transition shadow-lg rounded-xl">Buy Now</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <footer class="py-16 border-t text-center text-[10px] uppercase tracking-[0.3em] space-y-4 relative z-10 font-semibold">
     <p>© 2026 Moonland Store. All Rights Reserved.</p>
   </footer>
@@ -374,7 +450,6 @@
   <!-- PROMO MODAL -->
   <div id="promoModalOverlay" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-md flex items-center justify-center p-4 opacity-0 invisible">
     <div class="relative w-full max-w-xl promo-popup-box border p-6 sm:p-10 jaguar-popup-card shadow-2xl text-center space-y-6 rounded-2xl">
-      
       <button onclick="closePromoModal()" class="absolute top-4 right-4 w-8 h-8 border border-zinc-400 dark:border-zinc-700 hover:border-black dark:hover:border-white text-zinc-600 dark:text-zinc-400 hover:text-black dark:hover:text-white flex items-center justify-center transition rounded-full">
         <i class="fa-solid fa-xmark text-sm"></i>
       </button>
@@ -442,11 +517,15 @@
 
   <script src="script.js"></script>
   <script>
+    let homeProducts = [];
+    let currentSlideIndex = 0;
+    let sliderInterval = null;
+    let activeProduct = null;
+    let currentQty = 1;
+
     function toggleMobileMenu() {
       const dropdown = document.getElementById('mobileMenuDropdown');
-      if (dropdown) {
-        dropdown.classList.toggle('hidden');
-      }
+      if (dropdown) dropdown.classList.toggle('hidden');
     }
 
     function openCartModal() {
@@ -508,7 +587,7 @@
     }
 
     function proceedToCheckout() {
-      window.location.href = 'order.html';
+      window.location.href = 'order_2.html';
     }
 
     function updateCartBadgeCount() {
@@ -516,6 +595,201 @@
       let totalCount = cart.reduce((sum, item) => sum + (item.quantity || item.qty || 1), 0);
       const badge = document.getElementById('cartCountBadge');
       if (badge) badge.innerText = totalCount;
+    }
+
+    async function loadHomeProducts() {
+      try {
+        let response = await fetch('/api/products');
+        let products = await response.json();
+        if (products && products.length > 0) {
+          homeProducts = products;
+        }
+      } catch (err) {
+        console.error('Error loading products for slider:', err);
+      }
+
+      if(!homeProducts || homeProducts.length === 0) {
+        let stored = localStorage.getItem('moonland_store_products');
+        if (stored) homeProducts = JSON.parse(stored);
+      }
+
+      if(!homeProducts || homeProducts.length === 0) {
+        homeProducts = [
+          { id: 'prod_1', name: 'Signature Gas Stove', price: 999, images: ['https://images.unsplash.com/photo-1556911220-e15b29be8c8f?auto=format&fit=crop&q=80&w=400'], keyFeatures: 'Case Water Body: Pure Aluminium' }
+        ];
+      }
+
+      renderSlider();
+      startAutoSlider();
+    }
+
+    function renderSlider() {
+      const track = document.getElementById('homeProductSliderTrack');
+      const dotsContainer = document.getElementById('sliderDotsContainer');
+      if (!track) return;
+
+      const savedTheme = localStorage.getItem('moonland_theme');
+      const currentHour = new Date().getHours();
+      const isLight = savedTheme === 'light' || (!savedTheme && currentHour >= 6 && currentHour < 18);
+
+      track.innerHTML = homeProducts.map((p) => {
+        let imgList = (p.images && p.images.length > 0) ? p.images[0] : 'https://images.unsplash.com/photo-1556911220-e15b29be8c8f?auto=format&fit=crop&q=80&w=400';
+        return `
+          <div onclick="openProductDetail('${p.id}')" class="min-w-full sm:min-w-[calc(50%-12px)] lg:min-w-[calc(33.33%-16px)] flex-shrink-0 cursor-pointer home-product-card border p-5 rounded-2xl transition duration-300 shadow-md flex flex-col justify-between space-y-4">
+            <div class="h-52 bg-zinc-100 dark:bg-black rounded-xl overflow-hidden relative border border-zinc-200 dark:border-zinc-800 shadow-inner flex items-center justify-center">
+              <span class="absolute top-2.5 left-2.5 bg-red-600 text-white text-[8px] font-extrabold uppercase tracking-widest px-2 py-1 rounded-md shadow">AD DEAL</span>
+              <img src="${imgList}" class="w-full h-full object-cover">
+            </div>
+            <div class="space-y-1">
+              <h3 class="font-bold text-sm uppercase tracking-wider line-clamp-1">${p.name}</h3>
+              <p class="text-xs font-mono font-black text-emerald-600 dark:text-emerald-400">₹${Number(p.price).toLocaleString('en-IN')}</p>
+            </div>
+            <button onclick="event.stopPropagation(); openProductDetail('${p.id}')" class="w-full bg-zinc-900 dark:bg-white text-white dark:text-black font-black py-2.5 text-[10px] uppercase tracking-widest transition rounded-xl">View & Buy Now</button>
+          </div>
+        `;
+      }).join('');
+
+      if(dotsContainer) {
+        dotsContainer.innerHTML = homeProducts.map((_, i) => `
+          <button onclick="goToSlide(${i})" class="w-2.5 h-2.5 rounded-full transition-all duration-300 ${i === 0 ? 'bg-cyan-500 w-6' : 'bg-zinc-400/40'}"></button>
+        `).join('');
+      }
+    }
+
+    function startAutoSlider() {
+      if(sliderInterval) clearInterval(sliderInterval);
+      sliderInterval = setInterval(() => {
+        if(homeProducts.length === 0) return;
+        currentSlideIndex = (currentSlideIndex + 1) % homeProducts.length;
+        updateSliderPosition();
+      }, 2000); // 2 Seconds Auto Change
+    }
+
+    function goToSlide(idx) {
+      currentSlideIndex = idx;
+      updateSliderPosition();
+      startAutoSlider(); // Reset timer on manual dot click
+    }
+
+    function updateSliderPosition() {
+      const track = document.getElementById('homeProductSliderTrack');
+      const dots = document.querySelectorAll('#sliderDotsContainer button');
+      if(!track) return;
+
+      const isMobile = window.innerWidth < 640;
+      const isTablet = window.innerWidth >= 640 && window.innerWidth < 1024;
+      let cardWidthPercent = 100;
+      if (isTablet) cardWidthPercent = 50;
+      if (!isMobile && !isTablet) cardWidthPercent = 33.33;
+
+      track.style.transform = `translateX(-${currentSlideIndex * cardWidthPercent}%)`;
+
+      dots.forEach((dot, i) => {
+        if (i === currentSlideIndex) {
+          dot.className = "w-6 h-2.5 bg-cyan-500 rounded-full transition-all duration-300";
+        } else {
+          dot.className = "w-2.5 h-2.5 bg-zinc-400/40 rounded-full transition-all duration-300";
+        }
+      });
+    }
+
+    function openProductDetail(prodId) {
+      activeProduct = homeProducts.find(p => p.id === prodId);
+      if (!activeProduct) return;
+
+      currentQty = 1;
+      document.getElementById('modalQty').innerText = currentQty;
+      document.getElementById('modalTitle').innerText = activeProduct.name;
+      document.getElementById('modalPrice').innerText = `₹${Number(activeProduct.price).toLocaleString('en-IN')}`;
+
+      const kfContainer = document.getElementById('keyFeaturesContainer');
+      const kfGrid = document.getElementById('modalKeyFeaturesGrid');
+      if (activeProduct.keyFeatures && activeProduct.keyFeatures.trim() !== '') {
+        kfContainer.classList.remove('hidden');
+        kfGrid.innerHTML = activeProduct.keyFeatures.split(',').map(item => {
+          let parts = item.split(':');
+          let label = parts[0] ? parts[0].trim() : 'Feature';
+          let val = parts[1] ? parts[1].trim() : item.trim();
+          return `
+            <div class="store-modal-inner border p-2.5 flex flex-col justify-between space-y-1 rounded-xl shadow-sm">
+              <span class="text-[9px] opacity-80 uppercase tracking-widest font-bold">${label}</span>
+              <span class="text-xs font-bold uppercase">${val}</span>
+            </div>
+          `;
+        }).join('');
+      } else {
+        kfContainer.classList.add('hidden');
+      }
+
+      const detContainer = document.getElementById('productDetailsContainer');
+      const detGrid = document.getElementById('modalDetailsGrid');
+      if (activeProduct.details && activeProduct.details.trim() !== '') {
+        detContainer.classList.remove('hidden');
+        detGrid.innerHTML = activeProduct.details.split(',').map(item => {
+          let parts = item.split(':');
+          let label = parts[0] ? parts[0].trim() : 'Detail';
+          let val = parts[1] ? parts[1].trim() : item.trim();
+          return `
+            <div class="store-modal-inner border p-2.5 flex flex-col justify-between space-y-1 rounded-xl shadow-sm">
+              <span class="text-[9px] opacity-80 uppercase tracking-widest font-bold">${label}</span>
+              <span class="text-xs font-bold uppercase">${val}</span>
+            </div>
+          `;
+        }).join('');
+      } else {
+        detContainer.classList.add('hidden');
+      }
+
+      let imgList = activeProduct.images && activeProduct.images.length > 0 ? activeProduct.images : ['https://images.unsplash.com/photo-1556911220-e15b29be8c8f?auto=format&fit=crop&q=80&w=400'];
+      document.getElementById('modalMainImg').src = imgList[0];
+      
+      document.getElementById('modalThumbnails').innerHTML = imgList.map((img, idx) => `
+        <img src="${img}" onclick="document.getElementById('modalMainImg').src='${img}'" class="w-16 h-16 object-cover border ${idx === 0 ? 'border-cyan-500' : 'border-zinc-300 dark:border-zinc-800'} cursor-pointer rounded-lg shadow-sm">
+      `).join('');
+
+      document.getElementById('productDetailModal').classList.remove('hidden');
+    }
+
+    function closeProductModal() {
+      document.getElementById('productDetailModal').classList.add('hidden');
+      activeProduct = null;
+    }
+
+    function adjustQty(val) {
+      currentQty = Math.max(1, currentQty + val);
+      document.getElementById('modalQty').innerText = currentQty;
+    }
+
+    function addCurrentToCart() {
+      if (!activeProduct) return;
+      let cart = JSON.parse(localStorage.getItem('moonland_cart') || '[]');
+      let existing = cart.find(i => i.id === activeProduct.id || i.title === activeProduct.name);
+      if (existing) {
+        existing.id = activeProduct.id;
+        existing.quantity = (existing.quantity || 1) + currentQty;
+      } else {
+        cart.push({ id: activeProduct.id, title: activeProduct.name, name: activeProduct.name, price: activeProduct.price, quantity: currentQty });
+      }
+      localStorage.setItem('moonland_cart', JSON.stringify(cart));
+      updateCartBadgeCount();
+      closeProductModal();
+      alert('Product added to cart!');
+    }
+
+    function buyCurrentNow() {
+      if (!activeProduct) return;
+      let cart = JSON.parse(localStorage.getItem('moonland_cart') || '[]');
+      let existing = cart.find(i => i.id === activeProduct.id || i.title === activeProduct.name);
+      if (existing) {
+        existing.id = activeProduct.id;
+        existing.quantity = (existing.quantity || 1) + currentQty;
+      } else {
+        cart.push({ id: activeProduct.id, title: activeProduct.name, name: activeProduct.name, price: activeProduct.price, quantity: currentQty });
+      }
+      localStorage.setItem('moonland_cart', JSON.stringify(cart));
+      updateCartBadgeCount();
+      closeProductModal();
+      window.location.href = 'order_2.html';
     }
 
     function openPromoModal() {
@@ -536,6 +810,7 @@
 
     window.addEventListener('DOMContentLoaded', () => {
       updateCartBadgeCount();
+      loadHomeProducts();
       if (!sessionStorage.getItem('moonland_popup_shown')) {
         setTimeout(openPromoModal, 800);
         sessionStorage.setItem('moonland_popup_shown', 'true');
