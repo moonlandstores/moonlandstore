@@ -264,46 +264,56 @@ Fill your delivery details, proceed to payment, and submit UTR.
 </div>
 </main>
 
-<!-- Limited Period Offer & Refer & Earn Notice Popup -->
+<!-- Simple Indian English Limited Offer Popup -->
 <div id="offerPromoModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4">
 <div id="offerPopupBox" class="relative w-full max-w-md border p-6 sm:p-8 shadow-2xl text-center space-y-5 rounded-2xl overflow-hidden bg-zinc-900 text-white">
 <button onclick="closeOfferPopup()" class="absolute top-3 right-3 text-zinc-400 hover:text-white text-base border border-zinc-700 w-8 h-8 flex items-center justify-center rounded-full transition">
 <i class="fa-solid fa-xmark"></i>
 </button>
 
-<div class="space-y-1">
-<span class="text-[9px] font-extrabold uppercase tracking-[0.3em] text-yellow-400 bg-yellow-500/10 px-3 py-1 border border-yellow-500/30 rounded-full">Limited Period Offer</span>
-<h2 class="text-xl sm:text-2xl font-black uppercase tracking-wider pt-2">Unlock Unlimited Earnings!</h2>
+<div class="space-y-1.5">
+<span class="text-[9px] font-extrabold uppercase tracking-[0.3em] text-yellow-400 bg-yellow-500/10 px-3 py-1 border border-yellow-500/30 rounded-full">LIMITED TIME OFFER</span>
+<h2 class="text-xl sm:text-2xl font-black uppercase tracking-wider pt-2">REFER & EARN UNLIMITED!</h2>
 </div>
 
-<!-- Countdown Timer Grid -->
-<div class="grid grid-cols-4 gap-2 py-2 font-mono">
+<!-- 2 Days Remaining Timer Grid -->
+<div class="grid grid-cols-4 gap-2 py-1 font-mono">
 <div class="border border-zinc-700 p-2 rounded-xl bg-black/50">
-<span id="timerDays" class="text-lg font-black text-cyan-400">0</span>
-<p class="text-[8px] uppercase tracking-widest opacity-70">Days</p>
+<span id="timerDays" class="text-base sm:text-lg font-black text-cyan-400">02</span>
+<p class="text-[7px] sm:text-[8px] uppercase tracking-widest opacity-70">Days</p>
 </div>
 <div class="border border-zinc-700 p-2 rounded-xl bg-black/50">
-<span id="timerHrs" class="text-lg font-black text-cyan-400">0</span>
-<p class="text-[8px] uppercase tracking-widest opacity-70">Hrs</p>
+<span id="timerHrs" class="text-base sm:text-lg font-black text-cyan-400">00</span>
+<p class="text-[7px] sm:text-[8px] uppercase tracking-widest opacity-70">Hrs</p>
 </div>
 <div class="border border-zinc-700 p-2 rounded-xl bg-black/50">
-<span id="timerMins" class="text-lg font-black text-cyan-400">22</span>
-<p class="text-[8px] uppercase tracking-widest opacity-70">Mins</p>
+<span id="timerMins" class="text-base sm:text-lg font-black text-cyan-400">00</span>
+<p class="text-[7px] sm:text-[8px] uppercase tracking-widest opacity-70">Mins</p>
 </div>
 <div class="border border-zinc-700 p-2 rounded-xl bg-black/50">
-<span id="timerSecs" class="text-lg font-black text-cyan-400">52</span>
-<p class="text-[8px] uppercase tracking-widest opacity-70">Secs</p>
+<span id="timerSecs" class="text-base sm:text-lg font-black text-cyan-400">00</span>
+<p class="text-[7px] sm:text-[8px] uppercase tracking-widest opacity-70">Secs</p>
 </div>
 </div>
 
-<div class="border border-zinc-800 bg-black/60 p-4 rounded-xl text-xs space-y-2 text-left font-mono">
-<p class="flex items-center gap-2"><i class="fa-solid fa-circle-check text-emerald-400"></i> Product buy karne par aapko exclusive <strong>Referral Link</strong> milegi.</p>
-<p class="flex items-center gap-2"><i class="fa-solid fa-circle-check text-emerald-400"></i> Us link se refer karke <strong>Unlimited Kmao</strong> (₹1,000 per referral[cite: 3]).</p>
-<p class="flex items-center gap-2 text-yellow-300"><i class="fa-solid fa-triangle-exclamation"></i> Yeh offer sirf <strong>Limited Period</strong> ke liye active hai!</p>
+<!-- Simple Indian English Bullet Points -->
+<div class="border border-zinc-800 bg-black/60 p-4 rounded-xl text-xs space-y-3 text-left font-sans">
+<div class="flex items-start gap-2.5">
+<i class="fa-solid fa-circle-check text-emerald-400 mt-0.5"></i>
+<p class="leading-relaxed font-medium">Buy any product and get your personal <strong>Referral Link</strong> instantly.</p>
+</div>
+<div class="flex items-start gap-2.5">
+<i class="fa-solid fa-circle-check text-emerald-400 mt-0.5"></i>
+<p class="leading-relaxed font-medium">Share your link to <strong>Earn Unlimited Cashback</strong> (₹1,000 per referral[cite: 3]).</p>
+</div>
+<div class="flex items-start gap-2.5 text-yellow-300">
+<i class="fa-solid fa-clock mt-0.5"></i>
+<p class="leading-relaxed font-bold">Hurry up! Only <strong>2 Days Remaining</strong> for this special offer.</p>
+</div>
 </div>
 
 <button onclick="closeOfferPopup()" class="w-full bg-white hover:bg-zinc-200 text-black font-black py-3.5 text-xs uppercase tracking-widest transition rounded-xl shadow-lg">
-Proceed to Checkout
+PROCEED TO ORDER
 </button>
 </div>
 </div>
@@ -364,18 +374,21 @@ function closeOfferPopup() {
   document.getElementById('offerPromoModal').classList.add('hidden');
 }
 
-// Countdown timer script
-let totalSeconds = 22 * 60 + 52;
+// 2 Days Remaining Countdown Timer Script
+let totalSeconds = 2 * 24 * 60 * 60; // Exact 2 Days
 setInterval(() => {
   if (totalSeconds > 0) totalSeconds--;
-  let hrs = Math.floor(totalSeconds / 3600);
+  let days = Math.floor(totalSeconds / (24 * 3600));
+  let hrs = Math.floor((totalSeconds % (24 * 3600)) / 3600);
   let mins = Math.floor((totalSeconds % 3600) / 60);
   let secs = totalSeconds % 60;
 
+  const dEl = document.getElementById('timerDays');
   const hEl = document.getElementById('timerHrs');
   const mEl = document.getElementById('timerMins');
   const sEl = document.getElementById('timerSecs');
 
+  if(dEl) dEl.innerText = String(days).padStart(2, '0');
   if(hEl) hEl.innerText = String(hrs).padStart(2, '0');
   if(mEl) mEl.innerText = String(mins).padStart(2, '0');
   if(sEl) sEl.innerText = String(secs).padStart(2, '0');
