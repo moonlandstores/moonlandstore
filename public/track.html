@@ -76,6 +76,16 @@
       font-size: 24px !important;
     }
 
+    /* Fix for 3-line mobile menu in Dark Mode */
+    html.dark #mobileMenuDropdown {
+      background-color: #000000 !important;
+      color: #ffffff !important;
+      border-color: #27272a !important;
+    }
+    html.dark #mobileMenuDropdown a {
+      color: #ffffff !important;
+    }
+
     /* Soft Floating Clouds Animation */
     @keyframes cloudDrift1 {
       0% { transform: translateX(-100px); opacity: 0.3; }
