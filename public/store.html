@@ -56,11 +56,29 @@
     html.light .store-modal-box h2, html.light .store-modal-box h3 { color: #0f172a !important; }
     html.light .store-modal-inner { background: #f8fafc !important; border-color: #cbd5e1 !important; color: #0f172a !important; }
 
-    /* NIGHT MODE (PRESERVED EXACTLY AS YOU LIKED IT) */
+    /* NIGHT MODE (PRESERVED & FIXED VISIBILITY) */
     html.dark body { background-color: #050505 !important; color: #ffffff !important; }
     html.dark .clouds-bg { display: none !important; }
     html.dark .store-modal-box { background: rgba(12,12,12,0.98) !important; border-color: rgba(255,255,255,0.2) !important; color: #ffffff !important; }
     html.dark .store-modal-inner { background: #000000 !important; border-color: #27272a !important; color: #ffffff !important; }
+
+    /* NIGHT MODE BUTTON OVERRIDES (FIXED VISIBILITY) */
+    html.dark .modal-btn-outline {
+      background-color: #18181b !important;
+      border-color: #3f3f46 !important;
+      color: #ffffff !important;
+    }
+    html.dark .modal-btn-outline:hover {
+      background-color: #27272a !important;
+      color: #38bdf8 !important;
+    }
+    html.dark .modal-btn-solid {
+      background-color: #ffffff !important;
+      color: #000000 !important;
+    }
+    html.dark .modal-btn-solid:hover {
+      background-color: #e4e4e7 !important;
+    }
 
     /* Fix for 3-line mobile menu in Dark Mode */
     html.dark #mobileMenuDropdown {
@@ -70,6 +88,9 @@
     }
     html.dark #mobileMenuDropdown a {
       color: #ffffff !important;
+    }
+    html.dark #mobileMenuDropdown a:hover {
+      color: #38bdf8 !important;
     }
 
     /* Soft Floating Clouds Animation */
@@ -170,55 +191,55 @@
     <div id="dynamicProductsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8"></div>
   </main>
 
-  <!-- Product Detail Modal -->
+  <!-- Product Detail Modal (Fixed Layout & Sizing) -->
   <div id="productDetailModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md hidden p-4">
-    <div class="store-modal-box border max-w-4xl w-full p-6 sm:p-10 relative shadow-2xl rounded-2xl space-y-6 max-h-[90vh] overflow-y-auto">
-      <button onclick="closeProductModal()" class="absolute top-4 right-4 text-zinc-500 dark:text-zinc-400 hover:text-black dark:hover:text-white text-lg border border-zinc-300 dark:border-zinc-800 w-10 h-10 flex items-center justify-center transition rounded-full">
+    <div class="store-modal-box border max-w-3xl w-full p-6 sm:p-8 relative shadow-2xl rounded-2xl space-y-5 max-h-[85vh] overflow-y-auto">
+      <button onclick="closeProductModal()" class="absolute top-4 right-4 text-zinc-400 hover:text-white text-lg border border-zinc-700 w-9 h-9 flex items-center justify-center transition rounded-full">
         <i class="fa-solid fa-xmark"></i>
       </button>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
-        <div class="space-y-4">
-          <div class="h-80 bg-zinc-100 dark:bg-black border border-zinc-200 dark:border-zinc-800 overflow-hidden relative shadow-inner rounded-xl">
-            <img id="modalMainImg" src="" class="w-full h-full object-cover">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
+        <div class="space-y-3">
+          <div class="h-64 sm:h-72 bg-zinc-100 dark:bg-black border border-zinc-200 dark:border-zinc-800 overflow-hidden relative shadow-inner rounded-xl flex items-center justify-center">
+            <img id="modalMainImg" src="" class="w-full h-full object-contain p-2">
           </div>
           <div id="modalThumbnails" class="flex gap-2 overflow-x-auto pb-1"></div>
         </div>
 
-        <div class="space-y-6">
+        <div class="space-y-4">
           <div>
-            <span class="bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 border border-cyan-500/20 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider rounded-md">Store Item</span>
-            <h2 id="modalTitle" class="text-2xl font-black uppercase tracking-wider mt-2"></h2>
+            <span class="bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 px-2.5 py-1 text-[9px] font-bold uppercase tracking-wider rounded-md">Store Item</span>
+            <h2 id="modalTitle" class="text-xl font-black uppercase tracking-wider mt-2"></h2>
           </div>
-          <p id="modalPrice" class="text-3xl font-mono font-black text-emerald-600 dark:text-emerald-400"></p>
+          <p id="modalPrice" class="text-2xl font-mono font-black text-emerald-400"></p>
           
-          <div id="keyFeaturesContainer" class="space-y-2 pt-2 border-t border-zinc-200 dark:border-zinc-900 hidden">
+          <div id="keyFeaturesContainer" class="space-y-1.5 pt-2 border-t border-zinc-800 hidden">
             <h3 class="text-[10px] opacity-80 font-bold uppercase tracking-[0.2em] flex items-center gap-1.5">
               <i class="fa-solid fa-star text-yellow-500"></i> Key Features
             </h3>
-            <div id="modalKeyFeaturesGrid" class="grid grid-cols-2 gap-2 max-h-40 overflow-y-auto pr-1"></div>
+            <div id="modalKeyFeaturesGrid" class="grid grid-cols-1 gap-1.5 max-h-32 overflow-y-auto pr-1"></div>
           </div>
 
-          <div id="productDetailsContainer" class="space-y-2 pt-2 border-t border-zinc-200 dark:border-zinc-900 hidden">
+          <div id="productDetailsContainer" class="space-y-1.5 pt-2 border-t border-zinc-800 hidden">
             <h3 class="text-[10px] opacity-80 font-bold uppercase tracking-[0.2em] flex items-center gap-1.5">
               <i class="fa-solid fa-circle-info text-cyan-500"></i> Product Details
             </h3>
-            <div id="modalDetailsGrid" class="grid grid-cols-2 gap-2 max-h-40 overflow-y-auto pr-1"></div>
+            <div id="modalDetailsGrid" class="grid grid-cols-1 gap-1.5 max-h-32 overflow-y-auto pr-1"></div>
           </div>
 
-          <div class="pt-4 border-t border-zinc-200 dark:border-zinc-900 space-y-4">
+          <div class="pt-3 border-t border-zinc-800 space-y-3">
             <div class="flex items-center gap-3">
               <span class="text-xs font-bold uppercase tracking-widest opacity-90">Quantity:</span>
-              <div class="flex items-center border border-zinc-300 dark:border-zinc-800 bg-white dark:bg-black rounded-xl overflow-hidden shadow-sm">
-                <button onclick="adjustQty(-1)" class="px-3.5 py-2 font-mono hover:bg-zinc-100 dark:hover:bg-zinc-900">-</button>
-                <span id="modalQty" class="px-5 py-2 font-mono text-xs font-bold">1</span>
-                <button onclick="adjustQty(1)" class="px-3.5 py-2 font-mono hover:bg-zinc-100 dark:hover:bg-zinc-900">+</button>
+              <div class="flex items-center border border-zinc-700 bg-black rounded-xl overflow-hidden shadow-sm">
+                <button onclick="adjustQty(-1)" class="px-3 py-1.5 font-mono hover:bg-zinc-800 text-white">-</button>
+                <span id="modalQty" class="px-4 py-1.5 font-mono text-xs font-bold text-white">1</span>
+                <button onclick="adjustQty(1)" class="px-3 py-1.5 font-mono hover:bg-zinc-800 text-white">+</button>
               </div>
             </div>
 
-            <div class="flex gap-3 pt-2">
-              <button onclick="addCurrentToCart()" class="flex-1 btn-outline border font-bold py-3.5 uppercase tracking-wider text-xs transition rounded-xl shadow-sm">Add to Cart</button>
-              <button onclick="buyCurrentNow()" class="flex-1 btn-solid font-black py-3.5 uppercase tracking-wider text-xs transition shadow-lg rounded-xl">Buy Now</button>
+            <div class="flex gap-3 pt-1">
+              <button onclick="addCurrentToCart()" class="flex-1 modal-btn-outline border font-bold py-3 uppercase tracking-wider text-xs transition rounded-xl shadow-sm">Add to Cart</button>
+              <button onclick="buyCurrentNow()" class="flex-1 modal-btn-solid font-black py-3 uppercase tracking-wider text-xs transition shadow-lg rounded-xl">Buy Now</button>
             </div>
           </div>
         </div>
@@ -229,19 +250,19 @@
   <!-- Custom Add to Cart Success Modal -->
   <div id="addToCartSuccessModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm hidden p-4 transition-all duration-300">
     <div class="store-modal-box border p-6 sm:p-8 max-w-sm w-full shadow-2xl space-y-5 text-center relative rounded-2xl">
-      <div class="w-14 h-14 bg-cyan-500/20 text-cyan-600 dark:text-cyan-400 rounded-full flex items-center justify-center mx-auto text-xl shadow-md">
+      <div class="w-14 h-14 bg-cyan-500/20 text-cyan-400 rounded-full flex items-center justify-center mx-auto text-xl shadow-md">
         <i class="fa-solid fa-bag-shopping"></i>
       </div>
       <div class="space-y-2">
-        <span class="text-[9px] font-extrabold uppercase tracking-[0.3em] text-cyan-600 dark:text-cyan-400 bg-cyan-500/10 px-2.5 py-1 border border-cyan-500/20 rounded-full">Successfully Added</span>
+        <span class="text-[9px] font-extrabold uppercase tracking-[0.3em] text-cyan-400 bg-cyan-500/10 px-2.5 py-1 border border-cyan-500/20 rounded-full">Successfully Added</span>
         <h3 id="addedItemTitle" class="text-sm font-bold uppercase tracking-wider">Product Name</h3>
         <p class="text-[11px] opacity-80 font-light">The item has been successfully added to your cart.</p>
       </div>
       <div class="grid grid-cols-2 gap-3 pt-2">
-        <button onclick="closeAddToCartModal()" class="border font-bold py-3 text-[10px] uppercase tracking-wider transition rounded-xl shadow-sm">
+        <button onclick="closeAddToCartModal()" class="border modal-btn-outline font-bold py-3 text-[10px] uppercase tracking-wider transition rounded-xl shadow-sm">
           Continue
         </button>
-        <button onclick="window.location.href='order.html'" class="btn-solid font-black py-3 text-[10px] uppercase tracking-wider transition shadow-lg flex items-center justify-center gap-1.5 rounded-xl">
+        <button onclick="window.location.href='order.html'" class="modal-btn-solid font-black py-3 text-[10px] uppercase tracking-wider transition shadow-lg flex items-center justify-center gap-1.5 rounded-xl">
           <i class="fa-solid fa-arrow-right"></i> View Cart
         </button>
       </div>
@@ -464,8 +485,8 @@
           let label = parts[0] ? parts[0].trim() : 'Feature';
           let val = parts[1] ? parts[1].trim() : item.trim();
           return `
-            <div class="store-modal-inner border p-2.5 flex flex-col justify-between space-y-1 rounded-xl shadow-sm">
-              <span class="text-[9px] opacity-80 uppercase tracking-widest font-bold">${label}</span>
+            <div class="store-modal-inner border p-2 flex flex-col justify-between space-y-0.5 rounded-lg shadow-sm">
+              <span class="text-[9px] opacity-75 uppercase tracking-widest font-bold">${label}</span>
               <span class="text-xs font-bold uppercase">${val}</span>
             </div>
           `;
@@ -483,8 +504,8 @@
           let label = parts[0] ? parts[0].trim() : 'Detail';
           let val = parts[1] ? parts[1].trim() : item.trim();
           return `
-            <div class="store-modal-inner border p-2.5 flex flex-col justify-between space-y-1 rounded-xl shadow-sm">
-              <span class="text-[9px] opacity-80 uppercase tracking-widest font-bold">${label}</span>
+            <div class="store-modal-inner border p-2 flex flex-col justify-between space-y-0.5 rounded-lg shadow-sm">
+              <span class="text-[9px] opacity-75 uppercase tracking-widest font-bold">${label}</span>
               <span class="text-xs font-bold uppercase">${val}</span>
             </div>
           `;
@@ -497,7 +518,7 @@
       document.getElementById('modalMainImg').src = imgList[0];
       
       document.getElementById('modalThumbnails').innerHTML = imgList.map((img, idx) => `
-        <img src="${img}" onclick="document.getElementById('modalMainImg').src='${img}'" class="w-16 h-16 object-cover border ${idx === 0 ? 'border-cyan-500' : 'border-zinc-300 dark:border-zinc-800'} cursor-pointer rounded-lg shadow-sm">
+        <img src="${img}" onclick="document.getElementById('modalMainImg').src='${img}'" class="w-14 h-14 object-cover border ${idx === 0 ? 'border-cyan-400' : 'border-zinc-700'} cursor-pointer rounded-lg shadow-sm">
       `).join('');
 
       document.getElementById('productDetailModal').classList.remove('hidden');
