@@ -153,8 +153,29 @@
 
     #promoModalOverlay, #cartDrawerOverlay { transition: opacity 0.4s ease, visibility 0.4s ease; }
     
-    /* Product Auto-Slider Animation */
-    .slider-track { transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1); }
+    /* Product Auto-Slider Layout Fixes */
+    #homeProductSliderTrack {
+      display: flex;
+      gap: 1.5rem;
+      will-change: transform;
+      transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+    }
+    .home-product-card {
+      flex: 0 0 100%;
+      max-width: 100%;
+    }
+    @media (min-width: 640px) {
+      .home-product-card {
+        flex: 0 0 calc(50% - 0.75rem);
+        max-width: calc(50% - 0.75rem);
+      }
+    }
+    @media (min-width: 1024px) {
+      .home-product-card {
+        flex: 0 0 calc(33.333% - 1rem);
+        max-width: calc(33.333% - 1rem);
+      }
+    }
   </style>
 
   <!-- AUTO THEME SWITCHER LOGIC -->
@@ -396,8 +417,8 @@
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
         <div class="space-y-4">
-          <div class="h-80 bg-zinc-100 dark:bg-black border border-zinc-200 dark:border-zinc-800 overflow-hidden relative shadow-inner rounded-xl">
-            <img id="modalMainImg" src="" class="w-full h-full object-cover">
+          <div class="h-80 bg-zinc-100 dark:bg-black border border-zinc-200 dark:border-zinc-800 overflow-hidden relative shadow-inner rounded-xl flex items-center justify-center">
+            <img id="modalMainImg" src="" class="w-full h-full object-contain p-2">
           </div>
           <div id="modalThumbnails" class="flex gap-2 overflow-x-auto pb-1"></div>
         </div>
@@ -628,17 +649,13 @@
       const dotsContainer = document.getElementById('sliderDotsContainer');
       if (!track) return;
 
-      const savedTheme = localStorage.getItem('moonland_theme');
-      const currentHour = new Date().getHours();
-      const isLight = savedTheme === 'light' || (!savedTheme && currentHour >= 6 && currentHour < 18);
-
       track.innerHTML = homeProducts.map((p) => {
         let imgList = (p.images && p.images.length > 0) ? p.images[0] : 'https://images.unsplash.com/photo-1556911220-e15b29be8c8f?auto=format&fit=crop&q=80&w=400';
         return `
-          <div onclick="openProductDetail('${p.id}')" class="min-w-full sm:min-w-[calc(50%-12px)] lg:min-w-[calc(33.33%-16px)] flex-shrink-0 cursor-pointer home-product-card border p-5 rounded-2xl transition duration-300 shadow-md flex flex-col justify-between space-y-4">
+          <div onclick="openProductDetail('${p.id}')" class="home-product-card cursor-pointer border p-5 rounded-2xl transition duration-300 shadow-md flex flex-col justify-between space-y-4">
             <div class="h-52 bg-zinc-100 dark:bg-black rounded-xl overflow-hidden relative border border-zinc-200 dark:border-zinc-800 shadow-inner flex items-center justify-center">
-              <span class="absolute top-2.5 left-2.5 bg-red-600 text-white text-[8px] font-extrabold uppercase tracking-widest px-2 py-1 rounded-md shadow">AD DEAL</span>
-              <img src="${imgList}" class="w-full h-full object-cover">
+              <span class="absolute top-2.5 left-2.5 z-10 bg-red-600 text-white text-[8px] font-extrabold uppercase tracking-widest px-2 py-1 rounded-md shadow">AD DEAL</span>
+              <img src="${imgList}" class="w-full h-full object-contain p-2">
             </div>
             <div class="space-y-1">
               <h3 class="font-bold text-sm uppercase tracking-wider line-clamp-1">${p.name}</h3>
@@ -668,7 +685,7 @@
     function goToSlide(idx) {
       currentSlideIndex = idx;
       updateSliderPosition();
-      startAutoSlider(); // Reset timer on manual dot click
+      startAutoSlider();
     }
 
     function updateSliderPosition() {
@@ -680,7 +697,7 @@
       const isTablet = window.innerWidth >= 640 && window.innerWidth < 1024;
       let cardWidthPercent = 100;
       if (isTablet) cardWidthPercent = 50;
-      if (!isMobile && !isTablet) cardWidthPercent = 33.33;
+      if (!isMobile && !isTablet) cardWidthPercent = 33.333;
 
       track.style.transform = `translateX(-${currentSlideIndex * cardWidthPercent}%)`;
 
