@@ -84,7 +84,7 @@
 
     document.addEventListener("DOMContentLoaded", () => {
         fetchUtrQueue();
-        setInterval(fetchUtrQueue, 5000); // Auto-refresh every 5 seconds
+        setInterval(fetchUtrQueue, 4000); // Live auto-refresh every 4 seconds
     });
 
     function enableSound() {
@@ -162,21 +162,21 @@
             const res = await fetch('/api/orders', { cache: 'no-store' });
             if (res.ok) {
                 const allOrders = await res.json();
-                console.log("All Fetched Orders:", allOrders); // Debugging log
                 
-                // Super flexible filter to catch any unverified or pending order
+                // Super flexible filter for pending orders
                 const newPending = allOrders.filter(o => {
                     const status = (o.status || '').toLowerCase();
                     const isVerified = o.utrVerified === true;
                     return !isVerified && status !== 'rejected' && status !== 'order placed';
                 });
                 
+                // Check if a new order has arrived compared to previous count
                 if (previousPendingCount !== null && newPending.length > previousPendingCount) {
-                    playAlertSaveSound();
+                    playAlertSound(); // FIXED: Called correct sound function
                     showToast('New UTR Received!', 'Ek naya payment UTR verification ke liye aaya hai.');
                     const dot = document.getElementById('livePulseDot');
                     dot.className = "w-3 h-3 bg-amber-400 rounded-full animate-ping";
-                    setTimeout(() => { dot.className = "w-3 h-3 bg-cyan-400 rounded-full animate-pulse"; }, 4000);
+                    setTimeout(() => { dot.className = "w-3 h-3 bg-cyan-400 rounded-full animate-pulse"; }, 5000);
                 }
 
                 previousPendingCount = newPending.length;
