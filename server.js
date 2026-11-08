@@ -457,6 +457,7 @@ app.post('/api/orders', publicApiLimiter, async (req, res) => {
         address: address.trim(),
         upiId: upiId ? upiId.trim() : '',
         utr: utr.trim(),
+        utrNumber: utr.trim(), // Added to ensure compatibility with verification queue
         items: verifiedItems,
         totalAmount: calculatedTotal,
         enteredRefCode: validRefCode,
