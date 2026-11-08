@@ -31,7 +31,7 @@
           <span id="livePulseDot" class="w-3 h-3 bg-cyan-400 rounded-full animate-pulse"></span>
           UTR Payment Verification Queue
         </h1>
-        <p class="text-xs text-zinc-400 tracking-wide mt-1">Review pending bank payment UTRs from Firestore, approve orders & check rejected records</p>
+        <p class="text-xs text-zinc-400 tracking-wide mt-1">Review pending bank payment UTRs from database, approve orders & check rejected records</p>
       </div>
       
       <!-- Locked Single-Row Navigation Bar -->
@@ -84,7 +84,7 @@
 
     document.addEventListener("DOMContentLoaded", () => {
         fetchUtrQueue();
-        setInterval(fetchUtrQueue, 5000);
+        setInterval(fetchUtrQueue, 5000); // Auto-refresh every 5 seconds
     });
 
     function enableSound() {
@@ -162,7 +162,16 @@
             const res = await fetch('/api/orders');
             if (res.ok) {
                 const allOrders = await res.json();
-                const newPending = allOrders.filter(o => (!o.utrVerified && o.status !== 'Rejected') || o.status === 'Payment Verification Pending');
+                
+                // Improved filter to catch orders that need UTR verification
+                const newPending = allOrders.filter(o => {
+                    const status = (o.status || '').toLowerCase();
+                    return !o.utrVerified && 
+                           status !== 'rejected' && 
+                           status !== 'approved' && 
+                           status !== 'completed' &&
+                           (status.includes('pending') || status.includes('verification') || !o.status || o.utrNumber || o.utr);
+                });
                 
                 if (previousPendingCount !== null && newPending.length > previousPendingCount) {
                     playAlertSound();
@@ -174,7 +183,7 @@
 
                 previousPendingCount = newPending.length;
                 cachedPendingOrders = newPending;
-                cachedRejectedOrders = allOrders.filter(o => o.status === 'Rejected');
+                cachedRejectedOrders = allOrders.filter(o => (o.status || '').toLowerCase() === 'rejected');
                 
                 updateNavBadge(cachedPendingOrders.length);
                 
@@ -200,8 +209,17 @@
 
       container.innerHTML = '';
       cachedPendingOrders.forEach((ord) => {
-        const itemsText = ord.items ? ord.items.map(i => i.name).join(', ') : (ord.product || 'Appliance Product');
-        const formattedDate = ord.createdAt ? new Date(ord.createdAt).toLocaleString('en-IN') : 'N/A';
+        const orderId = ord.id || ord.orderId || 'N/A';
+        const customerName = ord.customerName || ord.customer || ord.name || 'Customer';
+        const phone = ord.phone || ord.mobile || 'N/A';
+        const utrNumber = ord.utrNumber || ord.utr || 'N/A';
+        const totalAmount = ord.totalAmount || ord.amount || '0';
+        const address = ord.address || 'N/A';
+        const upiId = ord.customerUpi || ord.upiId || 'N/A';
+        const refCode = ord.referralCode || ord.enteredRefCode || 'None';
+
+        const itemsText = ord.items ? ord.items.map(i => (i.title || i.name || 'Product') + ` (Qty: ${i.quantity || i.qty || 1})`).join(', ') : (ord.product || 'Appliance Product');
+        const formattedDate = ord.date || ord.createdAt ? new Date(ord.date || ord.createdAt).toLocaleString('en-IN') : 'N/A';
         
         const card = document.createElement('div');
         card.className = "bg-[rgba(12,12,12,0.7)] border border-white/10 p-6 space-y-4 text-xs shadow-xl rounded-none";
@@ -209,7 +227,7 @@
         card.innerHTML = `
           <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-2 pb-3 border-b border-zinc-900">
             <div>
-              <span class="text-zinc-400">Order ID:</span> <strong class="text-cyan-400 font-mono text-sm">${escapeHtml(ord.id)}</strong>
+              <span class="text-zinc-400">Order ID:</span> <strong class="text-cyan-400 font-mono text-sm">${escapeHtml(orderId)}</strong>
               <span class="text-zinc-500 text-[10px] ml-2 font-mono">(${escapeHtml(formattedDate)})</span>
             </div>
             <span class="bg-amber-500/10 text-amber-400 border border-amber-500/20 px-3 py-1 font-bold uppercase tracking-wider text-[10px]">
@@ -218,17 +236,17 @@
           </div>
 
           <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 text-zinc-300 bg-black border border-zinc-800 p-4 font-mono">
-            <div><span class="text-zinc-500 text-[10px] uppercase block mb-0.5">Customer Name:</span><strong class="text-white text-sm uppercase">${escapeHtml(ord.customer || ord.name)}</strong></div>
-            <div><span class="text-zinc-500 text-[10px] uppercase block mb-0.5">Mobile Number:</span><strong class="text-cyan-400 text-sm">${escapeHtml(ord.phone)}</strong></div>
-            <div><span class="text-zinc-500 text-[10px] uppercase block mb-0.5">Payment UTR / Ref No:</span><strong class="text-amber-300 text-sm">${escapeHtml(ord.utr)}</strong></div>
-            <div><span class="text-zinc-500 text-[10px] uppercase block mb-0.5">Total Amount:</span><strong class="text-emerald-400 text-sm">₹${escapeHtml(ord.totalAmount || '0')}</strong></div>
+            <div><span class="text-zinc-500 text-[10px] uppercase block mb-0.5">Customer Name:</span><strong class="text-white text-sm uppercase">${escapeHtml(customerName)}</strong></div>
+            <div><span class="text-zinc-500 text-[10px] uppercase block mb-0.5">Mobile Number:</span><strong class="text-cyan-400 text-sm">${escapeHtml(phone)}</strong></div>
+            <div><span class="text-zinc-500 text-[10px] uppercase block mb-0.5">Payment UTR / Ref No:</span><strong class="text-amber-300 text-sm">${escapeHtml(utrNumber)}</strong></div>
+            <div><span class="text-zinc-500 text-[10px] uppercase block mb-0.5">Total Amount:</span><strong class="text-emerald-400 text-sm">₹${escapeHtml(totalAmount)}</strong></div>
           </div>
 
           <div class="space-y-1.5 bg-black border border-zinc-800 p-3.5 text-[11px] text-zinc-400 font-mono">
             <p>Items: <strong class="text-slate-200">${escapeHtml(itemsText)}</strong></p>
-            <p>Address: <span class="text-slate-300">${escapeHtml(ord.address)}</span></p>
-            <p>UPI ID: <span class="text-cyan-400">${escapeHtml(ord.upiId || 'N/A')}</span></p>
-            <p>Referral Code: <span class="text-amber-400">${escapeHtml(ord.enteredRefCode || 'None')}</span></p>
+            <p>Address: <span class="text-slate-300">${escapeHtml(address)}</span></p>
+            <p>UPI ID: <span class="text-cyan-400">${escapeHtml(upiId)}</span></p>
+            <p>Referral Code: <span class="text-amber-400">${escapeHtml(refCode)}</span></p>
           </div>
 
           <div class="flex flex-wrap items-center justify-end gap-3 pt-2">
@@ -241,8 +259,8 @@
           </div>
         `;
 
-        card.querySelector('.reject-btn').addEventListener('click', () => rejectUtrOrder(ord.id));
-        card.querySelector('.approve-btn').addEventListener('click', () => approveUtrOrder(ord));
+        card.querySelector('.reject-btn').addEventListener('click', () => rejectUtrOrder(orderId));
+        card.querySelector('.approve-btn').addEventListener('click', () => approveUtrOrder(ord, orderId, customerName, phone, utrNumber));
 
         container.appendChild(card);
       });
@@ -262,8 +280,12 @@
 
       container.innerHTML = '';
       cachedRejectedOrders.forEach((ord) => {
-        const itemsText = ord.items ? ord.items.map(i => i.name).join(', ') : (ord.product || 'Appliance Product');
-        const formattedDate = ord.createdAt ? new Date(ord.createdAt).toLocaleString('en-IN') : 'N/A';
+        const orderId = ord.id || ord.orderId || 'N/A';
+        const customerName = ord.customerName || ord.customer || ord.name || 'Customer';
+        const phone = ord.phone || ord.mobile || 'N/A';
+        const utrNumber = ord.utrNumber || ord.utr || 'N/A';
+        const totalAmount = ord.totalAmount || ord.amount || '0';
+        const formattedDate = ord.date || ord.createdAt ? new Date(ord.date || ord.createdAt).toLocaleString('en-IN') : 'N/A';
         
         const card = document.createElement('div');
         card.className = "bg-[rgba(12,12,12,0.7)] border border-white/10 p-6 space-y-4 text-xs shadow-xl rounded-none opacity-80";
@@ -271,7 +293,7 @@
         card.innerHTML = `
           <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-2 pb-3 border-b border-zinc-900">
             <div>
-              <span class="text-zinc-400">Order ID:</span> <strong class="text-cyan-400 font-mono text-sm">${escapeHtml(ord.id)}</strong>
+              <span class="text-zinc-400">Order ID:</span> <strong class="text-cyan-400 font-mono text-sm">${escapeHtml(orderId)}</strong>
               <span class="text-zinc-500 text-[10px] ml-2 font-mono">(${escapeHtml(formattedDate)})</span>
             </div>
             <span class="bg-rose-500/10 text-rose-400 border border-rose-500/20 px-3 py-1 font-bold uppercase tracking-wider text-[10px]">
@@ -280,30 +302,30 @@
           </div>
 
           <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 text-zinc-300 bg-black border border-zinc-800 p-4 font-mono">
-            <div><span class="text-zinc-500 text-[10px] uppercase block mb-0.5">Customer Name:</span><strong class="text-white text-sm uppercase">${escapeHtml(ord.customer || ord.name)}</strong></div>
-            <div><span class="text-zinc-500 text-[10px] uppercase block mb-0.5">Mobile Number:</span><strong class="text-cyan-400 text-sm">${escapeHtml(ord.phone)}</strong></div>
-            <div><span class="text-zinc-500 text-[10px] uppercase block mb-0.5">Payment UTR / Ref No:</span><strong class="text-amber-300 text-sm">${escapeHtml(ord.utr)}</strong></div>
-            <div><span class="text-zinc-500 text-[10px] uppercase block mb-0.5">Total Amount:</span><strong class="text-emerald-400 text-sm">₹${escapeHtml(ord.totalAmount || '0')}</strong></div>
+            <div><span class="text-zinc-500 text-[10px] uppercase block mb-0.5">Customer Name:</span><strong class="text-white text-sm uppercase">${escapeHtml(customerName)}</strong></div>
+            <div><span class="text-zinc-500 text-[10px] uppercase block mb-0.5">Mobile Number:</span><strong class="text-cyan-400 text-sm">${escapeHtml(phone)}</strong></div>
+            <div><span class="text-zinc-500 text-[10px] uppercase block mb-0.5">Payment UTR / Ref No:</span><strong class="text-amber-300 text-sm">${escapeHtml(utrNumber)}</strong></div>
+            <div><span class="text-zinc-500 text-[10px] uppercase block mb-0.5">Total Amount:</span><strong class="text-emerald-400 text-sm">₹${escapeHtml(totalAmount)}</strong></div>
           </div>
         `;
         container.appendChild(card);
       });
     }
 
-    async function approveUtrOrder(ord) {
+    async function approveUtrOrder(ord, orderId, customerName, phone, utrNumber) {
       try {
-        const res = await fetch(`/api/orders/${ord.id}/approve`, {
+        const res = await fetch(`/api/orders/${orderId}/approve`, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' }
         });
 
         const result = await res.json();
         if (res.ok && result.success) {
-          const generatedRefCode = result.userRefCode;
+          const generatedRefCode = result.userRefCode || 'MOON-' + Math.floor(100000 + Math.random() * 900000);
           const autoShareUrl = `${window.location.origin}/order.html?ref=${generatedRefCode}`;
-          const message = `Hello *${ord.customer || ord.name}*,\n\n🎉 Aapka payment (UTR: *${ord.utr}*) verify ho gaya hai!\n\nAapka Order ID: *${ord.id}*\nAapka Exclusive Referral Code: *${generatedRefCode}*\n\nAapka Share Link:\n${autoShareUrl}\n\nIs link ko share karein, samne wale ko code dalne ki zarurat nahi padegi! 🚀`;
+          const message = `Hello *${customerName}*,\n\n🎉 Aapka payment (UTR: *${utrNumber}*) verify ho gaya hai!\n\nAapka Order ID: *${orderId}*\nAapka Exclusive Referral Code: *${generatedRefCode}*\n\nAapka Share Link:\n${autoShareUrl}\n\nIs link ko share karein, samne wale ko code dalne ki zarurat nahi padegi! 🚀`;
 
-          window.open(`https://wa.me/91${ord.phone}?text=${encodeURIComponent(message)}`, '_blank');
+          window.open(`https://wa.me/91${phone}?text=${encodeURIComponent(message)}`, '_blank');
           showToast('Approved', 'UTR successfully verify aur approve ho gaya hai!');
           fetchUtrQueue();
         } else {
