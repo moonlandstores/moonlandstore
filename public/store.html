@@ -110,7 +110,13 @@
 
     #cartDrawerOverlay { transition: opacity 0.3s ease, visibility 0.3s ease; }
 
-    /* Custom truncation for 2-column titles */
+    /* Strict truncation for compact mobile titles */
+    .line-clamp-1 {
+      display: -webkit-box;
+      -webkit-line-clamp: 1;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
     .line-clamp-2 {
       display: -webkit-box;
       -webkit-line-clamp: 2;
@@ -144,21 +150,21 @@
     <div class="absolute top-96 right-[-40px] w-96 h-32 bg-blue-200/30 rounded-full blur-2xl cloud-elem-2"></div>
   </div>
 
-  <!-- Highly Visible Marquee Bar -->
-  <div class="marquee-bar bg-black text-zinc-300 py-2.5 px-4 text-[10px] sm:text-[11px] font-extrabold tracking-[0.2em] uppercase border-b overflow-hidden whitespace-nowrap z-20">
+  <!-- Highly Visible Marquee Bar (Compact on Mobile) -->
+  <div class="marquee-bar bg-black text-zinc-300 py-1.5 sm:py-2.5 px-4 text-[9px] sm:text-[11px] font-extrabold tracking-[0.2em] uppercase border-b overflow-hidden whitespace-nowrap z-20">
     <marquee behavior="scroll" direction="left" scrollamount="5">
       <span class="inline-flex items-center gap-2 mx-6"><i class="fa-solid fa-bolt text-yellow-400"></i> MOONLAND SPECIAL: UNLIMITED REFER & EARN ₹1,000 INSTANT UPI CASHBACK PER REFERRAL!</span>
     </marquee>
   </div>
 
-  <!-- Header -->
+  <!-- Header (Ultra Compact on Mobile) -->
   <header class="sticky top-0 z-50 bg-black/90 backdrop-blur-xl border-b border-zinc-900">
-    <div class="max-w-7xl mx-auto px-4 sm:px-12 flex justify-between items-center h-16 sm:h-20 relative">
-      <a href="index.html" class="flex items-center space-x-2.5 group">
-        <div class="brand-logo-box w-7 h-7 border border-white flex items-center justify-center font-black text-xs tracking-widest text-white group-hover:bg-white group-hover:text-black transition duration-500 rounded-lg">M</div>
+    <div class="max-w-7xl mx-auto px-3 sm:px-12 flex justify-between items-center h-14 sm:h-20 relative">
+      <a href="index.html" class="flex items-center space-x-2 group">
+        <div class="brand-logo-box w-6 h-6 sm:w-7 sm:h-7 border border-white flex items-center justify-center font-black text-[10px] sm:text-xs tracking-widest text-white group-hover:bg-white group-hover:text-black transition duration-500 rounded-lg">M</div>
         <div class="flex flex-col">
-          <span class="font-bold text-xs sm:text-sm tracking-[0.3em] sm:tracking-[0.4em] uppercase">MOONLAND</span>
-          <span class="text-[6px] tracking-[0.55em] text-zinc-400 uppercase font-bold">STORE</span>
+          <span class="font-bold text-[11px] sm:text-sm tracking-[0.3em] sm:tracking-[0.4em] uppercase">MOONLAND</span>
+          <span class="text-[5px] sm:text-[6px] tracking-[0.55em] text-zinc-400 uppercase font-bold">STORE</span>
         </div>
       </a>
 
@@ -170,17 +176,17 @@
         <a href="about.html" class="hover:opacity-75 transition pb-1">About Us</a>
       </nav>
 
-      <div class="flex items-center space-x-4">
-        <button onclick="openCartModal()" class="flex items-center space-x-1.5 text-[11px] uppercase tracking-[0.2em] font-medium transition hover:opacity-75">
-          <i class="fa-solid fa-bag-shopping text-base sm:text-sm"></i>
-          <span id="cartCountBadge" class="bg-black text-white dark:bg-white dark:text-black text-[9px] px-1.5 py-0.2 rounded-full font-bold ml-1">0</span>
+      <div class="flex items-center space-x-3 sm:space-x-4">
+        <button onclick="openCartModal()" class="flex items-center space-x-1 text-[10px] sm:text-[11px] uppercase tracking-[0.2em] font-medium transition hover:opacity-75">
+          <i class="fa-solid fa-bag-shopping text-sm sm:text-base"></i>
+          <span id="cartCountBadge" class="bg-black text-white dark:bg-white dark:text-black text-[8px] sm:text-[9px] px-1.5 py-0.2 rounded-full font-bold ml-0.5">0</span>
         </button>
-        <button onclick="toggleMobileMenu()" class="md:hidden text-lg p-1.5 cursor-pointer"><i class="fa-solid fa-bars"></i></button>
+        <button onclick="toggleMobileMenu()" class="md:hidden text-base p-1 cursor-pointer"><i class="fa-solid fa-bars"></i></button>
       </div>
     </div>
 
     <!-- Mobile Dropdown Menu -->
-    <div id="mobileMenuDropdown" class="hidden absolute top-full left-0 w-full bg-white dark:bg-black border-b border-zinc-200 dark:border-zinc-900 px-6 py-5 space-y-4 text-xs uppercase font-medium tracking-[0.2em] shadow-2xl z-50">
+    <div id="mobileMenuDropdown" class="hidden absolute top-full left-0 w-full bg-white dark:bg-black border-b border-zinc-200 dark:border-zinc-900 px-6 py-4 space-y-3 text-xs uppercase font-medium tracking-[0.2em] shadow-2xl z-50">
       <a href="index.html" class="block opacity-80 hover:opacity-100">Home</a>
       <a href="store.html" class="block font-bold">Store</a>
       <a href="referral.html" class="block opacity-80 hover:opacity-100">Refer & Earn</a>
@@ -189,67 +195,67 @@
     </div>
   </header>
 
-  <main class="flex-grow max-w-7xl mx-auto px-3 sm:px-12 py-6 sm:py-16 w-full space-y-6 sm:space-y-12 relative z-10">
-    <div class="flex flex-col md:flex-row justify-between items-start md:items-end border-b border-zinc-300 dark:border-zinc-900 pb-4 sm:pb-6 gap-4">
-      <div class="space-y-1 sm:space-y-2">
-        <span class="text-[9px] sm:text-[10px] font-extrabold uppercase tracking-[0.3em] sm:tracking-[0.4em] text-cyan-600 dark:text-cyan-400 bg-cyan-500/10 px-3 py-1 border border-cyan-500/20 rounded-full">Curated Lineup</span>
-        <h2 class="text-2xl sm:text-5xl font-black uppercase tracking-[0.1em] sm:tracking-[0.15em] pt-1">Masterpieces</h2>
+  <main class="flex-grow max-w-7xl mx-auto px-2 sm:px-12 py-3 sm:py-16 w-full space-y-3 sm:space-y-12 relative z-10">
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-end border-b border-zinc-300 dark:border-zinc-900 pb-2 sm:pb-6 gap-2">
+      <div class="space-y-0.5 sm:space-y-2">
+        <span class="text-[8px] sm:text-[10px] font-extrabold uppercase tracking-[0.3em] sm:tracking-[0.4em] text-cyan-600 dark:text-cyan-400 bg-cyan-500/10 px-2 py-0.5 sm:px-3 sm:py-1 border border-cyan-500/20 rounded-full">Curated Lineup</span>
+        <h2 class="text-lg sm:text-5xl font-black uppercase tracking-[0.1em] sm:tracking-[0.15em] pt-0.5">Masterpieces</h2>
       </div>
     </div>
 
-    <!-- 2 COLUMNS ON MOBILE (grid-cols-2), 3 ON TABLET (md:grid-cols-3), 4 ON LAPTOP/DESKTOP (lg:grid-cols-4) -->
-    <div id="dynamicProductsGrid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2.5 sm:gap-8"></div>
+    <!-- OPTIMIZED 2 COLUMNS ON MOBILE (grid-cols-2) FIT 4 ITEMS ON SCREEN -->
+    <div id="dynamicProductsGrid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 sm:gap-8"></div>
   </main>
 
   <!-- Product Detail Modal -->
   <div id="productDetailModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md hidden p-3 sm:p-4">
-    <div class="store-modal-box border max-w-3xl w-full p-5 sm:p-8 relative shadow-2xl rounded-2xl space-y-4 sm:space-y-5 max-h-[90vh] overflow-y-auto">
-      <button onclick="closeProductModal()" class="absolute top-3 right-3 text-zinc-400 hover:text-white text-base sm:text-lg border border-zinc-700 w-8 h-8 sm:w-9 sm:h-9 flex items-center justify-center transition rounded-full z-10">
+    <div class="store-modal-box border max-w-3xl w-full p-4 sm:p-8 relative shadow-2xl rounded-2xl space-y-3 sm:space-y-5 max-h-[90vh] overflow-y-auto">
+      <button onclick="closeProductModal()" class="absolute top-3 right-3 text-zinc-400 hover:text-white text-sm sm:text-lg border border-zinc-700 w-7 h-7 sm:w-9 sm:h-9 flex items-center justify-center transition rounded-full z-10">
         <i class="fa-solid fa-xmark"></i>
       </button>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6 items-start">
-        <div class="space-y-3">
-          <div class="h-56 sm:h-72 bg-zinc-100 dark:bg-black border border-zinc-200 dark:border-zinc-800 overflow-hidden relative shadow-inner rounded-xl flex items-center justify-center">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 items-start">
+        <div class="space-y-2 sm:space-y-3">
+          <div class="h-44 sm:h-72 bg-zinc-100 dark:bg-black border border-zinc-200 dark:border-zinc-800 overflow-hidden relative shadow-inner rounded-xl flex items-center justify-center">
             <img id="modalMainImg" src="" class="w-full h-full object-contain p-2">
           </div>
           <div id="modalThumbnails" class="flex gap-2 overflow-x-auto pb-1"></div>
         </div>
 
-        <div class="space-y-3 sm:space-y-4">
+        <div class="space-y-2 sm:space-y-4">
           <div>
-            <span class="bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 px-2.5 py-0.5 text-[8px] sm:text-[9px] font-bold uppercase tracking-wider rounded-md">Store Item</span>
-            <h2 id="modalTitle" class="text-lg sm:text-xl font-black uppercase tracking-wider mt-1.5"></h2>
+            <span class="bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 px-2 py-0.5 text-[8px] sm:text-[9px] font-bold uppercase tracking-wider rounded-md">Store Item</span>
+            <h2 id="modalTitle" class="text-base sm:text-xl font-black uppercase tracking-wider mt-1"></h2>
           </div>
-          <p id="modalPrice" class="text-xl sm:text-2xl font-mono font-black text-emerald-400"></p>
+          <p id="modalPrice" class="text-lg sm:text-2xl font-mono font-black text-emerald-400"></p>
           
-          <div id="keyFeaturesContainer" class="space-y-1.5 pt-2 border-t border-zinc-800 hidden">
-            <h3 class="text-[9px] sm:text-[10px] opacity-80 font-bold uppercase tracking-[0.2em] flex items-center gap-1.5">
+          <div id="keyFeaturesContainer" class="space-y-1 pt-1.5 border-t border-zinc-800 hidden">
+            <h3 class="text-[8px] sm:text-[10px] opacity-80 font-bold uppercase tracking-[0.2em] flex items-center gap-1">
               <i class="fa-solid fa-star text-yellow-500"></i> Key Features
             </h3>
-            <div id="modalKeyFeaturesGrid" class="grid grid-cols-1 gap-1.5 max-h-28 overflow-y-auto pr-1"></div>
+            <div id="modalKeyFeaturesGrid" class="grid grid-cols-1 gap-1 max-h-24 overflow-y-auto pr-1"></div>
           </div>
 
-          <div id="productDetailsContainer" class="space-y-1.5 pt-2 border-t border-zinc-800 hidden">
-            <h3 class="text-[9px] sm:text-[10px] opacity-80 font-bold uppercase tracking-[0.2em] flex items-center gap-1.5">
+          <div id="productDetailsContainer" class="space-y-1 pt-1.5 border-t border-zinc-800 hidden">
+            <h3 class="text-[8px] sm:text-[10px] opacity-80 font-bold uppercase tracking-[0.2em] flex items-center gap-1">
               <i class="fa-solid fa-circle-info text-cyan-500"></i> Product Details
             </h3>
-            <div id="modalDetailsGrid" class="grid grid-cols-1 gap-1.5 max-h-28 overflow-y-auto pr-1"></div>
+            <div id="modalDetailsGrid" class="grid grid-cols-1 gap-1 max-h-24 overflow-y-auto pr-1"></div>
           </div>
 
-          <div class="pt-3 border-t border-zinc-800 space-y-3">
+          <div class="pt-2 sm:pt-3 border-t border-zinc-800 space-y-2.5">
             <div class="flex items-center gap-3">
               <span class="text-xs font-bold uppercase tracking-widest opacity-90">Quantity:</span>
-              <div class="flex items-center border border-zinc-700 bg-black rounded-xl overflow-hidden shadow-sm">
-                <button onclick="adjustQty(-1)" class="px-3 py-1 font-mono hover:bg-zinc-800 text-white text-sm">-</button>
-                <span id="modalQty" class="px-3.5 py-1 font-mono text-xs font-bold text-white">1</span>
-                <button onclick="adjustQty(1)" class="px-3 py-1 font-mono hover:bg-zinc-800 text-white text-sm">+</button>
+              <div class="flex items-center border border-zinc-700 bg-black rounded-lg overflow-hidden shadow-sm">
+                <button onclick="adjustQty(-1)" class="px-2.5 py-1 font-mono hover:bg-zinc-800 text-white text-xs">-</button>
+                <span id="modalQty" class="px-3 py-1 font-mono text-xs font-bold text-white">1</span>
+                <button onclick="adjustQty(1)" class="px-2.5 py-1 font-mono hover:bg-zinc-800 text-white text-xs">+</button>
               </div>
             </div>
 
-            <div class="flex gap-2.5 pt-1">
-              <button onclick="addCurrentToCart()" class="flex-1 btn-outline border font-bold py-2.5 sm:py-3 uppercase tracking-wider text-[11px] sm:text-xs transition shadow-sm text-center rounded-xl">Add to Cart</button>
-              <button onclick="buyCurrentNow()" class="flex-1 btn-outline border font-bold py-2.5 sm:py-3 uppercase tracking-wider text-[11px] sm:text-xs transition shadow-sm text-center rounded-xl">Buy Now</button>
+            <div class="flex gap-2 pt-1">
+              <button onclick="addCurrentToCart()" class="flex-1 btn-outline border font-bold py-2 sm:py-3 uppercase tracking-wider text-[10px] sm:text-xs transition shadow-sm text-center rounded-xl">Add to Cart</button>
+              <button onclick="buyCurrentNow()" class="flex-1 btn-outline border font-bold py-2 sm:py-3 uppercase tracking-wider text-[10px] sm:text-xs transition shadow-sm text-center rounded-xl">Buy Now</button>
             </div>
           </div>
         </div>
@@ -259,20 +265,20 @@
 
   <!-- Custom Add to Cart Success Modal -->
   <div id="addToCartSuccessModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm hidden p-4 transition-all duration-300">
-    <div class="store-modal-box border p-6 max-w-xs sm:max-w-sm w-full shadow-2xl space-y-4 text-center relative rounded-2xl">
-      <div class="w-12 h-12 bg-cyan-500/20 text-cyan-400 rounded-full flex items-center justify-center mx-auto text-lg shadow-md">
+    <div class="store-modal-box border p-5 max-w-xs sm:max-w-sm w-full shadow-2xl space-y-3 text-center relative rounded-2xl">
+      <div class="w-10 h-10 bg-cyan-500/20 text-cyan-400 rounded-full flex items-center justify-center mx-auto text-base shadow-md">
         <i class="fa-solid fa-bag-shopping"></i>
       </div>
-      <div class="space-y-1.5">
-        <span class="text-[8px] sm:text-[9px] font-extrabold uppercase tracking-[0.3em] text-cyan-400 bg-cyan-500/10 px-2.5 py-1 border border-cyan-500/20 rounded-full">Successfully Added</span>
+      <div class="space-y-1">
+        <span class="text-[8px] sm:text-[9px] font-extrabold uppercase tracking-[0.3em] text-cyan-400 bg-cyan-500/10 px-2 py-0.5 border border-cyan-500/20 rounded-full">Successfully Added</span>
         <h3 id="addedItemTitle" class="text-xs sm:text-sm font-bold uppercase tracking-wider pt-1">Product Name</h3>
-        <p class="text-[10px] opacity-80 font-light">The item has been added to your cart.</p>
+        <p class="text-[9px] opacity-80 font-light">The item has been added to your cart.</p>
       </div>
-      <div class="grid grid-cols-2 gap-2.5 pt-2">
-        <button onclick="closeAddToCartModal()" class="border btn-outline font-bold py-2.5 text-[9px] sm:text-[10px] uppercase tracking-wider transition rounded-xl shadow-sm">
+      <div class="grid grid-cols-2 gap-2 pt-1">
+        <button onclick="closeAddToCartModal()" class="border btn-outline font-bold py-2 text-[9px] sm:text-[10px] uppercase tracking-wider transition rounded-xl shadow-sm">
           Continue
         </button>
-        <button onclick="window.location.href='order.html'" class="border btn-outline font-black py-2.5 text-[9px] sm:text-[10px] uppercase tracking-wider transition shadow-lg flex items-center justify-center gap-1 rounded-xl">
+        <button onclick="window.location.href='order.html'" class="border btn-outline font-black py-2 text-[9px] sm:text-[10px] uppercase tracking-wider transition shadow-lg flex items-center justify-center gap-1 rounded-xl">
           <i class="fa-solid fa-arrow-right"></i> View Cart
         </button>
       </div>
@@ -281,8 +287,8 @@
 
   <!-- Cart Drawer Overlay -->
   <div id="cartDrawerOverlay" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-md flex justify-end invisible opacity-0 transition-all duration-300">
-    <div class="w-full max-w-xs sm:max-w-md bg-white dark:bg-[#0c0c0c] border-l border-zinc-200 dark:border-zinc-800 h-full p-5 sm:p-8 flex flex-col justify-between shadow-2xl">
-      <div class="space-y-5">
+    <div class="w-full max-w-xs sm:max-w-md bg-white dark:bg-[#0c0c0c] border-l border-zinc-200 dark:border-zinc-800 h-full p-4 sm:p-8 flex flex-col justify-between shadow-2xl">
+      <div class="space-y-4">
         <div class="flex justify-between items-center border-b border-zinc-200 dark:border-zinc-900 pb-3">
           <h2 class="text-xs sm:text-sm font-black uppercase tracking-[0.2em]">Shopping Cart</h2>
           <button onclick="closeCartModal()" class="text-zinc-500 dark:text-zinc-400 hover:text-black dark:hover:text-white text-sm"><i class="fa-solid fa-xmark"></i></button>
@@ -290,19 +296,19 @@
         <div id="cartDrawerItems" class="space-y-3 overflow-y-auto max-h-[60vh] pr-1"></div>
       </div>
       
-      <div class="pt-4 border-t border-zinc-200 dark:border-zinc-900 space-y-3">
+      <div class="pt-3 border-t border-zinc-200 dark:border-zinc-900 space-y-3">
         <div class="flex justify-between text-xs font-mono uppercase opacity-90 font-bold">
           <span>Total Amount:</span>
           <span id="cartDrawerTotal" class="font-bold text-emerald-600 dark:text-emerald-400">₹0</span>
         </div>
-        <button onclick="proceedToCheckout()" class="w-full btn-outline border py-3 text-xs uppercase tracking-[0.2em] font-black transition rounded-xl shadow-lg">
+        <button onclick="proceedToCheckout()" class="w-full btn-outline border py-2.5 sm:py-3 text-xs uppercase tracking-[0.2em] font-black transition rounded-xl shadow-lg">
           Proceed to Checkout
         </button>
       </div>
     </div>
   </div>
 
-  <footer class="py-10 sm:py-16 border-t text-center text-[9px] sm:text-[10px] uppercase tracking-[0.3em] space-y-3 relative z-10">
+  <footer class="py-6 sm:py-16 border-t text-center text-[8px] sm:text-[10px] uppercase tracking-[0.3em] space-y-2 relative z-10">
     <p>© 2026 Moonland Store. All Rights Reserved.</p>
   </footer>
 
@@ -373,12 +379,12 @@
         let qty = Number(item.quantity || item.qty || 1);
         total += itemPrice * qty;
         return `
-          <div class="flex justify-between items-center ${isLight ? 'bg-white border-zinc-200 text-zinc-900 shadow-sm' : 'bg-black border-zinc-800 text-white'} p-3 border rounded-xl text-xs">
+          <div class="flex justify-between items-center ${isLight ? 'bg-white border-zinc-200 text-zinc-900 shadow-sm' : 'bg-black border-zinc-800 text-white'} p-2.5 border rounded-xl text-xs">
             <div>
-              <div class="font-bold uppercase tracking-wider text-[11px]">${item.title || item.name}</div>
-              <div class="opacity-80 font-mono text-[10px] mt-0.5">₹${itemPrice} x ${qty}</div>
+              <div class="font-bold uppercase tracking-wider text-[10px] sm:text-[11px]">${item.title || item.name}</div>
+              <div class="opacity-80 font-mono text-[9px] sm:text-[10px] mt-0.5">₹${itemPrice} x ${qty}</div>
             </div>
-            <button onclick="removeFromCart(${idx})" class="text-zinc-400 hover:text-red-500 p-1.5"><i class="fa-solid fa-trash text-xs"></i></button>
+            <button onclick="removeFromCart(${idx})" class="text-zinc-400 hover:text-red-500 p-1"><i class="fa-solid fa-trash text-xs"></i></button>
           </div>
         `;
       }).join('');
@@ -444,24 +450,24 @@
         let pPrice = Number(p.price) || 0;
 
         let card = document.createElement('div');
-        /* FLIPKART STYLE E-COMMERCE MOBILE CARD & DESKTOP LAPTOP EXPANSION */
-        card.className = `product-item product-card group border p-2 sm:p-5 flex flex-col justify-between space-y-2 sm:space-y-4 transition duration-300 cursor-pointer rounded-xl sm:rounded-2xl shadow-sm hover:shadow-md`;
+        /* ULTRA COMPACT MOBILE CARD FOR 4-ITEMS SCREEN VIEW & DESKTOP LAPTOP EXPANSION */
+        card.className = `product-item product-card group border p-1.5 sm:p-5 flex flex-col justify-between space-y-1.5 sm:space-y-4 transition duration-300 cursor-pointer rounded-lg sm:rounded-2xl shadow-sm hover:shadow-md`;
         card.innerHTML = `
-          <div onclick="openProductDetail('${p.id}')" class="h-36 sm:h-56 overflow-hidden bg-zinc-100 dark:bg-black flex items-center justify-center relative rounded-lg sm:rounded-xl shadow-inner">
-            <span class="absolute top-1.5 left-1.5 sm:top-2.5 sm:left-2.5 z-10 bg-black text-white dark:bg-white dark:text-black text-[6px] sm:text-[8px] font-extrabold uppercase px-1.5 py-0.5 sm:px-2.5 sm:py-1 tracking-wider rounded sm:rounded-md shadow">Assured</span>
+          <div onclick="openProductDetail('${p.id}')" class="h-24 sm:h-56 overflow-hidden bg-zinc-100 dark:bg-black flex items-center justify-center relative rounded sm:rounded-xl shadow-inner">
+            <span class="absolute top-1 left-1 sm:top-2.5 sm:left-2.5 z-10 bg-black text-white dark:bg-white dark:text-black text-[5px] sm:text-[8px] font-extrabold uppercase px-1 py-0.2 sm:px-2.5 sm:py-1 tracking-wider rounded sm:rounded-md shadow">Assured</span>
             <img id="storeImg_${index}" src="${imgList[0]}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500 opacity-95">
           </div>
-          <div onclick="openProductDetail('${p.id}')" class="space-y-1">
-            <h3 class="text-xs sm:text-base font-bold uppercase tracking-tight line-clamp-2 leading-tight">${pName}</h3>
-            <p class="text-[9px] sm:text-xs opacity-80 font-medium truncate">${p.keyFeatures || 'Certified Product'}</p>
+          <div onclick="openProductDetail('${p.id}')" class="space-y-0.5 sm:space-y-1">
+            <h3 class="text-[10px] sm:text-base font-bold uppercase tracking-tight line-clamp-1 sm:line-clamp-2 leading-tight">${pName}</h3>
+            <p class="text-[8px] sm:text-xs opacity-75 font-medium truncate">${p.keyFeatures || 'Certified Product'}</p>
           </div>
-          <div class="space-y-2 pt-2 border-t ${isLight ? 'border-zinc-200' : 'border-zinc-900'}">
+          <div class="space-y-1 sm:space-y-2 pt-1 sm:pt-2 border-t ${isLight ? 'border-zinc-200' : 'border-zinc-900'}">
             <div class="flex items-baseline justify-between">
-              <span class="product-price font-mono text-sm sm:text-lg font-black">₹${pPrice.toLocaleString('en-IN')}</span>
+              <span class="product-price font-mono text-xs sm:text-lg font-black">₹${pPrice.toLocaleString('en-IN')}</span>
             </div>
             <div class="grid grid-cols-2 gap-1 sm:gap-2">
-              <button onclick="event.stopPropagation(); addToCartDirect('${p.id}')" class="btn-outline w-full border font-bold py-1.5 sm:py-2 text-[8px] sm:text-[10px] uppercase tracking-wider transition rounded-lg sm:rounded-xl">Add</button>
-              <button onclick="event.stopPropagation(); buyNowDirect('${p.id}')" class="btn-outline w-full border font-bold py-1.5 sm:py-2 text-[8px] sm:text-[10px] uppercase tracking-wider text-center flex items-center justify-center transition rounded-lg sm:rounded-xl shadow-sm">Buy</button>
+              <button onclick="event.stopPropagation(); addToCartDirect('${p.id}')" class="btn-outline w-full border font-bold py-1 sm:py-2 text-[7px] sm:text-[10px] uppercase tracking-wider transition rounded sm:rounded-xl">Add</button>
+              <button onclick="event.stopPropagation(); buyNowDirect('${p.id}')" class="btn-outline w-full border font-bold py-1 sm:py-2 text-[7px] sm:text-[10px] uppercase tracking-wider text-center flex items-center justify-center transition rounded sm:rounded-xl shadow-sm">Buy</button>
             </div>
           </div>
         `;
@@ -498,9 +504,9 @@
           let label = parts[0] ? parts[0].trim() : 'Feature';
           let val = parts[1] ? parts[1].trim() : item.trim();
           return `
-            <div class="store-modal-inner border p-2 flex flex-col justify-between space-y-0.5 rounded-lg shadow-sm">
-              <span class="text-[8px] sm:text-[9px] opacity-75 uppercase tracking-widest font-bold">${label}</span>
-              <span class="text-[11px] sm:text-xs font-bold uppercase">${val}</span>
+            <div class="store-modal-inner border p-1.5 flex flex-col justify-between space-y-0.5 rounded-lg shadow-sm">
+              <span class="text-[7px] sm:text-[9px] opacity-75 uppercase tracking-widest font-bold">${label}</span>
+              <span class="text-[10px] sm:text-xs font-bold uppercase">${val}</span>
             </div>
           `;
         }).join('');
@@ -517,9 +523,9 @@
           let label = parts[0] ? parts[0].trim() : 'Detail';
           let val = parts[1] ? parts[1].trim() : item.trim();
           return `
-            <div class="store-modal-inner border p-2 flex flex-col justify-between space-y-0.5 rounded-lg shadow-sm">
-              <span class="text-[8px] sm:text-[9px] opacity-75 uppercase tracking-widest font-bold">${label}</span>
-              <span class="text-[11px] sm:text-xs font-bold uppercase">${val}</span>
+            <div class="store-modal-inner border p-1.5 flex flex-col justify-between space-y-0.5 rounded-lg shadow-sm">
+              <span class="text-[7px] sm:text-[9px] opacity-75 uppercase tracking-widest font-bold">${label}</span>
+              <span class="text-[10px] sm:text-xs font-bold uppercase">${val}</span>
             </div>
           `;
         }).join('');
@@ -531,7 +537,7 @@
       document.getElementById('modalMainImg').src = imgList[0];
       
       document.getElementById('modalThumbnails').innerHTML = imgList.map((img, idx) => `
-        <img src="${img}" onclick="document.getElementById('modalMainImg').src='${img}'" class="w-12 h-12 sm:w-14 sm:h-14 object-cover border ${idx === 0 ? 'border-cyan-400' : 'border-zinc-700'} cursor-pointer rounded-lg shadow-sm">
+        <img src="${img}" onclick="document.getElementById('modalMainImg').src='${img}'" class="w-10 h-10 sm:w-14 sm:h-14 object-cover border ${idx === 0 ? 'border-cyan-400' : 'border-zinc-700'} cursor-pointer rounded-lg shadow-sm">
       `).join('');
 
       document.getElementById('productDetailModal').classList.remove('hidden');
