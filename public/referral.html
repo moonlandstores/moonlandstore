@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Privileges & Referral Rewards | MOONLAND STORE</title>
+  <title>Store | MOONLAND STORE</title>
   <!-- Browser Tab Favicon Logo -->
   <link rel="icon" type="image/png" href="logo.png?v=999">
   <link rel="shortcut icon" href="logo.png?v=999">
@@ -16,7 +16,7 @@
     html.light { background-color: #f8fafc; color: #0f172a; }
     body { background-color: #050505 !important; color: #ffffff !important; transition: background-color 0.4s ease, color 0.4s ease; }
 
-    /* DAYLIGHT MODE OVERRIDES (HIGH CONTRAST & CLEAR VISIBILITY FIXES) */
+    /* DAYLIGHT MODE (HIGH CONTRAST & CLEAR VISIBILITY FIXES) */
     html.light body { background-color: #f8fafc !important; color: #0f172a !important; }
     html.light header { background-color: rgba(255, 255, 255, 0.95) !important; border-bottom-color: #cbd5e1 !important; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); }
     
@@ -28,37 +28,39 @@
       font-weight: 800 !important;
       box-shadow: 0 2px 10px rgba(0,0,0,0.1);
     }
-
+    
     html.light .brand-logo-box { border-color: #0f172a !important; background-color: #0f172a !important; color: #ffffff !important; }
     html.light nav a, html.light header button { color: #334155 !important; font-weight: 700 !important; }
     html.light nav a:hover, html.light header button:hover, html.light nav a.active-link { color: #0f172a !important; }
     html.light .clouds-bg { display: block !important; }
     
-    /* Rich Daylight Referral Cards & Lookup Box */
-    html.light .referral-card { 
+    /* Rich Daylight Product Cards */
+    html.light .product-card { 
       background-color: #ffffff !important; 
       border-color: #cbd5e1 !important; 
-      color: #0f172a !important; 
       box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.08), 0 8px 10px -6px rgba(15, 23, 42, 0.06); 
     }
-    html.light .referral-card h2, html.light .referral-card h3 { color: #0f172a !important; font-weight: 800 !important; }
-    html.light .referral-card p, html.light .referral-card span { color: #334155 !important; font-weight: 500 !important; }
+    html.light .product-card h3 { color: #0f172a !important; font-weight: 800 !important; }
+    html.light .product-card p { color: #475569 !important; font-weight: 600 !important; }
+    html.light .product-price { color: #059669 !important; font-weight: 900; }
     
-    html.light .referral-input { 
-      background-color: #ffffff !important; 
-      border-color: #cbd5e1 !important; 
-      color: #0f172a !important; 
-      font-weight: 600 !important;
-    }
-    html.light .referral-input::placeholder { color: #94a3b8 !important; }
-
+    html.light .btn-outline { border-color: #0f172a !important; color: #0f172a !important; background-color: #ffffff !important; font-weight: 800; }
+    html.light .btn-outline:hover { background-color: #0f172a !important; color: #ffffff !important; }
+    html.light .btn-solid { background-color: #0f172a !important; color: #ffffff !important; font-weight: 800; box-shadow: 0 4px 12px rgba(15, 23, 42, 0.25); }
+    html.light .btn-solid:hover { background-color: #1e293b !important; }
+    
     html.light footer { background-color: #e2e8f0 !important; border-top-color: #cbd5e1 !important; color: #334155 !important; font-weight: 600; }
-    html.light footer a { color: #334155 !important; }
-    html.light footer a:hover { color: #0f172a !important; }
+    
+    /* DAYLIGHT MODE MODAL OVERRIDES */
+    html.light .store-modal-box { background: #ffffff !important; border-color: #cbd5e1 !important; color: #0f172a !important; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); }
+    html.light .store-modal-box h2, html.light .store-modal-box h3 { color: #0f172a !important; }
+    html.light .store-modal-inner { background: #f8fafc !important; border-color: #cbd5e1 !important; color: #0f172a !important; }
 
-    /* NIGHT MODE OVERRIDES (PRESERVED EXACTLY AS YOU LIKED IT) */
+    /* NIGHT MODE (PRESERVED EXACTLY AS YOU LIKED IT) */
     html.dark body { background-color: #050505 !important; color: #ffffff !important; }
     html.dark .clouds-bg { display: none !important; }
+    html.dark .store-modal-box { background: rgba(12,12,12,0.98) !important; border-color: rgba(255,255,255,0.2) !important; color: #ffffff !important; }
+    html.dark .store-modal-inner { background: #000000 !important; border-color: #27272a !important; color: #ffffff !important; }
 
     /* Soft Floating Clouds Animation */
     @keyframes cloudDrift1 {
@@ -74,49 +76,7 @@
     .cloud-elem-1 { animation: cloudDrift1 35s linear infinite; }
     .cloud-elem-2 { animation: cloudDrift2 45s linear infinite; }
 
-    @keyframes offerGlow {
-      0% { border-color: rgba(255, 255, 255, 0.1); box-shadow: 0 0 10px rgba(0, 0, 0, 0.9); }
-      50% { border-color: rgba(234, 179, 8, 0.7); box-shadow: 0 0 40px rgba(234, 179, 8, 0.25); }
-      100% { border-color: rgba(255, 255, 255, 0.1); box-shadow: 0 0 10px rgba(0, 0, 0, 0.9); }
-    }
-    .luxury-glow-card {
-      animation: offerGlow 4s ease-in-out infinite;
-    }
-
-    @keyframes coinFloat {
-      0%, 100% { transform: translateY(0px) rotate(0deg); }
-      50% { transform: translateY(-8px) rotate(5deg); }
-    }
-    .animate-coin {
-      animation: coinFloat 3s ease-in-out infinite;
-    }
-
-    @keyframes badgePulse {
-      0% { transform: scale(1); opacity: 0.9; }
-      50% { transform: scale(1.05); opacity: 1; filter: brightness(1.2); }
-      100% { transform: scale(1); opacity: 0.9; }
-    }
-    .animate-badge-pulse {
-      animation: badgePulse 2s ease-in-out infinite;
-    }
-
-    @keyframes tickerFade {
-      0% { opacity: 0; transform: translateY(10px); }
-      20% { opacity: 1; transform: translateY(0); }
-      80% { opacity: 1; transform: translateY(0); }
-      100% { opacity: 0; transform: translateY(-10px); }
-    }
-    .ticker-animation {
-      animation: tickerFade 4s ease-in-out infinite;
-    }
-
-    @keyframes redGlowBorder {
-      0%, 100% { border-color: rgba(239, 68, 68, 0.3); box-shadow: 0 0 15px rgba(239, 68, 68, 0.1); }
-      50% { border-color: rgba(239, 68, 68, 0.8); box-shadow: 0 0 30px rgba(239, 68, 68, 0.25); }
-    }
-    .clearance-reason-card {
-      animation: redGlowBorder 4s ease-in-out infinite;
-    }
+    #cartDrawerOverlay { transition: opacity 0.3s ease, visibility 0.3s ease; }
   </style>
 
   <!-- AUTO THEME SWITCHER SCRIPT -->
@@ -144,16 +104,16 @@
     <div class="absolute top-96 right-[-40px] w-96 h-32 bg-blue-200/30 rounded-full blur-2xl cloud-elem-2"></div>
   </div>
 
-  <!-- Top Announcement Bar -->
+  <!-- Highly Visible Marquee Bar -->
   <div class="marquee-bar bg-black text-zinc-300 py-3 px-4 text-[11px] font-extrabold tracking-[0.25em] uppercase border-b overflow-hidden whitespace-nowrap z-20">
     <marquee behavior="scroll" direction="left" scrollamount="5">
       <span class="inline-flex items-center gap-2 mx-6"><i class="fa-solid fa-bolt text-yellow-400"></i> MOONLAND SPECIAL: UNLIMITED REFER & EARN ₹1,000 INSTANT UPI CASHBACK PER REFERRAL!</span>
     </marquee>
   </div>
 
-  <!-- Header / Navbar -->
-  <header class="sticky top-0 z-40 bg-black/90 backdrop-blur-xl border-b border-zinc-900">
-    <div class="max-w-7xl mx-auto px-6 sm:px-12 flex justify-between items-center h-24">
+  <!-- Header with Fixed Mobile Menu Dropdown Positioning (Height updated to h-20) -->
+  <header class="sticky top-0 z-50 bg-black/90 backdrop-blur-xl border-b border-zinc-900">
+    <div class="max-w-7xl mx-auto px-6 sm:px-12 flex justify-between items-center h-20 relative">
       <a href="index.html" class="flex items-center space-x-4 group">
         <div class="brand-logo-box w-8 h-8 border border-white flex items-center justify-center font-black text-xs tracking-widest text-white group-hover:bg-white group-hover:text-black transition duration-500 rounded-lg">M</div>
         <div class="flex flex-col">
@@ -163,8 +123,8 @@
       </a>
 
       <nav class="hidden md:flex items-center space-x-12 font-medium text-[11px] uppercase tracking-[0.25em] text-zinc-400">
-        <a href="store.html" class="hover:opacity-75 transition pb-1">Store</a>
-        <a href="referral.html" class="border-b pb-1 tracking-[0.3em] font-bold active-link">Refer & Earn</a>
+        <a href="store.html" class="border-b pb-1 tracking-[0.3em] font-bold active-link">Store</a>
+        <a href="referral.html" class="hover:opacity-75 transition pb-1">Refer & Earn</a>
         <a href="track.html" class="hover:opacity-75 transition pb-1">Track Order</a>
         <a href="about.html" class="hover:opacity-75 transition pb-1">About Us</a>
       </nav>
@@ -174,331 +134,447 @@
           <i class="fa-solid fa-bag-shopping text-sm"></i>
           <span id="cartCountBadge" class="bg-black text-white dark:bg-white dark:text-black text-[9px] px-1.5 py-0.2 rounded-full font-bold ml-1">0</span>
         </button>
-        <button onclick="toggleMobileMenu()" class="md:hidden text-lg p-2 cursor-pointer"><i class="fa-solid fa-bars"></i></button>
+        <button onclick="toggleMobileMenu()" class="md:hidden text-xl p-2 cursor-pointer"><i class="fa-solid fa-bars"></i></button>
       </div>
     </div>
 
-    <!-- Mobile Menu Dropdown -->
-    <div id="mobileMenuDropdown" class="hidden md:hidden bg-white dark:bg-black border-b border-zinc-200 dark:border-zinc-900 px-8 py-6 space-y-5 text-xs uppercase font-medium tracking-[0.25em] shadow-2xl z-50">
-      <a href="store.html" class="block opacity-80 hover:opacity-100">Store</a>
-      <a href="referral.html" class="block font-bold">Refer & Earn</a>
+    <!-- Mobile Dropdown Menu Absolute Overlay -->
+    <div id="mobileMenuDropdown" class="hidden absolute top-full left-0 w-full bg-white dark:bg-black border-b border-zinc-200 dark:border-zinc-900 px-8 py-6 space-y-5 text-xs uppercase font-medium tracking-[0.25em] shadow-2xl z-50">
+      <a href="store.html" class="block font-bold">Store</a>
+      <a href="referral.html" class="block opacity-80 hover:opacity-100">Refer & Earn</a>
       <a href="track.html" class="block opacity-80 hover:opacity-100">Track Order</a>
       <a href="about.html" class="block opacity-80 hover:opacity-100">About Us</a>
     </div>
   </header>
 
-  <!-- Main Content -->
-  <main class="max-w-5xl mx-auto px-6 sm:px-12 py-16 w-full space-y-12 flex-grow relative z-10">
-    
-    <!-- Page Title with Animated Motivation Badge -->
-    <div class="text-center space-y-4 max-w-2xl mx-auto">
-      <span class="inline-block text-[10px] font-extrabold uppercase tracking-[0.4em] text-yellow-600 dark:text-yellow-400 border border-yellow-500/30 px-4 py-2 bg-yellow-500/10 animate-badge-pulse rounded-full shadow-sm">
-        <i class="fa-solid fa-fire-flame-curved text-yellow-500 mr-1.5"></i> UNLIMITED MONEY MAKER PROGRAM • LIVE PAYOUTS
-      </span>
-      <h1 class="text-3xl sm:text-6xl font-black uppercase tracking-[0.1em]">
-        REFER & EARN <span class="text-yellow-600 dark:text-yellow-400 font-light animate-coin inline-block">₹1,000 UPI</span>
-      </h1>
-      <p class="text-xs sm:text-sm opacity-80 font-medium tracking-wide leading-relaxed">
-        Share your referral link and get a direct ₹1,000 instant cashback on every successful order straight into your bank account or UPI. No limits, infinite earnings!
-      </p>
-    </div>
-
-    <!-- Live Earnings Social Proof Ticker Box -->
-    <div class="referral-card border p-4 max-w-xl mx-auto flex items-center justify-between shadow-lg rounded-2xl">
-      <div class="flex items-center space-x-3">
-        <div class="w-8 h-8 rounded-full bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-xs">
-          <i class="fa-solid fa-bolt"></i>
-        </div>
-        <div class="text-xs">
-          <span class="opacity-70 uppercase tracking-widest block text-[9px] font-bold">Live Payout Alert</span>
-          <p id="liveTickerText" class="font-mono font-bold ticker-animation">Loading live earnings...</p>
-        </div>
-      </div>
-      
-      <!-- INSTANT PAYOUT BADGE -->
-      <span class="text-[10px] font-mono text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-3 py-1 uppercase tracking-widest font-bold flex items-center gap-1.5 rounded-full shadow-sm">
-        <i class="fa-solid fa-bolt text-yellow-500"></i> INSTANT PAYOUT
-      </span>
-    </div>
-
-    <!-- WHY ARE WE RUNNING THIS REFERRAL PROGRAM? -->
-    <div class="referral-card border border-red-500/40 p-8 sm:p-12 space-y-6 clearance-reason-card text-center sm:text-left relative overflow-hidden rounded-2xl shadow-xl">
-      <div class="flex flex-col sm:flex-row items-center justify-between gap-6 border-b border-red-500/20 pb-6">
-        <div class="space-y-2">
-          <span class="text-[10px] font-extrabold uppercase tracking-[0.35em] text-red-600 dark:text-red-500 bg-red-100 dark:bg-red-950/80 px-3.5 py-1 border border-red-500/40 rounded-full inline-block">
-            <i class="fa-solid fa-fire mr-1.5"></i> MEGA STOCK CLEARANCE REASON
-          </span>
-          <h2 class="text-2xl sm:text-4xl font-black uppercase tracking-wide">
-            WHY ARE WE GIVING <span class="text-yellow-600 dark:text-yellow-400">₹1,000 PER REFERRAL?</span>
-          </h2>
-        </div>
-        <div class="w-16 h-16 rounded-full bg-red-500/10 border border-red-500/30 flex items-center justify-center text-red-500 text-2xl font-black shrink-0">
-          <i class="fa-solid fa-box-open"></i>
-        </div>
-      </div>
-
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-xs leading-relaxed font-medium">
-        <div class="border p-6 space-y-3 rounded-xl shadow-sm bg-black/5 dark:bg-white/5">
-          <div class="flex items-center gap-2 font-bold uppercase tracking-wider text-xs">
-            <i class="fa-solid fa-bullhorn text-red-500"></i> ZERO AD AGENCY SPEND
-          </div>
-          <p class="opacity-90">
-            Instead of spending millions on expensive TV or social media ads, we redirect 100% of our marketing budget directly into our customers' pockets.
-          </p>
-        </div>
-
-        <div class="border p-6 space-y-3 rounded-xl shadow-sm bg-black/5 dark:bg-white/5">
-          <div class="flex items-center gap-2 font-bold uppercase tracking-wider text-xs">
-            <i class="fa-solid fa-warehouse text-yellow-500"></i> FAST WAREHOUSE CLEARANCE
-          </div>
-          <p class="opacity-90">
-            We are quickly clearing out our present inventory for upcoming model upgrades. Fast sales help us empty stock faster while rewarding you directly!
-          </p>
-        </div>
-      </div>
-
-      <div class="pt-2 text-center text-[11px] uppercase tracking-[0.25em] font-bold opacity-90">
-        🔥 Win-Win Deal: You help us clear inventory, and we pay you instant ₹1,000 cash.
+  <main class="flex-grow max-w-7xl mx-auto px-6 sm:px-12 py-16 w-full space-y-12 relative z-10">
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-end border-b border-zinc-300 dark:border-zinc-900 pb-6 gap-6">
+      <div class="space-y-2">
+        <span class="text-[10px] font-extrabold uppercase tracking-[0.4em] text-cyan-600 dark:text-cyan-400 bg-cyan-500/10 px-3.5 py-1.5 border border-cyan-500/20 rounded-full">Curated Lineup</span>
+        <h2 class="text-3xl sm:text-5xl font-black uppercase tracking-[0.15em] pt-2">Masterpieces</h2>
       </div>
     </div>
 
-    <!-- Interactive Referral Link Fetcher Box (Redesigned for Clarity & Beauty) -->
-    <div class="referral-card border border-yellow-500/50 p-8 sm:p-10 luxury-glow-card space-y-6 text-center rounded-2xl shadow-2xl">
-      <div class="space-y-2 max-w-lg mx-auto">
-        <span class="text-[10px] font-extrabold uppercase tracking-[0.3em] text-yellow-600 dark:text-yellow-400 bg-yellow-500/10 px-3.5 py-1 border border-yellow-500/30 rounded-full">
-          <i class="fa-solid fa-link mr-1"></i> INSTANT LINK GENERATOR
-        </span>
-        <h3 class="text-xl sm:text-2xl font-black uppercase tracking-wider">Get Your Registered Referral Link</h3>
-        <p class="text-xs opacity-80 font-medium">Enter your registered mobile number below to instantly generate and fetch your unique referral link.</p>
-      </div>
-
-      <div class="flex flex-col sm:flex-row gap-3 max-w-xl mx-auto">
-        <input type="tel" id="userReferralInput" maxlength="10" placeholder="Enter 10-digit mobile number..." class="referral-input flex-1 border px-5 py-4 text-xs font-mono uppercase tracking-widest focus:outline-none transition rounded-xl shadow-md">
-        <button onclick="fetchExistingRefLink()" class="bg-yellow-500 hover:bg-yellow-400 text-black font-black px-8 py-4 text-xs uppercase tracking-[0.2em] transition shadow-lg rounded-xl">
-          Fetch Link <i class="fa-solid fa-arrow-right ml-1"></i>
-        </button>
-      </div>
-
-      <!-- Container starts hidden -->
-      <div id="generatedLinkContainer" class="hidden pt-4 space-y-3 max-w-xl mx-auto">
-        <div class="flex flex-col sm:flex-row items-center justify-between gap-3 border border-yellow-500/40 bg-yellow-500/5 px-5 py-4 text-xs font-mono text-yellow-700 dark:text-yellow-400 rounded-xl shadow-inner">
-          <span id="displayRefUrl" class="truncate pr-4 font-bold select-all"></span>
-          <button onclick="copyRefLink()" class="whitespace-nowrap bg-black text-white dark:bg-white dark:text-black px-5 py-2.5 text-[10px] uppercase font-black tracking-wider hover:opacity-85 transition rounded-lg shadow-md">
-            <i class="fa-solid fa-copy mr-1"></i> Copy Link
-          </button>
-        </div>
-      </div>
-    </div>
-
-    <!-- Referral Reward Slabs with Glow Animation -->
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-      <div class="referral-card border p-8 text-center space-y-3 rounded-2xl shadow-md">
-        <span class="text-[10px] uppercase tracking-widest opacity-70 font-bold">Milestone 1</span>
-        <div class="text-2xl font-mono font-black">10 Refers</div>
-        <div class="text-3xl font-black text-yellow-600 dark:text-yellow-400 font-mono">₹10,000</div>
-        <p class="text-[11px] opacity-80 uppercase tracking-wider font-bold pt-2 border-t">Instant Bank Transfer</p>
-      </div>
-
-      <div class="referral-card border border-yellow-500/50 p-8 text-center space-y-3 shadow-xl luxury-glow-card rounded-2xl">
-        <span class="text-[10px] uppercase tracking-widest text-yellow-600 dark:text-yellow-400 font-bold">Milestone 2 (Popular)</span>
-        <div class="text-2xl font-mono font-black">25 Refers</div>
-        <div class="text-3xl font-black text-yellow-600 dark:text-yellow-400 font-mono">₹25,000</div>
-        <p class="text-[11px] opacity-80 uppercase tracking-wider font-bold pt-2 border-t">Instant Bank Transfer</p>
-      </div>
-
-      <div class="referral-card border p-8 text-center space-y-3 rounded-2xl shadow-md">
-        <span class="text-[10px] uppercase tracking-widest opacity-70 font-bold">Milestone 3</span>
-        <div class="text-2xl font-mono font-black">50 Refers</div>
-        <div class="text-3xl font-black text-yellow-600 dark:text-yellow-400 font-mono">₹50,000</div>
-        <p class="text-[11px] opacity-80 uppercase tracking-wider font-bold pt-2 border-t">Instant Bank Transfer</p>
-      </div>
-    </div>
-
-    <!-- How It Works Card -->
-    <div class="referral-card border p-8 sm:p-12 space-y-8 rounded-2xl shadow-xl">
-      <div class="flex items-center space-x-4 border-b pb-6">
-        <div class="w-12 h-12 bg-yellow-500/10 rounded-full flex items-center justify-center text-yellow-500 text-xl font-black animate-coin shadow-sm">
-          <i class="fa-solid fa-gift"></i>
-        </div>
-        <div>
-          <h3 class="text-lg font-bold uppercase tracking-wider">How Referral Works</h3>
-          <p class="text-xs opacity-80 tracking-wide font-medium">3 simple steps to start earning instant cash</p>
-        </div>
-      </div>
-
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-xs font-medium">
-        <div class="space-y-2">
-          <div class="text-yellow-600 dark:text-yellow-400 font-mono font-bold text-sm">01. Place Order</div>
-          <p class="opacity-90 leading-relaxed">Place any order from our store. Once your order is verified, you will receive your unique referral link.</p>
-        </div>
-        <div class="space-y-2">
-          <div class="text-yellow-600 dark:text-yellow-400 font-mono font-bold text-sm">02. Share Link</div>
-          <p class="opacity-90 leading-relaxed">Share your referral link with your friends and on social media. Anyone who buys using your link will be tracked.</p>
-        </div>
-        <div class="space-y-2">
-          <div class="text-yellow-600 dark:text-yellow-400 font-mono font-bold text-sm">03. Get ₹1,000 Instant</div>
-          <p class="opacity-90 leading-relaxed">As soon as your friend places an order, a direct ₹1,000 reward will be sent straight to your UPI or bank account.</p>
-        </div>
-      </div>
-
-      <div class="pt-6 border-t text-center">
-        <a href="store.html" class="inline-block bg-black text-white dark:bg-white dark:text-black font-black px-10 py-4 text-xs uppercase tracking-[0.25em] transition shadow-2xl rounded-xl">
-          Start Shopping & Get Referral Link
-        </a>
-      </div>
-    </div>
-
+    <div id="dynamicProductsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8"></div>
   </main>
 
-  <!-- Footer -->
+  <!-- Product Detail Modal -->
+  <div id="productDetailModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md hidden p-4">
+    <div class="store-modal-box border max-w-4xl w-full p-6 sm:p-10 relative shadow-2xl rounded-2xl space-y-6 max-h-[90vh] overflow-y-auto">
+      <button onclick="closeProductModal()" class="absolute top-4 right-4 text-zinc-500 dark:text-zinc-400 hover:text-black dark:hover:text-white text-lg border border-zinc-300 dark:border-zinc-800 w-10 h-10 flex items-center justify-center transition rounded-full">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
+        <div class="space-y-4">
+          <div class="h-80 bg-zinc-100 dark:bg-black border border-zinc-200 dark:border-zinc-800 overflow-hidden relative shadow-inner rounded-xl">
+            <img id="modalMainImg" src="" class="w-full h-full object-cover">
+          </div>
+          <div id="modalThumbnails" class="flex gap-2 overflow-x-auto pb-1"></div>
+        </div>
+
+        <div class="space-y-6">
+          <div>
+            <span class="bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 border border-cyan-500/20 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider rounded-md">Store Item</span>
+            <h2 id="modalTitle" class="text-2xl font-black uppercase tracking-wider mt-2"></h2>
+          </div>
+          <p id="modalPrice" class="text-3xl font-mono font-black text-emerald-600 dark:text-emerald-400"></p>
+          
+          <div id="keyFeaturesContainer" class="space-y-2 pt-2 border-t border-zinc-200 dark:border-zinc-900 hidden">
+            <h3 class="text-[10px] opacity-80 font-bold uppercase tracking-[0.2em] flex items-center gap-1.5">
+              <i class="fa-solid fa-star text-yellow-500"></i> Key Features
+            </h3>
+            <div id="modalKeyFeaturesGrid" class="grid grid-cols-2 gap-2 max-h-40 overflow-y-auto pr-1"></div>
+          </div>
+
+          <div id="productDetailsContainer" class="space-y-2 pt-2 border-t border-zinc-200 dark:border-zinc-900 hidden">
+            <h3 class="text-[10px] opacity-80 font-bold uppercase tracking-[0.2em] flex items-center gap-1.5">
+              <i class="fa-solid fa-circle-info text-cyan-500"></i> Product Details
+            </h3>
+            <div id="modalDetailsGrid" class="grid grid-cols-2 gap-2 max-h-40 overflow-y-auto pr-1"></div>
+          </div>
+
+          <div class="pt-4 border-t border-zinc-200 dark:border-zinc-900 space-y-4">
+            <div class="flex items-center gap-3">
+              <span class="text-xs font-bold uppercase tracking-widest opacity-90">Quantity:</span>
+              <div class="flex items-center border border-zinc-300 dark:border-zinc-800 bg-white dark:bg-black rounded-xl overflow-hidden shadow-sm">
+                <button onclick="adjustQty(-1)" class="px-3.5 py-2 font-mono hover:bg-zinc-100 dark:hover:bg-zinc-900">-</button>
+                <span id="modalQty" class="px-5 py-2 font-mono text-xs font-bold">1</span>
+                <button onclick="adjustQty(1)" class="px-3.5 py-2 font-mono hover:bg-zinc-100 dark:hover:bg-zinc-900">+</button>
+              </div>
+            </div>
+
+            <div class="flex gap-3 pt-2">
+              <button onclick="addCurrentToCart()" class="flex-1 btn-outline border font-bold py-3.5 uppercase tracking-wider text-xs transition rounded-xl shadow-sm">Add to Cart</button>
+              <button onclick="buyCurrentNow()" class="flex-1 btn-solid font-black py-3.5 uppercase tracking-wider text-xs transition shadow-lg rounded-xl">Buy Now</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Custom Add to Cart Success Modal -->
+  <div id="addToCartSuccessModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm hidden p-4 transition-all duration-300">
+    <div class="store-modal-box border p-6 sm:p-8 max-w-sm w-full shadow-2xl space-y-5 text-center relative rounded-2xl">
+      <div class="w-14 h-14 bg-cyan-500/20 text-cyan-600 dark:text-cyan-400 rounded-full flex items-center justify-center mx-auto text-xl shadow-md">
+        <i class="fa-solid fa-bag-shopping"></i>
+      </div>
+      <div class="space-y-2">
+        <span class="text-[9px] font-extrabold uppercase tracking-[0.3em] text-cyan-600 dark:text-cyan-400 bg-cyan-500/10 px-2.5 py-1 border border-cyan-500/20 rounded-full">Successfully Added</span>
+        <h3 id="addedItemTitle" class="text-sm font-bold uppercase tracking-wider">Product Name</h3>
+        <p class="text-[11px] opacity-80 font-light">The item has been successfully added to your cart.</p>
+      </div>
+      <div class="grid grid-cols-2 gap-3 pt-2">
+        <button onclick="closeAddToCartModal()" class="border font-bold py-3 text-[10px] uppercase tracking-wider transition rounded-xl shadow-sm">
+          Continue
+        </button>
+        <button onclick="window.location.href='order.html'" class="btn-solid font-black py-3 text-[10px] uppercase tracking-wider transition shadow-lg flex items-center justify-center gap-1.5 rounded-xl">
+          <i class="fa-solid fa-arrow-right"></i> View Cart
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Cart Drawer Overlay -->
+  <div id="cartDrawerOverlay" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-md flex justify-end invisible opacity-0 transition-all duration-300">
+    <div class="w-full max-w-md bg-white dark:bg-[#0c0c0c] border-l border-zinc-200 dark:border-zinc-800 h-full p-8 flex flex-col justify-between shadow-2xl">
+      <div class="space-y-6">
+        <div class="flex justify-between items-center border-b border-zinc-200 dark:border-zinc-900 pb-4">
+          <h2 class="text-sm font-black uppercase tracking-[0.25em]">Your Shopping Cart</h2>
+          <button onclick="closeCartModal()" class="text-zinc-500 dark:text-zinc-400 hover:text-black dark:hover:text-white text-sm"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div id="cartDrawerItems" class="space-y-4 overflow-y-auto max-h-[60vh] pr-2"></div>
+      </div>
+      
+      <div class="pt-6 border-t border-zinc-200 dark:border-zinc-900 space-y-4">
+        <div class="flex justify-between text-xs font-mono uppercase opacity-90 font-bold">
+          <span>Total Amount:</span>
+          <span id="cartDrawerTotal" class="font-bold text-emerald-600 dark:text-emerald-400">₹0</span>
+        </div>
+        <button onclick="proceedToCheckout()" class="w-full btn-solid py-3.5 text-xs uppercase tracking-[0.2em] font-black transition rounded-xl shadow-lg">
+          Proceed to Checkout
+        </button>
+      </div>
+    </div>
+  </div>
+
   <footer class="py-16 border-t text-center text-[10px] uppercase tracking-[0.3em] space-y-4 relative z-10">
     <p>© 2026 Moonland Store. All Rights Reserved.</p>
-    <div class="flex justify-center space-x-8 font-bold">
-      <a href="index.html" class="hover:opacity-100 transition">Store Home</a>
-      <a href="referral.html" class="hover:opacity-100 transition">Refer & Earn</a>
-      <a href="track.html" class="hover:opacity-100 transition">Track Order</a>
-      <a href="about.html" class="hover:opacity-100 transition">About Us</a>
-    </div>
   </footer>
 
   <script src="script.js"></script>
   <script>
+    let activeProduct = null;
+    let currentQty = 1;
+    let cachedProducts = [];
+
     function toggleMobileMenu() {
       const dropdown = document.getElementById('mobileMenuDropdown');
-      if (dropdown) dropdown.classList.toggle('hidden');
+      if (dropdown) {
+        dropdown.classList.toggle('hidden');
+      }
     }
 
     function openCartModal() {
+      const drawer = document.getElementById('cartDrawerOverlay');
+      if(drawer) {
+        drawer.classList.remove('invisible', 'opacity-0');
+        drawer.classList.add('opacity-100');
+        renderCartDrawer();
+      }
+    }
+
+    function closeCartModal() {
+      const drawer = document.getElementById('cartDrawerOverlay');
+      if(drawer) {
+        drawer.classList.remove('opacity-100');
+        drawer.classList.add('opacity-0', 'invisible');
+      }
+    }
+
+    function showAddToCartPopup(productName) {
+      const modal = document.getElementById('addToCartSuccessModal');
+      const titleEl = document.getElementById('addedItemTitle');
+      if(titleEl) titleEl.innerText = productName;
+      if(modal) {
+        modal.classList.remove('hidden');
+      }
+    }
+
+    function closeAddToCartModal() {
+      const modal = document.getElementById('addToCartSuccessModal');
+      if(modal) {
+        modal.classList.add('hidden');
+      }
+    }
+
+    function renderCartDrawer() {
+      const container = document.getElementById('cartDrawerItems');
+      const totalContainer = document.getElementById('cartDrawerTotal');
+      let cart = JSON.parse(localStorage.getItem('moonland_cart') || '[]');
+      
+      if(cart.length === 0) {
+        container.innerHTML = `<p class="text-xs opacity-70 uppercase tracking-widest text-center py-8 font-medium">Your cart is empty.</p>`;
+        totalContainer.innerText = `₹0`;
+        return;
+      }
+
+      const currentHour = new Date().getHours();
+      const savedTheme = localStorage.getItem('moonland_theme');
+      const isLight = savedTheme === 'light' || (!savedTheme && currentHour >= 6 && currentHour < 18);
+
+      let total = 0;
+      container.innerHTML = cart.map((item, idx) => {
+        let itemPrice = Number(item.price) || 0;
+        let qty = Number(item.quantity || item.qty || 1);
+        total += itemPrice * qty;
+        return `
+          <div class="flex justify-between items-center ${isLight ? 'bg-white border-zinc-200 text-zinc-900 shadow-sm' : 'bg-black border-zinc-800 text-white'} p-4 border rounded-xl text-xs">
+            <div>
+              <div class="font-bold uppercase tracking-wider">${item.title || item.name}</div>
+              <div class="opacity-80 font-mono mt-1">₹${itemPrice} x ${qty}</div>
+            </div>
+            <button onclick="removeFromCart(${idx})" class="text-zinc-400 hover:text-red-500 p-2"><i class="fa-solid fa-trash text-xs"></i></button>
+          </div>
+        `;
+      }).join('');
+      totalContainer.innerText = `₹${total}`;
+    }
+
+    function removeFromCart(index) {
+      let cart = JSON.parse(localStorage.getItem('moonland_cart') || '[]');
+      cart.splice(index, 1);
+      localStorage.setItem('moonland_cart', JSON.stringify(cart));
+      updateGlobalCartCount();
+      renderCartDrawer();
+    }
+
+    function proceedToCheckout() {
       window.location.href = 'order.html';
     }
 
-    const liveTickerEarnings = [
-      "₹1,000 sent to Shruti Jain (Mumbai)",
-      "₹1,000 sent to Shraddha Patil (Pune)",
-      "₹1,000 sent to Sahil K. (Panipat)",
-      "₹1,000 sent to Mahesh R. (Tirupathi)",
-      "₹1,000 sent to Deepak K. (Surat)",
-      "₹1,000 sent to Sneha D. (Noida)",
-      "₹1,000 sent to Vikram J. (Solapur)",
-      "₹1,000 sent to Rohan M. (Kalyan)",
-      "₹1,000 sent to Priyanka S. (Kolhapur)",
-      "₹1,000 sent to Imran Q. (Aurangabad)",
-      "₹1,000 sent to Akash G. (Bengaluru)",
-      "₹1,000 sent to Neha K. (Rishikesh)",
-      "₹1,000 sent to Sameer J. (Chandigarh)",
-      "₹1,000 sent to Tanvi P. (Jalgaon)",
-      "₹1,000 sent to Kiran W. (Satara)"
-    ];
-
-    function startLiveTicker() {
-      const tickerEl = document.getElementById('liveTickerText');
-      if (!tickerEl) return;
-
-      let idx = 0;
-      setInterval(() => {
-        tickerEl.innerText = liveTickerEarnings[idx];
-        idx = (idx + 1) % liveTickerEarnings.length;
-      }, 3500);
-    }
-
-    function showCustomPopup(title, message, isError = false) {
-      let existing = document.getElementById('customLuxuryModal');
-      if (existing) existing.remove();
-
-      let borderColor = isError ? 'border-red-500/50' : 'border-yellow-400/50';
-      let iconColor = isError ? 'text-red-500 bg-red-500/10' : 'text-yellow-600 dark:text-yellow-400 bg-yellow-500/10';
-      let iconClass = isError ? 'fa-triangle-exclamation' : 'fa-circle-check';
-
-      let modalHtml = `
-        <div id="customLuxuryModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
-          <div class="referral-card border ${borderColor} p-6 sm:p-8 max-w-sm w-full shadow-2xl space-y-5 text-center relative rounded-2xl">
-            <div class="w-14 h-14 ${iconColor} rounded-full flex items-center justify-center mx-auto text-xl shadow-md">
-              <i class="fa-solid ${iconClass}"></i>
-            </div>
-            <div class="space-y-2">
-              <h3 class="text-xs font-bold uppercase tracking-widest">${title}</h3>
-              <p class="text-xs opacity-90 font-medium leading-relaxed">${message}</p>
-            </div>
-            <button onclick="document.getElementById('customLuxuryModal').remove()" class="w-full bg-black text-white dark:bg-white dark:text-black font-black py-3.5 text-xs uppercase tracking-[0.2em] transition rounded-xl shadow-lg">
-              OK, Got It
-            </button>
-          </div>
-        </div>
-      `;
-      document.body.insertAdjacentHTML('beforeend', modalHtml);
-    }
-
-    async function fetchExistingRefLink() {
-      const val = document.getElementById('userReferralInput').value.trim();
-      const container = document.getElementById('generatedLinkContainer');
-      
-      if(!val) {
-        showCustomPopup('Missing Information', 'Please enter your registered mobile number.', true);
-        container.classList.add('hidden');
-        return;
-      }
-
-      if(val.length !== 10) {
-        showCustomPopup('Invalid Mobile Number', 'Please enter a valid 10-digit mobile number.', true);
-        container.classList.add('hidden');
-        return;
-      }
-
+    async function getProducts() {
       try {
-        const response = await fetch('/api/referral-lookup', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ phone: val })
-        });
-        const result = await response.json();
-
-        if (response.ok && result.success && result.userRefCode) {
-          const fullUrl = window.location.origin + '/store.html?ref=' + result.userRefCode;
-          document.getElementById('displayRefUrl').innerText = fullUrl;
-          container.classList.remove('hidden');
-          showCustomPopup('Success!', 'Your referral link has been fetched successfully.');
-        } else {
-          showCustomPopup('Record Not Found', result.error || 'No active referral code generated yet. Place a verified order first.', true);
-          container.classList.add('hidden');
-          document.getElementById('displayRefUrl').innerText = '';
+        let response = await fetch('/api/products');
+        let products = await response.json();
+        if (products && products.length > 0) {
+          cachedProducts = products;
+          return products;
         }
       } catch (err) {
-        console.error('Referral lookup error:', err);
-        showCustomPopup('Server Error', 'Failed to lookup referral code. Please try again.', true);
-        container.classList.add('hidden');
+        console.error('Error fetching products from backend:', err);
       }
+      
+      let stored = localStorage.getItem('moonland_store_products');
+      if (stored) {
+        cachedProducts = JSON.parse(stored);
+        return cachedProducts;
+      }
+
+      cachedProducts = [
+        { 
+          id: 'prod_1', 
+          name: 'Signature Gas Stove', 
+          price: 999, 
+          images: ['https://images.unsplash.com/photo-1556911220-e15b29be8c8f?auto=format&fit=crop&q=80&w=400'], 
+          keyFeatures: 'Case Water Body: Pure Aluminium, Warranty: 2 Year',
+          details: 'Uses: Home'
+        }
+      ];
+      return cachedProducts;
     }
 
-    function copyRefLink() {
-      const urlText = document.getElementById('displayRefUrl').innerText;
-      if (!urlText) return;
-      navigator.clipboard.writeText(urlText);
-      showCustomPopup('Copied!', 'Referral link copied to clipboard successfully.');
+    async function renderStoreGrid() {
+      const grid = document.getElementById('dynamicProductsGrid');
+      const products = await getProducts();
+      if(!grid) return;
+      grid.innerHTML = '';
+
+      const savedTheme = localStorage.getItem('moonland_theme');
+      const currentHour = new Date().getHours();
+      const isLight = savedTheme === 'light' || (!savedTheme && currentHour >= 6 && currentHour < 18);
+
+      products.forEach((p, index) => {
+        let imgList = (p.images && p.images.length > 0) ? p.images : ['https://images.unsplash.com/photo-1556911220-e15b29be8c8f?auto=format&fit=crop&q=80&w=400'];
+        let pName = p.name || 'Product';
+        let pPrice = Number(p.price) || 0;
+
+        let card = document.createElement('div');
+        card.className = `product-item product-card group border p-6 flex flex-col justify-between space-y-6 transition duration-500 cursor-pointer rounded-2xl shadow-md`;
+        card.innerHTML = `
+          <div onclick="openProductDetail('${p.id}')" class="h-60 overflow-hidden bg-zinc-100 dark:bg-black flex items-center justify-center relative rounded-xl shadow-inner">
+            <span class="absolute top-3 left-3 z-10 bg-black text-white dark:bg-white dark:text-black text-[8px] font-bold uppercase px-2.5 py-1 tracking-[0.2em] rounded-md shadow">STORE ITEM</span>
+            <img id="storeImg_${index}" src="${imgList[0]}" class="w-full h-full object-cover group-hover:scale-105 transition duration-700 opacity-95">
+          </div>
+          <div onclick="openProductDetail('${p.id}')" class="space-y-2">
+            <h3 class="text-lg font-bold uppercase tracking-[0.1em]">${pName}</h3>
+            <p class="text-xs opacity-90 font-medium tracking-wide line-clamp-1">${p.keyFeatures || 'Certified Product'}</p>
+          </div>
+          <div class="space-y-4 pt-4 border-t ${isLight ? 'border-zinc-200' : 'border-zinc-900'}">
+            <span class="product-price font-mono text-lg font-bold">₹${pPrice.toLocaleString('en-IN')}</span>
+            <div class="grid grid-cols-2 gap-2">
+              <button onclick="event.stopPropagation(); addToCartDirect('${p.id}')" class="btn-outline w-full border font-bold py-2.5 text-[10px] uppercase tracking-[0.2em] transition rounded-xl">Add To Cart</button>
+              <button onclick="event.stopPropagation(); buyNowDirect('${p.id}')" class="btn-solid w-full font-bold py-2.5 text-[10px] uppercase tracking-[0.2em] text-center flex items-center justify-center transition rounded-xl shadow-md">Buy Now</button>
+            </div>
+          </div>
+        `;
+        grid.appendChild(card);
+
+        if (imgList.length > 1) {
+            let currentImgIdx = 0;
+            setInterval(() => {
+                currentImgIdx = (currentImgIdx + 1) % imgList.length;
+                const imgElement = document.getElementById(`storeImg_${index}`);
+                if (imgElement) {
+                    imgElement.src = imgList[currentImgIdx];
+                }
+            }, 3000);
+        }
+      });
     }
 
-    document.addEventListener('DOMContentLoaded', () => {
-      startLiveTicker();
+    function openProductDetail(prodId) {
+      activeProduct = cachedProducts.find(p => p.id === prodId);
+      if (!activeProduct) return;
 
-      const inputField = document.getElementById('userReferralInput');
-      if (inputField) {
-        inputField.addEventListener('keypress', function(event) {
-          if (event.key === 'Enter') {
-            event.preventDefault();
-            fetchExistingRefLink();
-          }
-        });
+      currentQty = 1;
+      document.getElementById('modalQty').innerText = currentQty;
+      document.getElementById('modalTitle').innerText = activeProduct.name;
+      document.getElementById('modalPrice').innerText = `₹${Number(activeProduct.price).toLocaleString('en-IN')}`;
+
+      const kfContainer = document.getElementById('keyFeaturesContainer');
+      const kfGrid = document.getElementById('modalKeyFeaturesGrid');
+      if (activeProduct.keyFeatures && activeProduct.keyFeatures.trim() !== '') {
+        kfContainer.classList.remove('hidden');
+        kfGrid.innerHTML = activeProduct.keyFeatures.split(',').map(item => {
+          let parts = item.split(':');
+          let label = parts[0] ? parts[0].trim() : 'Feature';
+          let val = parts[1] ? parts[1].trim() : item.trim();
+          return `
+            <div class="store-modal-inner border p-2.5 flex flex-col justify-between space-y-1 rounded-xl shadow-sm">
+              <span class="text-[9px] opacity-80 uppercase tracking-widest font-bold">${label}</span>
+              <span class="text-xs font-bold uppercase">${val}</span>
+            </div>
+          `;
+        }).join('');
+      } else {
+        kfContainer.classList.add('hidden');
       }
 
-      const urlParams = new URLSearchParams(window.location.search);
-      const refCode = urlParams.get('ref');
-      if (refCode) {
-        localStorage.setItem('moonland_active_ref', refCode);
+      const detContainer = document.getElementById('productDetailsContainer');
+      const detGrid = document.getElementById('modalDetailsGrid');
+      if (activeProduct.details && activeProduct.details.trim() !== '') {
+        detContainer.classList.remove('hidden');
+        detGrid.innerHTML = activeProduct.details.split(',').map(item => {
+          let parts = item.split(':');
+          let label = parts[0] ? parts[0].trim() : 'Detail';
+          let val = parts[1] ? parts[1].trim() : item.trim();
+          return `
+            <div class="store-modal-inner border p-2.5 flex flex-col justify-between space-y-1 rounded-xl shadow-sm">
+              <span class="text-[9px] opacity-80 uppercase tracking-widest font-bold">${label}</span>
+              <span class="text-xs font-bold uppercase">${val}</span>
+            </div>
+          `;
+        }).join('');
+      } else {
+        detContainer.classList.add('hidden');
       }
 
-      const cart = JSON.parse(localStorage.getItem('moonland_cart') || '[]');
-      const totalItems = cart.reduce((sum, item) => sum + (item.quantity || 1), 0);
+      let imgList = activeProduct.images && activeProduct.images.length > 0 ? activeProduct.images : ['https://images.unsplash.com/photo-1556911220-e15b29be8c8f?auto=format&fit=crop&q=80&w=400'];
+      document.getElementById('modalMainImg').src = imgList[0];
+      
+      document.getElementById('modalThumbnails').innerHTML = imgList.map((img, idx) => `
+        <img src="${img}" onclick="document.getElementById('modalMainImg').src='${img}'" class="w-16 h-16 object-cover border ${idx === 0 ? 'border-cyan-500' : 'border-zinc-300 dark:border-zinc-800'} cursor-pointer rounded-lg shadow-sm">
+      `).join('');
+
+      document.getElementById('productDetailModal').classList.remove('hidden');
+    }
+
+    function closeProductModal() {
+      document.getElementById('productDetailModal').classList.add('hidden');
+      activeProduct = null;
+    }
+
+    function adjustQty(val) {
+      currentQty = Math.max(1, currentQty + val);
+      document.getElementById('modalQty').innerText = currentQty;
+    }
+
+    function addToCartDirect(prodId) {
+      let p = cachedProducts.find(item => item.id === prodId);
+      if(!p) return;
+      let cart = JSON.parse(localStorage.getItem('moonland_cart') || '[]');
+      let existing = cart.find(i => i.id === p.id || i.title === p.name);
+      if (existing) {
+        existing.id = p.id;
+        existing.quantity = (existing.quantity || 1) + 1;
+      } else {
+        cart.push({ id: p.id, title: p.name, name: p.name, price: p.price, quantity: 1 });
+      }
+      localStorage.setItem('moonland_cart', JSON.stringify(cart));
+      updateGlobalCartCount();
+      showAddToCartPopup(p.name);
+    }
+
+    function buyNowDirect(prodId) {
+      let p = cachedProducts.find(item => item.id === prodId);
+      if(!p) return;
+      let cart = JSON.parse(localStorage.getItem('moonland_cart') || '[]');
+      let existing = cart.find(i => i.id === p.id || i.title === p.name);
+      if (existing) {
+        existing.id = p.id;
+        existing.quantity = (existing.quantity || 1) + 1;
+      } else {
+        cart.push({ id: p.id, title: p.name, name: p.name, price: p.price, quantity: 1 });
+      }
+      localStorage.setItem('moonland_cart', JSON.stringify(cart));
+      updateGlobalCartCount();
+      window.location.href = 'order.html';
+    }
+
+    function addCurrentToCart() {
+      if (!activeProduct) return;
+      let cart = JSON.parse(localStorage.getItem('moonland_cart') || '[]');
+      let existing = cart.find(i => i.id === activeProduct.id || i.title === activeProduct.name);
+      if (existing) {
+        existing.id = activeProduct.id;
+        existing.quantity = (existing.quantity || 1) + currentQty;
+      } else {
+        cart.push({ id: activeProduct.id, title: activeProduct.name, name: activeProduct.name, price: activeProduct.price, quantity: currentQty });
+      }
+      localStorage.setItem('moonland_cart', JSON.stringify(cart));
+      updateGlobalCartCount();
+      closeProductModal();
+      showAddToCartPopup(activeProduct.name);
+    }
+
+    function buyCurrentNow() {
+      if (!activeProduct) return;
+      let cart = JSON.parse(localStorage.getItem('moonland_cart') || '[]');
+      let existing = cart.find(i => i.id === activeProduct.id || i.title === activeProduct.name);
+      if (existing) {
+        existing.id = activeProduct.id;
+        existing.quantity = (existing.quantity || 1) + currentQty;
+      } else {
+        cart.push({ id: activeProduct.id, title: activeProduct.name, name: activeProduct.name, price: activeProduct.price, quantity: currentQty });
+      }
+      localStorage.setItem('moonland_cart', JSON.stringify(cart));
+      updateGlobalCartCount();
+      closeProductModal();
+      window.location.href = 'order.html';
+    }
+
+    function updateGlobalCartCount() {
+      let cart = JSON.parse(localStorage.getItem('moonland_cart') || '[]');
+      let totalCount = cart.reduce((sum, item) => sum + (item.quantity || item.qty || 1), 0);
       const badge = document.getElementById('cartCountBadge');
-      if (badge) badge.innerText = totalItems;
+      if (badge) badge.innerText = totalCount;
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      renderStoreGrid();
+      updateGlobalCartCount();
     });
   </script>
 </body>
