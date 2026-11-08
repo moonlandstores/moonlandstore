@@ -399,7 +399,6 @@ app.get('/api/orders', requireAdmin, async (req, res) => {
 
 app.post('/api/orders', publicApiLimiter, async (req, res) => {
   try {
-    // Flexible extraction: Handle both 'utr' and 'utrNumber' from frontend
     const customer = req.body.customer || req.body.customerName || req.body.name;
     const phone = req.body.phone || req.body.mobile;
     const address = req.body.address;
@@ -431,7 +430,6 @@ app.post('/api/orders', publicApiLimiter, async (req, res) => {
     }
 
     await db.runTransaction(async (transaction) => {
-      // Check duplicate UTR
       const utrQuery = await transaction.get(db.collection('orders').where('utr', '==', utrVal.trim()).limit(1));
       const utrNumberQuery = await transaction.get(db.collection('orders').where('utrNumber', '==', utrVal.trim()).limit(1));
       
@@ -491,7 +489,6 @@ app.post('/api/orders', publicApiLimiter, async (req, res) => {
 
 // ==================== ORDER STATUS & CRM UPDATE ROUTES ====================
 
-// 1. Bulk Update Orders Status (MUST be placed BEFORE /api/orders/:id)
 app.put('/api/orders/bulk-status', requireAdmin, adminBodyParser, adminUrlParser, async (req, res) => {
   try {
     const { ids, status } = req.body;
@@ -541,7 +538,6 @@ app.put('/api/orders/bulk-status', requireAdmin, adminBodyParser, adminUrlParser
   }
 });
 
-// 2. Update Referral Payout Status
 app.put('/api/referrals/:id', requireAdmin, adminBodyParser, adminUrlParser, async (req, res) => {
   try {
     const orderId = req.params.id;
@@ -580,7 +576,6 @@ app.put('/api/referrals/:id', requireAdmin, adminBodyParser, adminUrlParser, asy
   }
 });
 
-// 3. Update Single Order or Customer CRM Details (or Cancel)
 app.put('/api/orders/:id', requireAdmin, adminBodyParser, adminUrlParser, async (req, res) => {
   try {
     const orderId = req.params.id;
@@ -622,7 +617,6 @@ app.put('/api/orders/:id', requireAdmin, adminBodyParser, adminUrlParser, async 
   }
 });
 
-// 4. Update Order Status to 'Rejected' (Instead of Deleting)
 app.delete('/api/orders/:id', requireAdmin, async (req, res) => {
   try {
     const orderId = req.params.id;
@@ -654,11 +648,9 @@ app.delete('/api/orders/:id', requireAdmin, async (req, res) => {
   }
 });
 
-// ===================================================================
-
 app.put('/api/orders/:id/approve', requireAdmin, async (req, res) => {
   try {
-    if (!db) return res.status(503).json({ success: false, error: 'Database unavailable' as const });
+    if (!db) return res.status(503).json({ success: false, error: 'Database unavailable' });
     const orderId = req.params.id;
     const orderRef = db.collection('orders').doc(orderId);
     let generatedRefCode = '';
