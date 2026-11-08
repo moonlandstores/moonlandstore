@@ -276,7 +276,7 @@ Fill your delivery details, proceed to payment, and submit UTR.
 <h2 class="text-xl sm:text-2xl font-black uppercase tracking-wider pt-2">REFER & EARN UNLIMITED!</h2>
 </div>
 
-<!-- Global Loop Timer Grid (Exact 2-Day Sync) -->
+<!-- Global Loop Timer Grid -->
 <div class="grid grid-cols-4 gap-2 py-1 font-mono">
 <div class="border border-zinc-300 dark:border-zinc-700 p-2 rounded-xl bg-zinc-50 dark:bg-black/50">
 <span id="timerDays" class="text-base sm:text-lg font-black text-cyan-600 dark:text-cyan-400">02</span>
@@ -374,11 +374,10 @@ function closeOfferPopup() {
   document.getElementById('offerPromoModal').classList.add('hidden');
 }
 
-// Fixed Global 2-Day Loop Timer (Resets automatically every 48 hours for everyone)
+// Global Loop Timer
 function updateGlobalLoopTimer() {
-  const TWO_DAYS_SECONDS = 2 * 24 * 60 * 60; // 48 Hours in seconds
-  const now = Math.floor(Date.now() / 1000); // Current timestamp in seconds
-  
+  const TWO_DAYS_SECONDS = 2 * 24 * 60 * 60;
+  const now = Math.floor(Date.now() / 1000);
   let remainingSeconds = TWO_DAYS_SECONDS - (now % TWO_DAYS_SECONDS);
 
   let days = Math.floor(remainingSeconds / (24 * 3600));
@@ -398,131 +397,9 @@ function updateGlobalLoopTimer() {
 }
 
 setInterval(updateGlobalLoopTimer, 1000);
-updateGlobalLoopTimer(); // Run immediately on load
+updateGlobalLoopTimer();
 
-function applySystemThemeOrder() {
-  const savedTheme = localStorage.getItem('moonland_theme');
-  const currentHour = new Date().getHours();
-  const isDayTime = currentHour >= 6 && currentHour < 18;
-  const isLight = savedTheme === 'light' || (!savedTheme && isDayTime);
-
-  const bodyTag = document.getElementById('orderBodyTag');
-  const topBar = document.getElementById('topAnnouncementBar');
-  const header = document.getElementById('orderHeader');
-  const logoBox = document.getElementById('logoBox');
-  const brandTitle = document.getElementById('brandTitle');
-  const mobileMenu = document.getElementById('mobileMenuDropdown');
-
-  const cartBtnElement = document.getElementById('cartBtnElement');
-  const mobileMenuBtn = document.getElementById('mobileMenuBtn');
-
-  const secBadge = document.getElementById('secBadge');
-  const mainHeading = document.getElementById('mainHeading');
-  const mainDesc = document.getElementById('mainDesc');
-  const checkoutCardBox = document.getElementById('checkoutCardBox');
-  const cartSummaryTitle = document.getElementById('cartSummaryTitle');
-  const step1Btn = document.getElementById('step1Btn');
-  const step2TopBar = document.getElementById('step2TopBar');
-  const gpayIntentBtn = document.getElementById('gpayIntentBtn');
-  
-  const scannerAccordionHeader = document.getElementById('scannerAccordionHeader');
-  const scannerAccordionBody = document.getElementById('scannerAccordionBody');
-  const displayAdminUpi = document.getElementById('displayAdminUpi');
-  const displayMerchantName = document.getElementById('displayMerchantName');
-  const copyUpiBtn = document.getElementById('copyUpiBtn');
-  const submitOrderBtn = document.getElementById('submitOrderBtn');
-  const successPopupBox = document.getElementById('successPopupBox');
-  const successInfoBox = document.getElementById('successInfoBox');
-  const successBadgeSpan = document.getElementById('successBadgeSpan');
-  const smokeEffectDiv = document.getElementById('smokeEffectDiv');
-  const storeHomeBtn = document.getElementById('storeHomeBtn');
-  const footer = document.getElementById('orderFooter');
-
-  if (isLight) {
-    bodyTag.className = "daylight-sky-clouds text-slate-900 font-sans antialiased min-h-screen flex flex-col justify-between selection:bg-black selection:text-white relative";
-    topBar.className = "marquee-bar bg-[#09090b] text-[#f4f4f5] py-3 px-4 text-[11px] font-extrabold tracking-[0.25em] uppercase border-b border-[#27272a] overflow-hidden whitespace-nowrap z-20 shadow-sm";
-    header.className = "sticky top-0 z-45 bg-white/95 backdrop-blur-xl border-b border-zinc-200 shadow-sm";
-    logoBox.className = "brand-logo-box w-7 h-7 border border-zinc-900 bg-zinc-900 text-white flex items-center justify-center font-black text-xs tracking-widest rounded-lg";
-    brandTitle.className = "font-bold text-sm tracking-[0.4em] uppercase text-zinc-900";
-    mobileMenu.className = "hidden absolute top-full left-0 w-full bg-white border-b border-zinc-200 px-8 py-6 space-y-5 text-xs uppercase font-medium tracking-[0.25em] text-zinc-900 shadow-2xl z-50";
-
-    if(cartBtnElement) cartBtnElement.className = "flex items-center space-x-1.5 text-[11px] uppercase tracking-[0.2em] font-extrabold text-slate-900 transition hover:opacity-75";
-    if(mobileMenuBtn) mobileMenuBtn.className = "md:hidden text-xl p-1.5 cursor-pointer text-slate-900 font-black";
-
-    secBadge.className = "inline-block text-[10px] font-extrabold uppercase tracking-[0.4em] text-cyan-900 border border-cyan-500/60 px-4 py-2 bg-cyan-100 rounded-full shadow-sm";
-    mainHeading.className = "text-3xl sm:text-5xl font-black uppercase tracking-[0.1em] text-slate-900";
-    mainDesc.className = "text-xs sm:text-sm text-slate-800 font-bold tracking-wide";
-    checkoutCardBox.className = "order-card bg-white border border-zinc-200 p-6 sm:p-10 space-y-6 shadow-xl rounded-2xl text-slate-900";
-    cartSummaryTitle.className = "text-xs font-bold uppercase tracking-[0.2em] text-slate-900 border-b border-zinc-200 pb-3 flex justify-between items-center";
-    step1Btn.className = "w-full bg-zinc-900 hover:bg-black text-white py-4 text-xs uppercase tracking-[0.2em] font-black transition shadow-lg flex items-center justify-center gap-2 rounded-xl";
-    step2TopBar.className = "bg-zinc-50 border border-zinc-200 p-3.5 flex items-center justify-between text-slate-900 rounded-xl shadow-sm font-semibold";
-    gpayIntentBtn.className = "w-full bg-white hover:bg-zinc-50 text-slate-900 border border-zinc-300 py-3.5 px-4 rounded-xl font-bold text-xs uppercase tracking-widest flex items-center justify-center gap-3 transition shadow-md";
-
-    scannerAccordionHeader.className = "w-full p-3.5 flex items-center justify-between font-bold uppercase tracking-wider text-xs transition bg-zinc-50 text-slate-900 border border-zinc-200 hover:bg-zinc-100 rounded-xl shadow-sm";
-    scannerAccordionBody.className = "p-5 space-y-3 border-t border-zinc-200 bg-white text-slate-900 hidden text-center rounded-b-xl shadow-inner";
-    displayMerchantName.className = "text-xs font-black uppercase tracking-widest text-slate-900";
-    displayAdminUpi.className = "font-mono text-[11px] bg-zinc-100 border border-zinc-300 px-4 py-2.5 rounded-xl font-bold text-slate-900";
-    copyUpiBtn.className = "bg-zinc-900 text-white hover:bg-black px-4 py-2.5 text-[10px] uppercase tracking-widest font-bold transition rounded-xl shadow-sm";
-    submitOrderBtn.className = "w-full bg-emerald-600 hover:bg-emerald-700 text-white py-4 text-xs uppercase tracking-[0.2em] font-black transition shadow-lg flex items-center justify-center gap-2 rounded-xl";
-
-    successPopupBox.className = "relative w-full max-w-lg bg-white border border-zinc-200 p-8 shadow-2xl text-center space-y-6 rounded-2xl overflow-hidden text-slate-900";
-    successInfoBox.className = "bg-zinc-50 border border-zinc-200 p-4 text-xs font-mono leading-relaxed space-y-2.5 text-left relative z-10 text-slate-800 rounded-xl";
-    successBadgeSpan.className = "text-[10px] font-extrabold uppercase tracking-[0.3em] text-cyan-900 bg-cyan-100 px-3.5 py-1.5 border border-cyan-500/40 rounded-full";
-    smokeEffectDiv.className = "absolute w-48 h-24 bg-gradient-to-r from-cyan-500/20 via-slate-300/40 to-blue-500/20 rounded-full rocket-smoke-exhaust";
-    storeHomeBtn.className = "bg-zinc-900 hover:bg-black text-white font-black py-3.5 text-[11px] uppercase tracking-wider transition text-center flex items-center justify-center gap-2 rounded-xl shadow-md";
-    footer.className = "bg-zinc-100 text-slate-700 py-16 border-t border-zinc-200 text-center text-[10px] uppercase tracking-[0.3em] space-y-4 font-bold relative z-10";
-
-    document.querySelectorAll('.form-input-elem, label').forEach(el => {
-      if(el.tagName === 'LABEL') {
-        el.className = "block text-[10px] font-extrabold uppercase tracking-[0.2em] text-slate-900";
-      } else {
-        el.className = "form-input-elem w-full bg-white border border-zinc-300 px-4 py-3.5 text-xs text-slate-900 font-semibold focus:outline-none focus:border-zinc-900 transition rounded-xl shadow-sm placeholder:text-zinc-400";
-      }
-    });
-  } else {
-    bodyTag.className = "bg-[#050505] text-white font-sans antialiased min-h-screen flex flex-col justify-between selection:bg-white selection:text-black relative";
-    topBar.className = "marquee-bar bg-black text-zinc-300 py-3 px-4 text-[11px] font-extrabold tracking-[0.25em] uppercase border-b border-zinc-900 overflow-hidden whitespace-nowrap z-20";
-    header.className = "sticky top-0 z-45 bg-black/90 backdrop-blur-xl border-b border-zinc-900";
-    logoBox.className = "brand-logo-box w-7 h-7 border border-white flex items-center justify-center font-black text-xs tracking-widest text-white group-hover:bg-white group-hover:text-black transition duration-500 rounded-lg";
-    brandTitle.className = "font-bold text-sm tracking-[0.4em] uppercase text-white";
-    mobileMenu.className = "hidden absolute top-full left-0 w-full bg-black border-b border-zinc-900 px-8 py-6 space-y-5 text-xs uppercase font-medium tracking-[0.25em] text-white shadow-2xl z-50";
-
-    if(cartBtnElement) cartBtnElement.className = "flex items-center space-x-1.5 text-[11px] uppercase tracking-[0.2em] font-medium transition hover:opacity-75 text-white";
-    if(mobileMenuBtn) mobileMenuBtn.className = "md:hidden text-xl p-1.5 cursor-pointer text-white";
-
-    secBadge.className = "inline-block text-[10px] font-bold uppercase tracking-[0.4em] text-zinc-400 border border-zinc-700 px-4 py-2 bg-zinc-900 rounded-full";
-    mainHeading.className = "text-3xl sm:text-5xl font-black uppercase tracking-[0.1em] text-white";
-    mainDesc.className = "text-xs sm:text-sm text-zinc-400 font-light tracking-wide";
-    checkoutCardBox.className = "order-card bg-[#0c0c0c] border border-zinc-800 p-6 sm:p-10 space-y-6 shadow-2xl rounded-2xl text-white";
-    cartSummaryTitle.className = "text-xs font-bold uppercase tracking-[0.2em] text-zinc-300 border-b border-zinc-900 pb-3 flex justify-between items-center";
-    step1Btn.className = "w-full bg-white hover:bg-zinc-200 text-black py-4 text-xs uppercase tracking-[0.2em] font-black transition shadow-2xl flex items-center justify-center gap-2 rounded-xl";
-    step2TopBar.className = "bg-zinc-900 border border-zinc-800 p-3.5 flex items-center justify-between text-white rounded-xl shadow-sm";
-    gpayIntentBtn.className = "w-full bg-white hover:bg-zinc-200 text-black border border-zinc-300 py-3.5 px-4 rounded-xl font-bold text-xs uppercase tracking-widest flex items-center justify-center gap-3 transition shadow-lg";
-
-    scannerAccordionHeader.className = "w-full p-3.5 flex items-center justify-between font-bold uppercase tracking-wider text-xs transition bg-zinc-900 text-white border border-zinc-800 hover:bg-zinc-800 rounded-xl shadow-sm";
-    scannerAccordionBody.className = "p-5 space-y-3 border-t border-zinc-800 bg-black text-white hidden text-center rounded-b-xl shadow-inner";
-    displayMerchantName.className = "text-xs font-black uppercase tracking-widest text-white";
-    displayAdminUpi.className = "font-mono text-[11px] bg-zinc-900 border border-zinc-700 px-4 py-2.5 rounded-xl font-bold text-white";
-    copyUpiBtn.className = "bg-white text-black hover:bg-zinc-200 px-4 py-2.5 text-[10px] uppercase tracking-widest font-bold transition rounded-xl shadow-sm";
-    submitOrderBtn.className = "w-full bg-emerald-500 hover:bg-emerald-400 text-black py-4 text-xs uppercase tracking-[0.2em] font-black transition shadow-2xl flex items-center justify-center gap-2 rounded-xl";
-
-    successPopupBox.className = "relative w-full max-w-lg bg-gradient-to-b from-[#0e0e0e] to-[#050505] border border-cyan-400/40 p-8 shadow-2xl text-center space-y-6 rounded-2xl overflow-hidden text-white";
-    successInfoBox.className = "bg-black/90 border border-zinc-800 p-4 text-xs font-mono leading-relaxed space-y-2.5 text-left relative z-10 text-zinc-300 rounded-xl";
-    successBadgeSpan.className = "text-[10px] font-extrabold uppercase tracking-[0.3em] text-cyan-400 bg-cyan-500/10 px-3.5 py-1.5 border border-cyan-500/30 rounded-full";
-    smokeEffectDiv.className = "absolute w-48 h-24 bg-gradient-to-r from-cyan-500/30 via-white/20 to-blue-500/30 rounded-full rocket-smoke-exhaust";
-    storeHomeBtn.className = "bg-white hover:bg-zinc-200 text-black font-black py-3.5 text-[11px] uppercase tracking-wider transition text-center flex items-center justify-center gap-2 rounded-xl shadow-lg";
-    footer.className = "bg-black text-zinc-600 py-16 border-t border-zinc-900 text-center text-[10px] uppercase tracking-[0.3em] space-y-4 relative z-10";
-
-    document.querySelectorAll('.form-input-elem, label').forEach(el => {
-      if(el.tagName === 'LABEL') {
-        el.className = "block text-[10px] font-bold uppercase tracking-[0.2em]";
-      } else {
-        el.className = "form-input-elem w-full bg-[#141414] border border-zinc-700 px-4 py-3.5 text-xs text-white font-medium focus:outline-none focus:border-white transition rounded-xl shadow-sm placeholder:text-zinc-500";
-      }
-    });
-  }
-}
-
+// ENTER KEY NAVIGATION LOGIC FOR FORM INPUTS
 document.addEventListener("DOMContentLoaded", () => {
   applySystemThemeOrder();
 
@@ -546,6 +423,41 @@ document.addEventListener("DOMContentLoaded", () => {
   let cart = JSON.parse(localStorage.getItem('moonland_cart') || '[]');
   const badge = document.getElementById('cartCountBadge');
   if(badge) badge.innerText = cart.reduce((sum, item) => sum + (item.quantity || item.qty || 1), 0);
+
+  // ENTER KEY PRESS HANDLING
+  const formInputs = [
+    document.getElementById('orderName'),
+    document.getElementById('orderPhone'),
+    document.getElementById('orderAddress'),
+    document.getElementById('orderUpi'),
+    document.getElementById('orderRef')
+  ];
+
+  formInputs.forEach((input, index) => {
+    if(input) {
+      input.addEventListener('keydown', function(event) {
+        if (event.key === 'Enter') {
+          event.preventDefault(); // Stop default form submit
+          if (index < formInputs.length - 1) {
+            formInputs[index + 1].focus(); // Move to next input field
+          } else {
+            proceedToPaymentScanner(); // On last field, trigger proceed button
+          }
+        }
+      });
+    }
+  });
+
+  // UTR Field Enter key handler for step 2
+  const utrInput = document.getElementById('orderUtr');
+  if(utrInput) {
+    utrInput.addEventListener('keydown', function(event) {
+      if(event.key === 'Enter') {
+        event.preventDefault();
+        document.getElementById('submitOrderBtn').click();
+      }
+    });
+  }
 });
 
 function toggleMobileMenu() {
