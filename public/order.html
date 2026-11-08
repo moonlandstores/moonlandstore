@@ -19,6 +19,16 @@ body { background-color: #050505 !important; color: #ffffff !important; transiti
 /* Daylight Body Fix */
 html.light body { background-color: #f8fafc !important; color: #0f172a !important; }
 
+/* Fix for 3-line mobile menu in Dark Mode */
+html.dark #mobileMenuDropdown {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+  border-color: #27272a !important;
+}
+html.dark #mobileMenuDropdown a {
+  color: #ffffff !important;
+}
+
 @keyframes rocketLaunch {
 0% { transform: translateY(80px) scale(1.2); opacity: 0; }
 20% { opacity: 1; }
@@ -78,11 +88,11 @@ html.light body { background-color: #f8fafc !important; color: #0f172a !importan
 <!-- Header / Navbar (Height updated to h-20) -->
 <header id="orderHeader" class="sticky top-0 z-45 bg-black/90 backdrop-blur-xl border-b border-zinc-900">
 <div class="max-w-7xl mx-auto px-6 sm:px-12 flex justify-between items-center h-20">
-<a href="index.html" class="flex items-center space-x-4 group">
-<div id="logoBox" class="brand-logo-box w-8 h-8 border border-white flex items-center justify-center font-black text-xs tracking-widest text-white group-hover:bg-white group-hover:text-black transition duration-500 rounded-lg">M</div>
+<a href="index.html" class="flex items-center space-x-3 group">
+<div id="logoBox" class="brand-logo-box w-7 h-7 border border-white flex items-center justify-center font-black text-xs tracking-widest text-white group-hover:bg-white group-hover:text-black transition duration-500 rounded-lg">M</div>
 <div class="flex flex-col">
-<span id="brandTitle" class="font-bold text-base tracking-[0.4em] uppercase">MOONLAND</span>
-<span class="text-[7px] tracking-[0.55em] text-zinc-400 uppercase font-bold">STORE</span>
+<span id="brandTitle" class="font-bold text-sm tracking-[0.4em] uppercase">MOONLAND</span>
+<span class="text-[6px] tracking-[0.55em] text-zinc-400 uppercase font-bold">STORE</span>
 </div>
 </a>
 
@@ -93,17 +103,17 @@ html.light body { background-color: #f8fafc !important; color: #0f172a !importan
 <a href="about.html" class="hover:opacity-75 transition pb-1">About Us</a>
 </nav>
 
-<div class="flex items-center space-x-6">
-<button id="cartBtnElement" onclick="openCartModal()" class="flex items-center space-x-2 text-[11px] uppercase tracking-[0.2em] font-medium transition hover:opacity-75">
+<div class="flex items-center space-x-5">
+<button id="cartBtnElement" onclick="openCartModal()" class="flex items-center space-x-1.5 text-[11px] uppercase tracking-[0.2em] font-medium transition hover:opacity-75">
 <i class="fa-solid fa-bag-shopping text-sm"></i>
 <span id="cartCountBadge" class="bg-black text-white dark:bg-white dark:text-black text-[9px] px-1.5 py-0.2 rounded-full font-bold ml-1">0</span>
 </button>
-<button id="mobileMenuBtn" onclick="toggleMobileMenu()" class="md:hidden text-lg p-2 cursor-pointer"><i class="fa-solid fa-bars"></i></button>
+<button id="mobileMenuBtn" onclick="toggleMobileMenu()" class="md:hidden text-xl p-1.5 cursor-pointer"><i class="fa-solid fa-bars"></i></button>
 </div>
 </div>
 
 <!-- Mobile Menu Dropdown -->
-<div id="mobileMenuDropdown" class="hidden md:hidden bg-white dark:bg-black border-b border-zinc-200 dark:border-zinc-900 px-8 py-6 space-y-5 text-xs uppercase font-medium tracking-[0.25em] shadow-2xl z-50">
+<div id="mobileMenuDropdown" class="hidden absolute top-full left-0 w-full bg-white dark:bg-black border-b border-zinc-200 dark:border-zinc-900 px-8 py-6 space-y-5 text-xs uppercase font-medium tracking-[0.25em] shadow-2xl z-50">
 <a href="store.html" class="block opacity-80 hover:opacity-100">Store</a>
 <a href="referral.html" class="block opacity-80 hover:opacity-100">Refer & Earn</a>
 <a href="track.html" class="block opacity-80 hover:opacity-100">Track Order</a>
@@ -160,7 +170,7 @@ Fill your delivery details, proceed to payment, and submit UTR.
 <label class="block text-[10px] font-bold uppercase tracking-[0.2em]">Your UPI ID (For Cashback)</label>
 <input type="text" id="orderUpi" placeholder="yourname@upi" class="form-input-elem w-full border px-4 py-3.5 text-xs focus:outline-none transition rounded-xl">
 <p class="text-[10px] font-mono tracking-wide pt-1 font-semibold opacity-80">
-<i class="fa-solid fa-circle-info mr-1"></i> Required to transfer your <strong>Referral & Earn cashback</strong>!
+<i class="fa-solid fa-circle-info mr-1"></i> Required to transfer your <strong>Referral & Earn cashback</strong>[cite: 3]!
 </p>
 </div>
 <div class="space-y-1.5">
@@ -255,7 +265,7 @@ ORDER SUCCESSFULLY SUBMITTED
 <div id="successInfoBox" class="border p-4 text-xs font-mono leading-relaxed space-y-2.5 text-left relative z-10 rounded-xl">
 <p><i class="fa-solid fa-clock text-yellow-500 mr-2"></i> You will receive a response on <strong>WhatsApp within 5–10 minutes</strong>.</p>
 <p><i class="fa-solid fa-paper-plane text-blue-500 mr-2"></i> Order confirmation details will be shared directly on your <strong>WhatsApp</strong>.</p>
-<p><i class="fa-solid fa-bolt text-emerald-500 mr-2"></i> Your <strong>Referral Link</strong> is generated! Share it to start earning <strong>₹1,000 instant cashback</strong> per referral.</p>
+<p><i class="fa-solid fa-bolt text-emerald-500 mr-2"></i> Your <strong>Referral Link</strong> is generated! Share it to start earning <strong>₹1,000 instant cashback</strong>[cite: 3] per referral.</p>
 </div>
 
 <div class="grid grid-cols-2 gap-3 pt-2 relative z-10">
@@ -330,12 +340,12 @@ function applySystemThemeOrder() {
     bodyTag.className = "daylight-sky-clouds text-slate-900 font-sans antialiased min-h-screen flex flex-col justify-between selection:bg-black selection:text-white relative";
     topBar.className = "marquee-bar bg-[#09090b] text-[#f4f4f5] py-3 px-4 text-[11px] font-extrabold tracking-[0.25em] uppercase border-b border-[#27272a] overflow-hidden whitespace-nowrap z-20 shadow-sm";
     header.className = "sticky top-0 z-45 bg-white/95 backdrop-blur-xl border-b border-zinc-200 shadow-sm";
-    logoBox.className = "brand-logo-box w-8 h-8 border border-zinc-900 bg-zinc-900 text-white flex items-center justify-center font-black text-xs tracking-widest rounded-lg";
-    brandTitle.className = "font-bold text-base tracking-[0.4em] uppercase text-zinc-900";
-    mobileMenu.className = "hidden md:hidden bg-white border-b border-zinc-200 px-8 py-6 space-y-5 text-xs uppercase font-medium tracking-[0.25em] text-zinc-900 shadow-2xl z-50";
+    logoBox.className = "brand-logo-box w-7 h-7 border border-zinc-900 bg-zinc-900 text-white flex items-center justify-center font-black text-xs tracking-widest rounded-lg";
+    brandTitle.className = "font-bold text-sm tracking-[0.4em] uppercase text-zinc-900";
+    mobileMenu.className = "hidden absolute top-full left-0 w-full bg-white border-b border-zinc-200 px-8 py-6 space-y-5 text-xs uppercase font-medium tracking-[0.25em] text-zinc-900 shadow-2xl z-50";
 
-    if(cartBtnElement) cartBtnElement.className = "flex items-center space-x-2 text-[11px] uppercase tracking-[0.2em] font-extrabold text-slate-900 transition hover:opacity-75";
-    if(mobileMenuBtn) mobileMenuBtn.className = "md:hidden text-lg p-2 cursor-pointer text-slate-900 font-black";
+    if(cartBtnElement) cartBtnElement.className = "flex items-center space-x-1.5 text-[11px] uppercase tracking-[0.2em] font-extrabold text-slate-900 transition hover:opacity-75";
+    if(mobileMenuBtn) mobileMenuBtn.className = "md:hidden text-xl p-1.5 cursor-pointer text-slate-900 font-black";
 
     secBadge.className = "inline-block text-[10px] font-extrabold uppercase tracking-[0.4em] text-cyan-900 border border-cyan-500/60 px-4 py-2 bg-cyan-100 rounded-full shadow-sm";
     mainHeading.className = "text-3xl sm:text-5xl font-black uppercase tracking-[0.1em] text-slate-900";
@@ -372,12 +382,12 @@ function applySystemThemeOrder() {
     bodyTag.className = "bg-[#050505] text-white font-sans antialiased min-h-screen flex flex-col justify-between selection:bg-white selection:text-black relative";
     topBar.className = "marquee-bar bg-black text-zinc-300 py-3 px-4 text-[11px] font-extrabold tracking-[0.25em] uppercase border-b border-zinc-900 overflow-hidden whitespace-nowrap z-20";
     header.className = "sticky top-0 z-45 bg-black/90 backdrop-blur-xl border-b border-zinc-900";
-    logoBox.className = "brand-logo-box w-8 h-8 border border-white flex items-center justify-center font-black text-xs tracking-widest text-white group-hover:bg-white group-hover:text-black transition duration-500 rounded-lg";
-    brandTitle.className = "font-bold text-base tracking-[0.4em] uppercase text-white";
-    mobileMenu.className = "hidden md:hidden bg-black border-b border-zinc-900 px-8 py-6 space-y-5 text-xs uppercase font-medium tracking-[0.25em] text-white shadow-2xl z-50";
+    logoBox.className = "brand-logo-box w-7 h-7 border border-white flex items-center justify-center font-black text-xs tracking-widest text-white group-hover:bg-white group-hover:text-black transition duration-500 rounded-lg";
+    brandTitle.className = "font-bold text-sm tracking-[0.4em] uppercase text-white";
+    mobileMenu.className = "hidden absolute top-full left-0 w-full bg-black border-b border-zinc-900 px-8 py-6 space-y-5 text-xs uppercase font-medium tracking-[0.25em] text-white shadow-2xl z-50";
 
-    if(cartBtnElement) cartBtnElement.className = "flex items-center space-x-2 text-[11px] uppercase tracking-[0.2em] font-medium transition hover:opacity-75 text-white";
-    if(mobileMenuBtn) mobileMenuBtn.className = "md:hidden text-lg p-2 cursor-pointer text-white";
+    if(cartBtnElement) cartBtnElement.className = "flex items-center space-x-1.5 text-[11px] uppercase tracking-[0.2em] font-medium transition hover:opacity-75 text-white";
+    if(mobileMenuBtn) mobileMenuBtn.className = "md:hidden text-xl p-1.5 cursor-pointer text-white";
 
     secBadge.className = "inline-block text-[10px] font-bold uppercase tracking-[0.4em] text-zinc-400 border border-zinc-700 px-4 py-2 bg-zinc-900 rounded-full";
     mainHeading.className = "text-3xl sm:text-5xl font-black uppercase tracking-[0.1em] text-white";
@@ -513,155 +523,138 @@ function removeFromCheckoutCart(idx) {
   cart.splice(idx, 1);
   localStorage.setItem('moonland_cart', JSON.stringify(cart));
   renderCheckoutCart();
-  let cartBadge = document.getElementById('cartCountBadge');
-  if(cartBadge) cartBadge.innerText = cart.reduce((sum, item) => sum + (item.quantity || item.qty || 1), 0);
-}
-
-function updateUpiIntentLinks() {
-  const encodedMerchant = encodeURIComponent(currentMerchantName);
-  const phonepeUrl = `phonepe://pay?pa=${currentAdminUpi}&pn=${encodedMerchant}&am=${currentTotalSubtotal}&cu=INR`;
-  const gpayUrl = `gpay://upi/pay?pa=${currentAdminUpi}&pn=${encodedMerchant}&am=${currentTotalSubtotal}&cu=INR`;
-
-  const phonepeBtn = document.getElementById('phonepeIntentBtn');
-  const gpayBtn = document.getElementById('gpayIntentBtn');
-  if(phonepeBtn) phonepeBtn.href = phonepeUrl;
-  if(gpayBtn) gpayBtn.href = gpayUrl;
+  let totalCount = cart.reduce((sum, item) => sum + (item.quantity || item.qty || 1), 0);
+  const badge = document.getElementById('cartCountBadge');
+  if(badge) badge.innerText = totalCount;
 }
 
 function proceedToPaymentScanner() {
-  const cart = JSON.parse(localStorage.getItem('moonland_cart') || '[]');
-  if (cart.length === 0) {
-    alert('Aapka cart khali hai! Pehle store se product add karein.');
-    return;
-  }
-
   const name = document.getElementById('orderName').value.trim();
   const phone = document.getElementById('orderPhone').value.trim();
   const address = document.getElementById('orderAddress').value.trim();
 
-  if (!name || !phone || !address) {
-    alert('Please fill in all required delivery details (Name, Phone, Address)!');
+  if(!name || !phone || !address) {
+    alert('Kripya Name, Mobile Number aur Delivery Address fill karein.');
     return;
   }
 
-  if (phone.length !== 10) {
-    alert('Mobile number must be exactly 10 digits!');
+  if(phone.length !== 10) {
+    alert('Kripya valid 10-digit mobile number enter karein.');
+    return;
+  }
+
+  let cart = JSON.parse(localStorage.getItem('moonland_cart') || '[]');
+  if(cart.length === 0) {
+    alert('Aapka cart khali hai.');
+    window.location.href = 'store.html';
     return;
   }
 
   document.getElementById('checkoutStep1').classList.add('hidden');
   document.getElementById('checkoutStep2').classList.remove('hidden');
-  document.getElementById('orderUtr').required = true;
-  window.scrollTo({ top: 200, behavior: 'smooth' });
 }
 
 function backToStep1() {
   document.getElementById('checkoutStep2').classList.add('hidden');
   document.getElementById('checkoutStep1').classList.remove('hidden');
-  document.getElementById('orderUtr').required = false;
 }
 
 async function loadPaymentScannerSettings() {
-  currentAdminUpi = "paymoonland@upi";
-  currentMerchantName = "Moonland Store";
+  try {
+    let res = await fetch('/api/admin/settings');
+    let data = await res.json();
+    if(data && data.success) {
+      if(data.upiId) currentAdminUpi = data.upiId;
+      if(data.merchantName) currentMerchantName = data.merchantName;
+    }
+  } catch(e) {
+    console.error("Error loading payment settings:", e);
+  }
+
   document.getElementById('displayAdminUpi').innerText = currentAdminUpi;
   document.getElementById('displayMerchantName').innerText = currentMerchantName;
-  document.getElementById('dynamicQrContainer').innerHTML = `<img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=300&q=80" class="w-32 h-32 object-cover border shadow-sm rounded-xl mx-auto" alt="QR Code">`;
+
+  const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(`upi://pay?pa=${currentAdminUpi}&pn=${encodeURIComponent(currentMerchantName)}&am=${currentTotalSubtotal}&cu=INR`)}`;
+  document.getElementById('dynamicQrContainer').innerHTML = `<img src="${qrUrl}" alt="UPI QR Code" class="w-36 h-36 object-contain rounded-xl border p-1 bg-white shadow-md">`;
   updateUpiIntentLinks();
+}
 
-  try {
-    const res = await fetch('/api/settings');
-    if(res.ok) {
-      const settings = await res.json();
-      currentAdminUpi = settings.upiId || 'paymoonland@upi';
-      currentMerchantName = settings.merchantName || 'Moonland Store';
-      const qr = settings.qrCodeUrl || settings.qrImage || 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=300&q=80';
+function updateUpiIntentLinks() {
+  const amount = currentTotalSubtotal || 1;
+  const upiId = currentAdminUpi;
+  const name = encodeURIComponent(currentMerchantName);
+  
+  const phonePeUrl = `phonepe://pay?pa=${upiId}&pn=${name}&am=${amount}&cu=INR`;
+  const gPayUrl = `upi://pay?pa=${upiId}&pn=${name}&am=${amount}&cu=INR`;
 
-      document.getElementById('displayAdminUpi').innerText = currentAdminUpi;
-      document.getElementById('displayMerchantName').innerText = currentMerchantName;
-      document.getElementById('dynamicQrContainer').innerHTML = `<img src="${qr}" class="w-32 h-32 object-cover border shadow-sm rounded-xl mx-auto" alt="QR Code">`;
-      updateUpiIntentLinks();
-    }
-  } catch(err) {
-    console.error('Failed to load settings from server, using defaults', err);
-  }
+  const ppBtn = document.getElementById('phonepeIntentBtn');
+  const gpBtn = document.getElementById('gpayIntentBtn');
+
+  if(ppBtn) ppBtn.href = phonePeUrl;
+  if(gpBtn) gpBtn.href = GPayUrl;
 }
 
 function copyAdminUpi() {
-  const upi = document.getElementById('displayAdminUpi').innerText;
-  navigator.clipboard.writeText(upi).then(() => {
-    showCopySuccessPopup(upi);
-  });
-}
-
-function showCopySuccessPopup(upiId) {
-  let existing = document.getElementById('customCopyModal');
-  if (existing) existing.remove();
-
-  const currentHour = new Date().getHours();
-  const savedTheme = localStorage.getItem('moonland_theme');
-  const isLight = savedTheme === 'light' || (!savedTheme && currentHour >= 6 && currentHour < 18);
-
-  let modalHtml = `
-    <div id="customCopyModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
-      <div class="${isLight ? 'bg-white text-slate-900 border-zinc-200' : 'bg-[#0c0c0c] text-white border-cyan-400/40'} border p-6 max-w-sm w-full shadow-2xl space-y-4 text-center relative rounded-2xl">
-        <div class="w-12 h-12 bg-cyan-500/20 text-cyan-600 rounded-full flex items-center justify-center mx-auto text-lg">
-          <i class="fa-solid fa-clipboard-check"></i>
-        </div>
-        <div class="space-y-1">
-          <h3 class="text-xs font-bold uppercase tracking-widest">UPI ID Copied!</h3>
-          <p class="text-[11px] text-cyan-600 font-mono break-all ${isLight ? 'bg-zinc-50 border-zinc-200' : 'bg-black border-zinc-800'} p-2.5 border rounded-xl">${upiId}</p>
-        </div>
-        <button onclick="document.getElementById('customCopyModal').remove()" class="w-full ${isLight ? 'bg-zinc-900 text-white hover:bg-black' : 'bg-white text-black hover:bg-zinc-200'} font-black py-3 text-xs uppercase tracking-[0.2em] transition rounded-xl">
-          OK, Paid
-        </button>
-      </div>
-    </div>
-  `;
-  document.body.insertAdjacentHTML('beforeend', modalHtml);
+  navigator.clipboard.writeText(currentAdminUpi);
+  alert('UPI ID copied to clipboard: ' + currentAdminUpi);
 }
 
 async function submitOrderForm(e) {
   e.preventDefault();
-  const cart = JSON.parse(localStorage.getItem('moonland_cart') || '[]');
-  if(cart.length === 0) {
-    alert('Your cart is empty!');
+  const name = document.getElementById('orderName').value.trim();
+  const phone = document.getElementById('orderPhone').value.trim();
+  const address = document.getElementById('orderAddress').value.trim();
+  const upi = document.getElementById('orderUpi').value.trim();
+  const refCode = document.getElementById('orderRef').value.trim();
+  const utr = document.getElementById('orderUtr').value.trim();
+
+  if(!utr || utr.length !== 12) {
+    alert('Kripya valid 12-digit UTR transaction reference number enter karein.');
     return;
   }
 
-  const utrVal = document.getElementById('orderUtr').value.trim();
-  if (utrVal.length !== 12) {
-    alert('UTR number must be exactly 12 digits!');
+  let cart = JSON.parse(localStorage.getItem('moonland_cart') || '[]');
+  if(cart.length === 0) {
+    alert('Cart is empty.');
     return;
   }
 
   const orderPayload = {
-    customer: document.getElementById('orderName').value.trim(),
-    phone: document.getElementById('orderPhone').value.trim(),
-    address: document.getElementById('orderAddress').value.trim(),
-    upiId: document.getElementById('orderUpi').value.trim(),
-    enteredRefCode: document.getElementById('orderRef').value.trim() || 'None',
-    utr: utrVal,
-    items: cart
+    customerName: name,
+    phone: phone,
+    address: address,
+    userUpi: upi,
+    refCode: refCode,
+    utr: utr,
+    items: cart,
+    totalAmount: currentTotalSubtotal
   };
 
+  const submitBtn = document.getElementById('submitOrderBtn');
+  submitBtn.disabled = true;
+  submitBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin mr-2"></i> Submitting Order...`;
+
   try {
-    const response = await fetch('/api/orders', {
+    let response = await fetch('/api/orders', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(orderPayload)
     });
-    const result = await response.json();
-    if (response.ok && result.success) {
+    let result = await response.json();
+
+    if(response.ok && result.success) {
       localStorage.removeItem('moonland_cart');
-      localStorage.removeItem('moonland_ref_code');
       document.getElementById('orderSuccessModal').classList.remove('hidden');
     } else {
-      alert(result.error || 'Order submission failed.');
+      alert(result.error || 'Order submission failed. Please try again.');
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = `<i class="fa-solid fa-shield-check"></i> Submit UTR for Verification`;
     }
   } catch (err) {
-    console.error('Error saving order to backend:', err);
-    alert('Server connection error.');
+    console.error('Order error:', err);
+    alert('Server connection error. Please check your network.');
+    submitBtn.disabled = false;
+    submitBtn.innerHTML = `<i class="fa-solid fa-shield-check"></i> Submit UTR for Verification`;
   }
 }
 </script>
