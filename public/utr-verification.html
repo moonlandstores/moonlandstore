@@ -159,18 +159,15 @@
 
     async function fetchUtrQueue() {
         try {
-            const res = await fetch('/api/orders');
+            const res = await fetch('/api/orders', { cache: 'no-store' });
             if (res.ok) {
                 const allOrders = await res.json();
                 
-                // Improved filter to catch orders that need UTR verification
+                // Sabhi orders jo verify nahi hue hain ya pending hain, unhe filter karo
                 const newPending = allOrders.filter(o => {
-                    const status = (o.status || '').toLowerCase();
-                    return !o.utrVerified && 
-                           status !== 'rejected' && 
-                           status !== 'approved' && 
-                           status !== 'completed' &&
-                           (status.includes('pending') || status.includes('verification') || !o.status || o.utrNumber || o.utr);
+                    return o.utrVerified === false || 
+                           o.status === 'Payment Verification Pending' || 
+                           (!o.utrVerified && o.status !== 'Rejected' && o.status !== 'Order Placed');
                 });
                 
                 if (previousPendingCount !== null && newPending.length > previousPendingCount) {
@@ -183,12 +180,14 @@
 
                 previousPendingCount = newPending.length;
                 cachedPendingOrders = newPending;
-                cachedRejectedOrders = allOrders.filter(o => (o.status || '').toLowerCase() === 'rejected');
+                cachedRejectedOrders = allOrders.filter(o => o.status === 'Rejected');
                 
                 updateNavBadge(cachedPendingOrders.length);
                 
                 if (currentTab === 'pending') renderUtrQueue();
                 else renderRejectedQueue();
+            } else {
+                console.error("Failed to load orders, status:", res.status);
             }
         } catch (err) {
             console.error('Failed to fetch UTR queue from server:', err);

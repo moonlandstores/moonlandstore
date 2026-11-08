@@ -383,20 +383,19 @@ app.get('/api/orders', requireAdmin, async (req, res) => {
   try {
     if (!db) return res.status(503).json({ error: 'Database unavailable' });
     
-    const statusFilter = req.query.status;
-    let query = db.collection('orders');
-    
-    if (statusFilter === 'pending') {
-      query = query.where('utrVerified', '==', false);
-    }
-    
-    const snapshot = await query.orderBy('createdAt', 'desc').limit(200).get();
+    // Fetch all orders safely without strict Firestore query indexing crashes
+    const snapshot = await db.collection('orders').get();
     const orders = [];
     snapshot.forEach(doc => {
       orders.push({ id: doc.id, ...doc.data() });
     });
+    
+    // Sort orders on server side by creation date descending
+    orders.sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0));
+    
     res.json(orders);
   } catch (err) {
+    console.error('Failed to fetch orders:', err);
     res.status(500).json({ error: 'Failed to fetch orders' });
   }
 });
@@ -457,7 +456,7 @@ app.post('/api/orders', publicApiLimiter, async (req, res) => {
         address: address.trim(),
         upiId: upiId ? upiId.trim() : '',
         utr: utr.trim(),
-        utrNumber: utr.trim(), // Added to ensure compatibility with verification queue
+        utrNumber: utr.trim(),
         items: verifiedItems,
         totalAmount: calculatedTotal,
         enteredRefCode: validRefCode,
