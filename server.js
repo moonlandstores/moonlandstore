@@ -383,16 +383,13 @@ app.get('/api/orders', requireAdmin, async (req, res) => {
   try {
     if (!db) return res.status(503).json({ error: 'Database unavailable' });
     
-    // Fetch all orders safely without strict Firestore query indexing crashes
     const snapshot = await db.collection('orders').get();
     const orders = [];
     snapshot.forEach(doc => {
       orders.push({ id: doc.id, ...doc.data() });
     });
     
-    // Sort orders on server side by creation date descending
     orders.sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0));
-    
     res.json(orders);
   } catch (err) {
     console.error('Failed to fetch orders:', err);
@@ -402,10 +399,21 @@ app.get('/api/orders', requireAdmin, async (req, res) => {
 
 app.post('/api/orders', publicApiLimiter, async (req, res) => {
   try {
-    const { customer, phone, address, utr, items, enteredRefCode, upiId } = req.body;
+    // Flexible extraction: Handle both 'utr' and 'utrNumber' from frontend
+    const customer = req.body.customer || req.body.customerName || req.body.name;
+    const phone = req.body.phone || req.body.mobile;
+    const address = req.body.address;
+    const utrVal = req.body.utr || req.body.utrNumber;
+    const items = req.body.items;
+    const enteredRefCode = req.body.enteredRefCode || req.body.referralCode;
+    const upiId = req.body.upiId || req.body.customerUpi;
 
-    if (!customer || !phone || !address || !utr) {
-      return res.status(400).json({ success: false, error: 'All fields are required' });
+    if (!customer || !phone || !address || !utrVal) {
+      return res.status(400).json({ success: false, error: 'All fields (Customer, Phone, Address, UTR) are required' });
+    }
+
+    if (!items || !Array.isArray(items) || items.length === 0) {
+      return res.status(400).json({ success: false, error: 'Cart is empty or invalid items provided' });
     }
 
     const orderId = 'MOON-' + crypto.randomBytes(3).toString('hex').toUpperCase();
@@ -423,8 +431,11 @@ app.post('/api/orders', publicApiLimiter, async (req, res) => {
     }
 
     await db.runTransaction(async (transaction) => {
-      const utrQuery = await transaction.get(db.collection('orders').where('utr', '==', utr.trim()).limit(1));
-      if (!utrQuery.empty) {
+      // Check duplicate UTR
+      const utrQuery = await transaction.get(db.collection('orders').where('utr', '==', utrVal.trim()).limit(1));
+      const utrNumberQuery = await transaction.get(db.collection('orders').where('utrNumber', '==', utrVal.trim()).limit(1));
+      
+      if (!utrQuery.empty || !utrNumberQuery.empty) {
         throw new Error('This UTR number has already been used.');
       }
 
@@ -452,14 +463,17 @@ app.post('/api/orders', publicApiLimiter, async (req, res) => {
       const orderData = {
         id: orderId,
         customer: customer.trim(),
+        customerName: customer.trim(),
         phone: phone.trim(),
         address: address.trim(),
         upiId: upiId ? upiId.trim() : '',
-        utr: utr.trim(),
-        utrNumber: utr.trim(),
+        customerUpi: upiId ? upiId.trim() : '',
+        utr: utrVal.trim(),
+        utrNumber: utrVal.trim(),
         items: verifiedItems,
         totalAmount: calculatedTotal,
         enteredRefCode: validRefCode,
+        referralCode: validRefCode,
         utrVerified: false,
         status: 'Payment Verification Pending',
         createdAt: new Date().toISOString()
@@ -470,6 +484,7 @@ app.post('/api/orders', publicApiLimiter, async (req, res) => {
 
     return res.json({ success: true, orderId });
   } catch (err) {
+    console.error('Order creation error:', err.message);
     res.status(400).json({ success: false, error: err.message || 'Failed to save order' });
   }
 });
@@ -643,7 +658,7 @@ app.delete('/api/orders/:id', requireAdmin, async (req, res) => {
 
 app.put('/api/orders/:id/approve', requireAdmin, async (req, res) => {
   try {
-    if (!db) return res.status(503).json({ success: false, error: 'Database unavailable' });
+    if (!db) return res.status(503).json({ success: false, error: 'Database unavailable' as const });
     const orderId = req.params.id;
     const orderRef = db.collection('orders').doc(orderId);
     let generatedRefCode = '';
