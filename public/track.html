@@ -175,19 +175,19 @@
   </div>
 
   <!-- Top Announcement Bar -->
-  <div class="marquee-bar bg-black text-zinc-300 py-3 px-4 text-[11px] font-extrabold tracking-[0.25em] uppercase border-b overflow-hidden whitespace-nowrap z-20">
+  <div class="marquee-bar bg-black text-zinc-300 py-2.5 px-4 text-[10px] sm:text-[11px] font-extrabold tracking-[0.2em] uppercase border-b overflow-hidden whitespace-nowrap z-20">
     <marquee behavior="scroll" direction="left" scrollamount="5">
       <span class="inline-flex items-center gap-2 mx-6"><i class="fa-solid fa-bolt text-yellow-400"></i> MOONLAND SPECIAL: UNLIMITED REFER & EARN ₹1,000 INSTANT UPI CASHBACK PER REFERRAL!</span>
     </marquee>
   </div>
 
-  <!-- Header / Navbar -->
+  <!-- Header / Navbar (Matched 100% with store.html) -->
   <header class="sticky top-0 z-50 bg-black/90 backdrop-blur-xl border-b border-zinc-900">
-    <div class="max-w-7xl mx-auto px-6 sm:px-12 flex justify-between items-center h-20 relative">
-      <a href="index.html" class="flex items-center space-x-3 group">
+    <div class="max-w-7xl mx-auto px-4 sm:px-12 flex justify-between items-center h-16 sm:h-20 relative">
+      <a href="index.html" class="flex items-center space-x-2.5 group">
         <div class="brand-logo-box w-7 h-7 border border-white flex items-center justify-center font-black text-xs tracking-widest text-white group-hover:bg-white group-hover:text-black transition duration-500 rounded-lg">M</div>
         <div class="flex flex-col">
-          <span class="font-bold text-sm tracking-[0.4em] uppercase">MOONLAND</span>
+          <span class="font-bold text-xs sm:text-sm tracking-[0.3em] sm:tracking-[0.4em] uppercase">MOONLAND</span>
           <span class="text-[6px] tracking-[0.55em] text-zinc-400 uppercase font-bold">STORE</span>
         </div>
       </a>
@@ -200,17 +200,17 @@
         <a href="about.html" class="hover:opacity-75 transition pb-1">About Us</a>
       </nav>
 
-      <div class="flex items-center space-x-5">
+      <div class="flex items-center space-x-4">
         <button onclick="openCartModal()" class="flex items-center space-x-1.5 text-[11px] uppercase tracking-[0.2em] font-medium transition hover:opacity-75">
-          <i class="fa-solid fa-bag-shopping text-sm"></i>
+          <i class="fa-solid fa-bag-shopping text-base sm:text-sm"></i>
           <span id="cartCountBadge" class="bg-black text-white dark:bg-white dark:text-black text-[9px] px-1.5 py-0.2 rounded-full font-bold ml-1">0</span>
         </button>
-        <button onclick="toggleMobileMenu()" class="md:hidden text-xl p-1.5 cursor-pointer"><i class="fa-solid fa-bars"></i></button>
+        <button onclick="toggleMobileMenu()" class="md:hidden text-lg p-1.5 cursor-pointer"><i class="fa-solid fa-bars"></i></button>
       </div>
     </div>
 
-    <!-- Mobile Dropdown Menu -->
-    <div id="mobileMenuDropdown" class="hidden absolute top-full left-0 w-full bg-white dark:bg-black border-b border-zinc-200 dark:border-zinc-900 px-8 py-6 space-y-5 text-xs uppercase font-medium tracking-[0.25em] shadow-2xl z-50">
+    <!-- Mobile Dropdown Menu (Matched 100% with store.html) -->
+    <div id="mobileMenuDropdown" class="hidden absolute top-full left-0 w-full bg-white dark:bg-black border-b border-zinc-200 dark:border-zinc-900 px-6 py-5 space-y-4 text-xs uppercase font-medium tracking-[0.2em] shadow-2xl z-50">
       <a href="index.html" class="block opacity-80 hover:opacity-100">Home</a>
       <a href="store.html" class="block opacity-80 hover:opacity-100">Store</a>
       <a href="referral.html" class="block opacity-80 hover:opacity-100">Refer & Earn</a>
