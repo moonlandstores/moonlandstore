@@ -64,6 +64,7 @@
     html.light .store-modal-box { background: #ffffff !important; border-color: #cbd5e1 !important; color: #0f172a !important; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); }
     html.light .store-modal-box h2, html.light .store-modal-box h3 { color: #0f172a !important; }
     html.light .store-modal-inner { background: #f8fafc !important; border-color: #cbd5e1 !important; color: #0f172a !important; }
+    html.light .modal-details-box { background: #f1f5f9 !important; border-color: #cbd5e1 !important; color: #0f172a !important; }
 
     /* NIGHT MODE (PRESERVED WITH ANIMATED STARS & MOON VIBES) */
     html.dark body { background-color: #050505 !important; color: #ffffff !important; }
@@ -75,6 +76,7 @@
     }
     html.dark .store-modal-box { background: rgba(12,12,12,0.98) !important; border-color: rgba(255,255,255,0.2) !important; color: #ffffff !important; }
     html.dark .store-modal-inner { background: #000000 !important; border-color: #27272a !important; color: #ffffff !important; }
+    html.dark .modal-details-box { background: rgba(0, 0, 0, 0.6) !important; border-color: rgba(255, 255, 255, 0.1) !important; color: #e4e4e7 !important; }
 
     html.dark .btn-outline {
       background-color: transparent !important;
@@ -243,7 +245,9 @@
             <h3 class="text-[9px] sm:text-[10px] opacity-80 font-bold uppercase tracking-[0.2em] flex items-center gap-1.5">
               <i class="fa-solid fa-circle-info text-cyan-400"></i> Details & Description
             </h3>
-            <p id="modalDetailsText" class="text-[11px] sm:text-xs opacity-90 leading-relaxed font-normal bg-zinc-900/40 p-3 rounded-xl border border-zinc-800"></p>
+            <div class="modal-details-box border p-4 rounded-xl">
+              <p id="modalDetailsText" class="text-[11px] sm:text-xs leading-relaxed font-normal whitespace-pre-line"></p>
+            </div>
           </div>
 
           <div class="pt-3 border-t border-zinc-800 space-y-3">
