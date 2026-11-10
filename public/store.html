@@ -218,8 +218,8 @@
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6 items-start">
         <div class="space-y-3">
-          <div class="h-64 sm:h-80 bg-zinc-100 dark:bg-black border border-zinc-200 dark:border-zinc-800 overflow-hidden relative shadow-inner rounded-xl flex items-center justify-center">
-            <img id="modalMainImg" src="" class="w-full h-full object-cover p-1">
+          <div class="h-64 sm:h-80 bg-zinc-100 dark:bg-black border border-zinc-200 dark:border-zinc-800 overflow-hidden relative shadow-inner rounded-xl flex items-center justify-center p-2">
+            <img id="modalMainImg" src="" class="w-full h-full object-contain">
           </div>
           <div id="modalThumbnails" class="flex gap-2 overflow-x-auto pb-1"></div>
         </div>
@@ -236,6 +236,14 @@
               <i class="fa-solid fa-star text-yellow-500"></i> Key Features
             </h3>
             <div id="modalKeyFeaturesGrid" class="grid grid-cols-1 gap-1.5 max-h-28 overflow-y-auto pr-1"></div>
+          </div>
+
+          <!-- DETAILS SECTION ADDED (Controlled from Admin Panel) -->
+          <div id="detailsContainer" class="space-y-1.5 pt-2 border-t border-zinc-800 hidden">
+            <h3 class="text-[9px] sm:text-[10px] opacity-80 font-bold uppercase tracking-[0.2em] flex items-center gap-1.5">
+              <i class="fa-solid fa-circle-info text-cyan-400"></i> Details & Description
+            </h3>
+            <p id="modalDetailsText" class="text-[11px] sm:text-xs opacity-90 leading-relaxed font-normal bg-zinc-900/40 p-3 rounded-xl border border-zinc-800"></p>
           </div>
 
           <div class="pt-3 border-t border-zinc-800 space-y-3">
@@ -424,7 +432,7 @@
           price: 999, 
           images: ['https://images.unsplash.com/photo-1556911220-e15b29be8c8f?auto=format&fit=crop&q=80&w=400', 'https://images.unsplash.com/photo-1588854337236-6889d631faa8?auto=format&fit=crop&q=80&w=400'], 
           keyFeatures: 'Case Water Body: Pure Aluminium, Warranty: 2 Year',
-          details: 'Uses: Home'
+          details: 'High-performance reliable gas stove designed for domestic and commercial kitchen use.'
         }
       ];
       return cachedProducts;
@@ -448,9 +456,9 @@
         let card = document.createElement('div');
         card.className = `product-item product-card group border p-2.5 sm:p-5 flex flex-col justify-between space-y-2 sm:space-y-4 transition duration-300 cursor-pointer rounded-xl sm:rounded-2xl shadow-sm hover:shadow-md`;
         card.innerHTML = `
-          <div onclick="openProductDetail('${p.id}')" class="h-44 sm:h-64 overflow-hidden bg-zinc-100 dark:bg-black flex items-center justify-center relative rounded-lg sm:rounded-xl shadow-inner">
+          <div onclick="openProductDetail('${p.id}')" class="h-44 sm:h-64 overflow-hidden bg-zinc-100 dark:bg-black flex items-center justify-center relative rounded-lg sm:rounded-xl shadow-inner p-1">
             <span class="absolute top-2 left-2 z-10 bg-black text-white dark:bg-white dark:text-black text-[7px] sm:text-[9px] font-extrabold uppercase px-2 py-0.5 tracking-wider rounded shadow">Assured</span>
-            <img id="storeImg_${index}" src="${imgList[0]}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500 opacity-95">
+            <img id="storeImg_${index}" src="${imgList[0]}" class="w-full h-full object-contain group-hover:scale-105 transition duration-500">
           </div>
           <div onclick="openProductDetail('${p.id}')" class="space-y-1">
             <h3 class="text-xs sm:text-base font-bold uppercase tracking-tight line-clamp-2 leading-tight">${pName}</h3>
@@ -476,7 +484,7 @@
                 if (imgElement) {
                     imgElement.src = imgList[currentImgIdx];
                 }
-            }, 2000); // 2 Seconds Auto Change for Store Grid Cards
+            }, 2000);
         }
       });
     }
@@ -490,6 +498,7 @@
       document.getElementById('modalTitle').innerText = activeProduct.name;
       document.getElementById('modalPrice').innerText = `₹${Number(activeProduct.price).toLocaleString('en-IN')}`;
 
+      // Key Features Population
       const kfContainer = document.getElementById('keyFeaturesContainer');
       const kfGrid = document.getElementById('modalKeyFeaturesGrid');
       if (activeProduct.keyFeatures && activeProduct.keyFeatures.trim() !== '') {
@@ -509,11 +518,20 @@
         kfContainer.classList.add('hidden');
       }
 
+      // Details / Description Population
+      const detailsContainer = document.getElementById('detailsContainer');
+      const modalDetailsText = document.getElementById('modalDetailsText');
+      if (activeProduct.details && activeProduct.details.trim() !== '') {
+        detailsContainer.classList.remove('hidden');
+        modalDetailsText.innerText = activeProduct.details;
+      } else {
+        detailsContainer.classList.add('hidden');
+      }
+
       let imgList = activeProduct.images && activeProduct.images.length > 0 ? activeProduct.images : ['https://images.unsplash.com/photo-1556911220-e15b29be8c8f?auto=format&fit=crop&q=80&w=400'];
       const modalImgEl = document.getElementById('modalMainImg');
       modalImgEl.src = imgList[0];
 
-      // Clear previous modal interval if any
       if (modalImageInterval) clearInterval(modalImageInterval);
 
       if (imgList.length > 1) {
@@ -523,7 +541,7 @@
           if (modalImgEl) {
             modalImgEl.src = imgList[modalImgIdx];
           }
-        }, 2000); // 2 Seconds Auto Change for Product Detail Modal Image
+        }, 2000);
       }
       
       document.getElementById('modalThumbnails').innerHTML = imgList.map((img, idx) => `
@@ -573,7 +591,7 @@
       }
       localStorage.setItem('moonland_cart', JSON.stringify(cart));
       updateGlobalCartCount();
-      window.location.href = 'order.html'; // Direct to order page on Buy Click
+      window.location.href = 'order.html';
     }
 
     function addCurrentToCart() {
@@ -605,7 +623,7 @@
       localStorage.setItem('moonland_cart', JSON.stringify(cart));
       updateGlobalCartCount();
       closeProductModal();
-      window.location.href = 'order.html'; // Direct to order page on Modal Buy Click
+      window.location.href = 'order.html';
     }
 
     function updateGlobalCartCount() {
@@ -615,7 +633,7 @@
       if (badge) badge.innerText = totalCount;
     }
 
-    window.addEventListener('DOMContentLoaded', () => {
+    document.addEventListener("DOMContentLoaded", () => {
       renderStoreGrid();
       updateGlobalCartCount();
     });

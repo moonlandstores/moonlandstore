@@ -68,8 +68,8 @@
 
             <!-- Product Details Input -->
             <div class="space-y-2 text-xs">
-                <label class="text-zinc-400 font-bold uppercase tracking-wider text-[10px]">Product Details (Format: Label: Value, Label: Value)</label>
-                <textarea id="newProdDetails" rows="3" placeholder="Battery Type: No Battery, Dial Color: Black, Strap Color: Silver, Case Size: 38mm, Gender: Men" class="w-full bg-black border border-zinc-800 px-4 py-3 text-white focus:outline-none focus:border-cyan-400"></textarea>
+                <label class="text-zinc-400 font-bold uppercase tracking-wider text-[10px]">Product Details / Description</label>
+                <textarea id="newProdDetails" rows="3" placeholder="High-performance reliable item designed for professional and daily usage..." class="w-full bg-black border border-zinc-800 px-4 py-3 text-white focus:outline-none focus:border-cyan-400"></textarea>
             </div>
 
             <button onclick="addNewProduct()" class="bg-cyan-400 hover:bg-cyan-300 text-black font-black px-6 py-3 uppercase tracking-wider transition shadow-lg text-xs">
@@ -156,7 +156,6 @@
             }, 3000);
         }
 
-        // Smart image compressor to handle any size image seamlessly
         function compressImage(file) {
             return new Promise((resolve) => {
                 const reader = new FileReader();
