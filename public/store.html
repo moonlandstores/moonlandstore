@@ -601,7 +601,7 @@
 
     function buyCurrentNow() {
       if (!activeProduct) return;
-      let cart = JSON.parse(localStorage.getItem('moonland_cart') || '[]');
+      let cart = JSON.parse(localStorage.getItem('moonland_cart') === null ? '[]' : localStorage.getItem('moonland_cart'));
       let existing = cart.find(i => i.id === activeProduct.id || i.title === activeProduct.name);
       if (existing) {
         existing.id = activeProduct.id;
