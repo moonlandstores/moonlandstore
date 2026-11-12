@@ -72,7 +72,7 @@
       color: #ffffff !important; 
     }
 
-    /* NIGHT MODE (MATCHING STORE.HTML & SCREENSHOT) */
+    /* NIGHT MODE (ATTRACTIVE PREMIUM DARK DESIGN) */
     html.dark body { background-color: #050505 !important; color: #ffffff !important; }
     html.dark .clouds-bg { display: none !important; }
     html.dark .white-rocket-visible { color: #ffffff !important; filter: drop-shadow(0 0 8px rgba(255,255,255,0.8)) !important; }
@@ -81,8 +81,27 @@
     html.dark .promo-popup-inner-card, html.dark .store-modal-inner { background: #000000 !important; border-color: #27272a !important; color: #ffffff !important; }
     html.dark .modal-details-box { background: rgba(0, 0, 0, 0.6) !important; border-color: rgba(255, 255, 255, 0.1) !important; color: #e4e4e7 !important; }
     html.dark .cart-drawer-box { background-color: #0c0c0c !important; border-left-color: #27272a !important; color: #ffffff !important; }
-    html.dark .home-product-card { background-color: #000000 !important; border-color: #27272a !important; color: #ffffff !important; }
-    html.dark .slider-outer-box { background-color: #050505 !important; border-color: rgba(255,255,255,0.12) !important; }
+    
+    /* ATTRACTIVE NIGHT MODE SLIDER & PRODUCT CARD STYLING */
+    html.dark .slider-outer-box { 
+      background: linear-gradient(145deg, #111116, #09090c) !important; 
+      border-color: rgba(56, 189, 248, 0.25) !important; 
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.7), 0 0 20px rgba(56, 189, 248, 0.08) !important;
+    }
+    html.dark .home-product-card { 
+      background: linear-gradient(135deg, #16161d, #0d0d12) !important; 
+      border: 1px solid rgba(255, 255, 255, 0.12) !important; 
+      color: #ffffff !important; 
+      box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+    }
+    html.dark .home-product-card:hover {
+      border-color: rgba(56, 189, 248, 0.5) !important;
+      box-shadow: 0 12px 30px rgba(56, 189, 248, 0.15);
+    }
+    html.dark .home-product-card img {
+      background: #ffffff !important;
+      border-radius: 0.75rem;
+    }
 
     html.dark .quantity-box-dark {
       background-color: #000000 !important;
@@ -94,15 +113,16 @@
     }
 
     html.dark .btn-outline {
-      background-color: transparent !important;
-      border-color: rgba(255, 255, 255, 0.8) !important;
-      color: #ffffff !important;
-      font-weight: 700;
+      background: linear-gradient(135deg, #38bdf8, #0284c7) !important;
+      border: none !important;
+      color: #000000 !important;
+      font-weight: 800 !important;
       border-radius: 0.75rem;
+      box-shadow: 0 4px 12px rgba(56, 189, 248, 0.3);
     }
     html.dark .btn-outline:hover {
-      background-color: #ffffff !important;
-      color: #000000 !important;
+      background: linear-gradient(135deg, #7dd3fc, #38bdf8) !important;
+      box-shadow: 0 6px 16px rgba(56, 189, 248, 0.5);
     }
 
     /* NIGHT MODE MOBILE MENU OVERRIDES (FIXED VISIBILITY) */
@@ -459,7 +479,7 @@
     </section>
   </main>
 
-  <!-- Product Detail Modal (Matched 100% with store.html & image_5fbbf8.jpg) -->
+  <!-- Product Detail Modal -->
   <div id="productDetailModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md hidden p-3 sm:p-4">
     <div class="store-modal-box border max-w-3xl w-full p-5 sm:p-8 relative shadow-2xl rounded-2xl space-y-4 sm:space-y-5 max-h-[90vh] overflow-y-auto">
       <button onclick="closeProductModal()" class="absolute top-3 right-3 text-zinc-400 hover:text-white text-base sm:text-lg border border-zinc-700 w-8 h-8 sm:w-9 sm:h-9 flex items-center justify-center transition rounded-full z-10">
@@ -748,22 +768,22 @@
         let imgList = (p.images && p.images.length > 0) ? p.images[0] : 'https://images.unsplash.com/photo-1556911220-e15b29be8c8f?auto=format&fit=crop&q=80&w=400';
         return `
           <div onclick="openProductDetail('${p.id}')" class="home-product-card cursor-pointer border p-4 sm:p-5 rounded-2xl transition duration-300 shadow-md flex flex-col justify-between space-y-3 sm:space-y-4">
-            <div class="h-48 sm:h-56 bg-zinc-100 dark:bg-black rounded-xl overflow-hidden relative border border-zinc-200 dark:border-zinc-800 shadow-inner flex items-center justify-center p-2">
+            <div class="h-48 sm:h-56 bg-white rounded-xl overflow-hidden relative border border-zinc-700 shadow-inner flex items-center justify-center p-2">
               <span class="absolute top-2.5 left-2.5 z-10 bg-red-600 text-white text-[8px] font-extrabold uppercase tracking-widest px-2 py-1 rounded-md shadow">AD DEAL</span>
               <img src="${imgList}" class="w-full h-full object-contain">
             </div>
             <div class="space-y-1">
               <h3 class="font-bold text-sm uppercase tracking-wider line-clamp-1">${p.name}</h3>
-              <p class="text-xs font-mono font-black text-emerald-600 dark:text-emerald-400">₹${Number(p.price).toLocaleString('en-IN')}</p>
+              <p class="text-xs font-mono font-black text-emerald-400">₹${Number(p.price).toLocaleString('en-IN')}</p>
             </div>
-            <button onclick="event.stopPropagation(); openProductDetail('${p.id}')" class="btn-outline w-full border font-black py-2.5 text-[10px] uppercase tracking-widest transition rounded-xl">View & Buy Now</button>
+            <button onclick="event.stopPropagation(); openProductDetail('${p.id}')" class="btn-outline w-full border font-black py-2.5 text-[10px] uppercase tracking-widest transition rounded-xl text-center">View & Buy Now</button>
           </div>
         `;
       }).join('');
 
       if(dotsContainer) {
         dotsContainer.innerHTML = homeProducts.map((_, i) => `
-          <button onclick="goToSlide(${i})" class="w-2.5 h-2.5 rounded-full transition-all duration-300 ${i === 0 ? 'bg-cyan-500 w-6' : 'bg-zinc-400/40'}"></button>
+          <button onclick="goToSlide(${i})" class="w-2.5 h-2.5 rounded-full transition-all duration-300 ${i === 0 ? 'bg-cyan-400 w-6' : 'bg-zinc-600'}"></button>
         `).join('');
       }
     }
@@ -796,9 +816,9 @@
 
       dots.forEach((dot, i) => {
         if (i === currentSlideIndex) {
-          dot.className = "w-6 h-2.5 bg-cyan-500 rounded-full transition-all duration-300";
+          dot.className = "w-6 h-2.5 bg-cyan-400 rounded-full transition-all duration-300 shadow-[0_0_10px_rgba(56,189,248,0.5)]";
         } else {
-          dot.className = "w-2.5 h-2.5 bg-zinc-400/40 rounded-full transition-all duration-300";
+          dot.className = "w-2.5 h-2.5 bg-zinc-600 rounded-full transition-all duration-300";
         }
       });
     }
@@ -949,7 +969,7 @@
       }
       function drawStars() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-        stars.forEach(s => {
+        stars.buttons = stars.forEach(s => {
           s.y += s.speed;
           if (s.y < 0) s.y = canvas.height;
           if (s.y > canvas.height) s.y = 0;
