@@ -20,7 +20,6 @@
     html.light body { background-color: #f8fafc !important; color: #0f172a !important; }
     html.light header { background-color: rgba(255, 255, 255, 0.95) !important; border-bottom-color: #cbd5e1 !important; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); }
     
-    /* High Visibility Marquee Bar for Daylight */
     html.light .marquee-bar { 
       background: linear-gradient(135deg, #0f172a, #1e293b) !important; 
       color: #f8fafc !important; 
@@ -35,7 +34,6 @@
     html.light .clouds-bg { display: block !important; }
     html.light .stars-bg { display: none !important; }
     
-    /* Rich Daylight Product Cards */
     html.light .product-card { 
       background-color: #ffffff !important; 
       border-color: #cbd5e1 !important; 
@@ -45,7 +43,6 @@
     html.light .product-card p { color: #475569 !important; font-weight: 600 !important; }
     html.light .product-price { color: #059669 !important; font-weight: 900; }
     
-    /* Uniform Button Style */
     html.light .btn-outline { 
       border-color: #0f172a !important; 
       color: #0f172a !important; 
@@ -60,13 +57,12 @@
     
     html.light footer { background-color: #e2e8f0 !important; border-top-color: #cbd5e1 !important; color: #334155 !important; font-weight: 600; }
     
-    /* DAYLIGHT MODE MODAL OVERRIDES */
     html.light .store-modal-box { background: #ffffff !important; border-color: #cbd5e1 !important; color: #0f172a !important; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); }
     html.light .store-modal-box h2, html.light .store-modal-box h3 { color: #0f172a !important; }
     html.light .store-modal-inner { background: #f8fafc !important; border-color: #cbd5e1 !important; color: #0f172a !important; }
     html.light .modal-details-box { background: #f1f5f9 !important; border-color: #cbd5e1 !important; color: #0f172a !important; }
 
-    /* NIGHT MODE (PRESERVED WITH ANIMATED STARS & MOON VIBES) */
+    /* NIGHT MODE FIXES FOR VISIBILITY */
     html.dark body { background-color: #050505 !important; color: #ffffff !important; }
     html.dark .clouds-bg { display: none !important; }
     html.dark .stars-bg { display: block !important; }
@@ -77,6 +73,16 @@
     html.dark .store-modal-box { background: rgba(12,12,12,0.98) !important; border-color: rgba(255,255,255,0.2) !important; color: #ffffff !important; }
     html.dark .store-modal-inner { background: #000000 !important; border-color: #27272a !important; color: #ffffff !important; }
     html.dark .modal-details-box { background: rgba(0, 0, 0, 0.6) !important; border-color: rgba(255, 255, 255, 0.1) !important; color: #e4e4e7 !important; }
+
+    /* Fix quantity box and text contrast in dark mode */
+    html.dark .quantity-wrapper {
+      background-color: #000000 !important;
+      border-color: rgba(255, 255, 255, 0.2) !important;
+      color: #ffffff !important;
+    }
+    html.dark .quantity-wrapper span, html.dark .quantity-wrapper button {
+      color: #ffffff !important;
+    }
 
     html.dark .btn-outline {
       background-color: transparent !important;
@@ -97,7 +103,6 @@
     }
     html.dark #mobileMenuDropdown a { color: #ffffff !important; }
 
-    /* Animations for Clouds & Animated Stars */
     @keyframes cloudDrift1 {
       0% { transform: translateX(-100px); opacity: 0.3; }
       50% { opacity: 0.6; }
@@ -120,7 +125,6 @@
     .line-clamp-2 { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
   </style>
 
-  <!-- AUTO THEME SWITCHER SCRIPT -->
   <script>
     (function() {
       const currentHour = new Date().getHours();
@@ -139,13 +143,11 @@
 </head>
 <body class="font-sans antialiased min-h-screen flex flex-col justify-between selection:bg-white selection:text-black relative">
 
-  <!-- Daylight Clouds Background Overlay -->
   <div class="clouds-bg hidden absolute inset-0 pointer-events-none z-0 overflow-hidden h-full">
     <div class="absolute top-24 left-[-50px] w-72 h-24 bg-sky-200/40 rounded-full blur-xl cloud-elem-1"></div>
     <div class="absolute top-96 right-[-40px] w-96 h-32 bg-blue-200/30 rounded-full blur-2xl cloud-elem-2"></div>
   </div>
 
-  <!-- Night Mode Animated Stars Background Overlay -->
   <div class="stars-bg hidden absolute inset-0 pointer-events-none z-0 overflow-hidden h-full">
     <div class="absolute top-16 left-20 w-1.5 h-1.5 bg-white rounded-full star-anim" style="animation-delay: 0s;"></div>
     <div class="absolute top-32 right-32 w-2 h-2 bg-yellow-200 rounded-full star-anim" style="animation-delay: 1s;"></div>
@@ -154,14 +156,12 @@
     <div class="absolute bottom-40 left-16 w-1.5 h-1.5 bg-white rounded-full star-anim" style="animation-delay: 2s;"></div>
   </div>
 
-  <!-- Highly Visible Marquee Bar -->
   <div class="marquee-bar bg-black text-zinc-300 py-2.5 px-4 text-[10px] sm:text-[11px] font-extrabold tracking-[0.2em] uppercase border-b overflow-hidden whitespace-nowrap z-20">
     <marquee behavior="scroll" direction="left" scrollamount="5">
-      <span class="inline-flex items-center gap-2 mx-6"><i class="fa-solid fa-bolt text-yellow-400"></i> MOONLAND SPECIAL: UNLIMITED REFER & EARN ₹1,000 INSTANT UPI CASHBACK PER REFERRAL!</span>
+      <span class="inline-flex items-center gap-2 mx-6"><i class="fa-solid fa-bolt text-yellow-400"></i> MOONLAND SPECIAL: UNLIMITED REFER & EARN ₹500 INSTANT UPI CASHBACK PER REFERRAL!</span>
     </marquee>
   </div>
 
-  <!-- Header -->
   <header class="sticky top-0 z-50 bg-black/90 backdrop-blur-xl border-b border-zinc-900">
     <div class="max-w-7xl mx-auto px-4 sm:px-12 flex justify-between items-center h-16 sm:h-20 relative">
       <a href="index.html" class="flex items-center space-x-2.5 group">
@@ -189,7 +189,6 @@
       </div>
     </div>
 
-    <!-- Mobile Dropdown Menu -->
     <div id="mobileMenuDropdown" class="hidden absolute top-full left-0 w-full bg-white dark:bg-black border-b border-zinc-200 dark:border-zinc-900 px-6 py-5 space-y-4 text-xs uppercase font-medium tracking-[0.2em] shadow-2xl z-50">
       <a href="index.html" class="block opacity-80 hover:opacity-100">Home</a>
       <a href="store.html" class="block font-bold">Store</a>
@@ -199,7 +198,7 @@
     </div>
   </header>
 
-  <main class="flex-grow max-w-7xl mx-auto px-2.5 sm:px-12 py-6 sm:py-16 w-full space-y-6 sm:space-y-12 relative z-10">
+  <main class="flex-grow max-w-7xl mx-auto px-3 sm:px-12 py-6 sm:py-16 w-full space-y-6 sm:space-y-12 relative z-10">
     <div class="flex flex-col md:flex-row justify-between items-start md:items-end border-b border-zinc-300 dark:border-zinc-900 pb-4 sm:pb-6 gap-4">
       <div class="space-y-1 sm:space-y-2">
         <span class="text-[9px] sm:text-[10px] font-extrabold uppercase tracking-[0.3em] sm:tracking-[0.4em] text-cyan-600 dark:text-cyan-400 bg-cyan-500/10 px-3 py-1 border border-cyan-500/20 rounded-full">Curated Lineup</span>
@@ -207,8 +206,8 @@
       </div>
     </div>
 
-    <!-- 2 COLUMNS ON MOBILE (grid-cols-2), 3 ON TABLET, 4 ON DESKTOP -->
-    <div id="dynamicProductsGrid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2.5 sm:gap-8"></div>
+    <!-- Mobile optimized 2 columns grid -->
+    <div id="dynamicProductsGrid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-8"></div>
   </main>
 
   <!-- Product Detail Modal -->
@@ -240,7 +239,6 @@
             <div id="modalKeyFeaturesGrid" class="grid grid-cols-1 gap-1.5 max-h-28 overflow-y-auto pr-1"></div>
           </div>
 
-          <!-- DETAILS SECTION ADDED (Controlled from Admin Panel) -->
           <div id="detailsContainer" class="space-y-1.5 pt-2 border-t border-zinc-800 hidden">
             <h3 class="text-[9px] sm:text-[10px] opacity-80 font-bold uppercase tracking-[0.2em] flex items-center gap-1.5">
               <i class="fa-solid fa-circle-info text-cyan-400"></i> Details & Description
@@ -253,7 +251,7 @@
           <div class="pt-3 border-t border-zinc-800 space-y-3">
             <div class="flex items-center gap-3">
               <span class="text-xs font-bold uppercase tracking-widest opacity-90">Quantity:</span>
-              <div class="flex items-center border border-zinc-700 bg-black rounded-xl overflow-hidden shadow-sm">
+              <div class="quantity-wrapper flex items-center border border-zinc-700 bg-black rounded-xl overflow-hidden shadow-sm">
                 <button onclick="adjustQty(-1)" class="px-3 py-1 font-mono hover:bg-zinc-800 text-white text-sm">-</button>
                 <span id="modalQty" class="px-3.5 py-1 font-mono text-xs font-bold text-white">1</span>
                 <button onclick="adjustQty(1)" class="px-3 py-1 font-mono hover:bg-zinc-800 text-white text-sm">+</button>
@@ -270,7 +268,7 @@
     </div>
   </div>
 
-  <!-- Custom Add to Cart Success Popup Modal -->
+  <!-- Custom Success Popup Modal -->
   <div id="addToCartSuccessModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm hidden p-4 transition-all duration-300">
     <div class="store-modal-box border p-6 max-w-xs sm:max-w-sm w-full shadow-2xl space-y-4 text-center relative rounded-2xl">
       <div class="w-12 h-12 bg-cyan-500/20 text-cyan-400 rounded-full flex items-center justify-center mx-auto text-lg shadow-md">
@@ -328,9 +326,7 @@
 
     function toggleMobileMenu() {
       const dropdown = document.getElementById('mobileMenuDropdown');
-      if (dropdown) {
-        dropdown.classList.toggle('hidden');
-      }
+      if (dropdown) dropdown.classList.toggle('hidden');
     }
 
     function openCartModal() {
@@ -354,16 +350,12 @@
       const modal = document.getElementById('addToCartSuccessModal');
       const titleEl = document.getElementById('addedItemTitle');
       if(titleEl) titleEl.innerText = productName;
-      if(modal) {
-        modal.classList.remove('hidden');
-      }
+      if(modal) modal.classList.remove('hidden');
     }
 
     function closeAddToCartModal() {
       const modal = document.getElementById('addToCartSuccessModal');
-      if(modal) {
-        modal.classList.add('hidden');
-      }
+      if(modal) modal.classList.add('hidden');
     }
 
     function renderCartDrawer() {
@@ -420,7 +412,7 @@
           return products;
         }
       } catch (err) {
-        console.error('Error fetching products from backend:', err);
+        console.error('Error fetching products:', err);
       }
       
       let stored = localStorage.getItem('moonland_store_products');
@@ -434,9 +426,9 @@
           id: 'prod_1', 
           name: 'Signature Gas Stove', 
           price: 999, 
-          images: ['https://images.unsplash.com/photo-1556911220-e15b29be8c8f?auto=format&fit=crop&q=80&w=400', 'https://images.unsplash.com/photo-1588854337236-6889d631faa8?auto=format&fit=crop&q=80&w=400'], 
+          images: ['https://images.unsplash.com/photo-1556911220-e15b29be8c8f?auto=format&fit=crop&q=80&w=400'], 
           keyFeatures: 'Case Water Body: Pure Aluminium, Warranty: 2 Year',
-          details: 'High-performance reliable gas stove designed for domestic and commercial kitchen use.'
+          details: 'High-performance reliable gas stove.'
         }
       ];
       return cachedProducts;
@@ -458,9 +450,9 @@
         let pPrice = Number(p.price) || 0;
 
         let card = document.createElement('div');
-        card.className = `product-item product-card group border p-2.5 sm:p-5 flex flex-col justify-between space-y-2 sm:space-y-4 transition duration-300 cursor-pointer rounded-xl sm:rounded-2xl shadow-sm hover:shadow-md`;
+        card.className = `product-item product-card group border p-2 sm:p-4 flex flex-col justify-between space-y-2 transition duration-300 cursor-pointer rounded-xl shadow-sm`;
         card.innerHTML = `
-          <div onclick="openProductDetail('${p.id}')" class="h-44 sm:h-64 overflow-hidden bg-zinc-100 dark:bg-black flex items-center justify-center relative rounded-lg sm:rounded-xl shadow-inner p-1">
+          <div onclick="openProductDetail('${p.id}')" class="h-36 sm:h-60 overflow-hidden bg-zinc-100 dark:bg-black flex items-center justify-center relative rounded-lg shadow-inner p-1">
             <span class="absolute top-2 left-2 z-10 bg-black text-white dark:bg-white dark:text-black text-[7px] sm:text-[9px] font-extrabold uppercase px-2 py-0.5 tracking-wider rounded shadow">Assured</span>
             <img id="storeImg_${index}" src="${imgList[0]}" class="w-full h-full object-contain group-hover:scale-105 transition duration-500">
           </div>
@@ -470,11 +462,11 @@
           </div>
           <div class="space-y-2 pt-2 border-t ${isLight ? 'border-zinc-200' : 'border-zinc-900'}">
             <div class="flex items-baseline justify-between">
-              <span class="product-price font-mono text-sm sm:text-lg font-black">₹${pPrice.toLocaleString('en-IN')}</span>
+              <span class="product-price font-mono text-xs sm:text-lg font-black">₹${pPrice.toLocaleString('en-IN')}</span>
             </div>
             <div class="grid grid-cols-2 gap-1.5 sm:gap-2">
-              <button onclick="event.stopPropagation(); addToCartDirect('${p.id}')" class="btn-outline w-full border font-bold py-1.5 sm:py-2 text-[8px] sm:text-[10px] uppercase tracking-wider transition rounded-lg sm:rounded-xl">Add</button>
-              <button onclick="event.stopPropagation(); buyNowDirect('${p.id}')" class="btn-outline w-full border font-bold py-1.5 sm:py-2 text-[8px] sm:text-[10px] uppercase tracking-wider text-center flex items-center justify-center transition rounded-lg sm:rounded-xl shadow-sm">Buy</button>
+              <button onclick="event.stopPropagation(); addToCartDirect('${p.id}')" class="btn-outline w-full border font-bold py-1.5 sm:py-2 text-[8px] sm:text-[10px] uppercase tracking-wider transition rounded-lg">Add</button>
+              <button onclick="event.stopPropagation(); buyNowDirect('${p.id}')" class="btn-outline w-full border font-bold py-1.5 sm:py-2 text-[8px] sm:text-[10px] uppercase tracking-wider text-center flex items-center justify-center transition rounded-lg shadow-sm">Buy</button>
             </div>
           </div>
         `;
@@ -485,9 +477,7 @@
             setInterval(() => {
                 currentImgIdx = (currentImgIdx + 1) % imgList.length;
                 const imgElement = document.getElementById(`storeImg_${index}`);
-                if (imgElement) {
-                    imgElement.src = imgList[currentImgIdx];
-                }
+                if (imgElement) imgElement.src = imgList[currentImgIdx];
             }, 2000);
         }
       });
@@ -502,7 +492,6 @@
       document.getElementById('modalTitle').innerText = activeProduct.name;
       document.getElementById('modalPrice').innerText = `₹${Number(activeProduct.price).toLocaleString('en-IN')}`;
 
-      // Key Features Population
       const kfContainer = document.getElementById('keyFeaturesContainer');
       const kfGrid = document.getElementById('modalKeyFeaturesGrid');
       if (activeProduct.keyFeatures && activeProduct.keyFeatures.trim() !== '') {
@@ -522,7 +511,6 @@
         kfContainer.classList.add('hidden');
       }
 
-      // Details / Description Population
       const detailsContainer = document.getElementById('detailsContainer');
       const modalDetailsText = document.getElementById('modalDetailsText');
       if (activeProduct.details && activeProduct.details.trim() !== '') {
@@ -537,14 +525,11 @@
       modalImgEl.src = imgList[0];
 
       if (modalImageInterval) clearInterval(modalImageInterval);
-
       if (imgList.length > 1) {
         let modalImgIdx = 0;
         modalImageInterval = setInterval(() => {
           modalImgIdx = (modalImgIdx + 1) % imgList.length;
-          if (modalImgEl) {
-            modalImgEl.src = imgList[modalImgIdx];
-          }
+          if (modalImgEl) modalImgEl.src = imgList[modalImgIdx];
         }, 2000);
       }
       
