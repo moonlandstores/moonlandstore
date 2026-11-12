@@ -537,7 +537,7 @@
     </div>
   </div>
 
-  <!-- Custom Add to Cart Success Popup Modal -->
+  <!-- Custom Add to Cart Success Popup Modal (Updated to open Cart Drawer on 'View Cart') -->
   <div id="addToCartSuccessModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm hidden p-4 transition-all duration-300">
     <div class="store-modal-box border p-6 max-w-xs sm:max-w-sm w-full shadow-2xl space-y-4 text-center relative rounded-2xl">
       <div class="w-12 h-12 bg-cyan-500/20 text-cyan-400 rounded-full flex items-center justify-center mx-auto text-lg shadow-md">
@@ -552,7 +552,7 @@
         <button onclick="closeAddToCartModal()" class="border btn-outline font-bold py-2.5 text-[9px] sm:text-[10px] uppercase tracking-wider transition rounded-xl shadow-sm">
           Continue
         </button>
-        <button onclick="window.location.href='order_2.html'" class="border btn-outline font-black py-2.5 text-[9px] sm:text-[10px] uppercase tracking-wider transition shadow-lg flex items-center justify-center gap-1 rounded-xl">
+        <button onclick="openCartDrawerFromPopup()" class="border btn-outline font-black py-2.5 text-[9px] sm:text-[10px] uppercase tracking-wider transition shadow-lg flex items-center justify-center gap-1 rounded-xl">
           <i class="fa-solid fa-arrow-right"></i> View Cart
         </button>
       </div>
@@ -672,6 +672,11 @@
     function closeAddToCartModal() {
       const modal = document.getElementById('addToCartSuccessModal');
       if(modal) modal.classList.add('hidden');
+    }
+
+    function openCartDrawerFromPopup() {
+      closeAddToCartModal();
+      openCartModal();
     }
 
     function renderCartDrawer() {
@@ -969,7 +974,7 @@
       }
       function drawStars() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-        stars.buttons = stars.forEach(s => {
+        stars.forEach(s => {
           s.y += s.speed;
           if (s.y < 0) s.y = canvas.height;
           if (s.y > canvas.height) s.y = 0;
