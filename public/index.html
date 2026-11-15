@@ -276,11 +276,11 @@
 
   <div class="marquee-bar bg-black text-zinc-300 py-3 px-4 text-[11px] font-extrabold tracking-[0.25em] uppercase border-b overflow-hidden whitespace-nowrap z-20">
     <marquee behavior="scroll" direction="left" scrollamount="5">
-      <span class="inline-flex items-center gap-2 mx-6"><i class="fa-solid fa-bolt text-yellow-400"></i> MOONLAND SPECIAL: UNLIMITED REFER & EARN ₹500 INSTANT UPI CASHBACK PER REFERRAL![cite: 7]</span>
+      <span class="inline-flex items-center gap-2 mx-6"><i class="fa-solid fa-bolt text-yellow-400"></i> MOONLAND SPECIAL: UNLIMITED REFER & EARN ₹500 INSTANT UPI CASHBACK PER REFERRAL!</span>
     </marquee>
   </div>
 
-  <!-- Header / Navbar (Exactly matched with store.html) -->
+  <!-- Header / Navbar -->
   <header class="sticky top-0 z-50 bg-black/90 backdrop-blur-xl border-b border-zinc-900">
     <div class="max-w-7xl mx-auto px-4 sm:px-12 flex justify-between items-center h-16 sm:h-20 relative">
       <a href="index.html" class="flex items-center space-x-2.5 group">
@@ -308,7 +308,7 @@
       </div>
     </div>
 
-    <!-- Mobile Dropdown Menu (Exactly matched with store.html) -->
+    <!-- Mobile Dropdown Menu -->
     <div id="mobileMenuDropdown" class="hidden absolute top-full left-0 w-full bg-white dark:bg-black border-b border-zinc-200 dark:border-zinc-900 px-6 py-5 space-y-4 text-xs uppercase font-medium tracking-[0.2em] shadow-2xl z-50">
       <a href="index.html" class="block font-bold">Home</a>
       <a href="store.html" class="block opacity-80 hover:opacity-100">Store</a>
@@ -482,7 +482,7 @@
   <!-- Product Detail Modal -->
   <div id="productDetailModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md hidden p-3 sm:p-4">
     <div class="store-modal-box border max-w-3xl w-full p-5 sm:p-8 relative shadow-2xl rounded-2xl space-y-4 sm:space-y-5 max-h-[90vh] overflow-y-auto">
-      <button onclick="closeProductModal()" class="absolute top-3 right-3 text-zinc-400 hover:text-white text-base sm:text-lg border border-zinc-700 w-8 h-8 sm:w-9 sm:h-9 flex items-center justify-center transition rounded-full z-10">
+      <button onclick="closeProductModal()" class="absolute top-3 right-3 text-zinc-400 hover:text-white text-base sm:text-lg border border-zinc-700 w-8 h-8 sm:w-9 sm:h-9 flex items-center justify-center transition rounded-full z-10 cursor-pointer">
         <i class="fa-solid fa-xmark"></i>
       </button>
 
@@ -521,15 +521,15 @@
             <div class="flex items-center gap-3">
               <span class="text-xs font-bold uppercase tracking-widest opacity-90">Quantity:</span>
               <div class="quantity-box-dark flex items-center border border-zinc-700 bg-black rounded-xl overflow-hidden shadow-sm">
-                <button onclick="adjustQty(-1)" class="px-3 py-1 font-mono hover:bg-zinc-800 text-white text-sm">-</button>
+                <button onclick="adjustQty(-1)" class="px-3 py-1 font-mono hover:bg-zinc-800 text-white text-sm cursor-pointer">-</button>
                 <span id="modalQty" class="px-3.5 py-1 font-mono text-xs font-bold text-white">1</span>
-                <button onclick="adjustQty(1)" class="px-3 py-1 font-mono hover:bg-zinc-800 text-white text-sm">+</button>
+                <button onclick="adjustQty(1)" class="px-3 py-1 font-mono hover:bg-zinc-800 text-white text-sm cursor-pointer">+</button>
               </div>
             </div>
 
             <div class="flex gap-2.5 pt-1">
-              <button onclick="addCurrentToCart()" class="flex-1 btn-outline border font-bold py-2.5 sm:py-3 uppercase tracking-wider text-[11px] sm:text-xs transition shadow-sm text-center rounded-xl">Add to Cart</button>
-              <button onclick="buyCurrentNow()" class="flex-1 btn-outline border font-bold py-2.5 sm:py-3 uppercase tracking-wider text-[11px] sm:text-xs transition shadow-sm text-center rounded-xl">Buy Now</button>
+              <button onclick="addCurrentToCart()" class="flex-1 btn-outline border font-bold py-2.5 sm:py-3 uppercase tracking-wider text-[11px] sm:text-xs transition shadow-sm text-center rounded-xl cursor-pointer">Add to Cart</button>
+              <button onclick="buyCurrentNow()" class="flex-1 btn-outline border font-bold py-2.5 sm:py-3 uppercase tracking-wider text-[11px] sm:text-xs transition shadow-sm text-center rounded-xl cursor-pointer">Buy Now</button>
             </div>
           </div>
         </div>
@@ -549,10 +549,10 @@
         <p class="text-[10px] opacity-80 font-light">The item has been added to your cart.</p>
       </div>
       <div class="grid grid-cols-2 gap-2.5 pt-2">
-        <button onclick="closeAddToCartModal()" class="border btn-outline font-bold py-2.5 text-[9px] sm:text-[10px] uppercase tracking-wider transition rounded-xl shadow-sm">
+        <button onclick="closeAddToCartModal()" class="border btn-outline font-bold py-2.5 text-[9px] sm:text-[10px] uppercase tracking-wider transition rounded-xl shadow-sm cursor-pointer">
           Continue
         </button>
-        <button onclick="openCartDrawerFromPopup()" class="border btn-outline font-black py-2.5 text-[9px] sm:text-[10px] uppercase tracking-wider transition shadow-lg flex items-center justify-center gap-1 rounded-xl">
+        <button onclick="openCartDrawerFromPopup()" class="border btn-outline font-black py-2.5 text-[9px] sm:text-[10px] uppercase tracking-wider transition shadow-lg flex items-center justify-center gap-1 rounded-xl cursor-pointer">
           <i class="fa-solid fa-arrow-right"></i> View Cart
         </button>
       </div>
@@ -564,9 +564,10 @@
   </footer>
 
   <!-- PROMO MODAL -->
-  <div id="promoModalOverlay" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-md flex items-center justify-center p-4 opacity-0 invisible">
+  <div id="promoModalOverlay" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-md flex items-center justify-center p-4 opacity-0 invisible transition-all duration-300">
     <div class="relative w-full max-w-xl promo-popup-box border p-6 sm:p-10 jaguar-popup-card shadow-2xl text-center space-y-6 rounded-2xl">
-      <button onclick="closePromoModal()" class="absolute top-4 right-4 w-8 h-8 border border-zinc-400 dark:border-zinc-700 hover:border-black dark:hover:border-white text-zinc-600 dark:text-zinc-400 hover:text-black dark:hover:text-white flex items-center justify-center transition rounded-full">
+      <!-- Fixed Close Button -->
+      <button onclick="closePromoModal()" class="absolute top-4 right-4 w-8 h-8 border border-zinc-400 dark:border-zinc-700 hover:border-black dark:hover:border-white text-zinc-600 dark:text-zinc-400 hover:text-black dark:hover:text-white flex items-center justify-center transition rounded-full cursor-pointer z-50">
         <i class="fa-solid fa-xmark text-sm"></i>
       </button>
 
@@ -601,7 +602,7 @@
       </p>
 
       <div class="pt-2">
-        <a href="store.html" onclick="closePromoModal()" class="block w-full bg-black dark:bg-gradient-to-r dark:from-red-600 dark:to-yellow-500 text-white dark:text-black hover:opacity-90 font-black py-4 text-xs uppercase tracking-[0.25em] transition shadow-2xl text-center rounded-xl">
+        <a href="store.html" onclick="closePromoModal()" class="block w-full bg-black dark:bg-gradient-to-r dark:from-red-600 dark:to-yellow-500 text-white dark:text-black hover:opacity-90 font-black py-4 text-xs uppercase tracking-[0.25em] transition shadow-2xl text-center rounded-xl cursor-pointer">
           Shop Clearance Sale Now <i class="fa-solid fa-arrow-right ml-1"></i>
         </a>
       </div>
@@ -614,7 +615,7 @@
       <div class="space-y-6">
         <div class="flex justify-between items-center border-b border-zinc-200 dark:border-zinc-900 pb-4">
           <h2 class="text-sm font-black uppercase tracking-[0.25em]">Your Shopping Cart</h2>
-          <button onclick="closeCartModal()" class="opacity-70 hover:opacity-100 text-sm"><i class="fa-solid fa-xmark"></i></button>
+          <button onclick="closeCartModal()" class="opacity-70 hover:opacity-100 text-sm cursor-pointer"><i class="fa-solid fa-xmark"></i></button>
         </div>
         <div id="cartDrawerItems" class="space-y-4 overflow-y-auto max-h-[60vh] pr-2"></div>
       </div>
@@ -624,7 +625,7 @@
           <span>Total Amount:</span>
           <span id="cartDrawerTotal" class="font-bold text-emerald-600 dark:text-emerald-400">₹0</span>
         </div>
-        <button onclick="proceedToCheckout()" class="w-full btn-outline border py-3.5 text-xs uppercase tracking-[0.2em] font-black transition rounded-xl shadow-lg">
+        <button onclick="proceedToCheckout()" class="w-full btn-outline border py-3.5 text-xs uppercase tracking-[0.2em] font-black transition rounded-xl shadow-lg cursor-pointer">
           Proceed to Checkout
         </button>
       </div>
@@ -705,7 +706,7 @@
               <div class="font-bold uppercase tracking-wider">${item.title || item.name}</div>
               <div class="opacity-80 font-mono mt-1">₹${itemPrice} x ${qty}</div>
             </div>
-            <button onclick="removeFromCart(${idx})" class="text-zinc-400 hover:text-red-500 p-2"><i class="fa-solid fa-trash text-xs"></i></button>
+            <button onclick="removeFromCart(${idx})" class="text-zinc-400 hover:text-red-500 p-2 cursor-pointer"><i class="fa-solid fa-trash text-xs"></i></button>
           </div>
         `;
       }).join('');
@@ -788,7 +789,7 @@
 
       if(dotsContainer) {
         dotsContainer.innerHTML = homeProducts.map((_, i) => `
-          <button onclick="goToSlide(${i})" class="w-2.5 h-2.5 rounded-full transition-all duration-300 ${i === 0 ? 'bg-cyan-400 w-6' : 'bg-zinc-600'}"></button>
+          <button onclick="goToSlide(${i})" class="w-2.5 h-2.5 rounded-full transition-all duration-300 cursor-pointer ${i === 0 ? 'bg-cyan-400 w-6' : 'bg-zinc-600'}"></button>
         `).join('');
       }
     }
@@ -821,9 +822,9 @@
 
       dots.forEach((dot, i) => {
         if (i === currentSlideIndex) {
-          dot.className = "w-6 h-2.5 bg-cyan-400 rounded-full transition-all duration-300 shadow-[0_0_10px_rgba(56,189,248,0.5)]";
+          dot.className = "w-6 h-2.5 bg-cyan-400 rounded-full transition-all duration-300 shadow-[0_0_10px_rgba(56,189,248,0.5)] cursor-pointer";
         } else {
-          dot.className = "w-2.5 h-2.5 bg-zinc-600 rounded-full transition-all duration-300";
+          dot.className = "w-2.5 h-2.5 bg-zinc-600 rounded-full transition-all duration-300 cursor-pointer";
         }
       });
     }
@@ -940,7 +941,6 @@
     function closePromoModal() {
       const modal = document.getElementById('promoModalOverlay');
       if(modal) {
-        modal.classList.clear(); // fallback
         modal.classList.remove('opacity-100');
         modal.classList.add('opacity-0', 'invisible');
       }
