@@ -37,7 +37,7 @@
     html.light .product-card { 
       background-color: #ffffff !important; 
       border-color: #cbd5e1 !important; 
-      box-shadow: 0 4px 12px -2px rgba(15, 23, 42, 0.08); 
+      box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.08); 
     }
     html.light .product-card h3 { color: #0f172a !important; font-weight: 800 !important; }
     html.light .product-card p { color: #475569 !important; font-weight: 600 !important; }
@@ -68,7 +68,11 @@
     html.dark .stars-bg { display: block !important; }
     html.dark .product-card {
       background-color: #0c0c0c !important;
-      border-color: rgba(255, 255, 255, 0.1) !important;
+      border-color: rgba(255, 255, 255, 0.12) !important;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+    }
+    html.dark .product-card:hover {
+      border-color: rgba(56, 189, 248, 0.5) !important;
     }
     html.dark .store-modal-box { background: rgba(12,12,12,0.98) !important; border-color: rgba(255,255,255,0.2) !important; color: #ffffff !important; }
     html.dark .store-modal-inner { background: #000000 !important; border-color: #27272a !important; color: #ffffff !important; }
@@ -85,15 +89,16 @@
     }
 
     html.dark .btn-outline {
-      background-color: transparent !important;
-      border-color: rgba(255, 255, 255, 0.8) !important;
-      color: #ffffff !important;
-      font-weight: 700;
+      background: linear-gradient(135deg, #38bdf8, #0284c7) !important;
+      border: none !important;
+      color: #000000 !important;
+      font-weight: 800 !important;
       border-radius: 0.75rem;
+      box-shadow: 0 4px 12px rgba(56, 189, 248, 0.3);
     }
     html.dark .btn-outline:hover {
-      background-color: #ffffff !important;
-      color: #000000 !important;
+      background: linear-gradient(135deg, #7dd3fc, #38bdf8) !important;
+      box-shadow: 0 6px 16px rgba(56, 189, 248, 0.5);
     }
 
     html.dark #mobileMenuDropdown {
@@ -181,7 +186,7 @@
       </nav>
 
       <div class="flex items-center space-x-4">
-        <button onclick="openCartModal()" class="flex items-center space-x-1.5 text-[11px] uppercase tracking-[0.2em] font-medium transition hover:opacity-75">
+        <button onclick="openCartModal()" class="flex items-center space-x-1.5 text-[11px] uppercase tracking-[0.2em] font-medium transition hover:opacity-75 cursor-pointer">
           <i class="fa-solid fa-bag-shopping text-base sm:text-sm"></i>
           <span id="cartCountBadge" class="bg-black text-white dark:bg-white dark:text-black text-[9px] px-1.5 py-0.2 rounded-full font-bold ml-1">0</span>
         </button>
@@ -206,14 +211,14 @@
       </div>
     </div>
 
-    <!-- Mobile optimized 2 columns grid -->
-    <div id="dynamicProductsGrid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-8"></div>
+    <!-- Product Grid with Full & Clear Images -->
+    <div id="dynamicProductsGrid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6"></div>
   </main>
 
   <!-- Product Detail Modal -->
   <div id="productDetailModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md hidden p-3 sm:p-4">
     <div class="store-modal-box border max-w-3xl w-full p-5 sm:p-8 relative shadow-2xl rounded-2xl space-y-4 sm:space-y-5 max-h-[90vh] overflow-y-auto">
-      <button onclick="closeProductModal()" class="absolute top-3 right-3 text-zinc-400 hover:text-white text-base sm:text-lg border border-zinc-700 w-8 h-8 sm:w-9 sm:h-9 flex items-center justify-center transition rounded-full z-10">
+      <button onclick="closeProductModal()" class="absolute top-3 right-3 text-zinc-400 hover:text-white text-base sm:text-lg border border-zinc-700 w-8 h-8 sm:w-9 sm:h-9 flex items-center justify-center transition rounded-full z-10 cursor-pointer">
         <i class="fa-solid fa-xmark"></i>
       </button>
 
@@ -252,15 +257,15 @@
             <div class="flex items-center gap-3">
               <span class="text-xs font-bold uppercase tracking-widest opacity-90">Quantity:</span>
               <div class="quantity-wrapper flex items-center border border-zinc-700 bg-black rounded-xl overflow-hidden shadow-sm">
-                <button onclick="adjustQty(-1)" class="px-3 py-1 font-mono hover:bg-zinc-800 text-white text-sm">-</button>
+                <button onclick="adjustQty(-1)" class="px-3 py-1 font-mono hover:bg-zinc-800 text-white text-sm cursor-pointer">-</button>
                 <span id="modalQty" class="px-3.5 py-1 font-mono text-xs font-bold text-white">1</span>
-                <button onclick="adjustQty(1)" class="px-3 py-1 font-mono hover:bg-zinc-800 text-white text-sm">+</button>
+                <button onclick="adjustQty(1)" class="px-3 py-1 font-mono hover:bg-zinc-800 text-white text-sm cursor-pointer">+</button>
               </div>
             </div>
 
             <div class="flex gap-2.5 pt-1">
-              <button onclick="addCurrentToCart()" class="flex-1 btn-outline border font-bold py-2.5 sm:py-3 uppercase tracking-wider text-[11px] sm:text-xs transition shadow-sm text-center rounded-xl">Add to Cart</button>
-              <button onclick="buyCurrentNow()" class="flex-1 btn-outline border font-bold py-2.5 sm:py-3 uppercase tracking-wider text-[11px] sm:text-xs transition shadow-sm text-center rounded-xl">Buy Now</button>
+              <button onclick="addCurrentToCart()" class="flex-1 btn-outline border font-bold py-2.5 sm:py-3 uppercase tracking-wider text-[11px] sm:text-xs transition shadow-sm text-center rounded-xl cursor-pointer">Add to Cart</button>
+              <button onclick="buyCurrentNow()" class="flex-1 btn-outline border font-bold py-2.5 sm:py-3 uppercase tracking-wider text-[11px] sm:text-xs transition shadow-sm text-center rounded-xl cursor-pointer">Buy Now</button>
             </div>
           </div>
         </div>
@@ -280,10 +285,10 @@
         <p class="text-[10px] opacity-80 font-light">The item has been added to your cart.</p>
       </div>
       <div class="grid grid-cols-2 gap-2.5 pt-2">
-        <button onclick="closeAddToCartModal()" class="border btn-outline font-bold py-2.5 text-[9px] sm:text-[10px] uppercase tracking-wider transition rounded-xl shadow-sm">
+        <button onclick="closeAddToCartModal()" class="border btn-outline font-bold py-2.5 text-[9px] sm:text-[10px] uppercase tracking-wider transition rounded-xl shadow-sm cursor-pointer">
           Continue
         </button>
-        <button onclick="window.location.href='order.html'" class="border btn-outline font-black py-2.5 text-[9px] sm:text-[10px] uppercase tracking-wider transition shadow-lg flex items-center justify-center gap-1 rounded-xl">
+        <button onclick="window.location.href='order.html'" class="border btn-outline font-black py-2.5 text-[9px] sm:text-[10px] uppercase tracking-wider transition shadow-lg flex items-center justify-center gap-1 rounded-xl cursor-pointer">
           <i class="fa-solid fa-arrow-right"></i> View Cart
         </button>
       </div>
@@ -296,7 +301,7 @@
       <div class="space-y-5">
         <div class="flex justify-between items-center border-b border-zinc-200 dark:border-zinc-900 pb-3">
           <h2 class="text-xs sm:text-sm font-black uppercase tracking-[0.2em]">Shopping Cart</h2>
-          <button onclick="closeCartModal()" class="text-zinc-500 dark:text-zinc-400 hover:text-black dark:hover:text-white text-sm"><i class="fa-solid fa-xmark"></i></button>
+          <button onclick="closeCartModal()" class="text-zinc-500 dark:text-zinc-400 hover:text-black dark:hover:text-white text-sm cursor-pointer"><i class="fa-solid fa-xmark"></i></button>
         </div>
         <div id="cartDrawerItems" class="space-y-3 overflow-y-auto max-h-[60vh] pr-1"></div>
       </div>
@@ -306,7 +311,7 @@
           <span>Total Amount:</span>
           <span id="cartDrawerTotal" class="font-bold text-emerald-600 dark:text-emerald-400">₹0</span>
         </div>
-        <button onclick="proceedToCheckout()" class="w-full btn-outline border py-3 text-xs uppercase tracking-[0.2em] font-black transition rounded-xl shadow-lg">
+        <button onclick="proceedToCheckout()" class="w-full btn-outline border py-3 text-xs uppercase tracking-[0.2em] font-black transition rounded-xl shadow-lg cursor-pointer">
           Proceed to Checkout
         </button>
       </div>
@@ -384,7 +389,7 @@
               <div class="font-bold uppercase tracking-wider text-[11px]">${item.title || item.name}</div>
               <div class="opacity-80 font-mono text-[10px] mt-0.5">₹${itemPrice} x ${qty}</div>
             </div>
-            <button onclick="removeFromCart(${idx})" class="text-zinc-400 hover:text-red-500 p-1.5"><i class="fa-solid fa-trash text-xs"></i></button>
+            <button onclick="removeFromCart(${idx})" class="text-zinc-400 hover:text-red-500 p-1.5 cursor-pointer"><i class="fa-solid fa-trash text-xs"></i></button>
           </div>
         `;
       }).join('');
@@ -426,7 +431,7 @@
           id: 'prod_1', 
           name: 'Signature Gas Stove', 
           price: 999, 
-          images: ['https://images.unsplash.com/photo-1556911220-e15b29be8c8f?auto=format&fit=crop&q=80&w=400'], 
+          images: ['https://images.unsplash.com/photo-1556911220-e15b29be8c8f?auto=format&fit=crop&q=80&w=400', 'https://images.unsplash.com/photo-1588854337236-6889d631faa8?auto=format&fit=crop&q=80&w=400'], 
           keyFeatures: 'Case Water Body: Pure Aluminium, Warranty: 2 Year',
           details: 'High-performance reliable gas stove.'
         }
@@ -450,23 +455,23 @@
         let pPrice = Number(p.price) || 0;
 
         let card = document.createElement('div');
-        card.className = `product-item product-card group border p-2 sm:p-4 flex flex-col justify-between space-y-2 transition duration-300 cursor-pointer rounded-xl shadow-sm`;
+        card.className = `product-item product-card group border p-3 sm:p-4 flex flex-col justify-between space-y-3 transition duration-300 cursor-pointer rounded-2xl shadow-sm`;
         card.innerHTML = `
-          <div onclick="openProductDetail('${p.id}')" class="h-36 sm:h-60 overflow-hidden bg-zinc-100 dark:bg-black flex items-center justify-center relative rounded-lg shadow-inner p-1">
-            <span class="absolute top-2 left-2 z-10 bg-black text-white dark:bg-white dark:text-black text-[7px] sm:text-[9px] font-extrabold uppercase px-2 py-0.5 tracking-wider rounded shadow">Assured</span>
-            <img id="storeImg_${index}" src="${imgList[0]}" class="w-full h-full object-contain group-hover:scale-105 transition duration-500">
+          <div onclick="openProductDetail('${p.id}')" class="h-56 sm:h-72 overflow-hidden bg-white rounded-xl relative border border-zinc-700 shadow-inner flex items-center justify-center p-2">
+            <span class="absolute top-2.5 left-2.5 z-10 bg-red-600 text-white text-[8px] font-extrabold uppercase tracking-widest px-2 py-1 rounded-md shadow">Assured</span>
+            <img id="storeImg_${index}" src="${imgList[0]}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
           </div>
           <div onclick="openProductDetail('${p.id}')" class="space-y-1">
             <h3 class="text-xs sm:text-base font-bold uppercase tracking-tight line-clamp-2 leading-tight">${pName}</h3>
             <p class="text-[9px] sm:text-xs opacity-80 font-medium truncate">${p.keyFeatures || 'Certified Product'}</p>
           </div>
-          <div class="space-y-2 pt-2 border-t ${isLight ? 'border-zinc-200' : 'border-zinc-900'}">
+          <div class="space-y-2 pt-2 border-t ${isLight ? 'border-zinc-200' : 'border-zinc-800'}">
             <div class="flex items-baseline justify-between">
-              <span class="product-price font-mono text-xs sm:text-lg font-black">₹${pPrice.toLocaleString('en-IN')}</span>
+              <span class="product-price font-mono text-xs sm:text-lg font-black text-emerald-400">₹${pPrice.toLocaleString('en-IN')}</span>
             </div>
-            <div class="grid grid-cols-2 gap-1.5 sm:gap-2">
-              <button onclick="event.stopPropagation(); addToCartDirect('${p.id}')" class="btn-outline w-full border font-bold py-1.5 sm:py-2 text-[8px] sm:text-[10px] uppercase tracking-wider transition rounded-lg">Add</button>
-              <button onclick="event.stopPropagation(); buyNowDirect('${p.id}')" class="btn-outline w-full border font-bold py-1.5 sm:py-2 text-[8px] sm:text-[10px] uppercase tracking-wider text-center flex items-center justify-center transition rounded-lg shadow-sm">Buy</button>
+            <div class="grid grid-cols-2 gap-2">
+              <button onclick="event.stopPropagation(); addToCartDirect('${p.id}')" class="btn-outline w-full border font-bold py-2 text-[9px] sm:text-xs uppercase tracking-wider transition rounded-xl text-center cursor-pointer">Add</button>
+              <button onclick="event.stopPropagation(); buyNowDirect('${p.id}')" class="btn-outline w-full border font-bold py-2 text-[9px] sm:text-xs uppercase tracking-wider text-center flex items-center justify-center transition rounded-xl shadow-sm cursor-pointer">Buy</button>
             </div>
           </div>
         `;
@@ -601,7 +606,7 @@
 
     function buyCurrentNow() {
       if (!activeProduct) return;
-      let cart = JSON.parse(localStorage.getItem('moonland_cart') === null ? '[]' : localStorage.getItem('moonland_cart'));
+      let cart = JSON.parse(localStorage.getItem('moonland_cart') || '[]');
       let existing = cart.find(i => i.id === activeProduct.id || i.title === activeProduct.name);
       if (existing) {
         existing.id = activeProduct.id;
