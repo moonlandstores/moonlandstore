@@ -16,12 +16,16 @@ html { background-color: #050505; color: #ffffff; }
 html.light { background-color: #f8fafc; color: #0f172a; }
 body { background-color: #050505 !important; color: #ffffff !important; transition: background-color 0.4s ease, color 0.4s ease; }
 
-/* Daylight Body Fix */
 html.light body { background-color: #f8fafc !important; color: #0f172a !important; }
 
-/* Fix for 3-line mobile menu in Dark Mode */
+/* NIGHT MODE NAVBAR OVERRIDE - DARK SLATE GRAY */
+html.dark header {
+  background-color: #1a1a1a !important;
+  border-bottom-color: #27272a !important;
+}
+
 html.dark #mobileMenuDropdown {
-  background-color: #000000 !important;
+  background-color: #1a1a1a !important;
   color: #ffffff !important;
   border-color: #27272a !important;
 }
@@ -43,7 +47,6 @@ html.dark #mobileMenuDropdown a {
 }
 .rocket-smoke-exhaust { animation: smokeExhaust 2.5s ease-out infinite; }
 
-/* Daylight Sky & Cloud Background Effect */
 @keyframes cloudFloatAnimation {
 0% { background-position: 0 0, 0 0; }
 100% { background-position: 1000px 0, 500px 0; }
@@ -58,7 +61,6 @@ html.dark #mobileMenuDropdown a {
   animation: cloudFloatAnimation 40s linear infinite;
 }
 
-/* Night Mode Animated Stars */
 @keyframes twinkle {
   0%, 100% { opacity: 0.2; transform: scale(0.8); }
   50% { opacity: 1; transform: scale(1.2); }
@@ -66,7 +68,6 @@ html.dark #mobileMenuDropdown a {
 .star-anim { animation: twinkle 3s ease-in-out infinite; }
 </style>
 
-<!-- AUTO THEME SWITCHER SCRIPT -->
 <script>
   (function() {
     const savedTheme = localStorage.getItem('moonland_theme');
@@ -85,10 +86,8 @@ html.dark #mobileMenuDropdown a {
 </head>
 <body id="orderBodyTag" class="font-sans antialiased min-h-screen flex flex-col justify-between selection:bg-white selection:text-black relative">
 
-<!-- Daylight Clouds Background Overlay -->
 <div class="clouds-bg hidden absolute inset-0 pointer-events-none z-0 overflow-hidden h-full"></div>
 
-<!-- Night Mode Animated Stars Background Overlay -->
 <div class="stars-bg hidden absolute inset-0 pointer-events-none z-0 overflow-hidden h-full">
   <div class="absolute top-16 left-20 w-1.5 h-1.5 bg-white rounded-full star-anim" style="animation-delay: 0s;"></div>
   <div class="absolute top-32 right-32 w-2 h-2 bg-yellow-200 rounded-full star-anim" style="animation-delay: 1s;"></div>
@@ -97,15 +96,13 @@ html.dark #mobileMenuDropdown a {
   <div class="absolute bottom-40 left-16 w-1.5 h-1.5 bg-white rounded-full star-anim" style="animation-delay: 2s;"></div>
 </div>
 
-<!-- Top Announcement Bar -->
 <div id="topAnnouncementBar" class="marquee-bar bg-black text-zinc-300 py-3 px-4 text-[11px] font-extrabold tracking-[0.25em] uppercase border-b overflow-hidden whitespace-nowrap z-20">
 <marquee behavior="scroll" direction="left" scrollamount="5">
 <span class="inline-flex items-center gap-2 mx-6"><i class="fa-solid fa-bolt text-yellow-400"></i> MOONLAND SPECIAL: UNLIMITED REFER & EARN ₹1,000 INSTANT UPI CASHBACK PER REFERRAL!</span>
 </marquee>
 </div>
 
-<!-- Header / Navbar -->
-<header id="orderHeader" class="sticky top-0 z-45 bg-black/90 backdrop-blur-xl border-b border-zinc-900">
+<header id="orderHeader" class="sticky top-0 z-45 backdrop-blur-xl border-b border-zinc-900">
 <div class="max-w-7xl mx-auto px-6 sm:px-12 flex justify-between items-center h-20">
 <a href="index.html" class="flex items-center space-x-3 group">
 <div id="logoBox" class="brand-logo-box w-7 h-7 border border-white flex items-center justify-center font-black text-xs tracking-widest text-white group-hover:bg-white group-hover:text-black transition duration-500 rounded-lg">M</div>
@@ -131,8 +128,7 @@ html.dark #mobileMenuDropdown a {
 </div>
 </div>
 
-<!-- Mobile Menu Dropdown -->
-<div id="mobileMenuDropdown" class="hidden absolute top-full left-0 w-full bg-white dark:bg-black border-b border-zinc-200 dark:border-zinc-900 px-8 py-6 space-y-5 text-xs uppercase font-medium tracking-[0.25em] shadow-2xl z-50">
+<div id="mobileMenuDropdown" class="hidden absolute top-full left-0 w-full bg-white border-b border-zinc-200 px-8 py-6 space-y-5 text-xs uppercase font-medium tracking-[0.25em] text-zinc-900 shadow-2xl z-50">
 <a href="store.html" class="block opacity-80 hover:opacity-100">Store</a>
 <a href="referral.html" class="block opacity-80 hover:opacity-100">Refer & Earn</a>
 <a href="track.html" class="block opacity-80 hover:opacity-100">Track Order</a>
@@ -140,7 +136,6 @@ html.dark #mobileMenuDropdown a {
 </div>
 </header>
 
-<!-- Main Checkout Content -->
 <main class="max-w-3xl mx-auto px-6 sm:px-12 py-16 w-full flex-grow space-y-8 relative z-10">
 <div class="text-center space-y-3">
 <span id="secBadge" class="inline-block text-[10px] font-extrabold uppercase tracking-[0.4em] border px-4 py-2 rounded-full shadow-sm">
@@ -163,10 +158,7 @@ Fill your delivery details, proceed to payment, and submit UTR.
 <div id="checkoutCartList" class="space-y-3 text-xs"></div>
 </div>
 
-<!-- Multi-Step Form Wrapper -->
 <form onsubmit="submitOrderForm(event)" class="space-y-5 pt-2 text-xs">
-
-<!-- STEP 1: Customer Details & Next Button -->
 <div id="checkoutStep1" class="space-y-5">
 <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
 <div class="space-y-1.5">
@@ -203,14 +195,12 @@ Fill your delivery details, proceed to payment, and submit UTR.
 </button>
 </div>
 
-<!-- STEP 2: Payment Options & UTR Submission (Hidden by Default) -->
 <div id="checkoutStep2" class="space-y-5 hidden">
 <div id="step2TopBar" class="border p-3.5 flex items-center justify-between rounded-xl shadow-sm">
 <span class="text-[11px] font-bold">Details filled successfully.</span>
 <button type="button" onclick="backToStep1()" class="text-xs hover:underline uppercase font-bold tracking-wider flex items-center gap-1"><i class="fa-solid fa-pen text-[10px]"></i> Edit Details</button>
 </div>
 
-<!-- Direct App Buttons -->
 <div class="space-y-2.5 pt-1">
 <p class="text-[10px] font-bold uppercase tracking-[0.2em] text-center">Direct Pay Via App (Mobile Only)</p>
 
@@ -223,14 +213,12 @@ Fill your delivery details, proceed to payment, and submit UTR.
 </a>
 </div>
 
-<!-- Collapsible Toggle Header ONLY for UPI QR Scanner -->
 <div class="border rounded-xl overflow-hidden shadow-sm pt-1">
 <button type="button" onclick="toggleScannerAccordion()" class="w-full p-3.5 flex items-center justify-between font-bold uppercase tracking-wider text-xs transition" id="scannerAccordionHeader">
 <span class="flex items-center gap-2"><i class="fa-solid fa-lock text-emerald-500"></i> Tap to View UPI QR Code & ID</span>
 <i class="fa-solid fa-chevron-down transition-transform duration-300" id="scannerChevron"></i>
 </button>
 
-<!-- Collapsible QR Body -->
 <div id="scannerAccordionBody" class="p-5 space-y-3 border-t hidden text-center">
 <p class="text-[10px] font-bold uppercase tracking-[0.2em]">Scan QR Code to Pay Total Amount</p>
 <div class="space-y-1">
@@ -248,23 +236,19 @@ Fill your delivery details, proceed to payment, and submit UTR.
 </div>
 </div>
 
-<!-- UTR 12-Digit Input -->
 <div class="space-y-1.5 pt-2">
 <label class="block text-[10px] font-bold uppercase tracking-[0.2em]">UTR / Transaction Reference Number (12 Digits) *</label>
 <input type="text" id="orderUtr" maxlength="12" pattern="[0-9]{12}" placeholder="Enter 12-digit UTR reference number" class="form-input-elem w-full border px-4 py-3.5 text-xs font-mono uppercase tracking-widest focus:outline-none transition rounded-xl">
 </div>
 
-<!-- Submit UTR Button -->
 <button type="submit" id="submitOrderBtn" class="w-full py-4 text-xs uppercase tracking-[0.2em] font-black transition shadow-lg flex items-center justify-center gap-2 rounded-xl">
 <i class="fa-solid fa-shield-check"></i> Submit UTR for Verification
 </button>
 </div>
-
 </form>
 </div>
 </main>
 
-<!-- Fixed Global 2-Day Loop Timer Popup (Day & Night Optimized) -->
 <div id="offerPromoModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4">
 <div id="offerPopupBox" class="relative w-full max-w-md border p-6 sm:p-8 shadow-2xl text-center space-y-5 rounded-2xl overflow-hidden bg-white dark:bg-zinc-900 text-slate-900 dark:text-white border-zinc-200 dark:border-zinc-800">
 <button onclick="closeOfferPopup()" class="absolute top-3 right-3 text-zinc-500 dark:text-zinc-400 hover:text-black dark:hover:text-white text-base border border-zinc-300 dark:border-zinc-700 w-8 h-8 flex items-center justify-center rounded-full transition">
@@ -276,7 +260,6 @@ Fill your delivery details, proceed to payment, and submit UTR.
 <h2 class="text-xl sm:text-2xl font-black uppercase tracking-wider pt-2">REFER & EARN UNLIMITED!</h2>
 </div>
 
-<!-- Global Loop Timer Grid (Exact 2-Day Sync) -->
 <div class="grid grid-cols-4 gap-2 py-1 font-mono">
 <div class="border border-zinc-300 dark:border-zinc-700 p-2 rounded-xl bg-zinc-50 dark:bg-black/50">
 <span id="timerDays" class="text-base sm:text-lg font-black text-cyan-600 dark:text-cyan-400">02</span>
@@ -296,7 +279,6 @@ Fill your delivery details, proceed to payment, and submit UTR.
 </div>
 </div>
 
-<!-- Simple Indian English Bullet Points -->
 <div class="border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-black/60 p-4 rounded-xl text-xs space-y-3 text-left font-sans">
 <div class="flex items-start gap-2.5">
 <i class="fa-solid fa-circle-check text-emerald-600 dark:text-emerald-400 mt-0.5"></i>
@@ -318,7 +300,6 @@ PROCEED TO ORDER
 </div>
 </div>
 
-<!-- Success Popup -->
 <div id="orderSuccessModal" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-md flex items-center justify-center p-4 hidden">
 <div id="successPopupBox" class="relative w-full max-w-lg border p-8 shadow-2xl text-center space-y-6 rounded-2xl overflow-hidden">
 <div class="relative h-36 flex items-center justify-center pointer-events-none">
@@ -353,7 +334,6 @@ ORDER SUCCESSFULLY SUBMITTED
 </div>
 </div>
 
-<!-- Footer -->
 <footer id="orderFooter" class="py-16 border-t text-center text-[10px] uppercase tracking-[0.3em] space-y-4 relative z-10">
 <p>© 2026 Moonland Store. All Rights Reserved.</p>
 <div class="flex justify-center space-x-8 font-bold">
@@ -374,10 +354,9 @@ function closeOfferPopup() {
   document.getElementById('offerPromoModal').classList.add('hidden');
 }
 
-// Fixed Global 2-Day Loop Timer (Resets automatically every 48 hours for everyone)
 function updateGlobalLoopTimer() {
-  const TWO_DAYS_SECONDS = 2 * 24 * 60 * 60; // 48 Hours in seconds
-  const now = Math.floor(Date.now() / 1000); // Current timestamp in seconds
+  const TWO_DAYS_SECONDS = 2 * 24 * 60 * 60;
+  const now = Math.floor(Date.now() / 1000);
   
   let remainingSeconds = TWO_DAYS_SECONDS - (now % TWO_DAYS_SECONDS);
 
@@ -398,7 +377,7 @@ function updateGlobalLoopTimer() {
 }
 
 setInterval(updateGlobalLoopTimer, 1000);
-updateGlobalLoopTimer(); // Run immediately on load
+updateGlobalLoopTimer();
 
 function applySystemThemeOrder() {
   const savedTheme = localStorage.getItem('moonland_theme');
@@ -482,7 +461,7 @@ function applySystemThemeOrder() {
   } else {
     bodyTag.className = "bg-[#050505] text-white font-sans antialiased min-h-screen flex flex-col justify-between selection:bg-white selection:text-black relative";
     topBar.className = "marquee-bar bg-black text-zinc-300 py-3 px-4 text-[11px] font-extrabold tracking-[0.25em] uppercase border-b border-zinc-900 overflow-hidden whitespace-nowrap z-20";
-    header.className = "sticky top-0 z-45 bg-black/90 backdrop-blur-xl border-b border-zinc-900";
+    header.className = "sticky top-0 z-45 backdrop-blur-xl border-b border-zinc-900";
     logoBox.className = "brand-logo-box w-7 h-7 border border-white flex items-center justify-center font-black text-xs tracking-widest text-white group-hover:bg-white group-hover:text-black transition duration-500 rounded-lg";
     brandTitle.className = "font-bold text-sm tracking-[0.4em] uppercase text-white";
     mobileMenu.className = "hidden absolute top-full left-0 w-full bg-black border-b border-zinc-900 px-8 py-6 space-y-5 text-xs uppercase font-medium tracking-[0.25em] text-white shadow-2xl z-50";
