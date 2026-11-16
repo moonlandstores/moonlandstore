@@ -43,6 +43,13 @@
     html.light .product-card p { color: #475569 !important; font-weight: 600 !important; }
     html.light .product-price { color: #059669 !important; font-weight: 900; }
     
+    html.light .search-box-input {
+      background-color: #ffffff !important;
+      border-color: #cbd5e1 !important;
+      color: #0f172a !important;
+    }
+    html.light .search-box-input::placeholder { color: #94a3b8 !important; }
+
     html.light .btn-outline { 
       border-color: #0f172a !important; 
       color: #0f172a !important; 
@@ -70,6 +77,13 @@
       background-color: #0c0c0c !important;
       border-color: rgba(255, 255, 255, 0.1) !important;
     }
+    html.dark .search-box-input {
+      background-color: #0c0c0c !important;
+      border-color: rgba(255, 255, 255, 0.15) !important;
+      color: #ffffff !important;
+    }
+    html.dark .search-box-input::placeholder { color: #71717a !important; }
+
     html.dark .store-modal-box { background: rgba(12,12,12,0.98) !important; border-color: rgba(255,255,255,0.2) !important; color: #ffffff !important; }
     html.dark .store-modal-inner { background: #000000 !important; border-color: #27272a !important; color: #ffffff !important; }
     html.dark .modal-details-box { background: rgba(0, 0, 0, 0.6) !important; border-color: rgba(255, 255, 255, 0.1) !important; color: #e4e4e7 !important; }
@@ -200,10 +214,18 @@
   </header>
 
   <main class="flex-grow max-w-7xl mx-auto px-3 sm:px-12 py-4 sm:py-12 w-full space-y-4 sm:space-y-8 relative z-10">
-    <div class="flex flex-col md:flex-row justify-between items-start md:items-end border-b border-zinc-300 dark:border-zinc-900 pb-3 sm:pb-4 gap-2">
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-end border-b border-zinc-300 dark:border-zinc-900 pb-4 gap-4">
       <div class="space-y-1">
         <span class="text-[9px] sm:text-[10px] font-extrabold uppercase tracking-[0.3em] sm:tracking-[0.4em] text-cyan-600 dark:text-cyan-400 bg-cyan-500/10 px-3 py-1 border border-cyan-500/20 rounded-full">Curated Lineup</span>
         <h2 class="text-2xl sm:text-5xl font-black uppercase tracking-[0.1em] sm:tracking-[0.15em] pt-1">Masterpieces</h2>
+      </div>
+      
+      <!-- Search Product Input Bar -->
+      <div class="w-full md:w-80 relative">
+        <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none text-zinc-400">
+          <i class="fa-solid fa-magnifying-glass text-xs"></i>
+        </span>
+        <input type="text" id="productSearchInput" oninput="filterStoreProducts()" placeholder="Search products..." class="search-box-input w-full pl-10 pr-4 py-2.5 text-xs font-semibold rounded-xl border outline-none transition shadow-sm">
       </div>
     </div>
 
@@ -435,11 +457,16 @@
       return cachedProducts;
     }
 
-    async function renderStoreGrid() {
+    async function renderStoreGrid(productsToRender = null) {
       const grid = document.getElementById('dynamicProductsGrid');
-      const products = await getProducts();
+      const products = productsToRender || await getProducts();
       if(!grid) return;
       grid.innerHTML = '';
+
+      if (products.length === 0) {
+        grid.innerHTML = `<div class="col-span-full text-center py-12 text-xs uppercase tracking-widest opacity-60">No products found matching your search.</div>`;
+        return;
+      }
 
       const savedTheme = localStorage.getItem('moonland_theme');
       const currentHour = new Date().getHours();
@@ -482,6 +509,17 @@
             }, 2000);
         }
       });
+    }
+
+    function filterStoreProducts() {
+      const query = document.getElementById('productSearchInput').value.toLowerCase().trim();
+      const filtered = cachedProducts.filter(p => {
+        const nameMatch = (p.name || '').toLowerCase().includes(query);
+        const featureMatch = (p.keyFeatures || '').toLowerCase().includes(query);
+        const detailsMatch = (p.details || '').toLowerCase().includes(query);
+        return nameMatch || featureMatch || detailsMatch;
+      });
+      renderStoreGrid(filtered);
     }
 
     function openProductDetail(prodId) {
@@ -623,7 +661,8 @@
       if (badge) badge.innerText = totalCount;
     }
 
-    document.addEventListener("DOMContentLoaded", () => {
+    document.addEventListener("DOMContentLoaded", async () => {
+      await getProducts();
       renderStoreGrid();
       updateGlobalCartCount();
     });
