@@ -3,604 +3,352 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Referral Payout History | Moonland & Ninja Admin</title>
+  <title>Privileges & Referral Rewards | MOONLAND STORE</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    @keyframes offerGlow {
+      0% { border-color: rgba(255, 255, 255, 0.1); box-shadow: 0 0 10px rgba(0, 0, 0, 0.9); }
+      50% { border-color: rgba(234, 179, 8, 0.7); box-shadow: 0 0 40px rgba(234, 179, 8, 0.25); }
+      100% { border-color: rgba(255, 255, 255, 0.1); box-shadow: 0 0 10px rgba(0, 0, 0, 0.9); }
+    }
+    .luxury-glow-card {
+      animation: offerGlow 4s ease-in-out infinite;
+    }
+
+    @keyframes coinFloat {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-8px) rotate(5deg); }
+    }
+    .animate-coin {
+      animation: coinFloat 3s ease-in-out infinite;
+    }
+
+    @keyframes badgePulse {
+      0% { transform: scale(1); opacity: 0.9; }
+      50% { transform: scale(1.05); opacity: 1; filter: brightness(1.2); }
+      100% { transform: scale(1); opacity: 0.9; }
+    }
+    .animate-badge-pulse {
+      animation: badgePulse 2s ease-in-out infinite;
+    }
+
+    @keyframes tickerFade {
+      0% { opacity: 0; transform: translateY(10px); }
+      20% { opacity: 1; transform: translateY(0); }
+      80% { opacity: 1; transform: translateY(0); }
+      100% { opacity: 0; transform: translateY(-10px); }
+    }
+    .ticker-animation {
+      animation: tickerFade 4s ease-in-out infinite;
+    }
+  </style>
 </head>
-<body class="bg-[#050505] text-slate-100 min-h-screen font-sans p-6 sm:p-10 space-y-8 selection:bg-white selection:text-black">
-  <div class="max-w-7xl mx-auto space-y-8">
+<body class="bg-[#050505] text-white font-sans antialiased min-h-screen flex flex-col justify-between selection:bg-white selection:text-black">
 
-    <div class="flex flex-col xl:flex-row justify-between items-start xl:items-center gap-6 pb-6 border-b border-zinc-900">
-      <div>
-        <h1 class="text-2xl font-black text-white uppercase tracking-wider flex items-center gap-3">
-          <span class="w-3 h-3 bg-cyan-400 rounded-full animate-pulse"></span>
-          Referral Payouts & Cashback History
-        </h1>
-        <p class="text-xs text-zinc-400 tracking-wide mt-1">Track upline referrers, approve/reject affiliate partners, send ₹1,000 cash rewards & update payout status</p>
-      </div>
+  <!-- Top Announcement Bar -->
+  <div class="bg-black text-zinc-300 py-2.5 px-4 text-[10px] font-bold tracking-[0.25em] uppercase border-b border-zinc-900 overflow-hidden whitespace-nowrap">
+    <marquee behavior="scroll" direction="left" scrollamount="5">
+      <span class="inline-flex items-center gap-2 mx-6"><i class="fa-solid fa-bolt text-yellow-400"></i> MOONLAND SPECIAL: UNLIMITED REFER & EARN ₹1,000 INSTANT UPI CASHBACK PER REFERRAL!</span>
+    </marquee>
+  </div>
 
-      <nav class="flex flex-row flex-nowrap items-center gap-0.5 text-[9.5px] font-bold uppercase tracking-wider whitespace-nowrap overflow-x-auto max-w-full pb-1">
-        <a href="dash-analytics-9x81.html" class="bg-black text-zinc-400 hover:text-white border border-zinc-800 px-2.5 py-2 transition">Dashboard</a>
-        <a href="utr-verification.html" class="bg-black text-zinc-400 hover:text-white border border-zinc-800 px-2.5 py-2 transition">UTR Verification</a>
-        <a href="manage-orders-8118.html" class="bg-black text-zinc-400 hover:text-white border border-zinc-800 px-2.5 py-2 transition">Orders</a>
-        <a href="inventory-products.html" class="bg-black text-zinc-400 hover:text-white border border-zinc-800 px-2.5 py-2 transition">Products</a>
-        <a href="customers-crm.html" class="bg-black text-zinc-400 hover:text-white border border-zinc-800 px-2.5 py-2 transition">Customers</a>
-        <a href="referral-payouts.html" class="bg-cyan-400 text-black border border-cyan-400 px-2.5 py-2 shadow-[0_0_15px_rgba(34,211,238,0.3)] transition">Referrals</a>
-        <a href="settings-gateways.html" class="bg-black text-zinc-400 hover:text-white border border-zinc-800 px-2.5 py-2 transition">Settings</a>
+  <!-- Header / Navbar perfectly matched with Store -->
+  <header class="sticky top-0 z-40 bg-black/90 backdrop-blur-xl border-b border-zinc-900">
+    <div class="max-w-7xl mx-auto px-6 sm:px-12 flex justify-between items-center h-24">
+      <a href="index.html" class="flex items-center space-x-4 group">
+        <div class="w-8 h-8 border border-white flex items-center justify-center font-black text-xs tracking-widest text-white group-hover:bg-white group-hover:text-black transition duration-500">M</div>
+        <div class="flex flex-col">
+          <span class="font-bold text-base tracking-[0.4em] uppercase text-white">MOONLAND</span>
+          <span class="text-[7px] tracking-[0.55em] text-zinc-400 uppercase font-bold">STORE</span>
+        </div>
+      </a>
+
+      <nav class="hidden md:flex items-center space-x-12 font-medium text-[11px] uppercase tracking-[0.25em] text-zinc-400">
+        <a href="store.html" class="hover:text-white transition pb-1">Store</a>
+        <a href="referral.html" class="text-white border-b border-white pb-1 tracking-[0.3em] font-bold">Refer & Earn</a>
+        <a href="track.html" class="hover:text-white transition pb-1">Track Order</a>
+        <a href="about.html" class="hover:text-white transition pb-1">About Us</a>
       </nav>
+
+      <div class="flex items-center space-x-6">
+        <button onclick="openCartModal()" class="flex items-center space-x-2 text-[11px] uppercase tracking-[0.2em] font-medium text-zinc-400 hover:text-white transition">
+          <i class="fa-solid fa-bag-shopping text-sm"></i>
+          <span id="cartCountBadge" class="bg-white text-black text-[9px] px-1.5 py-0.2 rounded-full font-bold ml-1">0</span>
+        </button>
+        <button onclick="toggleMobileMenu()" class="md:hidden text-white text-lg"><i class="fa-solid fa-bars"></i></button>
+      </div>
     </div>
 
-    <!-- Affiliate Partner Requests -->
-    <div class="bg-[rgba(12,12,12,0.75)] border border-cyan-500/30 p-6 space-y-5 shadow-xl rounded-none">
-      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-zinc-800/80 pb-4">
+    <!-- Mobile Menu Dropdown -->
+    <div id="mobileMenuDropdown" class="hidden md:hidden bg-black border-b border-zinc-900 px-8 py-6 space-y-5 text-xs uppercase font-medium tracking-[0.25em]">
+      <a href="store.html" class="block text-zinc-400 hover:text-white">Store</a>
+      <a href="referral.html" class="block text-white font-bold">Refer & Earn</a>
+      <a href="track.html" class="block text-zinc-400 hover:text-white">Track Order</a>
+      <a href="about.html" class="block text-zinc-400 hover:text-white">About Us</a>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="max-w-5xl mx-auto px-6 sm:px-12 py-16 w-full space-y-12 flex-grow">
+    
+    <!-- Page Title with Animated Motivation Badge -->
+    <div class="text-center space-y-4 max-w-2xl mx-auto">
+      <span class="inline-block text-[10px] font-bold uppercase tracking-[0.4em] text-yellow-400 border border-yellow-400/30 px-4 py-2 bg-yellow-400/10 animate-badge-pulse shadow-[0_0_20px_rgba(234,179,8,0.2)]">
+        <i class="fa-solid fa-fire-flame-curved text-yellow-400 mr-1.5"></i> UNLIMITED MONEY MAKER PROGRAM • LIVE PAYOUTS
+      </span>
+      <h1 class="text-3xl sm:text-6xl font-black uppercase tracking-[0.1em] text-white">
+        REFER & EARN <span class="text-yellow-400 font-light animate-coin inline-block">₹1,000 UPI</span>
+      </h1>
+      <p class="text-xs sm:text-sm text-zinc-400 font-light tracking-wide leading-relaxed">
+        Share your referral link and get a direct ₹1,000 instant cashback on every successful order straight into your bank account or UPI. No limits, infinite earnings!
+      </p>
+    </div>
+
+    <!-- Live Earnings Social Proof Ticker Box -->
+    <div class="bg-[#0c0c0c] border border-emerald-500/30 p-4 max-w-xl mx-auto flex items-center justify-between shadow-lg">
+      <div class="flex items-center space-x-3">
+        <div class="w-8 h-8 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-xs">
+          <i class="fa-solid fa-bolt"></i>
+        </div>
+        <div class="text-xs">
+          <span class="text-zinc-500 uppercase tracking-widest block text-[9px] font-bold">Live Payout Alert</span>
+          <p id="liveTickerText" class="text-zinc-200 font-mono font-medium ticker-animation">Loading live earnings...</p>
+        </div>
+      </div>
+      <span class="text-[10px] font-mono text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2.5 py-1 uppercase tracking-widest font-bold">Paid via UPI</span>
+    </div>
+
+    <!-- Interactive Referral Link Fetcher Box -->
+    <div class="bg-[#0c0c0c] border border-yellow-500/40 p-6 sm:p-8 luxury-glow-card space-y-4 text-center">
+      <h3 class="text-xs font-bold uppercase tracking-[0.2em] text-yellow-400">
+        <i class="fa-solid fa-link mr-2"></i> Get Your Registered Referral Link
+      </h3>
+      <div class="flex flex-col sm:flex-row gap-3 max-w-2xl mx-auto">
+        <input type="text" id="userReferralInput" placeholder="Enter your registered Mobile Number..." class="flex-1 bg-black border border-zinc-800 px-4 py-3.5 text-xs font-mono uppercase tracking-widest text-white focus:outline-none focus:border-yellow-400 transition">
+        <button onclick="fetchExistingRefLink()" class="bg-yellow-400 hover:bg-yellow-300 text-black font-black px-6 py-3.5 text-xs uppercase tracking-[0.2em] transition shadow-lg">
+          Fetch Link
+        </button>
+      </div>
+      <!-- Container starts hidden -->
+      <div id="generatedLinkContainer" class="hidden pt-2 space-y-2">
+        <div class="flex items-center justify-between bg-black border border-zinc-800 px-4 py-3 text-xs font-mono text-yellow-400">
+          <span id="displayRefUrl" class="truncate pr-4"></span>
+          <button onclick="copyRefLink()" class="bg-white text-black px-3 py-1 text-[10px] uppercase font-bold tracking-wider hover:bg-zinc-200 transition">Copy</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Referral Reward Slabs with Glow Animation -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="bg-[#0c0c0c] border border-zinc-900 p-8 text-center space-y-3 hover:border-zinc-700 transition">
+        <span class="text-[10px] uppercase tracking-widest text-zinc-500 font-bold">Milestone 1</span>
+        <div class="text-2xl font-mono font-black text-white">10 Refers</div>
+        <div class="text-3xl font-black text-yellow-400 font-mono">₹10,000</div>
+        <p class="text-[11px] text-zinc-400 uppercase tracking-wider font-semibold pt-2 border-t border-zinc-900">Instant Bank Transfer</p>
+      </div>
+
+      <div class="bg-[#0c0c0c] border border-yellow-500/50 p-8 text-center space-y-3 shadow-[0_0_30px_rgba(234,179,8,0.15)] luxury-glow-card">
+        <span class="text-[10px] uppercase tracking-widest text-yellow-400 font-bold">Milestone 2 (Popular)</span>
+        <div class="text-2xl font-mono font-black text-white">25 Refers</div>
+        <div class="text-3xl font-black text-yellow-400 font-mono">₹25,000</div>
+        <p class="text-[11px] text-zinc-400 uppercase tracking-wider font-semibold pt-2 border-t border-zinc-900">Instant Bank Transfer</p>
+      </div>
+
+      <div class="bg-[#0c0c0c] border border-zinc-900 p-8 text-center space-y-3 hover:border-zinc-700 transition">
+        <span class="text-[10px] uppercase tracking-widest text-zinc-500 font-bold">Milestone 3</span>
+        <div class="text-2xl font-mono font-black text-white">50 Refers</div>
+        <div class="text-3xl font-black text-yellow-400 font-mono">₹50,000</div>
+        <p class="text-[11px] text-zinc-400 uppercase tracking-wider font-semibold pt-2 border-t border-zinc-900">Instant Bank Transfer</p>
+      </div>
+    </div>
+
+    <!-- How It Works Card -->
+    <div class="bg-[#0c0c0c] border border-zinc-800 p-8 sm:p-12 space-y-8">
+      <div class="flex items-center space-x-4 border-b border-zinc-900 pb-6">
+        <div class="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center text-yellow-400 text-xl font-black animate-coin">
+          <i class="fa-solid fa-gift"></i>
+        </div>
         <div>
-          <span class="text-[10px] font-mono uppercase tracking-[0.2em] text-cyan-400 font-bold">PARTNER ONBOARDING</span>
-          <h2 class="text-lg font-black text-white uppercase tracking-wider mt-0.5">Affiliate Partner Requests</h2>
-        </div>
-        <div class="flex items-center gap-2 text-xs font-mono">
-          <span id="affPendingBadge" class="bg-amber-400/10 text-amber-300 border border-amber-400/30 px-3 py-1">Pending: 0</span>
-          <span id="affApprovedBadge" class="bg-emerald-400/10 text-emerald-300 border border-emerald-400/30 px-3 py-1">Approved: 0</span>
+          <h3 class="text-lg font-bold uppercase tracking-wider text-white">How Referral Works</h3>
+          <p class="text-xs text-zinc-400 tracking-wide">3 simple steps to start earning instant cash</p>
         </div>
       </div>
 
-      <div id="affiliateRequestsContainer" class="space-y-3 text-xs">
-        <p class="text-zinc-500 font-mono text-center py-4">Loading affiliate partner requests...</p>
-      </div>
-    </div>
-
-    <!-- Analytics Summary Cards -->
-    <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
-      <div class="bg-[rgba(12,12,12,0.7)] border border-white/10 p-6 space-y-2 shadow-xl rounded-none">
-        <p class="text-[10px] text-zinc-400 uppercase tracking-[0.2em] font-bold">Total Payouts Done</p>
-        <h3 id="statTotalPaidAmount" class="text-3xl font-mono font-black text-emerald-400">₹0</h3>
-      </div>
-      <div class="bg-[rgba(12,12,12,0.7)] border border-white/10 p-6 space-y-2 shadow-xl rounded-none">
-        <p class="text-[10px] text-zinc-400 uppercase tracking-[0.2em] font-bold">Pending Payouts Count</p>
-        <h3 id="statPendingCount" class="text-3xl font-mono font-black text-amber-400">0</h3>
-      </div>
-      <div class="bg-[rgba(12,12,12,0.7)] border border-white/10 p-6 space-y-2 shadow-xl rounded-none">
-        <p class="text-[10px] text-zinc-400 uppercase tracking-[0.2em] font-bold">Paid Payouts Count</p>
-        <h3 id="statPaidCount" class="text-3xl font-mono font-black text-cyan-400">0</h3>
-      </div>
-    </div>
-
-    <!-- Filters, Search & Sort Bar -->
-    <div class="flex flex-col lg:flex-row items-center justify-between gap-4 bg-[rgba(12,12,12,0.7)] border border-white/10 p-5 rounded-none shadow-xl">
-      <div class="flex flex-wrap items-center gap-2 w-full lg:w-auto">
-        <span class="text-xs font-bold text-zinc-400 uppercase tracking-widest mr-2"><i class="fa-solid fa-filter mr-1"></i> Status:</span>
-        <button onclick="setPayoutFilter('All')" id="filterBtnAll" class="bg-cyan-400 text-black font-black px-4 py-2.5 text-xs uppercase tracking-wider transition shadow-[0_0_15px_rgba(34,211,238,0.2)]">All</button>
-        <button onclick="setPayoutFilter('Pending')" id="filterBtnPending" class="bg-black border border-zinc-800 text-zinc-400 hover:text-white font-bold px-4 py-2.5 text-xs uppercase tracking-wider transition">Pending</button>
-        <button onclick="setPayoutFilter('Paid')" id="filterBtnPaid" class="bg-black border border-zinc-800 text-zinc-400 hover:text-white font-bold px-4 py-2.5 text-xs uppercase tracking-wider transition">Paid</button>
-
-        <select id="typeFilterSelect" onchange="renderPayoutsHistory()" class="bg-black border border-zinc-800 px-3 py-2.5 text-xs text-zinc-300 font-mono uppercase focus:outline-none focus:border-cyan-400 ml-2">
-          <option value="all">All Orders (Direct + Referral)</option>
-          <option value="direct">Direct / Organic Only</option>
-          <option value="referral">Referral Only</option>
-        </select>
-      </div>
-
-      <div class="relative w-full lg:w-60">
-        <i class="fa-solid fa-magnifying-glass absolute left-4 top-3.5 text-zinc-500 text-xs"></i>
-        <input type="text" id="payoutSearchInput" oninput="renderPayoutsHistory()" placeholder="Search referrer, buyer..." class="w-full bg-black border border-zinc-800 pl-10 pr-4 py-3 text-xs text-white focus:outline-none focus:border-cyan-400 transition font-medium">
-      </div>
-
-      <div class="flex flex-wrap items-center gap-3 w-full lg:w-auto justify-end">
-        <div class="flex items-center gap-2">
-          <span class="text-xs text-zinc-400 font-bold uppercase tracking-widest"><i class="fa-solid fa-trophy text-amber-400 mr-1"></i> Sort:</span>
-          <select id="payoutSortSelect" onchange="renderPayoutsHistory()" class="bg-black border border-zinc-800 px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-cyan-400 font-mono uppercase">
-            <option value="newest">Newest First</option>
-            <option value="oldest">Oldest First</option>
-            <option value="topEarners">🏆 Top Referrers (Most Paid)</option>
-            <option value="lowEarners">📉 Lowest Referrers (Least Paid)</option>
-          </select>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-xs text-zinc-300">
+        <div class="space-y-2">
+          <div class="text-yellow-400 font-mono font-bold text-sm">01. Place Order</div>
+          <p class="text-zinc-400 leading-relaxed">Place any order from our store. Once your order is verified, you will receive your unique referral link.</p>
         </div>
-
-        <div class="flex items-center gap-2">
-          <input type="date" id="payoutDateFilter" onchange="renderPayoutsHistory()" class="bg-black border border-zinc-800 px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-cyan-400 font-mono">
-          <button onclick="clearFilters()" class="bg-zinc-900 hover:bg-zinc-800 text-zinc-300 hover:text-white border border-zinc-800 px-4 py-2.5 text-xs font-bold uppercase tracking-wider transition">Clear</button>
+        <div class="space-y-2">
+          <div class="text-yellow-400 font-mono font-bold text-sm">02. Share Link</div>
+          <p class="text-zinc-400 leading-relaxed">Share your referral link with your friends and on social media. Anyone who buys using your link will be tracked.</p>
+        </div>
+        <div class="space-y-2">
+          <div class="text-yellow-400 font-mono font-bold text-sm">03. Get ₹1,000 UPI</div>
+          <p class="text-zinc-400 leading-relaxed">As soon as your friend places an order, a direct ₹1,000 reward will be sent straight to your UPI or bank account.</p>
         </div>
       </div>
-    </div>
 
-    <!-- Payout History Container -->
-    <div id="payoutHistoryContainer" class="space-y-4"></div>
-  </div>
-
-  <!-- Custom Toast Notification -->
-  <div id="customToast" class="fixed bottom-6 right-6 z-50 transform translate-y-24 opacity-0 transition-all duration-300 pointer-events-none">
-    <div class="bg-[rgba(12,12,12,0.95)] border border-cyan-400/40 px-6 py-4 shadow-2xl flex items-center gap-3">
-      <div class="w-8 h-8 bg-cyan-400/20 text-cyan-400 flex items-center justify-center font-bold">
-        <i class="fa-solid fa-circle-check"></i>
-      </div>
-      <div>
-        <h4 class="text-xs font-bold text-white uppercase tracking-wider" id="toastTitle">Success</h4>
-        <p class="text-[11px] text-zinc-400" id="toastMessage">Payout status update ho gaya hai!</p>
+      <div class="pt-6 border-t border-zinc-900 text-center">
+        <a href="store.html" class="inline-block bg-white hover:bg-zinc-200 text-black font-black px-10 py-4 text-xs uppercase tracking-[0.25em] transition shadow-2xl">
+          Start Shopping & Get Referral Link
+        </a>
       </div>
     </div>
-  </div>
 
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-black text-zinc-600 py-16 border-t border-zinc-900 text-center text-[10px] uppercase tracking-[0.3em] space-y-4">
+    <p>© 2026 Moonland Store. All Rights Reserved.</p>
+    <div class="flex justify-center space-x-8 text-zinc-500">
+      <a href="index.html" class="hover:text-white transition">Store Home</a>
+      <a href="referral.html" class="hover:text-white transition">Refer & Earn</a>
+      <a href="track.html" class="hover:text-white transition">Track Order</a>
+      <a href="about.html" class="hover:text-white transition">About Us</a>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
   <script>
-    const PAYOUT_REWARD_AMOUNT = 1000;
-    const AFFILIATE_STORAGE_KEY = 'moonland_affiliate_partners_v1';
-    const ORDERS_FALLBACK_KEYS = ['moonland_orders_v1', 'orders'];
-    let currentFilter = 'All';
-    let cachedOrders = [];
-    let cachedAffiliates = [];
-    let payoutRecordMap = {};
-
-    document.addEventListener("DOMContentLoaded", () => {
-      fetchAffiliatesAndRender();
-      fetchOrdersAndRender();
-    });
-
-    function escapeHtml(str) {
-      return String(str ?? '')
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;')
-        .replace(/'/g, '&#39;');
+    function toggleMobileMenu() {
+      const dropdown = document.getElementById('mobileMenuDropdown');
+      if (dropdown) dropdown.classList.toggle('hidden');
     }
 
-    function showToast(title, message) {
-      const toast = document.getElementById('customToast');
-      document.getElementById('toastTitle').innerText = title;
-      document.getElementById('toastMessage').innerText = message;
-      toast.classList.remove('translate-y-24', 'opacity-0', 'pointer-events-none');
-      setTimeout(() => {
-        toast.classList.add('translate-y-24', 'opacity-0', 'pointer-events-none');
-      }, 3000);
+    const liveTickerEarnings = [
+      "₹1,000 sent to Rahul S. (Mumbai)",
+      "₹1,000 sent to Amit V. (Pune)",
+      "₹1,000 sent to Pooja P. (Nagpur)",
+      "₹1,000 sent to Sohail K. (Latur)",
+      "₹1,000 sent to Deepak K. (Nashik)",
+      "₹1,000 sent to Sneha D. (Thane)",
+      "₹1,000 sent to Vikram J. (Solapur)",
+      "₹1,000 sent to Rohan M. (Kalyan)",
+      "₹1,000 sent to Priyanka S. (Kolhapur)",
+      "₹1,000 sent to Imran Q. (Aurangabad)",
+      "₹1,000 sent to Akash G. (Nanded)",
+      "₹1,000 sent to Neha K. (Amravati)",
+      "₹1,000 sent to Sameer J. (Akola)",
+      "₹1,000 sent to Tanvi P. (Jalgaon)",
+      "₹1,000 sent to Kiran W. (Satara)"
+    ];
+
+    function startLiveTicker() {
+      const tickerEl = document.getElementById('liveTickerText');
+      if (!tickerEl) return;
+
+      let idx = 0;
+      setInterval(() => {
+        tickerEl.innerText = liveTickerEarnings[idx];
+        idx = (idx + 1) % liveTickerEarnings.length;
+      }, 3500);
     }
 
-    function getLocalAffiliates() {
-      try {
-        return JSON.parse(localStorage.getItem(AFFILIATE_STORAGE_KEY) || '[]');
-      } catch {
-        return [];
-      }
-    }
+    function showCustomPopup(title, message, isError = false) {
+      let existing = document.getElementById('customLuxuryModal');
+      if (existing) existing.remove();
 
-    function saveLocalAffiliates(list) {
-      localStorage.setItem(AFFILIATE_STORAGE_KEY, JSON.stringify(list));
-    }
+      let borderColor = isError ? 'border-red-500/50' : 'border-yellow-400/50';
+      let iconColor = isError ? 'text-red-400 bg-red-400/20' : 'text-yellow-400 bg-yellow-400/20';
+      let iconClass = isError ? 'fa-triangle-exclamation' : 'fa-circle-check';
 
-    function getLocalOrdersFallback() {
-      for (const key of ORDERS_FALLBACK_KEYS) {
-        try {
-          const parsed = JSON.parse(localStorage.getItem(key) || 'null');
-          if (Array.isArray(parsed) && parsed.length) return parsed;
-        } catch {}
-      }
-      return [];
-    }
-
-    function saveLocalOrdersFallback(list) {
-      try {
-        localStorage.setItem(ORDERS_FALLBACK_KEYS[0], JSON.stringify(list));
-      } catch {}
-    }
-
-    function generateAffiliateCode(name) {
-      const prefix = String(name || 'AFF').replace(/[^a-zA-Z]/g, '').toUpperCase().slice(0, 3).padEnd(3, 'X');
-      const randomNum = Math.floor(100000 + Math.random() * 900000);
-      return `AFF-${prefix}${randomNum}`;
-    }
-
-    async function fetchAffiliatesAndRender() {
-      const localList = getLocalAffiliates();
-      try {
-        const res = await fetch('/api/affiliate-partners');
-        if (res.ok) {
-          const data = await res.json();
-          const serverList = Array.isArray(data) ? data : (data.partners || []);
-          cachedAffiliates = serverList.length ? serverList : localList;
-          if (serverList.length) saveLocalAffiliates(serverList);
-        } else {
-          cachedAffiliates = localList;
-        }
-      } catch (err) {
-        console.warn('Affiliate API fallback to localStorage:', err);
-        cachedAffiliates = localList;
-      }
-      renderAffiliateRequests();
-    }
-
-    function renderAffiliateRequests() {
-      const container = document.getElementById('affiliateRequestsContainer');
-      const pendingCount = cachedAffiliates.filter(a => (a.status || 'Pending') === 'Pending').length;
-      const approvedCount = cachedAffiliates.filter(a => (a.status || 'Pending') === 'Approved').length;
-
-      document.getElementById('affPendingBadge').innerText = `Pending: ${pendingCount}`;
-      document.getElementById('affApprovedBadge').innerText = `Approved: ${approvedCount}`;
-
-      if (!cachedAffiliates.length) {
-        container.innerHTML = `<div class="bg-black border border-zinc-800/70 p-6 text-center text-zinc-500 font-mono">Koi affiliate partner application nahi mila.</div>`;
-        return;
-      }
-
-      container.innerHTML = cachedAffiliates.map((partner, index) => {
-        const partnerId = partner.id || `aff_${index}`;
-        const status = partner.status || 'Pending';
-        const isApproved = status === 'Approved';
-        const isRejected = status === 'Rejected';
-        const code = partner.referralCode || '';
-        const createdText = partner.createdAt && !isNaN(new Date(partner.createdAt).getTime())
-          ? new Date(partner.createdAt).toLocaleString('en-IN')
-          : 'N/A';
-
-        const statusBadgeClass = isApproved
-          ? 'bg-emerald-400/20 text-emerald-300 border border-emerald-400/40'
-          : isRejected
-            ? 'bg-red-500/20 text-red-300 border border-red-500/40'
-            : 'bg-amber-400/20 text-amber-300 border border-amber-400/40';
-
-        return `
-          <div class="bg-black border border-zinc-800/90 p-4 flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
-            <div class="space-y-1">
-              <div class="flex items-center gap-2 flex-wrap">
-                <strong class="text-white text-sm uppercase tracking-wider">${escapeHtml(partner.name)}</strong>
-                <span class="px-2.5 py-0.5 text-[10px] font-mono font-bold uppercase ${statusBadgeClass}">
-                  ${escapeHtml(status)}
-                </span>
-                ${code ? `<code class="bg-cyan-400/10 text-cyan-300 border border-cyan-400/30 px-2.5 py-0.5 font-mono font-bold">${escapeHtml(code)}</code>` : ''}
-              </div>
-              <p class="text-zinc-400 font-mono text-[11px]">
-                Phone: <span class="text-white">${escapeHtml(partner.phone)}</span> • UPI: <span class="text-amber-300">${escapeHtml(partner.upiId)}</span>
-              </p>
-              <p class="text-zinc-500 text-[11px]">Address: ${escapeHtml(partner.address)} • Applied: ${escapeHtml(createdText)}</p>
+      let modalHtml = `
+        <div id="customLuxuryModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/85 backdrop-blur-md p-4">
+          <div class="bg-[#0c0c0c] border ${borderColor} p-6 sm:p-8 max-w-sm w-full shadow-2xl space-y-5 text-center relative">
+            <div class="w-14 h-14 ${iconColor} rounded-full flex items-center justify-center mx-auto text-xl">
+              <i class="fa-solid ${iconClass}"></i>
             </div>
-
-            <div class="flex flex-wrap items-center gap-2">
-              ${!isApproved ? `
-                <button onclick="approveAffiliatePartner('${escapeHtml(partnerId)}')" class="bg-emerald-400 hover:bg-emerald-300 text-black font-black px-4 py-2 text-[11px] uppercase tracking-wider transition flex items-center gap-1.5">
-                  <i class="fa-solid fa-check"></i> Approve & Generate Code
-                </button>
-              ` : `
-                <button onclick="sendAffiliateCodeWhatsApp('${escapeHtml(partnerId)}')" class="bg-cyan-400 hover:bg-cyan-300 text-black font-black px-4 py-2 text-[11px] uppercase tracking-wider transition flex items-center gap-1.5">
-                  <i class="fa-brands fa-whatsapp text-sm"></i> Send Code on WhatsApp
-                </button>
-              `}
-              ${!isRejected ? `
-                <button onclick="rejectAffiliatePartner('${escapeHtml(partnerId)}')" class="bg-red-500/20 hover:bg-red-500/30 text-red-300 border border-red-500/40 font-black px-4 py-2 text-[11px] uppercase tracking-wider transition flex items-center gap-1.5">
-                  <i class="fa-solid fa-xmark"></i> Reject
-                </button>
-              ` : ''}
-            </div>
-          </div>
-        `;
-      }).join('');
-    }
-
-    async function approveAffiliatePartner(partnerId) {
-      const target = cachedAffiliates.find((a, idx) => (a.id || `aff_${idx}`) === partnerId);
-      if (!target) return;
-
-      const generatedCode = target.referralCode || generateAffiliateCode(target.name);
-      const updatedPayload = {
-        status: 'Approved',
-        referralCode: generatedCode,
-        approvedAt: new Date().toISOString()
-      };
-
-      try {
-        await fetch(`/api/affiliate-partners/${encodeURIComponent(partnerId)}`, {
-          method: 'PUT',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(updatedPayload)
-        });
-      } catch (err) {
-        console.warn('Affiliate approval backend sync skipped/failed:', err);
-      }
-
-      cachedAffiliates = cachedAffiliates.map((a, idx) => {
-        if ((a.id || `aff_${idx}`) === partnerId) {
-          return { ...a, ...updatedPayload };
-        }
-        return a;
-      });
-      saveLocalAffiliates(cachedAffiliates);
-      renderAffiliateRequests();
-      showToast('Affiliate Approved', `Code ${generatedCode} generate ho gaya hai!`);
-    }
-
-    async function rejectAffiliatePartner(partnerId) {
-      const target = cachedAffiliates.find((a, idx) => (a.id || `aff_${idx}`) === partnerId);
-      if (!target) return;
-
-      const updatedPayload = {
-        status: 'Rejected',
-        referralCode: '',
-        rejectedAt: new Date().toISOString()
-      };
-
-      try {
-        await fetch(`/api/affiliate-partners/${encodeURIComponent(partnerId)}`, {
-          method: 'PUT',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(updatedPayload)
-        });
-      } catch (err) {
-        console.warn('Affiliate rejection backend sync skipped/failed:', err);
-      }
-
-      cachedAffiliates = cachedAffiliates.map((a, idx) => {
-        if ((a.id || `aff_${idx}`) === partnerId) {
-          return { ...a, ...updatedPayload };
-        }
-        return a;
-      });
-      saveLocalAffiliates(cachedAffiliates);
-      renderAffiliateRequests();
-      showToast('Affiliate Rejected', 'Partner request Rejected mark kar di gayi hai.');
-    }
-
-    function sendAffiliateCodeWhatsApp(partnerId) {
-      const partner = cachedAffiliates.find((a, idx) => (a.id || `aff_${idx}`) === partnerId);
-      if (!partner || !partner.referralCode) return;
-
-      const cleanPhone = String(partner.phone || '').replace(/\D/g, '').slice(-10);
-      const refLink = `${window.location.origin}/store.html?ref=${encodeURIComponent(partner.referralCode)}`;
-      const msg = `Dear ${partner.name},\n\nYour application for the Moonland Store Affiliate Partner Program has been approved.\n\nAffiliate Referral Code: ${partner.referralCode}\nReferral Link: ${refLink}\n\nYou may now share your referral code or link to earn rewards on eligible completed orders.\n\nRegards,\nMoonland Store Team`;
-      window.open(`https://wa.me/91${cleanPhone}?text=${encodeURIComponent(msg)}`, '_blank');
-    }
-
-    function setPayoutFilter(filter) {
-      currentFilter = filter;
-      document.getElementById('filterBtnAll').className = filter === 'All' ? 'bg-cyan-400 text-black font-black px-4 py-2.5 text-xs uppercase tracking-wider transition shadow-[0_0_15px_rgba(34,211,238,0.2)]' : 'bg-black border border-zinc-800 text-zinc-400 hover:text-white font-bold px-4 py-2.5 text-xs uppercase tracking-wider transition';
-      document.getElementById('filterBtnPending').className = filter === 'Pending' ? 'bg-cyan-400 text-black font-black px-4 py-2.5 text-xs uppercase tracking-wider transition shadow-[0_0_15px_rgba(34,211,238,0.2)]' : 'bg-black border border-zinc-800 text-zinc-400 hover:text-white font-bold px-4 py-2.5 text-xs uppercase tracking-wider transition';
-      document.getElementById('filterBtnPaid').className = filter === 'Paid' ? 'bg-cyan-400 text-black font-black px-4 py-2.5 text-xs uppercase tracking-wider transition shadow-[0_0_15px_rgba(34,211,238,0.2)]' : 'bg-black border border-zinc-800 text-zinc-400 hover:text-white font-bold px-4 py-2.5 text-xs uppercase tracking-wider transition';
-      renderPayoutsHistory();
-    }
-
-    function clearFilters() {
-      document.getElementById('payoutSearchInput').value = '';
-      document.getElementById('payoutDateFilter').value = '';
-      document.getElementById('typeFilterSelect').value = 'all';
-      document.getElementById('payoutSortSelect').value = 'newest';
-      renderPayoutsHistory();
-    }
-
-    async function fetchOrdersAndRender() {
-      const localOrders = getLocalOrdersFallback();
-      try {
-        const res = await fetch('/api/orders');
-        if (res.ok) {
-          const allOrders = await res.json();
-          const list = Array.isArray(allOrders) ? allOrders : [];
-          if (list.length) saveLocalOrdersFallback(list);
-          cachedOrders = (list.length ? list : localOrders).filter(o => o.status !== 'Rejected');
-        } else {
-          cachedOrders = localOrders.filter(o => o.status !== 'Rejected');
-        }
-      } catch (err) {
-        console.warn('Orders API fallback to localStorage:', err);
-        cachedOrders = localOrders.filter(o => o.status !== 'Rejected');
-      }
-      renderPayoutsHistory();
-    }
-
-    function findReferrerInfo(enteredCode, orders) {
-      const codeLower = String(enteredCode || '').trim().toLowerCase();
-      if (!codeLower || codeLower === 'none' || codeLower === 'direct') return null;
-
-      const affMatch = cachedAffiliates.find(
-        (a) => String(a.referralCode || '').trim().toLowerCase() === codeLower
-      );
-      if (affMatch) {
-        return {
-          name: `${affMatch.name} (Affiliate)`,
-          upi: affMatch.upiId,
-          phone: affMatch.phone
-        };
-      }
-
-      const orderMatch = orders.find((item) => {
-        const refCode = String(item.userRefCode || item.myRefCode || item.ownRefCode || item.refCode || '').trim().toLowerCase();
-        return refCode && refCode === codeLower;
-      });
-      if (orderMatch) {
-        return {
-          name: orderMatch.customer || orderMatch.name || orderMatch.fullName,
-          upi: orderMatch.upiId || orderMatch.upi,
-          phone: orderMatch.phone || orderMatch.mobile
-        };
-      }
-
-      return null;
-    }
-
-    function renderPayoutsHistory() {
-      const orders = cachedOrders;
-      const container = document.getElementById('payoutHistoryContainer');
-      const searchQuery = document.getElementById('payoutSearchInput').value.toLowerCase().trim();
-      const selectedDate = document.getElementById('payoutDateFilter').value;
-      const typeVal = document.getElementById('typeFilterSelect').value;
-      const sortVal = document.getElementById('payoutSortSelect').value;
-
-      let totalPaidCount = 0;
-      let pendingCount = 0;
-      orders.forEach(o => {
-        if ((o.payoutStatus || 'Pending') === 'Paid') totalPaidCount++;
-        else pendingCount++;
-      });
-
-      document.getElementById('statTotalPaidAmount').innerText = `₹${(totalPaidCount * PAYOUT_REWARD_AMOUNT).toLocaleString('en-IN')}`;
-      document.getElementById('statPendingCount').innerText = pendingCount;
-      document.getElementById('statPaidCount').innerText = totalPaidCount;
-
-      let filteredOrders = orders.filter(o => {
-        const status = o.payoutStatus || 'Pending';
-        if (currentFilter === 'Paid' && status !== 'Paid') return false;
-        if (currentFilter === 'Pending' && status === 'Paid') return false;
-
-        const enteredCode = (o.enteredRefCode || o.refCodeUsed || o.referralCode || o.refCode || o.code || o.appliedRefCode || o.appliedCode || '').trim();
-        const isDirect = !enteredCode || enteredCode.toLowerCase() === 'none' || enteredCode.toLowerCase() === 'direct' || enteredCode === '';
-
-        if (typeVal === 'direct' && !isDirect) return false;
-        if (typeVal === 'referral' && isDirect) return false;
-
-        const refInfo = findReferrerInfo(enteredCode, orders);
-        const referrerName = (refInfo ? refInfo.name : 'direct / unknown referrer').toLowerCase();
-        const buyerName = (o.customer || o.name || '').toLowerCase();
-        const buyerPhone = (o.phone || '').toLowerCase();
-        const orderId = (o.id || '').toLowerCase();
-
-        const matchesSearch = !searchQuery || referrerName.includes(searchQuery) || buyerName.includes(searchQuery) || buyerPhone.includes(searchQuery) || enteredCode.toLowerCase().includes(searchQuery) || orderId.includes(searchQuery);
-        if (!matchesSearch) return false;
-
-        if (selectedDate) {
-          const rawDate = o.createdAt || o.timestamp || o.date;
-          if (!rawDate) return false;
-          const parsedDate = new Date(rawDate);
-          if (isNaN(parsedDate.getTime())) return false;
-          const orderDateStr = parsedDate.toISOString().split('T')[0];
-          if (orderDateStr !== selectedDate) return false;
-        }
-
-        return true;
-      });
-
-      let referrerCounts = {};
-      orders.forEach(o => {
-        const code = (o.enteredRefCode || o.refCodeUsed || o.referralCode || o.refCode || o.code || '').trim();
-        const refInfo = findReferrerInfo(code, orders);
-        const refName = refInfo ? refInfo.name : 'Direct / Unknown Referrer';
-        if ((o.payoutStatus || 'Pending') === 'Paid') {
-          referrerCounts[refName] = (referrerCounts[refName] || 0) + 1;
-        }
-      });
-
-      filteredOrders.sort((a, b) => {
-        const timeA = new Date(a.createdAt || a.timestamp || 0).getTime() || 0;
-        const timeB = new Date(b.createdAt || b.timestamp || 0).getTime() || 0;
-
-        if (sortVal === 'newest') return timeB - timeA;
-        if (sortVal === 'oldest') return timeA - timeB;
-
-        const codeA = (a.enteredRefCode || a.refCodeUsed || a.referralCode || a.refCode || a.code || '').trim();
-        const codeB = (b.enteredRefCode || b.refCodeUsed || b.referralCode || b.refCode || b.code || '').trim();
-
-        const refA = findReferrerInfo(codeA, orders);
-        const nameA = refA ? refA.name : 'Direct / Unknown Referrer';
-        const refB = findReferrerInfo(codeB, orders);
-        const nameB = refB ? refB.name : 'Direct / Unknown Referrer';
-
-        if (sortVal === 'topEarners') {
-          return (referrerCounts[nameB] || 0) - (referrerCounts[nameA] || 0);
-        } else if (sortVal === 'lowEarners') {
-          return (referrerCounts[nameA] || 0) - (referrerCounts[nameB] || 0);
-        }
-        return timeB - timeA;
-      });
-
-      if (filteredOrders.length === 0) {
-        container.innerHTML = `<div class="bg-[rgba(12,12,12,0.7)] border border-white/10 p-10 text-center text-zinc-500 text-xs uppercase tracking-widest shadow-xl">Is search ya filter ke mutabiq koi referral payout record nahi mila.</div>`;
-        return;
-      }
-
-      payoutRecordMap = {};
-      container.innerHTML = '';
-
-      filteredOrders.forEach((o, idx) => {
-        const recordKey = `rec_${idx}_${o.id || idx}`;
-        const payoutStatus = o.payoutStatus || 'Pending';
-        const enteredCode = (o.enteredRefCode || o.refCodeUsed || o.referralCode || o.refCode || o.code || 'None').trim();
-        const rawOrderDate = o.createdAt || o.timestamp;
-        const parsedOrderDate = rawOrderDate ? new Date(rawOrderDate) : null;
-        const orderDate = (parsedOrderDate && !isNaN(parsedOrderDate.getTime()))
-          ? parsedOrderDate.toLocaleString('en-IN')
-          : (o.date || 'N/A');
-
-        const paidTimeText = (payoutStatus === 'Paid' && o.payoutPaidAt)
-          ? `<span class="text-emerald-400 font-mono block mt-1"><i class="fa-solid fa-circle-check mr-1"></i> Paid At: ${escapeHtml(o.payoutPaidAt)}</span>`
-          : '';
-
-        const refInfo = findReferrerInfo(enteredCode, orders);
-        const buyerDisplayName = o.customer || o.name || 'Customer';
-        const referrerName = o.referrerName || (refInfo ? refInfo.name : 'Direct / Unknown Referrer');
-        const referrerUpi = o.referrerUpi || (refInfo ? refInfo.upi : (o.upiId || 'N/A'));
-        const referrerPhone = o.referrerPhone || (refInfo ? refInfo.phone : (o.phone || ''));
-
-        payoutRecordMap[recordKey] = {
-          refName: referrerName,
-          buyerName: buyerDisplayName,
-          upi: referrerUpi,
-          phone: referrerPhone
-        };
-
-        const whatsappButtonHtml = payoutStatus === 'Paid' ? `
-          <button onclick="sendPayoutWhatsAppByKey('${recordKey}')" class="bg-cyan-400 hover:bg-cyan-300 text-black font-black px-4 py-2.5 flex items-center gap-2 shadow-lg transition uppercase tracking-wider text-[11px]">
-            <i class="fa-brands fa-whatsapp text-sm"></i> WhatsApp Alert
-          </button>
-        ` : '';
-
-        container.innerHTML += `
-          <div class="bg-[rgba(12,12,12,0.7)] border border-white/10 p-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 text-xs shadow-xl rounded-none">
             <div class="space-y-2">
-              <div class="flex items-center gap-2">
-                <span class="w-2.5 h-2.5 rounded-none ${payoutStatus === 'Paid' ? 'bg-emerald-400' : 'bg-amber-400'}"></span>
-                <strong class="text-white text-sm uppercase tracking-wider">Payout Target (User A): ${escapeHtml(referrerName)}</strong>
-              </div>
-              <p class="text-zinc-400 font-mono">Referral Code Used: <code class="text-cyan-400 font-bold">${escapeHtml(enteredCode)}</code> | User A UPI ID: <span class="text-amber-300 font-bold">${escapeHtml(referrerUpi)}</span></p>
-              <p class="text-zinc-500 font-mono text-[11px]">Buyer (User B): ${escapeHtml(buyerDisplayName)} (${escapeHtml(o.phone || 'N/A')}) | Order ID: <span class="text-cyan-400 font-mono">${escapeHtml(o.id)}</span></p>
-              <p class="text-[10px] text-zinc-400 font-mono"><i class="fa-solid fa-clock text-cyan-400 mr-1"></i> Order Time: <span class="text-slate-300 font-medium">${escapeHtml(orderDate)}</span></p>
-              ${paidTimeText}
+              <h3 class="text-xs font-bold text-white uppercase tracking-widest">${title}</h3>
+              <p class="text-xs text-zinc-300 font-light leading-relaxed">${message}</p>
             </div>
-
-            <div class="flex flex-wrap items-center gap-3">
-              <div class="flex items-center bg-black p-1 border border-zinc-800 gap-1">
-                <button onclick="updatePayoutStatus('${escapeHtml(o.id)}', 'Paid')" class="px-4 py-2 font-bold uppercase tracking-wider transition ${payoutStatus === 'Paid' ? 'bg-emerald-400 text-black' : 'text-zinc-400 hover:text-white'}">
-                  <i class="fa-solid fa-check mr-1"></i> Paid (₹1K)
-                </button>
-                <button onclick="updatePayoutStatus('${escapeHtml(o.id)}', 'Pending')" class="px-4 py-2 font-bold uppercase tracking-wider transition ${payoutStatus !== 'Paid' ? 'bg-amber-400 text-black' : 'text-zinc-400 hover:text-white'}">
-                  <i class="fa-solid fa-clock mr-1"></i> Unpaid
-                </button>
-              </div>
-
-              ${whatsappButtonHtml}
-            </div>
+            <button onclick="document.getElementById('customLuxuryModal').remove()" class="w-full bg-white hover:bg-zinc-200 text-black font-black py-3.5 text-xs uppercase tracking-[0.2em] transition">
+              OK, Got It
+            </button>
           </div>
-        `;
-      });
+        </div>
+      `;
+      document.body.insertAdjacentHTML('beforeend', modalHtml);
     }
 
-    async function updatePayoutStatus(orderId, status) {
-      const paidAtVal = status === 'Paid' ? new Date().toLocaleString('en-IN') : null;
-      const payload = {
-        payoutStatus: status,
-        payoutPaidAt: paidAtVal
-      };
-
-      try {
-        const res = await fetch(`/api/referrals/${orderId}`, {
-          method: 'PUT',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload)
-        });
-
-        if (res.ok) {
-          fetchOrdersAndRender();
-          showToast('Status Updated', `Payout status successfully "${status}" set ho gaya hai!`);
-          return;
-        }
-      } catch (err) {
-        console.warn('Server payout update skipped/failed, updating local state:', err);
+    function fetchExistingRefLink() {
+      const val = document.getElementById('userReferralInput').value.trim();
+      const container = document.getElementById('generatedLinkContainer');
+      
+      if(!val) {
+        showCustomPopup('Missing Information', 'Please enter your registered mobile number.', true);
+        container.classList.add('hidden');
+        return;
       }
 
-      cachedOrders = cachedOrders.map(o => String(o.id) === String(orderId) ? { ...o, ...payload } : o);
-      saveLocalOrdersFallback(cachedOrders);
-      renderPayoutsHistory();
-      showToast('Status Updated (Local)', `Payout status "${status}" update ho gaya hai!`);
+      const orders = JSON.parse(localStorage.getItem('moonland_orders') || '[]');
+      const pending = JSON.parse(localStorage.getItem('moonland_pending_utr_orders') || '[]');
+      const verified = JSON.parse(localStorage.getItem('moonland_verified_orders') || '[]');
+      const allOrders = [...orders, ...pending, ...verified];
+
+      const found = allOrders.find(o => String(o.phone).trim() === String(val));
+
+      if (!found) {
+        showCustomPopup('Record Not Found', 'Mobile number not found in database! Please place an order first.', true);
+        container.classList.add('hidden');
+        document.getElementById('displayRefUrl').innerText = '';
+        return;
+      }
+
+      let storedCode = found.userRefCode || (found.enteredRefCode !== 'None' ? found.enteredRefCode : null) || found.refCode;
+
+      if (!storedCode) {
+        showCustomPopup('Referral Code Missing', 'No referral code assigned to this order yet.', true);
+        container.classList.add('hidden');
+        document.getElementById('displayRefUrl').innerText = '';
+        return;
+      }
+
+      const fullUrl = window.location.origin + '/store.html?ref=' + storedCode;
+      
+      document.getElementById('displayRefUrl').innerText = fullUrl;
+      container.classList.remove('hidden');
+      showCustomPopup('Success!', 'Your referral link has been fetched successfully.');
     }
 
-    function sendPayoutWhatsAppByKey(key) {
-      const rec = payoutRecordMap[key];
-      if (!rec) return;
-      const cleanPhone = String(rec.phone || '').replace(/\D/g, '').slice(-10);
-      const msg = `Dear ${rec.refName},\n\nWe are pleased to inform you that a referred order placed by ${rec.buyerName} has been successfully confirmed.\n\nYour referral reward of ₹${PAYOUT_REWARD_AMOUNT.toLocaleString('en-IN')} has been processed to your UPI ID (${rec.upi}).\n\nThank you for partnering with Moonland Store.\n\nRegards,\nMoonland Store Team`;
-      window.open(`https://wa.me/91${cleanPhone}?text=${encodeURIComponent(msg)}`, '_blank');
+    function copyRefLink() {
+      const urlText = document.getElementById('displayRefUrl').innerText;
+      if (!urlText) return;
+      navigator.clipboard.writeText(urlText);
+      showCustomPopup('Copied!', 'Referral link copied to clipboard successfully.');
     }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      startLiveTicker();
+
+      const inputField = document.getElementById('userReferralInput');
+      if (inputField) {
+        inputField.addEventListener('keypress', function(event) {
+          if (event.key === 'Enter') {
+            event.preventDefault();
+            fetchExistingRefLink();
+          }
+        });
+      }
+
+      const urlParams = new URLSearchParams(window.location.search);
+      const refCode = urlParams.get('ref');
+      if (refCode) {
+        localStorage.setItem('moonland_active_ref', refCode);
+      }
+
+      if (typeof updateGlobalCartCount === 'function') {
+        updateGlobalCartCount();
+      } else {
+        const cart = JSON.parse(localStorage.getItem('moonland_cart') || '[]');
+        const totalItems = cart.reduce((sum, item) => sum + (item.quantity || 1), 0);
+        const badge = document.getElementById('cartCountBadge');
+        if (badge) badge.innerText = totalItems;
+      }
+    });
   </script>
 </body>
 </html>
