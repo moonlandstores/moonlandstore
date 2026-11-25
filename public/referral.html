@@ -3,95 +3,353 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Affiliate Partner Program | Moonland Store</title>
+  <title>Privileges & Referral Rewards | MOONLAND STORE</title>
+  <!-- Browser Tab Favicon Logo -->
+  <link rel="icon" type="image/png" href="logo.png?v=999">
+  <link rel="shortcut icon" href="logo.png?v=999">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    /* Smooth theme transition & flash prevention */
+    html { background-color: #050505; color: #ffffff; }
+    html.light { background-color: #f8fafc; color: #0f172a; }
+    body { background-color: #050505 !important; color: #ffffff !important; transition: background-color 0.4s ease, color 0.4s ease; }
+
+    /* DAYLIGHT MODE OVERRIDES */
+    html.light body { background-color: #f8fafc !important; color: #0f172a !important; }
+    html.light header { background-color: rgba(255, 255, 255, 0.95) !important; border-bottom-color: #cbd5e1 !important; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); }
+
+    html.light .marquee-bar {
+      background: linear-gradient(135deg, #0f172a, #1e293b) !important;
+      color: #f8fafc !important;
+      border-bottom: 2px solid #38bdf8 !important;
+      font-weight: 800 !important;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+
+    html.light .brand-logo-box { border-color: #0f172a !important; background-color: #0f172a !important; color: #ffffff !important; }
+    html.light nav a, html.light header button { color: #334155 !important; font-weight: 700 !important; }
+    html.light nav a:hover, html.light header button:hover, html.light nav a.active-link { color: #0f172a !important; }
+    html.light .clouds-bg { display: block !important; }
+
+    html.light .about-card {
+      background: linear-gradient(135deg, #ffffff 0%, #f1f5f9 100%) !important;
+      border: 1px solid #cbd5e1 !important;
+      color: #0f172a !important;
+      box-shadow: 0 10px 30px -5px rgba(15, 23, 42, 0.08), 0 8px 10px -6px rgba(15, 23, 42, 0.06) !important;
+    }
+    html.light .about-card p, html.light .about-card span { color: #334155 !important; font-weight: 600 !important; }
+    html.light .about-card h2, html.light .about-card h3 { color: #0f172a !important; font-weight: 800 !important; }
+
+    html.light footer { background-color: #e2e8f0 !important; border-top-color: #cbd5e1 !important; color: #334155 !important; font-weight: 700; }
+    html.light footer a { color: #334155 !important; }
+    html.light footer a:hover { color: #0f172a !important; }
+
+    /* NIGHT MODE OVERRIDES */
+    html.dark body { background-color: #050505 !important; color: #ffffff !important; }
+    html.dark .clouds-bg { display: none !important; }
+
+    /* NIGHT MODE NAVBAR OVERRIDE - DARK SLATE GRAY */
+    html.dark header {
+      background-color: #1a1a1a !important;
+      border-bottom-color: #27272a !important;
+    }
+
+    html.dark #mobileMenuDropdown {
+      background-color: #1a1a1a !important;
+      color: #ffffff !important;
+      border-color: #27272a !important;
+    }
+    html.dark #mobileMenuDropdown a {
+      color: #ffffff !important;
+    }
+
+    @keyframes offerGlow {
+      0% { border-color: rgba(255, 255, 255, 0.1); box-shadow: 0 0 10px rgba(0, 0, 0, 0.9); }
+      50% { border-color: rgba(234, 179, 8, 0.7); box-shadow: 0 0 40px rgba(234, 179, 8, 0.25); }
+      100% { border-color: rgba(255, 255, 255, 0.1); box-shadow: 0 0 10px rgba(0, 0, 0, 0.9); }
+    }
+    .luxury-glow-card {
+      animation: offerGlow 4s ease-in-out infinite;
+    }
+
+    @keyframes coinFloat {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-8px) rotate(5deg); }
+    }
+    .animate-coin {
+      animation: coinFloat 3s ease-in-out infinite;
+    }
+
+    @keyframes badgePulse {
+      0% { transform: scale(1); opacity: 0.9; }
+      50% { transform: scale(1.05); opacity: 1; filter: brightness(1.2); }
+      100% { transform: scale(1); opacity: 0.9; }
+    }
+    .animate-badge-pulse {
+      animation: badgePulse 2s ease-in-out infinite;
+    }
+
+    @keyframes tickerFade {
+      0% { opacity: 0; transform: translateY(10px); }
+      20% { opacity: 1; transform: translateY(0); }
+      80% { opacity: 1; transform: translateY(0); }
+      100% { opacity: 0; transform: translateY(-10px); }
+    }
+    .ticker-animation {
+      animation: tickerFade 4s ease-in-out infinite;
+    }
+  </style>
+
+  <script>
+    (function() {
+      const currentHour = new Date().getHours();
+      const isDayTime = currentHour >= 6 && currentHour < 18;
+      const savedTheme = localStorage.getItem('moonland_theme');
+
+      if (savedTheme === 'light' || (!savedTheme && isDayTime)) {
+        document.documentElement.classList.add('light');
+        document.documentElement.classList.remove('dark');
+      } else {
+        document.documentElement.classList.add('dark');
+        document.documentElement.classList.remove('light');
+      }
+    })();
+  </script>
 </head>
-<body class="bg-[#050505] text-slate-100 min-h-screen font-sans p-6 sm:p-10 selection:bg-cyan-400 selection:text-black">
-  <div class="max-w-5xl mx-auto space-y-8">
+<body class="font-sans antialiased min-h-screen flex flex-col justify-between selection:bg-white selection:text-black relative">
 
-    <!-- Header -->
-    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 pb-6 border-b border-zinc-900">
-      <div>
-        <span class="text-[10px] font-mono uppercase tracking-[0.2em] text-cyan-400 font-bold">PARTNER PORTAL</span>
-        <h1 class="text-2xl sm:text-3xl font-black text-white uppercase tracking-wider mt-1">
-          Affiliate Partner Program
-        </h1>
-        <p class="text-xs text-zinc-400 mt-1">
-          Register as a Moonland Store affiliate partner, get your unique referral code, and check approval status.
-        </p>
-      </div>
-      <div class="flex items-center gap-2 text-xs font-bold uppercase tracking-wider">
-        <a href="store.html" class="bg-black hover:bg-zinc-900 text-zinc-300 hover:text-white border border-zinc-800 px-4 py-2.5 transition">Store</a>
-        <a href="track.html" class="bg-black hover:bg-zinc-900 text-zinc-300 hover:text-white border border-zinc-800 px-4 py-2.5 transition">Track Order</a>
-      </div>
-    </div>
-
-    <!-- Main Grid: Register + Status Lookup -->
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-
-      <!-- Registration Form -->
-      <div class="bg-[rgba(12,12,12,0.75)] border border-cyan-500/30 p-6 sm:p-8 space-y-5 shadow-xl rounded-none">
-        <div>
-          <span class="text-[10px] font-mono uppercase tracking-[0.2em] text-cyan-400 font-bold">NEW APPLICATION</span>
-          <h2 class="text-lg font-black text-white uppercase tracking-wider mt-0.5">Become an Affiliate Partner</h2>
-        </div>
-
-        <form id="affiliateRegisterForm" onsubmit="submitAffiliateApplication(event)" class="space-y-4 text-xs">
-          <div>
-            <label class="block text-zinc-400 font-bold uppercase tracking-wider text-[10px] mb-1.5">Full Name *</label>
-            <input type="text" id="affName" required placeholder="Enter your full name" class="w-full bg-black border border-zinc-800 px-4 py-3 text-white focus:outline-none focus:border-cyan-400 transition">
-          </div>
-
-          <div>
-            <label class="block text-zinc-400 font-bold uppercase tracking-wider text-[10px] mb-1.5">10-Digit Mobile / WhatsApp Number *</label>
-            <input type="tel" id="affPhone" required maxlength="15" placeholder="e.g. 9876543210" class="w-full bg-black border border-zinc-800 px-4 py-3 text-white font-mono focus:outline-none focus:border-cyan-400 transition">
-          </div>
-
-          <div>
-            <label class="block text-zinc-400 font-bold uppercase tracking-wider text-[10px] mb-1.5">UPI ID for Payouts *</label>
-            <input type="text" id="affUpi" required placeholder="e.g. yourname@okaxis" class="w-full bg-black border border-zinc-800 px-4 py-3 text-white font-mono focus:outline-none focus:border-cyan-400 transition">
-          </div>
-
-          <div>
-            <label class="block text-zinc-400 font-bold uppercase tracking-wider text-[10px] mb-1.5">Complete Address *</label>
-            <textarea id="affAddress" rows="3" required placeholder="House/Street, City, State, PIN Code" class="w-full bg-black border border-zinc-800 px-4 py-3 text-white focus:outline-none focus:border-cyan-400 transition"></textarea>
-          </div>
-
-          <button type="submit" id="affSubmitBtn" class="w-full bg-cyan-400 hover:bg-cyan-300 text-black font-black py-3.5 text-xs uppercase tracking-wider transition shadow-[0_0_20px_rgba(34,211,238,0.2)] flex items-center justify-center gap-2">
-            <i class="fa-solid fa-user-plus"></i> Submit Partner Application
-          </button>
-        </form>
-
-        <div id="registerFeedback" class="hidden p-4 border text-xs font-mono space-y-1"></div>
-      </div>
-
-      <!-- Status & Referral Code Lookup -->
-      <div class="bg-[rgba(12,12,12,0.75)] border border-white/10 p-6 sm:p-8 space-y-5 shadow-xl rounded-none h-fit">
-        <div>
-          <span class="text-[10px] font-mono uppercase tracking-[0.2em] text-amber-400 font-bold">PARTNER STATUS</span>
-          <h2 class="text-lg font-black text-white uppercase tracking-wider mt-0.5">Check Referral Code & Status</h2>
-          <p class="text-xs text-zinc-400 mt-1">Enter your registered 10-digit mobile number to view your approval status and referral link.</p>
-        </div>
-
-        <form onsubmit="checkPartnerStatus(event)" class="flex flex-col sm:flex-row gap-3 text-xs">
-          <input type="tel" id="statusPhoneInput" required maxlength="15" placeholder="Enter 10-digit mobile number" class="flex-1 bg-black border border-zinc-800 px-4 py-3 text-white font-mono focus:outline-none focus:border-cyan-400 transition">
-          <button type="submit" class="bg-white hover:bg-zinc-200 text-black font-black px-5 py-3 uppercase tracking-wider transition whitespace-nowrap">
-            Check Status
-          </button>
-        </form>
-
-        <div id="partnerStatusResult" class="space-y-3 text-xs">
-          <div class="bg-black border border-zinc-800/80 p-5 text-zinc-500 font-mono text-center">
-            No status checked yet.
-          </div>
-        </div>
-      </div>
-
-    </div>
+  <!-- Top Announcement Bar -->
+  <div id="topAnnouncementBar" class="marquee-bar bg-black text-zinc-300 py-2.5 px-4 text-[10px] sm:text-[11px] font-extrabold tracking-[0.2em] uppercase border-b overflow-hidden whitespace-nowrap z-20">
+    <marquee behavior="scroll" direction="left" scrollamount="5">
+      <span class="inline-flex items-center gap-2 mx-6"><i class="fa-solid fa-bolt text-yellow-400"></i> MOONLAND SPECIAL: UNLIMITED REFER & EARN ₹1,000 INSTANT UPI CASHBACK PER REFERRAL!</span>
+    </marquee>
   </div>
 
+  <!-- Header / Navbar -->
+  <header class="sticky top-0 z-50 backdrop-blur-xl border-b border-zinc-900">
+    <div class="max-w-7xl mx-auto px-4 sm:px-12 flex justify-between items-center h-16 sm:h-20 relative">
+      <a href="index.html" class="flex items-center space-x-2.5 group">
+        <div id="logoBox" class="brand-logo-box w-7 h-7 border border-white flex items-center justify-center font-black text-xs tracking-widest text-white group-hover:bg-white group-hover:text-black transition duration-500 rounded-lg">M</div>
+        <div class="flex flex-col">
+          <span id="brandTitle" class="font-bold text-xs sm:text-sm tracking-[0.3em] sm:tracking-[0.4em] uppercase">MOONLAND</span>
+          <span class="text-[6px] tracking-[0.55em] text-zinc-400 uppercase font-bold">STORE</span>
+        </div>
+      </a>
+
+      <nav class="hidden md:flex items-center space-x-12 font-medium text-[11px] uppercase tracking-[0.25em] text-zinc-400">
+        <a href="index.html" class="hover:opacity-75 transition pb-1">Home</a>
+        <a href="store.html" class="hover:opacity-75 transition pb-1">Store</a>
+        <a href="referral.html" class="border-b pb-1 tracking-[0.3em] font-bold active-link">Refer & Earn</a>
+        <a href="track.html" class="hover:opacity-75 transition pb-1">Track Order</a>
+        <a href="about.html" class="hover:opacity-75 transition pb-1">About Us</a>
+      </nav>
+
+      <div class="flex items-center space-x-4">
+        <button onclick="openCartModal()" class="flex items-center space-x-1.5 text-[11px] uppercase tracking-[0.2em] font-medium transition hover:opacity-75">
+          <i class="fa-solid fa-bag-shopping text-base sm:text-sm"></i>
+          <span id="cartCountBadge" class="bg-black text-white dark:bg-white dark:text-black text-[9px] px-1.5 py-0.2 rounded-full font-bold ml-1">0</span>
+        </button>
+        <button onclick="toggleMobileMenu()" class="md:hidden text-lg p-1.5 cursor-pointer"><i class="fa-solid fa-bars"></i></button>
+      </div>
+    </div>
+
+    <!-- Mobile Menu Dropdown -->
+    <div id="mobileMenuDropdown" class="hidden absolute top-full left-0 w-full bg-white border-b border-zinc-200 px-6 py-5 space-y-4 text-xs uppercase font-medium tracking-[0.2em] shadow-2xl z-50">
+      <a href="index.html" class="block opacity-80 hover:opacity-100">Home</a>
+      <a href="store.html" class="block opacity-80 hover:opacity-100">Store</a>
+      <a href="referral.html" class="block font-bold">Refer & Earn</a>
+      <a href="track.html" class="block opacity-80 hover:opacity-100">Track Order</a>
+      <a href="about.html" class="block opacity-80 hover:opacity-100">About Us</a>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="max-w-5xl mx-auto px-6 sm:px-12 py-16 w-full space-y-12 flex-grow">
+
+    <!-- Page Title with Animated Motivation Badge -->
+    <div class="text-center space-y-4 max-w-2xl mx-auto">
+      <span class="inline-block text-[10px] font-bold uppercase tracking-[0.4em] text-yellow-400 border border-yellow-400/30 px-4 py-2 bg-yellow-400/10 animate-badge-pulse shadow-[0_0_20px_rgba(234,179,8,0.2)]">
+        <i class="fa-solid fa-fire-flame-curved text-yellow-400 mr-1.5"></i> UNLIMITED MONEY MAKER PROGRAM • LIVE PAYOUTS
+      </span>
+      <h1 class="text-3xl sm:text-6xl font-black uppercase tracking-[0.1em] text-white">
+        REFER & EARN <span class="text-yellow-400 font-light animate-coin inline-block">₹1,000 UPI</span>
+      </h1>
+      <p class="text-xs sm:text-sm text-zinc-400 font-light tracking-wide leading-relaxed">
+        Share your referral link and get a direct ₹1,000 instant cashback on every successful order straight into your bank account or UPI. No limits, infinite earnings!
+      </p>
+    </div>
+
+    <!-- Live Earnings Social Proof Ticker Box -->
+    <div class="bg-[#0c0c0c] border border-emerald-500/30 p-4 max-w-xl mx-auto flex items-center justify-between shadow-lg">
+      <div class="flex items-center space-x-3">
+        <div class="w-8 h-8 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-xs">
+          <i class="fa-solid fa-bolt"></i>
+        </div>
+        <div class="text-xs">
+          <span class="text-zinc-500 uppercase tracking-widest block text-[9px] font-bold">Live Payout Alert</span>
+          <p id="liveTickerText" class="text-zinc-200 font-mono font-medium ticker-animation">Loading live earnings...</p>
+        </div>
+      </div>
+      <span class="text-[10px] font-mono text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2.5 py-1 uppercase tracking-widest font-bold">Paid via UPI</span>
+    </div>
+
+    <!-- Interactive Referral Link Fetcher Box -->
+    <div class="bg-[#0c0c0c] border border-yellow-500/40 p-6 sm:p-8 luxury-glow-card space-y-4 text-center">
+      <h3 class="text-xs font-bold uppercase tracking-[0.2em] text-yellow-400">
+        <i class="fa-solid fa-link mr-2"></i> Get Your Registered Referral Link
+      </h3>
+      <div class="flex flex-col sm:flex-row gap-3 max-w-2xl mx-auto">
+        <input type="text" id="userReferralInput" placeholder="Enter your registered Mobile Number..." class="flex-1 bg-black border border-zinc-800 px-4 py-3.5 text-xs font-mono uppercase tracking-widest text-white focus:outline-none focus:border-yellow-400 transition">
+        <button onclick="fetchExistingRefLink()" class="bg-yellow-400 hover:bg-yellow-300 text-black font-black px-6 py-3.5 text-xs uppercase tracking-[0.2em] transition shadow-lg">
+          Fetch Link
+        </button>
+      </div>
+      <!-- Container starts hidden -->
+      <div id="generatedLinkContainer" class="hidden pt-2 space-y-2">
+        <div class="flex items-center justify-between bg-black border border-zinc-800 px-4 py-3 text-xs font-mono text-yellow-400">
+          <span id="displayRefUrl" class="truncate pr-4"></span>
+          <button onclick="copyRefLink()" class="bg-white text-black px-3 py-1 text-[10px] uppercase font-bold tracking-wider hover:bg-zinc-200 transition">Copy</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Affiliate Partner Request & Status Box -->
+    <div class="bg-[#0c0c0c] border border-cyan-500/30 p-6 sm:p-8 space-y-6 shadow-xl">
+      <div class="border-b border-zinc-900 pb-4">
+        <span class="text-[10px] font-mono uppercase tracking-[0.25em] text-cyan-400 font-bold">INFLUENCER & PARTNER PROGRAM</span>
+        <h3 class="text-lg font-black uppercase tracking-wider text-white mt-1">
+          <i class="fa-solid fa-handshake mr-2 text-cyan-400"></i> Affiliate Partner Request & Status
+        </h3>
+        <p class="text-xs text-zinc-400 mt-1">
+          Submit your partner request below. Once admin approves your request, your unique referral code and link will be available here.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 text-xs">
+        <form id="affiliateRequestForm" onsubmit="submitAffiliatePartnerRequest(event)" class="space-y-4 bg-black/70 border border-zinc-800 p-5">
+          <div class="text-[10px] font-mono uppercase tracking-widest text-cyan-400 font-bold">Send Partner Request</div>
+
+          <div>
+            <label class="block text-zinc-400 uppercase tracking-wider text-[10px] font-bold mb-1.5">Full Name *</label>
+            <input type="text" id="affReqName" required placeholder="Your full name / creator name" class="w-full bg-black border border-zinc-800 px-4 py-3 text-white focus:outline-none focus:border-cyan-400 transition">
+          </div>
+
+          <div>
+            <label class="block text-zinc-400 uppercase tracking-wider text-[10px] font-bold mb-1.5">10-Digit Mobile / WhatsApp Number *</label>
+            <input type="tel" id="affReqPhone" required maxlength="15" placeholder="e.g. 9876543210" class="w-full bg-black border border-zinc-800 px-4 py-3 text-white font-mono focus:outline-none focus:border-cyan-400 transition">
+          </div>
+
+          <div>
+            <label class="block text-zinc-400 uppercase tracking-wider text-[10px] font-bold mb-1.5">UPI ID for Payouts *</label>
+            <input type="text" id="affReqUpi" required placeholder="e.g. yourname@okaxis" class="w-full bg-black border border-zinc-800 px-4 py-3 text-white font-mono focus:outline-none focus:border-cyan-400 transition">
+          </div>
+
+          <div>
+            <label class="block text-zinc-400 uppercase tracking-wider text-[10px] font-bold mb-1.5">Address *</label>
+            <textarea id="affReqAddress" rows="2" required placeholder="Street, City, State, PIN Code" class="w-full bg-black border border-zinc-800 px-4 py-3 text-white focus:outline-none focus:border-cyan-400 transition"></textarea>
+          </div>
+
+          <button type="submit" id="affReqSubmitBtn" class="w-full bg-cyan-400 hover:bg-cyan-300 text-black font-black py-3.5 text-xs uppercase tracking-[0.2em] transition shadow-lg">
+            Submit Partner Request
+          </button>
+        </form>
+
+        <div class="space-y-4 bg-black/70 border border-zinc-800 p-5 flex flex-col justify-between">
+          <div class="space-y-4">
+            <div class="text-[10px] font-mono uppercase tracking-widest text-amber-400 font-bold">Check Partner Approval Status</div>
+            <p class="text-zinc-400 leading-relaxed">
+              Enter your registered 10-digit mobile number to check whether admin has approved your request and unlocked your referral link.
+            </p>
+
+            <div class="flex flex-col sm:flex-row gap-2.5">
+              <input type="tel" id="affStatusPhoneInput" maxlength="15" placeholder="Enter 10-digit mobile number..." class="flex-1 bg-black border border-zinc-800 px-4 py-3 text-white font-mono focus:outline-none focus:border-cyan-400 transition">
+              <button type="button" onclick="checkAffiliatePartnerStatus()" class="bg-white hover:bg-zinc-200 text-black font-black px-5 py-3 uppercase tracking-wider transition whitespace-nowrap">
+                Check Status
+              </button>
+            </div>
+
+            <div id="affPartnerStatusBox" class="bg-black border border-zinc-800 p-4 font-mono text-zinc-400">
+              Enter your registered mobile number to check approval status.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Referral Reward Slabs with Glow Animation -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="bg-[#0c0c0c] border border-zinc-900 p-8 text-center space-y-3 hover:border-zinc-700 transition">
+        <span class="text-[10px] uppercase tracking-widest text-zinc-500 font-bold">Milestone 1</span>
+        <div class="text-2xl font-mono font-black text-white">10 Refers</div>
+        <div class="text-3xl font-black text-yellow-400 font-mono">₹10,000</div>
+        <p class="text-[11px] text-zinc-400 uppercase tracking-wider font-semibold pt-2 border-t border-zinc-900">Instant Bank Transfer</p>
+      </div>
+
+      <div class="bg-[#0c0c0c] border border-yellow-500/50 p-8 text-center space-y-3 shadow-[0_0_30px_rgba(234,179,8,0.15)] luxury-glow-card">
+        <span class="text-[10px] uppercase tracking-widest text-yellow-400 font-bold">Milestone 2 (Popular)</span>
+        <div class="text-2xl font-mono font-black text-white">25 Refers</div>
+        <div class="text-3xl font-black text-yellow-400 font-mono">₹25,000</div>
+        <p class="text-[11px] text-zinc-400 uppercase tracking-wider font-semibold pt-2 border-t border-zinc-900">Instant Bank Transfer</p>
+      </div>
+
+      <div class="bg-[#0c0c0c] border border-zinc-900 p-8 text-center space-y-3 hover:border-zinc-700 transition">
+        <span class="text-[10px] uppercase tracking-widest text-zinc-500 font-bold">Milestone 3</span>
+        <div class="text-2xl font-mono font-black text-white">50 Refers</div>
+        <div class="text-3xl font-black text-yellow-400 font-mono">₹50,000</div>
+        <p class="text-[11px] text-zinc-400 uppercase tracking-wider font-semibold pt-2 border-t border-zinc-900">Instant Bank Transfer</p>
+      </div>
+    </div>
+
+    <!-- How It Works Card -->
+    <div class="bg-[#0c0c0c] border border-zinc-800 p-8 sm:p-12 space-y-8">
+      <div class="flex items-center space-x-4 border-b border-zinc-900 pb-6">
+        <div class="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center text-yellow-400 text-xl font-black animate-coin">
+          <i class="fa-solid fa-gift"></i>
+        </div>
+        <div>
+          <h3 class="text-lg font-bold uppercase tracking-wider text-white">How Referral Works</h3>
+          <p class="text-xs text-zinc-400 tracking-wide">3 simple steps to start earning instant cash</p>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-xs text-zinc-300">
+        <div class="space-y-2">
+          <div class="text-yellow-400 font-mono font-bold text-sm">01. Place Order / Join</div>
+          <p class="text-zinc-400 leading-relaxed">Place any order or submit an affiliate partner request. Once verified or approved by admin, your unique referral link will be available.</p>
+        </div>
+        <div class="space-y-2">
+          <div class="text-yellow-400 font-mono font-bold text-sm">02. Share Link</div>
+          <p class="text-zinc-400 leading-relaxed">Share your referral link with your friends and on social media. Anyone who buys using your link will be tracked.</p>
+        </div>
+        <div class="space-y-2">
+          <div class="text-yellow-400 font-mono font-bold text-sm">03. Get ₹1,000 UPI</div>
+          <p class="text-zinc-400 leading-relaxed">As soon as your friend places an order, a direct ₹1,000 reward will be sent straight to your UPI or bank account.</p>
+        </div>
+      </div>
+
+      <div class="pt-6 border-t border-zinc-900 text-center">
+        <a href="store.html" class="inline-block bg-white hover:bg-zinc-200 text-black font-black px-10 py-4 text-xs uppercase tracking-[0.25em] transition shadow-2xl">
+          Start Shopping & Get Referral Link
+        </a>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer id="aboutFooter" class="py-16 border-t text-center text-[10px] uppercase tracking-[0.3em] space-y-4 relative z-10 font-semibold">
+    <p>© 2026 Moonland Store. All Rights Reserved.</p>
+    <div class="flex justify-center space-x-8 font-bold">
+      <a href="index.html" class="hover:opacity-100 transition">Store Home</a>
+      <a href="referral.html" class="hover:opacity-100 transition">Refer & Earn</a>
+      <a href="track.html" class="hover:opacity-100 transition">Track Order</a>
+      <a href="about.html" class="hover:opacity-100 transition">About Us</a>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
   <script>
     const AFFILIATE_STORAGE_KEY = 'moonland_affiliate_partners_v1';
 
@@ -104,7 +362,7 @@
         .replace(/'/g, '&#39;');
     }
 
-    function getLocalAffiliates() {
+    function getLocalAffiliatePartners() {
       try {
         return JSON.parse(localStorage.getItem(AFFILIATE_STORAGE_KEY) || '[]');
       } catch {
@@ -112,42 +370,147 @@
       }
     }
 
-    function saveLocalAffiliate(partner) {
-      const list = getLocalAffiliates();
-      const idx = list.findIndex(item => String(item.phone) === String(partner.phone) || String(item.id) === String(partner.id));
+    function upsertLocalAffiliatePartner(partner) {
+      const list = getLocalAffiliatePartners();
+      const cleanPhone = String(partner.phone || '').replace(/\D/g, '').slice(-10);
+      const idx = list.findIndex(item => String(item.phone || '').replace(/\D/g, '').slice(-10) === cleanPhone || String(item.id) === String(partner.id));
       if (idx >= 0) {
-        list[idx] = { ...list[idx], ...partner };
+        list[idx] = { ...list[idx], ...partner, phone: cleanPhone };
       } else {
-        list.unshift(partner);
+        list.unshift({ ...partner, phone: cleanPhone });
       }
       localStorage.setItem(AFFILIATE_STORAGE_KEY, JSON.stringify(list));
     }
 
-    function showRegisterFeedback(type, title, detail) {
-      const box = document.getElementById('registerFeedback');
-      box.classList.remove('hidden', 'border-emerald-500/40', 'bg-emerald-500/10', 'text-emerald-300', 'border-rose-500/40', 'bg-rose-500/10', 'text-rose-300', 'border-amber-400/40', 'bg-amber-400/10', 'text-amber-300');
-      if (type === 'success') {
-        box.classList.add('border-emerald-500/40', 'bg-emerald-500/10', 'text-emerald-300');
-      } else if (type === 'warn') {
-        box.classList.add('border-amber-400/40', 'bg-amber-400/10', 'text-amber-300');
-      } else {
-        box.classList.add('border-rose-500/40', 'bg-rose-500/10', 'text-rose-300');
-      }
-      box.innerHTML = `<div class="font-bold uppercase">${escapeHtml(title)}</div><div class="text-[11px] opacity-90">${escapeHtml(detail)}</div>`;
+    function toggleMobileMenu() {
+      const dropdown = document.getElementById('mobileMenuDropdown');
+      if (dropdown) dropdown.classList.toggle('hidden');
     }
 
-    async function submitAffiliateApplication(e) {
+    function openCartModal() {
+      window.location.href = 'order.html';
+    }
+
+    const liveTickerEarnings = [
+      "₹1,000 sent to Rahul S. (Mumbai)",
+      "₹1,000 sent to Amit V. (Pune)",
+      "₹1,000 sent to Pooja P. (Nagpur)",
+      "₹1,000 sent to Sohail K. (Latur)",
+      "₹1,000 sent to Deepak K. (Nashik)",
+      "₹1,000 sent to Sneha D. (Thane)",
+      "₹1,000 sent to Vikram J. (Solapur)",
+      "₹1,000 sent to Rohan M. (Kalyan)",
+      "₹1,000 sent to Priyanka S. (Kolhapur)",
+      "₹1,000 sent to Imran Q. (Aurangabad)",
+      "₹1,000 sent to Akash G. (Nanded)",
+      "₹1,000 sent to Neha K. (Amravati)",
+      "₹1,000 sent to Sameer J. (Akola)",
+      "₹1,000 sent to Tanvi P. (Jalgaon)",
+      "₹1,000 sent to Kiran W. (Satara)"
+    ];
+
+    function startLiveTicker() {
+      const tickerEl = document.getElementById('liveTickerText');
+      if (!tickerEl) return;
+
+      let idx = 0;
+      setInterval(() => {
+        tickerEl.innerText = liveTickerEarnings[idx];
+        idx = (idx + 1) % liveTickerEarnings.length;
+      }, 3500);
+    }
+
+    function showCustomPopup(title, message, isError = false) {
+      let existing = document.getElementById('customLuxuryModal');
+      if (existing) existing.remove();
+
+      let borderColor = isError ? 'border-red-500/50' : 'border-yellow-400/50';
+      let iconColor = isError ? 'text-red-400 bg-red-400/20' : 'text-yellow-400 bg-yellow-400/20';
+      let iconClass = isError ? 'fa-triangle-exclamation' : 'fa-circle-check';
+
+      let modalHtml = `
+        <div id="customLuxuryModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/85 backdrop-blur-md p-4">
+          <div class="bg-[#0c0c0c] border ${borderColor} p-6 sm:p-8 max-w-sm w-full shadow-2xl space-y-5 text-center relative">
+            <div class="w-14 h-14 ${iconColor} rounded-full flex items-center justify-center mx-auto text-xl">
+              <i class="fa-solid ${iconClass}"></i>
+            </div>
+            <div class="space-y-2">
+              <h3 class="text-xs font-bold text-white uppercase tracking-widest">${escapeHtml(title)}</h3>
+              <p class="text-xs text-zinc-300 font-light leading-relaxed">${escapeHtml(message)}</p>
+            </div>
+            <button onclick="document.getElementById('customLuxuryModal').remove()" class="w-full bg-white hover:bg-zinc-200 text-black font-black py-3.5 text-xs uppercase tracking-[0.2em] transition">
+              OK, Got It
+            </button>
+          </div>
+        </div>
+      `;
+      document.body.insertAdjacentHTML('beforeend', modalHtml);
+    }
+
+    function renderAffiliatePartnerStatus(partner) {
+      const box = document.getElementById('affPartnerStatusBox');
+      if (!box) return;
+
+      const status = partner.status || 'Pending';
+      const isApproved = status === 'Approved';
+      const isRejected = status === 'Rejected';
+      const code = isApproved ? (partner.referralCode || '') : '';
+      const shareUrl = code ? `${window.location.origin}/store.html?ref=${encodeURIComponent(code)}` : '';
+
+      const badgeClass = isApproved
+        ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40'
+        : isRejected
+          ? 'bg-rose-500/20 text-rose-300 border border-rose-500/40'
+          : 'bg-amber-400/20 text-amber-300 border border-amber-400/40';
+
+      box.innerHTML = `
+        <div class="space-y-2.5">
+          <div class="flex items-center justify-between gap-2 flex-wrap">
+            <strong class="text-white uppercase">${escapeHtml(partner.name || 'Affiliate Partner')}</strong>
+            <span class="px-2.5 py-0.5 text-[10px] font-bold uppercase border ${badgeClass}">${escapeHtml(status)}</span>
+          </div>
+          <div class="text-[11px] text-zinc-400">Mobile: <span class="text-white">${escapeHtml(partner.phone || '')}</span></div>
+
+          ${isApproved && code ? `
+            <div class="bg-cyan-400/10 border border-cyan-400/30 p-3 space-y-2">
+              <div class="flex items-center justify-between gap-2">
+                <span class="text-zinc-200 text-[11px]">Referral Code: <strong class="text-cyan-300">${escapeHtml(code)}</strong></span>
+                <button type="button" onclick="copyTextValue('${escapeHtml(code)}', 'Referral code copied to clipboard.')" class="bg-cyan-400 text-black font-black px-2.5 py-1 text-[10px] uppercase">Copy Code</button>
+              </div>
+              <div class="text-[11px] text-zinc-400 break-all">
+                Link: <span class="text-emerald-300">${escapeHtml(shareUrl)}</span>
+              </div>
+              <button type="button" onclick="copyTextValue('${escapeHtml(shareUrl)}', 'Referral link copied to clipboard.')" class="bg-zinc-900 hover:bg-zinc-800 text-white border border-zinc-700 px-3 py-1.5 text-[10px] font-bold uppercase w-full">
+                Copy Referral Link
+              </button>
+            </div>
+          ` : `
+            <div class="text-[11px] text-zinc-500">
+              ${isRejected ? 'This affiliate partner request was rejected by admin.' : 'Pending admin approval. Your referral code and link will appear once approved.'}
+            </div>
+          `}
+        </div>
+      `;
+    }
+
+    function copyTextValue(text, successMsg) {
+      if (!text) return;
+      navigator.clipboard?.writeText(text).catch(() => {});
+      showCustomPopup('Copied!', successMsg || 'Copied to clipboard.');
+    }
+
+    async function submitAffiliatePartnerRequest(e) {
       e.preventDefault();
-      const name = document.getElementById('affName').value.trim();
-      const cleanPhone = document.getElementById('affPhone').value.replace(/\D/g, '').slice(-10);
-      const upiId = document.getElementById('affUpi').value.trim();
-      const address = document.getElementById('affAddress').value.trim();
+      const name = document.getElementById('affReqName').value.trim();
+      const cleanPhone = document.getElementById('affReqPhone').value.replace(/\D/g, '').slice(-10);
+      const upiId = document.getElementById('affReqUpi').value.trim();
+      const address = document.getElementById('affReqAddress').value.trim();
 
       if (!name || !/^\d{10}$/.test(cleanPhone) || !upiId || !address) {
-        return showRegisterFeedback('error', 'Invalid Details', 'Please enter a valid Name, 10-digit Phone, UPI ID, and Address.');
+        return showCustomPopup('Invalid Details', 'Please enter a valid Full Name, 10-digit Mobile Number, UPI ID, and Address.', true);
       }
 
-      const btn = document.getElementById('affSubmitBtn');
+      const btn = document.getElementById('affReqSubmitBtn');
       btn.disabled = true;
 
       try {
@@ -159,16 +522,18 @@
         const data = await res.json().catch(() => ({}));
 
         if (res.ok && data.success && data.partner) {
-          saveLocalAffiliate(data.partner);
-          showRegisterFeedback('success', 'Application Submitted', `Partner ID: ${data.partner.id} | Status: ${data.partner.status || 'Pending'}`);
-          document.getElementById('statusPhoneInput').value = cleanPhone;
-          renderPartnerCard(data.partner);
-          document.getElementById('affiliateRegisterForm').reset();
+          upsertLocalAffiliatePartner(data.partner);
+          document.getElementById('affStatusPhoneInput').value = cleanPhone;
+          renderAffiliatePartnerStatus(data.partner);
+          document.getElementById('affiliateRequestForm').reset();
+          showCustomPopup('Request Submitted', 'Your affiliate partner request has been submitted for admin approval.');
         } else if (res.status === 409) {
-          if (data.partner) saveLocalAffiliate(data.partner);
-          showRegisterFeedback('warn', 'Already Registered', data.error || 'This mobile number is already registered.');
-          document.getElementById('statusPhoneInput').value = cleanPhone;
-          if (data.partner) renderPartnerCard(data.partner);
+          if (data.partner) {
+            upsertLocalAffiliatePartner(data.partner);
+            document.getElementById('affStatusPhoneInput').value = cleanPhone;
+            renderAffiliatePartnerStatus(data.partner);
+          }
+          showCustomPopup('Already Registered', data.error || 'This mobile number is already registered as an affiliate partner.', true);
         } else {
           const fallbackPartner = {
             id: 'AFF-' + Date.now().toString(36).toUpperCase(),
@@ -180,10 +545,11 @@
             referralCode: '',
             createdAt: new Date().toISOString()
           };
-          saveLocalAffiliate(fallbackPartner);
-          showRegisterFeedback('warn', 'Saved Locally', data.error || 'Server response unavailable; application saved locally.');
-          document.getElementById('statusPhoneInput').value = cleanPhone;
-          renderPartnerCard(fallbackPartner);
+          upsertLocalAffiliatePartner(fallbackPartner);
+          document.getElementById('affStatusPhoneInput').value = cleanPhone;
+          renderAffiliatePartnerStatus(fallbackPartner);
+          document.getElementById('affiliateRequestForm').reset();
+          showCustomPopup('Request Saved', 'Request saved locally for admin approval.');
         }
       } catch (err) {
         const fallbackPartner = {
@@ -196,20 +562,23 @@
           referralCode: '',
           createdAt: new Date().toISOString()
         };
-        saveLocalAffiliate(fallbackPartner);
-        showRegisterFeedback('warn', 'Saved Locally', 'Network unavailable; application saved to browser storage.');
-        document.getElementById('statusPhoneInput').value = cleanPhone;
-        renderPartnerCard(fallbackPartner);
+        upsertLocalAffiliatePartner(fallbackPartner);
+        document.getElementById('affStatusPhoneInput').value = cleanPhone;
+        renderAffiliatePartnerStatus(fallbackPartner);
+        document.getElementById('affiliateRequestForm').reset();
+        showCustomPopup('Request Saved', 'Network unavailable; request saved locally for admin approval.');
       } finally {
         btn.disabled = false;
       }
     }
 
-    async function checkPartnerStatus(e) {
-      e.preventDefault();
-      const cleanPhone = document.getElementById('statusPhoneInput').value.replace(/\D/g, '').slice(-10);
+    async function checkAffiliatePartnerStatus() {
+      const inputEl = document.getElementById('affStatusPhoneInput');
+      const box = document.getElementById('affPartnerStatusBox');
+      const cleanPhone = (inputEl?.value || '').replace(/\D/g, '').slice(-10);
+
       if (!/^\d{10}$/.test(cleanPhone)) {
-        document.getElementById('partnerStatusResult').innerHTML = `<div class="bg-rose-500/10 border border-rose-500/30 p-4 text-rose-300 font-mono">Please enter a valid 10-digit mobile number.</div>`;
+        box.innerHTML = `<span class="text-rose-400">Please enter a valid 10-digit mobile number.</span>`;
         return;
       }
 
@@ -218,69 +587,111 @@
         if (res.ok) {
           const list = await res.json();
           if (Array.isArray(list) && list.length > 0) {
-            saveLocalAffiliate(list[0]);
-            renderPartnerCard(list[0]);
+            upsertLocalAffiliatePartner(list[0]);
+            renderAffiliatePartnerStatus(list[0]);
             return;
           }
         }
       } catch (err) {
-        console.warn('Status API lookup failed, checking local storage:', err);
+        console.warn('Affiliate status API lookup failed, checking local storage:', err);
       }
 
-      const localMatch = getLocalAffiliates().find(item => String(item.phone || '').replace(/\D/g, '').slice(-10) === cleanPhone);
+      const localMatch = getLocalAffiliatePartners().find(
+        item => String(item.phone || '').replace(/\D/g, '').slice(-10) === cleanPhone
+      );
+
       if (localMatch) {
-        renderPartnerCard(localMatch);
+        renderAffiliatePartnerStatus(localMatch);
       } else {
-        document.getElementById('partnerStatusResult').innerHTML = `<div class="bg-black border border-zinc-800 p-5 text-zinc-400 font-mono text-center">No affiliate application found for ${escapeHtml(cleanPhone)}.</div>`;
+        box.innerHTML = `<span class="text-zinc-400">No affiliate partner request found for ${escapeHtml(cleanPhone)}.</span>`;
       }
     }
 
-    function copyTextValue(val) {
-      if (!val) return;
-      navigator.clipboard?.writeText(val).catch(() => {});
+    function fetchExistingRefLink() {
+      const val = document.getElementById('userReferralInput').value.trim();
+      const container = document.getElementById('generatedLinkContainer');
+
+      if(!val) {
+        showCustomPopup('Missing Information', 'Please enter your registered mobile number.', true);
+        container.classList.add('hidden');
+        return;
+      }
+
+      const orders = JSON.parse(localStorage.getItem('moonland_orders') || '[]');
+      const pending = JSON.parse(localStorage.getItem('moonland_pending_utr_orders') || '[]');
+      const verified = JSON.parse(localStorage.getItem('moonland_verified_orders') || '[]');
+      const allOrders = [...orders, ...pending, ...verified];
+
+      const found = allOrders.find(o => String(o.phone).trim() === String(val));
+
+      if (!found) {
+        showCustomPopup('Record Not Found', 'Mobile number not found in database! Please place an order first.', true);
+        container.classList.add('hidden');
+        document.getElementById('displayRefUrl').innerText = '';
+        return;
+      }
+
+      let storedCode = found.userRefCode || (found.enteredRefCode !== 'None' ? found.enteredRefCode : null) || found.refCode;
+
+      if (!storedCode) {
+        showCustomPopup('Referral Code Missing', 'No referral code assigned to this order yet.', true);
+        container.classList.add('hidden');
+        document.getElementById('displayRefUrl').innerText = '';
+        return;
+      }
+
+      const fullUrl = window.location.origin + '/store.html?ref=' + storedCode;
+
+      document.getElementById('displayRefUrl').innerText = fullUrl;
+      container.classList.remove('hidden');
+      showCustomPopup('Success!', 'Your referral link has been fetched successfully.');
     }
 
-    function renderPartnerCard(partner) {
-      const container = document.getElementById('partnerStatusResult');
-      const status = partner.status || 'Pending';
-      const isApproved = status === 'Approved';
-      const isRejected = status === 'Rejected';
-      const code = isApproved ? (partner.referralCode || '') : '';
-      const shareLink = code ? `${window.location.origin}/store.html?ref=${encodeURIComponent(code)}` : '';
-
-      const badgeClass = isApproved
-        ? 'bg-emerald-400/20 text-emerald-300 border border-emerald-400/40'
-        : isRejected
-          ? 'bg-rose-500/20 text-rose-300 border border-rose-500/40'
-          : 'bg-amber-400/20 text-amber-300 border border-amber-400/40';
-
-      container.innerHTML = `
-        <div class="bg-black border border-zinc-800 p-5 space-y-3 font-mono">
-          <div class="flex items-center justify-between gap-2 flex-wrap">
-            <strong class="text-white text-sm uppercase">${escapeHtml(partner.name || 'Partner')}</strong>
-            <span class="px-2.5 py-0.5 text-[10px] font-bold uppercase ${badgeClass}">${escapeHtml(status)}</span>
-          </div>
-          <div class="text-zinc-400 text-[11px]">Phone: <span class="text-white">${escapeHtml(partner.phone || '')}</span></div>
-
-          ${isApproved && code ? `
-            <div class="bg-cyan-400/10 border border-cyan-400/30 p-3 space-y-2">
-              <div class="flex items-center justify-between gap-2">
-                <span class="text-zinc-300 text-[11px]">Referral Code: <strong class="text-cyan-300">${escapeHtml(code)}</strong></span>
-                <button type="button" onclick="copyTextValue('${escapeHtml(code)}')" class="bg-cyan-400 text-black font-black px-2.5 py-1 text-[10px] uppercase">Copy Code</button>
-              </div>
-              <div class="text-[11px] text-zinc-400 break-all">
-                Link: <span class="text-emerald-300">${escapeHtml(shareLink)}</span>
-              </div>
-              <button type="button" onclick="copyTextValue('${escapeHtml(shareLink)}')" class="bg-zinc-900 hover:bg-zinc-800 text-white border border-zinc-700 px-3 py-1.5 text-[10px] font-bold uppercase w-full">Copy Referral Link</button>
-            </div>
-          ` : `
-            <div class="text-[11px] text-zinc-500">
-              ${isRejected ? 'This application was not approved.' : 'Your application is currently under review. Referral code will appear once approved.'}
-            </div>
-          `}
-        </div>
-      `;
+    function copyRefLink() {
+      const urlText = document.getElementById('displayRefUrl').innerText;
+      if (!urlText) return;
+      navigator.clipboard.writeText(urlText);
+      showCustomPopup('Copied!', 'Referral link copied to clipboard successfully.');
     }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      startLiveTicker();
+
+      const inputField = document.getElementById('userReferralInput');
+      if (inputField) {
+        inputField.addEventListener('keypress', function(event) {
+          if (event.key === 'Enter') {
+            event.preventDefault();
+            fetchExistingRefLink();
+          }
+        });
+      }
+
+      const statusInputField = document.getElementById('affStatusPhoneInput');
+      if (statusInputField) {
+        statusInputField.addEventListener('keypress', function(event) {
+          if (event.key === 'Enter') {
+            event.preventDefault();
+            checkAffiliatePartnerStatus();
+          }
+        });
+      }
+
+      const urlParams = new URLSearchParams(window.location.search);
+      const refCode = urlParams.get('ref');
+      if (refCode) {
+        localStorage.setItem('moonland_active_ref', refCode);
+      }
+
+      if (typeof updateGlobalCartCount === 'function') {
+        updateGlobalCartCount();
+      } else {
+        const cart = JSON.parse(localStorage.getItem('moonland_cart') || '[]');
+        const totalItems = cart.reduce((sum, item) => sum + (item.quantity || 1), 0);
+        const badge = document.getElementById('cartCountBadge');
+        if (badge) badge.innerText = totalItems;
+      }
+    });
   </script>
 </body>
 </html>
