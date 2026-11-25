@@ -25,7 +25,7 @@
           <span class="w-3 h-3 bg-cyan-400 rounded-full animate-pulse"></span>
           Referral Payouts & Cashback History
         </h1>
-        <p class="text-xs text-zinc-400 tracking-wide mt-1">Track upline referrers, approve affiliate partners, send ₹1,000 cash rewards & update payout status</p>
+        <p class="text-xs text-zinc-400 tracking-wide mt-1">Track upline referrers, approve or reject affiliate partners, send ₹1,000 cash rewards & update payout status</p>
       </div>
 
       <nav class="flex flex-row flex-nowrap items-center gap-0.5 text-[9.5px] font-bold uppercase tracking-wider whitespace-nowrap overflow-x-auto max-w-full pb-1">
@@ -49,6 +49,7 @@
         <div class="flex items-center gap-2 text-xs font-mono">
           <span id="affPendingBadge" class="bg-amber-400/10 text-amber-300 border border-amber-400/30 px-3 py-1">Pending: 0</span>
           <span id="affApprovedBadge" class="bg-emerald-400/10 text-emerald-300 border border-emerald-400/30 px-3 py-1">Approved: 0</span>
+          <span id="affRejectedBadge" class="bg-rose-500/10 text-rose-300 border border-rose-500/30 px-3 py-1">Rejected: 0</span>
         </div>
       </div>
 
@@ -197,11 +198,13 @@
 
     function renderAffiliateRequests() {
       const container = document.getElementById('affiliateRequestsContainer');
-      const pendingCount = cachedAffiliates.filter(a => (a.status || 'Pending') !== 'Approved').length;
+      const pendingCount = cachedAffiliates.filter(a => (a.status || 'Pending') === 'Pending').length;
       const approvedCount = cachedAffiliates.filter(a => (a.status || 'Pending') === 'Approved').length;
+      const rejectedCount = cachedAffiliates.filter(a => (a.status || 'Pending') === 'Rejected').length;
 
       document.getElementById('affPendingBadge').innerText = `Pending: ${pendingCount}`;
       document.getElementById('affApprovedBadge').innerText = `Approved: ${approvedCount}`;
+      document.getElementById('affRejectedBadge').innerText = `Rejected: ${rejectedCount}`;
 
       if (!cachedAffiliates.length) {
         container.innerHTML = `<div class="bg-black border border-zinc-800/70 p-6 text-center text-zinc-500 font-mono">Koi affiliate partner application nahi mila.</div>`;
@@ -210,19 +213,27 @@
 
       container.innerHTML = cachedAffiliates.map((partner, index) => {
         const partnerId = partner.id || `aff_${index}`;
-        const isApproved = (partner.status || 'Pending') === 'Approved';
-        const code = partner.referralCode || '';
+        const status = partner.status || 'Pending';
+        const isApproved = status === 'Approved';
+        const isRejected = status === 'Rejected';
+        const code = isApproved ? (partner.referralCode || '') : '';
         const createdText = partner.createdAt && !isNaN(new Date(partner.createdAt).getTime())
           ? new Date(partner.createdAt).toLocaleString('en-IN')
           : 'N/A';
+
+        const badgeClass = isApproved
+          ? 'bg-emerald-400/20 text-emerald-300 border border-emerald-400/40'
+          : isRejected
+            ? 'bg-rose-500/20 text-rose-300 border border-rose-500/40'
+            : 'bg-amber-400/20 text-amber-300 border border-amber-400/40';
 
         return `
           <div class="bg-black border border-zinc-800/90 p-4 flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
             <div class="space-y-1">
               <div class="flex items-center gap-2 flex-wrap">
                 <strong class="text-white text-sm uppercase tracking-wider">${escapeHtml(partner.name)}</strong>
-                <span class="px-2.5 py-0.5 text-[10px] font-mono font-bold uppercase ${isApproved ? 'bg-emerald-400/20 text-emerald-300 border border-emerald-400/40' : 'bg-amber-400/20 text-amber-300 border border-amber-400/40'}">
-                  ${escapeHtml(partner.status || 'Pending')}
+                <span class="px-2.5 py-0.5 text-[10px] font-mono font-bold uppercase border ${badgeClass}">
+                  ${escapeHtml(status)}
                 </span>
                 ${code ? `<code class="bg-cyan-400/10 text-cyan-300 border border-cyan-400/30 px-2.5 py-0.5 font-mono font-bold">${escapeHtml(code)}</code>` : ''}
               </div>
@@ -242,6 +253,11 @@
                   <i class="fa-brands fa-whatsapp text-sm"></i> Send Code on WhatsApp
                 </button>
               `}
+              ${!isRejected ? `
+                <button onclick="rejectAffiliatePartner('${escapeHtml(partnerId)}')" class="bg-rose-500 hover:bg-rose-400 text-black font-black px-4 py-2 text-[11px] uppercase tracking-wider transition flex items-center gap-1.5">
+                  <i class="fa-solid fa-xmark"></i> Reject
+                </button>
+              ` : ''}
             </div>
           </div>
         `;
@@ -260,13 +276,17 @@
       };
 
       try {
-        await fetch(`/api/affiliate-partners/${encodeURIComponent(partnerId)}`, {
+        const res = await fetch(`/api/affiliate-partners/${encodeURIComponent(partnerId)}`, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(updatedPayload)
         });
+        if (!res.ok) {
+          throw new Error('Server rejected approval update');
+        }
       } catch (err) {
-        console.warn('Affiliate approval backend sync skipped/failed:', err);
+        console.warn('Affiliate approval backend sync failed:', err);
+        return showToast('Error', 'Server par partner approve nahi ho paaya.');
       }
 
       cachedAffiliates = cachedAffiliates.map((a, idx) => {
@@ -278,6 +298,40 @@
       saveLocalAffiliates(cachedAffiliates);
       renderAffiliateRequests();
       showToast('Affiliate Approved', `Code ${generatedCode} generate ho gaya hai!`);
+    }
+
+    async function rejectAffiliatePartner(partnerId) {
+      const target = cachedAffiliates.find((a, idx) => (a.id || `aff_${idx}`) === partnerId);
+      if (!target) return;
+
+      const updatedPayload = {
+        status: 'Rejected',
+        referralCode: ''
+      };
+
+      try {
+        const res = await fetch(`/api/affiliate-partners/${encodeURIComponent(partnerId)}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(updatedPayload)
+        });
+        if (!res.ok) {
+          throw new Error('Server rejected status update');
+        }
+      } catch (err) {
+        console.warn('Affiliate rejection backend sync failed:', err);
+        return showToast('Error', 'Server par partner reject nahi ho paaya.');
+      }
+
+      cachedAffiliates = cachedAffiliates.map((a, idx) => {
+        if ((a.id || `aff_${idx}`) === partnerId) {
+          return { ...a, ...updatedPayload };
+        }
+        return a;
+      });
+      saveLocalAffiliates(cachedAffiliates);
+      renderAffiliateRequests();
+      showToast('Rejected', 'Affiliate partner request reject kar di gayi hai.');
     }
 
     function sendAffiliateCodeWhatsApp(partnerId) {
@@ -327,7 +381,7 @@
       if (!codeLower || codeLower === 'none' || codeLower === 'direct') return null;
 
       const affMatch = cachedAffiliates.find(
-        (a) => String(a.referralCode || '').trim().toLowerCase() === codeLower
+        (a) => a.status === 'Approved' && String(a.referralCode || '').trim().toLowerCase() === codeLower
       );
       if (affMatch) {
         return {
