@@ -169,6 +169,10 @@
             filterOrders();
         }
 
+        function getCustomerReferralCode(ord) {
+            return String(ord.userRefCode || ord.myRefCode || ord.ownRefCode || ord.refCode || '').trim();
+        }
+
         function renderOrdersList(ordersToRender) {
             const container = document.getElementById('verifiedOrdersContainer');
             if (!ordersToRender || ordersToRender.length === 0) {
@@ -182,6 +186,7 @@
                 const isPreset = ['Order Placed', 'Processing', 'Packed', 'Shipped', 'Out for Delivery', 'Delivered', 'Cancelled'].includes(currentStatus);
                 const rawDate = ord.createdAt || ord.timestamp || ord.date;
                 const formattedDate = rawDate ? new Date(rawDate).toLocaleString('en-IN') : 'N/A';
+                const customerRefCode = getCustomerReferralCode(ord);
                 
                 let itemsListHtml = '';
                 if (ord.items && Array.isArray(ord.items) && ord.items.length > 0) {
@@ -260,7 +265,7 @@
                 `;
 
                 card.querySelector('.whatsapp-btn').addEventListener('click', () => {
-                    sendWhatsAppAlert(ord.phone, ord.customer || ord.name, ord.id, currentStatus);
+                    sendWhatsAppAlert(ord.phone, ord.customer || ord.name, ord.id, currentStatus, customerRefCode);
                 });
 
                 const selectElem = card.querySelector(`#statusSelect_${index}`);
@@ -395,9 +400,16 @@
             }
         }
 
-        function sendWhatsAppAlert(phone, customerName, orderId, status) {
-            const msg = `Hello *${customerName}*,\n\n📦 Aapke Moonland Store order (*${orderId}*) ka status update hua hai:\n🔹 *Current Status: ${status}*\n\nAap apna order track karne ke liye visit karein: https://yourdomain.com/track.html\n\nThank you for shopping with us! 🚀`;
-            window.open(`https://wa.me/91${phone}?text=${encodeURIComponent(msg)}`, '_blank');
+        function sendWhatsAppAlert(phone, customerName, orderId, status, referralCode) {
+            const cleanPhone = String(phone || '').replace(/\D/g, '').slice(-10);
+            const trackUrl = `${window.location.origin}/track.html`;
+            const refCodeDisplay = referralCode || 'Will be generated upon verification';
+            const refShareLink = referralCode
+                ? `${window.location.origin}/store.html?ref=${encodeURIComponent(referralCode)}`
+                : `${window.location.origin}/store.html`;
+
+            const msg = `Dear ${customerName},\n\nThere is an update regarding your Moonland Store order (${orderId}).\n\nCurrent Order Status: ${status}\nTrack your order anytime at:\n${trackUrl}\n\nStart Referring & Earn ₹1,000 Cashback!\nRefer your friends and family using your exclusive referral code below and earn an instant ₹1,000 cashback reward on eligible referred orders.\n\nYour Referral Code: ${refCodeDisplay}\nReferral Link: ${refShareLink}\n\nShare now, refer more, and earn ₹1,000 cashback.\n\nThank you for shopping with Moonland Store.\n\nRegards,\nMoonland Store Team`;
+            window.open(`https://wa.me/91${cleanPhone}?text=${encodeURIComponent(msg)}`, '_blank');
         }
 
         function exportOrdersToCSV() {
@@ -475,6 +487,6 @@
             document.getElementById('orderDateFilter').value = '';
             filterOrders();
         }
-    </script>
+    </script>  
 </body>
 </html>

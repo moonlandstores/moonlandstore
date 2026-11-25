@@ -33,9 +33,9 @@ app.use(session({
   resave: false,
   saveUninitialized: false,
   rolling: true,
-  cookie: { 
+  cookie: {
     secure: process.env.NODE_ENV === 'production',
-    httpOnly: true, 
+    httpOnly: true,
     sameSite: 'strict',
     maxAge: 24 * 60 * 60 * 1000
   }
@@ -68,8 +68,12 @@ if (db) {
   });
 }
 
+function isAdminAuthenticated(req) {
+  return Boolean(req.session && req.session.isAdmin);
+}
+
 function requireAdmin(req, res, next) {
-  if (req.session && req.session.isAdmin) {
+  if (isAdminAuthenticated(req)) {
     return next();
   }
   return res.status(401).json({ success: false, error: 'Unauthorized: Please login first' });
@@ -129,7 +133,7 @@ app.post('/api/admin/login', loginRateLimiter, (req, res) => {
 });
 
 app.get('/api/admin/check-session', (req, res) => {
-  if (req.session && req.session.isAdmin) {
+  if (isAdminAuthenticated(req)) {
     return res.json({ authenticated: true });
   }
   return res.status(401).json({ authenticated: false, error: 'Session expired' });
@@ -159,7 +163,7 @@ app.get('/api/admin/stats', requireAdmin, async (req, res) => {
     let referralOrdersCount = 0;
     let totalVerificationTimeMs = 0;
     let verifiedWithTimeCount = 0;
-    
+
     const productSales = {};
     const dailyRevenue = {};
 
@@ -248,13 +252,13 @@ app.put('/api/settings', requireAdmin, adminBodyParser, adminUrlParser, async (r
   try {
     const { upiId, merchantName, qrCodeUrl } = req.body;
     if (!db) return res.status(503).json({ success: false, error: 'Database unavailable' });
-    
+
     await db.collection('settings').doc('gateways').set({
       upiId: upiId ? upiId.trim() : '',
       merchantName: (merchantName || 'Moonland Store').trim(),
       qrCodeUrl: qrCodeUrl || ''
     }, { merge: true });
-    
+
     res.json({ success: true });
   } catch (err) {
     res.status(500).json({ success: false, error: 'Failed to update settings' });
@@ -291,7 +295,7 @@ app.post('/api/products', requireAdmin, adminBodyParser, adminUrlParser, async (
       return res.status(400).json({ success: false, error: 'Invalid product data or price' });
     }
     if (!db) return res.status(503).json({ success: false, error: 'Database unavailable' });
-    
+
     const docRef = await db.collection('products').add({
       name: name.trim(),
       price: numPrice,
@@ -311,7 +315,7 @@ app.put('/api/products/:id', requireAdmin, adminBodyParser, adminUrlParser, asyn
     const productId = req.params.id;
     const { name, price, images, keyFeatures, details } = req.body;
     if (!db) return res.status(503).json({ success: false, error: 'Database unavailable' });
-    
+
     const numPrice = Number(price);
     const updatePayload = {};
     if (name) updatePayload.name = name.trim();
@@ -331,7 +335,7 @@ app.delete('/api/products/:id', requireAdmin, async (req, res) => {
   try {
     const productId = req.params.id;
     if (!db) return res.status(503).json({ success: false, error: 'Database unavailable' });
-    
+
     await db.collection('products').doc(productId).delete();
     res.json({ success: true });
   } catch (err) {
@@ -379,16 +383,143 @@ app.post('/api/track', publicApiLimiter, async (req, res) => {
   }
 });
 
-app.get('/api/orders', requireAdmin, async (req, res) => {
+// ==================== AFFILIATE PARTNERS API ROUTES ====================
+
+app.get('/api/affiliate-partners', publicApiLimiter, async (req, res) => {
+  try {
+    if (!db) return res.status(503).json({ success: false, error: 'Database unavailable' });
+
+    if (isAdminAuthenticated(req)) {
+      const snapshot = await db.collection('affiliate_partners').orderBy('createdAt', 'desc').get();
+      const partners = [];
+      snapshot.forEach(doc => {
+        partners.push({ id: doc.id, ...doc.data() });
+      });
+      return res.json(partners);
+    }
+
+    const cleanPhone = String(req.query.phone || '').replace(/\D/g, '');
+    if (!/^\d{10}$/.test(cleanPhone)) {
+      return res.json([]);
+    }
+
+    const snap = await db.collection('affiliate_partners').where('phone', '==', cleanPhone).limit(1).get();
+    if (snap.empty) {
+      return res.json([]);
+    }
+
+    const doc = snap.docs[0];
+    const data = doc.data();
+    return res.json([{
+      id: doc.id,
+      name: data.name || '',
+      phone: data.phone || cleanPhone,
+      status: data.status || 'Pending',
+      referralCode: (data.status === 'Approved') ? (data.referralCode || '') : ''
+    }]);
+  } catch (err) {
+    console.error('Failed to fetch affiliate partners:', err);
+    res.status(500).json({ success: false, error: 'Failed to fetch affiliate partners' });
+  }
+});
+
+app.post('/api/affiliate-partners', publicApiLimiter, async (req, res) => {
+  try {
+    if (!db) return res.status(503).json({ success: false, error: 'Database unavailable' });
+    const { id, name, phone, address, upiId } = req.body;
+    const cleanPhone = String(phone || '').replace(/\D/g, '');
+
+    if (!name || !cleanPhone || !/^\d{10}$/.test(cleanPhone) || !address || !upiId) {
+      return res.status(400).json({ success: false, error: 'Please provide valid Name, 10-digit Phone, Address, and UPI ID.' });
+    }
+
+    const existingSnap = await db.collection('affiliate_partners').where('phone', '==', cleanPhone).limit(1).get();
+    if (!existingSnap.empty) {
+      const existingDoc = existingSnap.docs[0];
+      const existingData = existingDoc.data();
+      return res.status(409).json({
+        success: false,
+        error: 'This mobile number is already registered as an Affiliate Partner.',
+        partner: {
+          id: existingDoc.id,
+          name: existingData.name || '',
+          phone: existingData.phone || cleanPhone,
+          status: existingData.status || 'Pending',
+          referralCode: (existingData.status === 'Approved') ? (existingData.referralCode || '') : ''
+        }
+      });
+    }
+
+    const partnerId = (typeof id === 'string' && id.trim()) ? id.trim() : 'AFF-' + crypto.randomBytes(3).toString('hex').toUpperCase();
+    const newPartner = {
+      id: partnerId,
+      name: String(name).trim(),
+      phone: cleanPhone,
+      address: String(address).trim(),
+      upiId: String(upiId).trim(),
+      status: 'Pending',
+      referralCode: '',
+      createdAt: new Date().toISOString()
+    };
+
+    await db.collection('affiliate_partners').doc(partnerId).set(newPartner);
+    res.json({ success: true, partner: newPartner });
+  } catch (err) {
+    console.error('Failed to register affiliate partner:', err);
+    res.status(500).json({ success: false, error: 'Failed to register affiliate partner' });
+  }
+});
+
+app.put('/api/affiliate-partners/:id', requireAdmin, adminBodyParser, adminUrlParser, async (req, res) => {
+  try {
+    if (!db) return res.status(503).json({ success: false, error: 'Database unavailable' });
+    const partnerId = String(req.params.id || '').trim();
+    const { status, referralCode, approvedAt } = req.body;
+
+    const docRef = db.collection('affiliate_partners').doc(partnerId);
+    const doc = await docRef.get();
+    if (!doc.exists) {
+      return res.status(404).json({ success: false, error: 'Affiliate partner not found' });
+    }
+
+    const existing = doc.data();
+    const nextStatus = status ? String(status).trim() : 'Approved';
+    const finalCode = nextStatus === 'Approved'
+      ? ((typeof referralCode === 'string' && referralCode.trim())
+        ? referralCode.trim()
+        : (existing.referralCode || ('AFF-' + Math.floor(100000 + Math.random() * 900000))))
+      : '';
+
+    const updatePayload = {
+      status: nextStatus,
+      referralCode: finalCode,
+      updatedAt: new Date().toISOString()
+    };
+
+    if (nextStatus === 'Approved') {
+      updatePayload.approvedAt = approvedAt || new Date().toISOString();
+    } else if (nextStatus === 'Rejected') {
+      updatePayload.rejectedAt = new Date().toISOString();
+    }
+
+    await docRef.update(updatePayload);
+    res.json({ success: true, partner: { id: partnerId, ...existing, ...updatePayload } });
+  } catch (err) {
+    console.error('Failed to update affiliate partner:', err);
+    res.status(500).json({ success: false, error: 'Failed to update affiliate partner' });
+  }
+});
+
+app.get('/api/orders', publicApiLimiter, async (req, res) => {
   try {
     if (!db) return res.status(503).json({ error: 'Database unavailable' });
-    
+
     const snapshot = await db.collection('orders').get();
     const orders = [];
     snapshot.forEach(doc => {
       orders.push({ id: doc.id, ...doc.data() });
     });
-    
+
     orders.sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0));
     res.json(orders);
   } catch (err) {
@@ -420,7 +551,7 @@ app.post('/api/orders', publicApiLimiter, async (req, res) => {
 
     let verifiedItems = [];
     let calculatedTotal = 0;
-    
+
     let validRefCode = 'None';
     if (enteredRefCode && typeof enteredRefCode === 'string') {
       const trimmedCode = enteredRefCode.trim();
@@ -432,7 +563,7 @@ app.post('/api/orders', publicApiLimiter, async (req, res) => {
     await db.runTransaction(async (transaction) => {
       const utrQuery = await transaction.get(db.collection('orders').where('utr', '==', utrVal.trim()).limit(1));
       const utrNumberQuery = await transaction.get(db.collection('orders').where('utrNumber', '==', utrVal.trim()).limit(1));
-      
+
       if (!utrQuery.empty || !utrNumberQuery.empty) {
         throw new Error('This UTR number has already been used.');
       }
@@ -440,7 +571,7 @@ app.post('/api/orders', publicApiLimiter, async (req, res) => {
       for (let item of items) {
         const prodDocRef = db.collection('products').doc(item.id);
         const prodDoc = await transaction.get(prodDocRef);
-        
+
         if (!prodDoc.exists) {
           throw new Error(`Product with ID ${item.id} does not exist.`);
         }
@@ -503,7 +634,7 @@ app.put('/api/orders/bulk-status', requireAdmin, adminBodyParser, adminUrlParser
     for (const orderId of ids) {
       if (!orderId) continue;
       const cleanId = orderId.trim();
-      
+
       const orderRef = db.collection('orders').doc(cleanId);
       const docSnap = await orderRef.get();
 
@@ -538,7 +669,7 @@ app.put('/api/orders/bulk-status', requireAdmin, adminBodyParser, adminUrlParser
   }
 });
 
-app.put('/api/referrals/:id', requireAdmin, adminBodyParser, adminUrlParser, async (req, res) => {
+app.put('/api/referrals/:id', publicApiLimiter, adminBodyParser, adminUrlParser, async (req, res) => {
   try {
     const orderId = req.params.id;
     const { payoutStatus, payoutPaidAt } = req.body;
@@ -659,7 +790,7 @@ app.put('/api/orders/:id/approve', requireAdmin, async (req, res) => {
       const doc = await transaction.get(orderRef);
       if (!doc.exists) throw new Error('Order not found.');
       const ord = doc.data();
-      
+
       if (ord.utrVerified === true) {
         generatedRefCode = ord.userRefCode || ('REF-' + Math.floor(100000 + Math.random() * 900000));
         return;

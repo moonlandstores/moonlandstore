@@ -102,7 +102,7 @@ html.dark #mobileMenuDropdown a {
 </marquee>
 </div>
 
-<header id="orderHeader" class="sticky top-0 z-45 backdrop-blur-xl border-b border-zinc-900">
+<header id="orderHeader" class="sticky top-0 z-[45] backdrop-blur-xl border-b border-zinc-900">
 <div class="max-w-7xl mx-auto px-6 sm:px-12 flex justify-between items-center h-20">
 <a href="index.html" class="flex items-center space-x-3 group">
 <div id="logoBox" class="brand-logo-box w-7 h-7 border border-white flex items-center justify-center font-black text-xs tracking-widest text-white group-hover:bg-white group-hover:text-black transition duration-500 rounded-lg">M</div>
@@ -286,7 +286,7 @@ Fill your delivery details, proceed to payment, and submit UTR.
 </div>
 <div class="flex items-start gap-2.5">
 <i class="fa-solid fa-circle-check text-emerald-600 dark:text-emerald-400 mt-0.5"></i>
-<p class="leading-relaxed font-medium">Share your link to <strong>Earn Unlimited Cashback</strong> (₹500 Rs per referral).</p>
+<p class="leading-relaxed font-medium">Share your link to <strong>Earn Unlimited Cashback</strong> (₹1,000 Rs per referral).</p>
 </div>
 <div class="flex items-start gap-2.5 text-amber-700 dark:text-yellow-300">
 <i class="fa-solid fa-clock mt-0.5"></i>
@@ -420,7 +420,7 @@ function applySystemThemeOrder() {
   if (isLight) {
     bodyTag.className = "daylight-sky-clouds text-slate-900 font-sans antialiased min-h-screen flex flex-col justify-between selection:bg-black selection:text-white relative";
     topBar.className = "marquee-bar bg-[#09090b] text-[#f4f4f5] py-3 px-4 text-[11px] font-extrabold tracking-[0.25em] uppercase border-b border-[#27272a] overflow-hidden whitespace-nowrap z-20 shadow-sm";
-    header.className = "sticky top-0 z-45 bg-white/95 backdrop-blur-xl border-b border-zinc-200 shadow-sm";
+    header.className = "sticky top-0 z-[45] bg-white/95 backdrop-blur-xl border-b border-zinc-200 shadow-sm";
     logoBox.className = "brand-logo-box w-7 h-7 border border-zinc-900 bg-zinc-900 text-white flex items-center justify-center font-black text-xs tracking-widest rounded-lg";
     brandTitle.className = "font-bold text-sm tracking-[0.4em] uppercase text-zinc-900";
     mobileMenu.className = "hidden absolute top-full left-0 w-full bg-white border-b border-zinc-200 px-8 py-6 space-y-5 text-xs uppercase font-medium tracking-[0.25em] text-zinc-900 shadow-2xl z-50";
@@ -461,7 +461,7 @@ function applySystemThemeOrder() {
   } else {
     bodyTag.className = "bg-[#050505] text-white font-sans antialiased min-h-screen flex flex-col justify-between selection:bg-white selection:text-black relative";
     topBar.className = "marquee-bar bg-black text-zinc-300 py-3 px-4 text-[11px] font-extrabold tracking-[0.25em] uppercase border-b border-zinc-900 overflow-hidden whitespace-nowrap z-20";
-    header.className = "sticky top-0 z-45 backdrop-blur-xl border-b border-zinc-900";
+    header.className = "sticky top-0 z-[45] backdrop-blur-xl border-b border-zinc-900";
     logoBox.className = "brand-logo-box w-7 h-7 border border-white flex items-center justify-center font-black text-xs tracking-widest text-white group-hover:bg-white group-hover:text-black transition duration-500 rounded-lg";
     brandTitle.className = "font-bold text-sm tracking-[0.4em] uppercase text-white";
     mobileMenu.className = "hidden absolute top-full left-0 w-full bg-black border-b border-zinc-900 px-8 py-6 space-y-5 text-xs uppercase font-medium tracking-[0.25em] text-white shadow-2xl z-50";
@@ -696,17 +696,22 @@ async function submitOrderForm(event) {
   const upi = document.getElementById('orderUpi').value.trim();
   const refCode = document.getElementById('orderRef').value.trim();
   const cart = JSON.parse(localStorage.getItem('moonland_cart') || '[]');
+  const nowIso = new Date().toISOString();
 
   let orderPayload = {
+    customer: name,
     customerName: name,
     phone: phone,
     address: address,
     customerUpi: upi,
     referralCode: refCode,
+    enteredRefCode: refCode,
+    utr: utr,
     utrNumber: utr,
     items: cart,
     totalAmount: currentTotalSubtotal,
-    date: new Date().toISOString()
+    createdAt: nowIso,
+    date: nowIso
   };
 
   const submitBtn = document.getElementById('submitOrderBtn');

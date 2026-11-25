@@ -17,7 +17,7 @@
 </head>
 <body class="bg-[#050505] text-slate-100 min-h-screen font-sans p-6 sm:p-10 space-y-8 selection:bg-white selection:text-black">
   <div class="max-w-7xl mx-auto space-y-8">
-    
+
     <!-- Header & Locked Single-Line Navigation Bar -->
     <div class="flex flex-col xl:flex-row justify-between items-start xl:items-center gap-6 pb-6 border-b border-zinc-900">
       <div>
@@ -25,10 +25,9 @@
           <span class="w-3 h-3 bg-cyan-400 rounded-full animate-pulse"></span>
           Referral Payouts & Cashback History
         </h1>
-        <p class="text-xs text-zinc-400 tracking-wide mt-1">Track upline referrers, send ₹1,000 cash rewards & update payout history status from Firestore</p>
+        <p class="text-xs text-zinc-400 tracking-wide mt-1">Track upline referrers, approve affiliate partners, send ₹1,000 cash rewards & update payout status</p>
       </div>
-      
-      <!-- Locked Single-Row Navigation Bar (Unified Across All Pages) -->
+
       <nav class="flex flex-row flex-nowrap items-center gap-0.5 text-[9.5px] font-bold uppercase tracking-wider whitespace-nowrap overflow-x-auto max-w-full pb-1">
         <a href="dash-analytics-9x81.html" class="bg-black text-zinc-400 hover:text-white border border-zinc-800 px-2.5 py-2 transition">Dashboard</a>
         <a href="utr-verification.html" class="bg-black text-zinc-400 hover:text-white border border-zinc-800 px-2.5 py-2 transition">UTR Verification</a>
@@ -38,6 +37,24 @@
         <a href="referral-payouts.html" class="bg-cyan-400 text-black border border-cyan-400 px-2.5 py-2 shadow-[0_0_15px_rgba(34,211,238,0.3)] transition">Referrals</a>
         <a href="settings-gateways.html" class="bg-black text-zinc-400 hover:text-white border border-zinc-800 px-2.5 py-2 transition">Settings</a>
       </nav>
+    </div>
+
+    <!-- Affiliate Partner Requests & Code Generator -->
+    <div class="bg-[rgba(12,12,12,0.75)] border border-cyan-500/30 p-6 space-y-5 shadow-xl rounded-none">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-zinc-800/80 pb-4">
+        <div>
+          <span class="text-[10px] font-mono uppercase tracking-[0.2em] text-cyan-400 font-bold">PARTNER ONBOARDING</span>
+          <h2 class="text-lg font-black text-white uppercase tracking-wider mt-0.5">Affiliate Partner Requests</h2>
+        </div>
+        <div class="flex items-center gap-2 text-xs font-mono">
+          <span id="affPendingBadge" class="bg-amber-400/10 text-amber-300 border border-amber-400/30 px-3 py-1">Pending: 0</span>
+          <span id="affApprovedBadge" class="bg-emerald-400/10 text-emerald-300 border border-emerald-400/30 px-3 py-1">Approved: 0</span>
+        </div>
+      </div>
+
+      <div id="affiliateRequestsContainer" class="space-y-3 text-xs">
+        <p class="text-zinc-500 font-mono text-center py-4">Loading affiliate partner requests...</p>
+      </div>
     </div>
 
     <!-- Analytics Summary Cards -->
@@ -63,8 +80,7 @@
         <button onclick="setPayoutFilter('All')" id="filterBtnAll" class="bg-cyan-400 text-black font-black px-4 py-2.5 text-xs uppercase tracking-wider transition shadow-[0_0_15px_rgba(34,211,238,0.2)]">All</button>
         <button onclick="setPayoutFilter('Pending')" id="filterBtnPending" class="bg-black border border-zinc-800 text-zinc-400 hover:text-white font-bold px-4 py-2.5 text-xs uppercase tracking-wider transition">Pending</button>
         <button onclick="setPayoutFilter('Paid')" id="filterBtnPaid" class="bg-black border border-zinc-800 text-zinc-400 hover:text-white font-bold px-4 py-2.5 text-xs uppercase tracking-wider transition">Paid</button>
-        
-        <!-- Direct vs Referral Type Filter -->
+
         <select id="typeFilterSelect" onchange="renderPayoutsHistory()" class="bg-black border border-zinc-800 px-3 py-2.5 text-xs text-zinc-300 font-mono uppercase focus:outline-none focus:border-cyan-400 ml-2">
           <option value="all">All Orders (Direct + Referral)</option>
           <option value="direct">Direct / Organic Only</option>
@@ -72,7 +88,6 @@
         </select>
       </div>
 
-      <!-- Search Input -->
       <div class="relative w-full lg:w-60">
         <i class="fa-solid fa-magnifying-glass absolute left-4 top-3.5 text-zinc-500 text-xs"></i>
         <input type="text" id="payoutSearchInput" oninput="renderPayoutsHistory()" placeholder="Search referrer, buyer..." class="w-full bg-black border border-zinc-800 pl-10 pr-4 py-3 text-xs text-white focus:outline-none focus:border-cyan-400 transition font-medium">
@@ -103,30 +118,176 @@
   <!-- Custom Toast Notification -->
   <div id="customToast" class="fixed bottom-6 right-6 z-50 transform translate-y-24 opacity-0 transition-all duration-300 pointer-events-none">
     <div class="bg-[rgba(12,12,12,0.95)] border border-cyan-400/40 px-6 py-4 shadow-2xl flex items-center gap-3">
-        <div class="w-8 h-8 bg-cyan-400/20 text-cyan-400 flex items-center justify-center font-bold">
-            <i class="fa-solid fa-circle-check"></i>
-        </div>
-        <div>
-            <h4 class="text-xs font-bold text-white uppercase tracking-wider" id="toastTitle">Success</h4>
-            <p class="text-[11px] text-zinc-400" id="toastMessage">Payout status update ho gaya hai!</p>
-        </div>
+      <div class="w-8 h-8 bg-cyan-400/20 text-cyan-400 flex items-center justify-center font-bold">
+        <i class="fa-solid fa-circle-check"></i>
+      </div>
+      <div>
+        <h4 class="text-xs font-bold text-white uppercase tracking-wider" id="toastTitle">Success</h4>
+        <p class="text-[11px] text-zinc-400" id="toastMessage">Payout status update ho gaya hai!</p>
+      </div>
     </div>
   </div>
 
   <script>
+    const PAYOUT_REWARD_AMOUNT = 1000;
+    const AFFILIATE_STORAGE_KEY = 'moonland_affiliate_partners_v1';
     let currentFilter = 'All';
     let cachedOrders = [];
+    let cachedAffiliates = [];
+    let payoutRecordMap = {};
 
-    document.addEventListener("DOMContentLoaded", () => fetchOrdersAndRender());
+    document.addEventListener("DOMContentLoaded", () => {
+      fetchAffiliatesAndRender();
+      fetchOrdersAndRender();
+    });
+
+    function escapeHtml(str) {
+      return String(str ?? '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
 
     function showToast(title, message) {
-        const toast = document.getElementById('customToast');
-        document.getElementById('toastTitle').innerText = title;
-        document.getElementById('toastMessage').innerText = message;
-        toast.classList.remove('translate-y-24', 'opacity-0', 'pointer-events-none');
-        setTimeout(() => {
-            toast.classList.add('translate-y-24', 'opacity-0', 'pointer-events-none');
-        }, 3000);
+      const toast = document.getElementById('customToast');
+      document.getElementById('toastTitle').innerText = title;
+      document.getElementById('toastMessage').innerText = message;
+      toast.classList.remove('translate-y-24', 'opacity-0', 'pointer-events-none');
+      setTimeout(() => {
+        toast.classList.add('translate-y-24', 'opacity-0', 'pointer-events-none');
+      }, 3000);
+    }
+
+    function getLocalAffiliates() {
+      try {
+        return JSON.parse(localStorage.getItem(AFFILIATE_STORAGE_KEY) || '[]');
+      } catch {
+        return [];
+      }
+    }
+
+    function saveLocalAffiliates(list) {
+      localStorage.setItem(AFFILIATE_STORAGE_KEY, JSON.stringify(list));
+    }
+
+    function generateAffiliateCode(name) {
+      const prefix = String(name || 'AFF').replace(/[^a-zA-Z]/g, '').toUpperCase().slice(0, 3).padEnd(3, 'X');
+      const randomNum = Math.floor(100000 + Math.random() * 900000);
+      return `AFF-${prefix}${randomNum}`;
+    }
+
+    async function fetchAffiliatesAndRender() {
+      try {
+        const res = await fetch('/api/affiliate-partners');
+        if (res.ok) {
+          const data = await res.json();
+          cachedAffiliates = Array.isArray(data) ? data : (data.partners || []);
+          saveLocalAffiliates(cachedAffiliates);
+        } else {
+          cachedAffiliates = getLocalAffiliates();
+        }
+      } catch (err) {
+        console.warn('Affiliate API fallback to localStorage:', err);
+        cachedAffiliates = getLocalAffiliates();
+      }
+      renderAffiliateRequests();
+    }
+
+    function renderAffiliateRequests() {
+      const container = document.getElementById('affiliateRequestsContainer');
+      const pendingCount = cachedAffiliates.filter(a => (a.status || 'Pending') !== 'Approved').length;
+      const approvedCount = cachedAffiliates.filter(a => (a.status || 'Pending') === 'Approved').length;
+
+      document.getElementById('affPendingBadge').innerText = `Pending: ${pendingCount}`;
+      document.getElementById('affApprovedBadge').innerText = `Approved: ${approvedCount}`;
+
+      if (!cachedAffiliates.length) {
+        container.innerHTML = `<div class="bg-black border border-zinc-800/70 p-6 text-center text-zinc-500 font-mono">Koi affiliate partner application nahi mila.</div>`;
+        return;
+      }
+
+      container.innerHTML = cachedAffiliates.map((partner, index) => {
+        const partnerId = partner.id || `aff_${index}`;
+        const isApproved = (partner.status || 'Pending') === 'Approved';
+        const code = partner.referralCode || '';
+        const createdText = partner.createdAt && !isNaN(new Date(partner.createdAt).getTime())
+          ? new Date(partner.createdAt).toLocaleString('en-IN')
+          : 'N/A';
+
+        return `
+          <div class="bg-black border border-zinc-800/90 p-4 flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
+            <div class="space-y-1">
+              <div class="flex items-center gap-2 flex-wrap">
+                <strong class="text-white text-sm uppercase tracking-wider">${escapeHtml(partner.name)}</strong>
+                <span class="px-2.5 py-0.5 text-[10px] font-mono font-bold uppercase ${isApproved ? 'bg-emerald-400/20 text-emerald-300 border border-emerald-400/40' : 'bg-amber-400/20 text-amber-300 border border-amber-400/40'}">
+                  ${escapeHtml(partner.status || 'Pending')}
+                </span>
+                ${code ? `<code class="bg-cyan-400/10 text-cyan-300 border border-cyan-400/30 px-2.5 py-0.5 font-mono font-bold">${escapeHtml(code)}</code>` : ''}
+              </div>
+              <p class="text-zinc-400 font-mono text-[11px]">
+                Phone: <span class="text-white">${escapeHtml(partner.phone)}</span> • UPI: <span class="text-amber-300">${escapeHtml(partner.upiId)}</span>
+              </p>
+              <p class="text-zinc-500 text-[11px]">Address: ${escapeHtml(partner.address)} • Applied: ${escapeHtml(createdText)}</p>
+            </div>
+
+            <div class="flex flex-wrap items-center gap-2">
+              ${!isApproved ? `
+                <button onclick="approveAffiliatePartner('${escapeHtml(partnerId)}')" class="bg-emerald-400 hover:bg-emerald-300 text-black font-black px-4 py-2 text-[11px] uppercase tracking-wider transition flex items-center gap-1.5">
+                  <i class="fa-solid fa-check"></i> Approve & Generate Code
+                </button>
+              ` : `
+                <button onclick="sendAffiliateCodeWhatsApp('${escapeHtml(partnerId)}')" class="bg-cyan-400 hover:bg-cyan-300 text-black font-black px-4 py-2 text-[11px] uppercase tracking-wider transition flex items-center gap-1.5">
+                  <i class="fa-brands fa-whatsapp text-sm"></i> Send Code on WhatsApp
+                </button>
+              `}
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    async function approveAffiliatePartner(partnerId) {
+      const target = cachedAffiliates.find((a, idx) => (a.id || `aff_${idx}`) === partnerId);
+      if (!target) return;
+
+      const generatedCode = target.referralCode || generateAffiliateCode(target.name);
+      const updatedPayload = {
+        status: 'Approved',
+        referralCode: generatedCode,
+        approvedAt: new Date().toISOString()
+      };
+
+      try {
+        await fetch(`/api/affiliate-partners/${encodeURIComponent(partnerId)}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(updatedPayload)
+        });
+      } catch (err) {
+        console.warn('Affiliate approval backend sync skipped/failed:', err);
+      }
+
+      cachedAffiliates = cachedAffiliates.map((a, idx) => {
+        if ((a.id || `aff_${idx}`) === partnerId) {
+          return { ...a, ...updatedPayload };
+        }
+        return a;
+      });
+      saveLocalAffiliates(cachedAffiliates);
+      renderAffiliateRequests();
+      showToast('Affiliate Approved', `Code ${generatedCode} generate ho gaya hai!`);
+    }
+
+    function sendAffiliateCodeWhatsApp(partnerId) {
+      const partner = cachedAffiliates.find((a, idx) => (a.id || `aff_${idx}`) === partnerId);
+      if (!partner || !partner.referralCode) return;
+
+      const cleanPhone = String(partner.phone || '').replace(/\D/g, '').slice(-10);
+      const refLink = `${window.location.origin}/store.html?ref=${encodeURIComponent(partner.referralCode)}`;
+      const msg = `Hello *${partner.name}*,\n\n🎉 Aapki *Moonland Store Affiliate Partner* request approve ho gayi hai!\n\n🔑 Aapka Affiliate Referral Code: *${partner.referralCode}*\n🔗 Aapka Referral Link: ${refLink}\n\nIs code/link ke zariye hone wale har order par aap unlimited rewards earn kar sakte hain! 🚀`;
+      window.open(`https://wa.me/91${cleanPhone}?text=${encodeURIComponent(msg)}`, '_blank');
     }
 
     function setPayoutFilter(filter) {
@@ -150,7 +311,6 @@
         const res = await fetch('/api/orders');
         if (res.ok) {
           const allOrders = await res.json();
-          // Filter out rejected orders so they don't show in payout history
           cachedOrders = allOrders.filter(o => o.status !== 'Rejected');
         } else {
           cachedOrders = [];
@@ -160,6 +320,36 @@
         cachedOrders = [];
       }
       renderPayoutsHistory();
+    }
+
+    function findReferrerInfo(enteredCode, orders) {
+      const codeLower = String(enteredCode || '').trim().toLowerCase();
+      if (!codeLower || codeLower === 'none' || codeLower === 'direct') return null;
+
+      const affMatch = cachedAffiliates.find(
+        (a) => String(a.referralCode || '').trim().toLowerCase() === codeLower
+      );
+      if (affMatch) {
+        return {
+          name: `${affMatch.name} (Affiliate)`,
+          upi: affMatch.upiId,
+          phone: affMatch.phone
+        };
+      }
+
+      const orderMatch = orders.find((item) => {
+        const refCode = String(item.userRefCode || item.myRefCode || item.ownRefCode || item.refCode || '').trim().toLowerCase();
+        return refCode && refCode === codeLower;
+      });
+      if (orderMatch) {
+        return {
+          name: orderMatch.customer || orderMatch.name || orderMatch.fullName,
+          upi: orderMatch.upiId || orderMatch.upi,
+          phone: orderMatch.phone || orderMatch.mobile
+        };
+      }
+
+      return null;
     }
 
     function renderPayoutsHistory() {
@@ -177,7 +367,7 @@
         else pendingCount++;
       });
 
-      document.getElementById('statTotalPaidAmount').innerText = `₹${(totalPaidCount * 1000).toLocaleString('en-IN')}`;
+      document.getElementById('statTotalPaidAmount').innerText = `₹${(totalPaidCount * PAYOUT_REWARD_AMOUNT).toLocaleString('en-IN')}`;
       document.getElementById('statPendingCount').innerText = pendingCount;
       document.getElementById('statPaidCount').innerText = totalPaidCount;
 
@@ -192,12 +382,8 @@
         if (typeVal === 'direct' && !isDirect) return false;
         if (typeVal === 'referral' && isDirect) return false;
 
-        let referrer = orders.find(item => {
-          const userA_Code = (item.userRefCode || item.myRefCode || item.ownRefCode || item.refCode || '').trim().toLowerCase();
-          return userA_Code && userA_Code === enteredCode.toLowerCase();
-        });
-
-        let referrerName = referrer ? (referrer.customer || referrer.name || referrer.fullName || '').toLowerCase() : 'direct / unknown referrer';
+        const refInfo = findReferrerInfo(enteredCode, orders);
+        const referrerName = (refInfo ? refInfo.name : 'direct / unknown referrer').toLowerCase();
         const buyerName = (o.customer || o.name || '').toLowerCase();
         const buyerPhone = (o.phone || '').toLowerCase();
         const orderId = (o.id || '').toLowerCase();
@@ -208,7 +394,9 @@
         if (selectedDate) {
           const rawDate = o.createdAt || o.timestamp || o.date;
           if (!rawDate) return false;
-          const orderDateStr = new Date(rawDate).toISOString().split('T')[0];
+          const parsedDate = new Date(rawDate);
+          if (isNaN(parsedDate.getTime())) return false;
+          const orderDateStr = parsedDate.toISOString().split('T')[0];
           if (orderDateStr !== selectedDate) return false;
         }
 
@@ -218,30 +406,27 @@
       let referrerCounts = {};
       orders.forEach(o => {
         const code = (o.enteredRefCode || o.refCodeUsed || o.referralCode || o.refCode || o.code || '').trim();
-        let refObj = orders.find(item => {
-          const refCode = (item.userRefCode || item.myRefCode || item.ownRefCode || item.refCode || '').trim().toLowerCase();
-          return refCode && refCode === code.toLowerCase();
-        });
-        let refName = refObj ? (refObj.customer || refObj.name) : 'Direct / Unknown Referrer';
+        const refInfo = findReferrerInfo(code, orders);
+        const refName = refInfo ? refInfo.name : 'Direct / Unknown Referrer';
         if ((o.payoutStatus || 'Pending') === 'Paid') {
           referrerCounts[refName] = (referrerCounts[refName] || 0) + 1;
         }
       });
 
       filteredOrders.sort((a, b) => {
-        const timeA = new Date(a.createdAt || a.timestamp || 0).getTime();
-        const timeB = new Date(b.createdAt || b.timestamp || 0).getTime();
+        const timeA = new Date(a.createdAt || a.timestamp || 0).getTime() || 0;
+        const timeB = new Date(b.createdAt || b.timestamp || 0).getTime() || 0;
 
         if (sortVal === 'newest') return timeB - timeA;
         if (sortVal === 'oldest') return timeA - timeB;
 
-        let codeA = (a.enteredRefCode || a.refCodeUsed || a.referralCode || a.refCode || a.code || '').trim().toLowerCase();
-        let codeB = (b.enteredRefCode || b.refCodeUsed || b.referralCode || b.refCode || b.code || '').trim().toLowerCase();
+        const codeA = (a.enteredRefCode || a.refCodeUsed || a.referralCode || a.refCode || a.code || '').trim();
+        const codeB = (b.enteredRefCode || b.refCodeUsed || b.referralCode || b.refCode || b.code || '').trim();
 
-        let refA = orders.find(item => (item.userRefCode || item.myRefCode || item.ownRefCode || '').trim().toLowerCase() === codeA);
-        let nameA = refA ? (refA.customer || refA.name) : 'Direct / Unknown Referrer';
-        let refB = orders.find(item => (item.userRefCode || item.myRefCode || item.ownRefCode || '').trim().toLowerCase() === codeB);
-        let nameB = refB ? (refB.customer || refB.name) : 'Direct / Unknown Referrer';
+        const refA = findReferrerInfo(codeA, orders);
+        const nameA = refA ? refA.name : 'Direct / Unknown Referrer';
+        const refB = findReferrerInfo(codeB, orders);
+        const nameB = refB ? refB.name : 'Direct / Unknown Referrer';
 
         if (sortVal === 'topEarners') {
           return (referrerCounts[nameB] || 0) - (referrerCounts[nameA] || 0);
@@ -256,27 +441,38 @@
         return;
       }
 
+      payoutRecordMap = {};
       container.innerHTML = '';
-      filteredOrders.forEach(o => {
+
+      filteredOrders.forEach((o, idx) => {
+        const recordKey = `rec_${idx}_${o.id || idx}`;
         const payoutStatus = o.payoutStatus || 'Pending';
         const enteredCode = (o.enteredRefCode || o.refCodeUsed || o.referralCode || o.refCode || o.code || 'None').trim();
-        const orderDate = o.createdAt || o.timestamp ? new Date(o.createdAt || o.timestamp).toLocaleString('en-IN') : (o.date || 'N/A');
-        
-        const paidTimeText = (payoutStatus === 'Paid' && o.payoutPaidAt) 
-          ? `<span class="text-emerald-400 font-mono block mt-1"><i class="fa-solid fa-circle-check mr-1"></i> Paid At: ${o.payoutPaidAt}</span>` 
+        const rawOrderDate = o.createdAt || o.timestamp;
+        const parsedOrderDate = rawOrderDate ? new Date(rawOrderDate) : null;
+        const orderDate = (parsedOrderDate && !isNaN(parsedOrderDate.getTime()))
+          ? parsedOrderDate.toLocaleString('en-IN')
+          : (o.date || 'N/A');
+
+        const paidTimeText = (payoutStatus === 'Paid' && o.payoutPaidAt)
+          ? `<span class="text-emerald-400 font-mono block mt-1"><i class="fa-solid fa-circle-check mr-1"></i> Paid At: ${escapeHtml(o.payoutPaidAt)}</span>`
           : '';
 
-        let referrer = orders.find(item => {
-          const refCode = (item.userRefCode || item.myRefCode || item.ownRefCode || item.refCode || '').trim().toLowerCase();
-          return refCode && refCode === enteredCode.toLowerCase();
-        });
+        const refInfo = findReferrerInfo(enteredCode, orders);
+        const buyerDisplayName = o.customer || o.name || 'Customer';
+        const referrerName = o.referrerName || (refInfo ? refInfo.name : 'Direct / Unknown Referrer');
+        const referrerUpi = o.referrerUpi || (refInfo ? refInfo.upi : (o.upiId || 'N/A'));
+        const referrerPhone = o.referrerPhone || (refInfo ? refInfo.phone : (o.phone || ''));
 
-        let referrerName = o.referrerName || (referrer ? (referrer.customer || referrer.name || referrer.fullName) : 'Direct / Unknown Referrer');
-        let referrerUpi = o.referrerUpi || (referrer ? (referrer.upiId || referrer.upi) : (o.upiId || 'N/A'));
-        let referrerPhone = o.referrerPhone || (referrer ? (referrer.phone || referrer.mobile) : o.phone);
+        payoutRecordMap[recordKey] = {
+          refName: referrerName,
+          buyerName: buyerDisplayName,
+          upi: referrerUpi,
+          phone: referrerPhone
+        };
 
         const whatsappButtonHtml = payoutStatus === 'Paid' ? `
-          <button onclick="sendPayoutWhatsApp('${referrerName}', '${o.customer || o.name}', '${referrerUpi}', '${referrerPhone}')" class="bg-cyan-400 hover:bg-cyan-300 text-black font-black px-4 py-2.5 flex items-center gap-2 shadow-lg transition uppercase tracking-wider text-[11px]">
+          <button onclick="sendPayoutWhatsAppByKey('${recordKey}')" class="bg-cyan-400 hover:bg-cyan-300 text-black font-black px-4 py-2.5 flex items-center gap-2 shadow-lg transition uppercase tracking-wider text-[11px]">
             <i class="fa-brands fa-whatsapp text-sm"></i> WhatsApp Alert
           </button>
         ` : '';
@@ -286,20 +482,20 @@
             <div class="space-y-2">
               <div class="flex items-center gap-2">
                 <span class="w-2.5 h-2.5 rounded-none ${payoutStatus === 'Paid' ? 'bg-emerald-400' : 'bg-amber-400'}"></span>
-                <strong class="text-white text-sm uppercase tracking-wider">Payout Target (User A): ${referrerName}</strong>
+                <strong class="text-white text-sm uppercase tracking-wider">Payout Target (User A): ${escapeHtml(referrerName)}</strong>
               </div>
-              <p class="text-zinc-400 font-mono">Referral Code Used: <code class="text-cyan-400 font-bold">${enteredCode}</code> | User A UPI ID: <span class="text-amber-300 font-bold">${referrerUpi}</span></p>
-              <p class="text-zinc-500 font-mono text-[11px]">Buyer (User B): ${o.customer || o.name} (${o.phone}) | Order ID: <span class="text-cyan-400 font-mono">${o.id}</span></p>
-              <p class="text-[10px] text-zinc-400 font-mono"><i class="fa-solid fa-clock text-cyan-400 mr-1"></i> Order Time: <span class="text-slate-300 font-medium">${orderDate}</span></p>
+              <p class="text-zinc-400 font-mono">Referral Code Used: <code class="text-cyan-400 font-bold">${escapeHtml(enteredCode)}</code> | User A UPI ID: <span class="text-amber-300 font-bold">${escapeHtml(referrerUpi)}</span></p>
+              <p class="text-zinc-500 font-mono text-[11px]">Buyer (User B): ${escapeHtml(buyerDisplayName)} (${escapeHtml(o.phone || 'N/A')}) | Order ID: <span class="text-cyan-400 font-mono">${escapeHtml(o.id)}</span></p>
+              <p class="text-[10px] text-zinc-400 font-mono"><i class="fa-solid fa-clock text-cyan-400 mr-1"></i> Order Time: <span class="text-slate-300 font-medium">${escapeHtml(orderDate)}</span></p>
               ${paidTimeText}
             </div>
 
             <div class="flex flex-wrap items-center gap-3">
               <div class="flex items-center bg-black p-1 border border-zinc-800 gap-1">
-                <button onclick="updatePayoutStatus('${o.id}', 'Paid')" class="px-4 py-2 font-bold uppercase tracking-wider transition ${payoutStatus === 'Paid' ? 'bg-emerald-400 text-black' : 'text-zinc-400 hover:text-white'}">
+                <button onclick="updatePayoutStatus('${escapeHtml(o.id)}', 'Paid')" class="px-4 py-2 font-bold uppercase tracking-wider transition ${payoutStatus === 'Paid' ? 'bg-emerald-400 text-black' : 'text-zinc-400 hover:text-white'}">
                   <i class="fa-solid fa-check mr-1"></i> Paid (₹1K)
                 </button>
-                <button onclick="updatePayoutStatus('${o.id}', 'Pending')" class="px-4 py-2 font-bold uppercase tracking-wider transition ${payoutStatus !== 'Paid' ? 'bg-amber-400 text-black' : 'text-zinc-400 hover:text-white'}">
+                <button onclick="updatePayoutStatus('${escapeHtml(o.id)}', 'Pending')" class="px-4 py-2 font-bold uppercase tracking-wider transition ${payoutStatus !== 'Paid' ? 'bg-amber-400 text-black' : 'text-zinc-400 hover:text-white'}">
                   <i class="fa-solid fa-clock mr-1"></i> Unpaid
                 </button>
               </div>
@@ -336,9 +532,12 @@
       }
     }
 
-    function sendPayoutWhatsApp(refName, buyerName, upi, phone) {
-      const msg = `Hello *${refName}*,\n\n🎉 Great news! Aapke referral code se *${buyerName}* ne successfully order place kar diya hai.\n\n💰 Aapka ₹1,000 Cash Referral Reward aapke UPI ID (*${upi}*) par process kar diya gaya hai!\n\nThank you for growing with Moonland & Ninja Appliances! 🚀`;
-      window.open(`https://wa.me/91${phone}?text=${encodeURIComponent(msg)}`, '_blank');
+    function sendPayoutWhatsAppByKey(key) {
+      const rec = payoutRecordMap[key];
+      if (!rec) return;
+      const cleanPhone = String(rec.phone || '').replace(/\D/g, '').slice(-10);
+      const msg = `Hello *${rec.refName}*,\n\n🎉 Great news! Aapke referral code se *${rec.buyerName}* ne successfully order place kar diya hai.\n\n💰 Aapka ₹${PAYOUT_REWARD_AMOUNT.toLocaleString('en-IN')} Cash Referral Reward aapke UPI ID (*${rec.upi}*) par process kar diya gaya hai!\n\nThank you for growing with Moonland & Ninja Appliances! 🚀`;
+      window.open(`https://wa.me/91${cleanPhone}?text=${encodeURIComponent(msg)}`, '_blank');
     }
   </script>
 </body>
