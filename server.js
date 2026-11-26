@@ -312,6 +312,71 @@ app.put('/api/settings', requireAdmin, adminBodyParser, adminUrlParser, async (r
   }
 });
 
+// ==================== CHECKOUT PHONE LEADS ROUTES ====================
+
+app.post('/api/checkout-leads', publicApiLimiter, async (req, res) => {
+  try {
+    if (!db) {
+      return res.status(503).json({ success: false, error: 'Database unavailable' });
+    }
+
+    const cleanPhone = String(req.body.phone || '').replace(/\D/g, '');
+    if (!/^\d{10}$/.test(cleanPhone)) {
+      return res.status(400).json({ success: false, error: 'Valid 10-digit mobile number required' });
+    }
+
+    const name = typeof req.body.name === 'string' ? req.body.name.trim() : '';
+    const address = typeof req.body.address === 'string' ? req.body.address.trim() : '';
+    const upiId = typeof req.body.upiId === 'string' ? req.body.upiId.trim() : '';
+    const referralCode = typeof req.body.referralCode === 'string' ? req.body.referralCode.trim() : '';
+
+    const leadRef = db.collection('checkout_leads').doc(cleanPhone);
+    const existingDoc = await leadRef.get();
+    const nowIso = new Date().toISOString();
+
+    const payload = {
+      phone: cleanPhone,
+      source: 'checkout_form',
+      updatedAt: nowIso
+    };
+
+    if (!existingDoc.exists) {
+      payload.createdAt = nowIso;
+      payload.orderCompleted = false;
+    }
+    if (name) payload.name = name;
+    if (address) payload.address = address;
+    if (upiId) payload.upiId = upiId;
+    if (referralCode) payload.referralCode = referralCode;
+
+    await leadRef.set(payload, { merge: true });
+    return res.json({ success: true });
+  } catch (err) {
+    console.error('Checkout lead save error:', err);
+    return res.status(500).json({ success: false, error: 'Failed to save phone number' });
+  }
+});
+
+app.get('/api/checkout-leads', requireAdmin, async (req, res) => {
+  try {
+    if (!db) {
+      return res.status(503).json({ success: false, error: 'Database unavailable' });
+    }
+
+    const snapshot = await db.collection('checkout_leads').get();
+    const leads = [];
+    snapshot.forEach(doc => {
+      leads.push({ id: doc.id, ...doc.data() });
+    });
+
+    leads.sort((a, b) => new Date(b.updatedAt || b.createdAt || 0) - new Date(a.updatedAt || a.createdAt || 0));
+    return res.json(leads);
+  } catch (err) {
+    console.error('Failed to fetch checkout leads:', err);
+    return res.status(500).json({ success: false, error: 'Failed to fetch checkout leads' });
+  }
+});
+
 // ==================== WHATSAPP & SOCIAL PREVIEW ROUTES ====================
 
 app.get('/api/products/:id/og-image', async (req, res) => {
@@ -752,6 +817,20 @@ app.post('/api/orders', publicApiLimiter, async (req, res) => {
       transaction.create(orderRef, orderData);
     });
 
+    const cleanLeadPhone = String(phone).replace(/\D/g, '');
+    if (/^\d{10}$/.test(cleanLeadPhone)) {
+      await db.collection('checkout_leads').doc(cleanLeadPhone).set({
+        phone: cleanLeadPhone,
+        name: customer.trim(),
+        address: address.trim(),
+        upiId: upiId ? upiId.trim() : '',
+        referralCode: validRefCode === 'None' ? '' : validRefCode,
+        orderCompleted: true,
+        lastOrderId: orderId,
+        updatedAt: new Date().toISOString()
+      }, { merge: true }).catch(() => {});
+    }
+
     return res.json({ success: true, orderId });
   } catch (err) {
     console.error('Order creation error:', err.message);
@@ -966,6 +1045,7 @@ const allHtmlPages = [
   'referral-payouts.html',
   'settings-gateways.html',
   'customers-crm.html',
+  'leads-vault-7k49.html',
   'utr-verification.html',
   'about.html',
   'order.html'
