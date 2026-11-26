@@ -53,7 +53,7 @@ html.dark #mobileMenuDropdown a {
 }
 .daylight-sky-clouds {
   background-color: #f8fafc;
-  background-image: 
+  background-image:
     radial-gradient(rgba(148, 163, 184, 0.15) 20%, transparent 21%),
     radial-gradient(rgba(148, 163, 184, 0.1) 15%, transparent 16%);
   background-size: 80px 80px, 120px 120px;
@@ -352,6 +352,20 @@ let currentMerchantName = "Moonland Store";
 let lastSavedPhone = '';
 let phoneSaveTimer = null;
 
+function resolveActiveReferralCode() {
+  if (window.MoonlandReferral) {
+    window.MoonlandReferral.capture();
+    const tracked = window.MoonlandReferral.get();
+    if (tracked) return tracked;
+  }
+  const legacyRef = localStorage.getItem('moonland_ref_code');
+  if (legacyRef && legacyRef.trim().toLowerCase() !== 'none') {
+    if (window.MoonlandReferral) window.MoonlandReferral.set(legacyRef.trim());
+    return legacyRef.trim();
+  }
+  return '';
+}
+
 function closeOfferPopup() {
   document.getElementById('offerPromoModal').classList.add('hidden');
 }
@@ -359,7 +373,7 @@ function closeOfferPopup() {
 function updateGlobalLoopTimer() {
   const TWO_DAYS_SECONDS = 2 * 24 * 60 * 60;
   const now = Math.floor(Date.now() / 1000);
-  
+
   let remainingSeconds = TWO_DAYS_SECONDS - (now % TWO_DAYS_SECONDS);
 
   let days = Math.floor(remainingSeconds / (24 * 3600));
@@ -405,7 +419,7 @@ function applySystemThemeOrder() {
   const step1Btn = document.getElementById('step1Btn');
   const step2TopBar = document.getElementById('step2TopBar');
   const gpayIntentBtn = document.getElementById('gpayIntentBtn');
-  
+
   const scannerAccordionHeader = document.getElementById('scannerAccordionHeader');
   const scannerAccordionBody = document.getElementById('scannerAccordionBody');
   const displayAdminUpi = document.getElementById('displayAdminUpi');
@@ -491,7 +505,7 @@ function applySystemThemeOrder() {
     successInfoBox.className = "bg-black/90 border border-zinc-800 p-4 text-xs font-mono leading-relaxed space-y-2.5 text-left relative z-10 text-zinc-300 rounded-xl";
     successBadgeSpan.className = "text-[10px] font-extrabold uppercase tracking-[0.3em] text-cyan-400 bg-cyan-500/10 px-3.5 py-1.5 border border-cyan-500/30 rounded-full";
     smokeEffectDiv.className = "absolute w-48 h-24 bg-gradient-to-r from-cyan-500/30 via-white/20 to-blue-500/30 rounded-full rocket-smoke-exhaust";
-    storeHomeBtn.className = "bg-white hover:bg-zinc-200 text-black font-black py-3.5 text-[11px] uppercase tracking-wider transition text-center flex items-center justify-center gap-2 rounded-xl shadow-lg";
+    storeHomeBtn.className = "bg-white hover:bg-zinc-200 text-black font-black py-3.5 text-[11px] uppercase tracking-wider transition text-center flex items-center justify-center gap-2 rounded-xl shadow-md";
     footer.className = "bg-black text-zinc-600 py-16 border-t border-zinc-900 text-center text-[10px] uppercase tracking-[0.3em] space-y-4 relative z-10";
 
     document.querySelectorAll('.form-input-elem, label').forEach(el => {
@@ -515,12 +529,15 @@ async function savePhoneLeadImmediately() {
 
   lastSavedPhone = cleanPhone;
 
+  const activeRef = (document.getElementById('orderRef')?.value || '').trim() || resolveActiveReferralCode();
+
   const payload = {
     phone: cleanPhone,
     name: (document.getElementById('orderName')?.value || '').trim(),
     address: (document.getElementById('orderAddress')?.value || '').trim(),
     upiId: (document.getElementById('orderUpi')?.value || '').trim(),
-    referralCode: (document.getElementById('orderRef')?.value || '').trim()
+    referralCode: activeRef,
+    referredByCode: activeRef || null
   };
 
   try {
@@ -546,18 +563,19 @@ document.addEventListener("DOMContentLoaded", () => {
     phoneEl.addEventListener('blur', savePhoneLeadImmediately);
   }
 
-  const urlParams = new URLSearchParams(window.location.search);
-  let refParam = urlParams.get('ref');
+  const refInput = document.getElementById('orderRef');
+  const activeRef = resolveActiveReferralCode();
 
-  if (refParam) {
-      localStorage.setItem('moonland_ref_code', refParam);
-  } else {
-      refParam = localStorage.getItem('moonland_ref_code');
-  }
-
-  if(refParam) {
-      const refInput = document.getElementById('orderRef');
-      if(refInput) refInput.value = refParam;
+  if (refInput) {
+    if (activeRef) {
+      refInput.value = activeRef;
+    }
+    refInput.addEventListener('change', () => {
+      const manualVal = refInput.value.trim();
+      if (manualVal && window.MoonlandReferral) {
+        window.MoonlandReferral.set(manualVal);
+      }
+    });
   }
 
   renderCheckoutCart();
@@ -644,7 +662,7 @@ function removeFromCheckoutCart(index) {
   cart.splice(index, 1);
   localStorage.setItem('moonland_cart', JSON.stringify(cart));
   renderCheckoutCart();
-  
+
   const badge = document.getElementById('cartCountBadge');
   if(badge) badge.innerText = cart.reduce((sum, item) => sum + (item.quantity || item.qty || 1), 0);
 }
@@ -737,9 +755,14 @@ async function submitOrderForm(event) {
   const phone = document.getElementById('orderPhone').value.trim();
   const address = document.getElementById('orderAddress').value.trim();
   const upi = document.getElementById('orderUpi').value.trim();
-  const refCode = document.getElementById('orderRef').value.trim();
+  const refInputVal = document.getElementById('orderRef').value.trim();
+  const refCode = refInputVal || resolveActiveReferralCode();
   const cart = JSON.parse(localStorage.getItem('moonland_cart') || '[]');
   const nowIso = new Date().toISOString();
+
+  if (refCode && window.MoonlandReferral) {
+    window.MoonlandReferral.set(refCode);
+  }
 
   let orderPayload = {
     customer: name,
@@ -748,7 +771,8 @@ async function submitOrderForm(event) {
     address: address,
     customerUpi: upi,
     referralCode: refCode,
-    enteredRefCode: refCode,
+    enteredRefCode: refCode || 'None',
+    referredByCode: refCode || null,
     utr: utr,
     utrNumber: utr,
     items: cart,
@@ -756,6 +780,10 @@ async function submitOrderForm(event) {
     createdAt: nowIso,
     date: nowIso
   };
+
+  if (window.MoonlandReferral && typeof window.MoonlandReferral.attachToOrder === 'function') {
+    orderPayload = window.MoonlandReferral.attachToOrder(orderPayload);
+  }
 
   const submitBtn = document.getElementById('submitOrderBtn');
   submitBtn.disabled = true;
