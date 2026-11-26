@@ -62,7 +62,16 @@
     html.dark #mobileMenuDropdown { background-color: #1a1a1a !important; color: #ffffff !important; border-color: #27272a !important; }
     html.dark #mobileMenuDropdown a { color: #ffffff !important; }
 
-    .smooth-fade-img { transition: opacity 0.4s ease-in-out; }
+    .smooth-fade-img { transition: opacity 0.35s ease-in-out; }
+    @keyframes shimmer {
+      0% { background-position: -200% 0; }
+      100% { background-position: 200% 0; }
+    }
+    .skeleton-box {
+      background: linear-gradient(90deg, rgba(148,163,184,0.14) 25%, rgba(148,163,184,0.28) 50%, rgba(148,163,184,0.14) 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.3s infinite linear;
+    }
     @keyframes cloudDrift1 { 0% { transform: translateX(-100px); opacity: 0.3; } 50% { opacity: 0.6; } 100% { transform: translateX(1100px); opacity: 0.3; } }
     @keyframes cloudDrift2 { 0% { transform: translateX(800px); opacity: 0.2; } 50% { opacity: 0.5; } 100% { transform: translateX(-200px); opacity: 0.2; } }
     @keyframes twinkle { 0%, 100% { opacity: 0.2; transform: scale(0.8); } 50% { opacity: 1; transform: scale(1.2); } }
@@ -151,8 +160,30 @@
       <span id="activeReferralPill" class="hidden text-[10px] font-mono font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-emerald-500/15 text-emerald-400 border border-emerald-500/30"></span>
     </div>
 
-    <div id="productLoadingState" class="product-shell border rounded-2xl p-12 text-center text-xs uppercase tracking-widest opacity-75">
-      Loading product details...
+    <div id="productLoadingState" class="product-shell border rounded-2xl p-4 sm:p-8 shadow-xl">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-10 items-start">
+        <div class="lg:col-span-6 space-y-3">
+          <div class="h-80 sm:h-[440px] w-full rounded-2xl skeleton-box"></div>
+          <div class="flex gap-2.5">
+            <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-xl skeleton-box"></div>
+            <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-xl skeleton-box"></div>
+          </div>
+        </div>
+        <div class="lg:col-span-6 space-y-4 py-2">
+          <div class="h-5 w-28 rounded-full skeleton-box"></div>
+          <div class="h-8 w-3/4 rounded-xl skeleton-box"></div>
+          <div class="h-8 w-32 rounded-xl skeleton-box"></div>
+          <div class="grid grid-cols-2 gap-2.5 pt-2">
+            <div class="h-14 rounded-xl skeleton-box"></div>
+            <div class="h-14 rounded-xl skeleton-box"></div>
+          </div>
+          <div class="h-28 w-full rounded-xl skeleton-box"></div>
+          <div class="grid grid-cols-2 gap-3 pt-2">
+            <div class="h-11 rounded-xl skeleton-box"></div>
+            <div class="h-11 rounded-xl skeleton-box"></div>
+          </div>
+        </div>
+      </div>
     </div>
 
     <div id="productNotFoundState" class="hidden product-shell border rounded-2xl p-10 text-center space-y-4">
@@ -311,8 +342,7 @@
     }
 
     function getShareableProductUrl(productId) {
-      const url = new URL('products.html', window.location.origin);
-      url.searchParams.set('id', productId);
+      const url = new URL(`/p/${encodeURIComponent(productId)}`, window.location.origin);
       const savedRef = (
         new URLSearchParams(window.location.search).get('ref') ||
         localStorage.getItem('moonland_my_ref_code') ||
@@ -485,37 +515,9 @@
       if (badge) badge.innerText = totalCount;
     }
 
-    async function loadProductPage() {
-      captureReferralFromUrl();
-      if (typeof updateGlobalCartCount === 'function') updateGlobalCartCount();
-      else updatePageCartCount();
-
-      const params = new URLSearchParams(window.location.search);
-      const pathParts = window.location.pathname.split('/').filter(Boolean);
-      const pathId = (pathParts[0] === 'p' && pathParts[1]) ? decodeURIComponent(pathParts[1]) : '';
-      const productId = (params.get('id') || params.get('product') || pathId || '').trim();
-
-      let products = [];
-      try {
-        const res = await fetch('/api/products');
-        if (res.ok) products = await res.json();
-      } catch (e) {
-        console.error('Product fetch failed:', e);
-      }
-
-      if (!Array.isArray(products) || !products.length) {
-        try {
-          products = JSON.parse(localStorage.getItem('moonland_store_products') || '[]');
-        } catch (e) {}
-      }
-
-      const found = products.find(p => p.id === productId) || (products.length === 1 && !productId ? products[0] : null);
+    function renderMatchedProduct(found) {
       document.getElementById('productLoadingState').classList.add('hidden');
-
-      if (!found) {
-        document.getElementById('productNotFoundState').classList.remove('hidden');
-        return;
-      }
+      document.getElementById('productNotFoundState').classList.add('hidden');
 
       currentProduct = found;
       document.title = `${found.name} | MOONLAND STORE`;
@@ -548,14 +550,68 @@
             </div>
           `;
         }).join('');
+      } else {
+        document.getElementById('pageKeyFeaturesSection').classList.add('hidden');
       }
 
       if (found.details && found.details.trim()) {
         document.getElementById('pageDetailsSection').classList.remove('hidden');
         document.getElementById('pageDetailsText').innerText = found.details;
+      } else {
+        document.getElementById('pageDetailsSection').classList.add('hidden');
       }
 
       document.getElementById('productMainView').classList.remove('hidden');
+    }
+
+    function findProductInList(products, productId) {
+      if (!Array.isArray(products) || !products.length) return null;
+      return products.find(p => p.id === productId) || (products.length === 1 && !productId ? products[0] : null);
+    }
+
+    async function loadProductPage() {
+      captureReferralFromUrl();
+      if (typeof updateGlobalCartCount === 'function') updateGlobalCartCount();
+      else updatePageCartCount();
+
+      const params = new URLSearchParams(window.location.search);
+      const pathParts = window.location.pathname.split('/').filter(Boolean);
+      const pathId = (pathParts[0] === 'p' && pathParts[1]) ? decodeURIComponent(pathParts[1]) : '';
+      const productId = (params.get('id') || params.get('product') || pathId || '').trim();
+
+      let cachedProducts = [];
+      try {
+        cachedProducts = JSON.parse(localStorage.getItem('moonland_store_products') || '[]');
+      } catch (e) {}
+
+      const cachedMatch = findProductInList(cachedProducts, productId);
+      if (cachedMatch) {
+        renderMatchedProduct(cachedMatch);
+      }
+
+      try {
+        const res = await fetch('/api/products');
+        if (res.ok) {
+          const freshProducts = await res.json();
+          if (Array.isArray(freshProducts) && freshProducts.length) {
+            try {
+              localStorage.setItem('moonland_store_products', JSON.stringify(freshProducts));
+            } catch (e) {}
+            const freshMatch = findProductInList(freshProducts, productId);
+            if (freshMatch) {
+              renderMatchedProduct(freshMatch);
+              return;
+            }
+          }
+        }
+      } catch (e) {
+        console.error('Product fetch failed:', e);
+      }
+
+      if (!currentProduct) {
+        document.getElementById('productLoadingState').classList.add('hidden');
+        document.getElementById('productNotFoundState').classList.remove('hidden');
+      }
     }
 
     document.addEventListener('DOMContentLoaded', loadProductPage);

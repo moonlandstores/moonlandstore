@@ -283,10 +283,21 @@
       if (dropdown) dropdown.classList.toggle('hidden');
     }
 
+    function getActiveRefCode() {
+      return (localStorage.getItem('moonland_my_ref_code') || localStorage.getItem('moonland_active_ref') || '').trim();
+    }
+
     function getDedicatedProductUrl(prodId) {
       const url = new URL('products.html', window.location.origin);
       url.searchParams.set('id', prodId);
-      const ref = (localStorage.getItem('moonland_my_ref_code') || localStorage.getItem('moonland_active_ref') || '').trim();
+      const ref = getActiveRefCode();
+      if (ref) url.searchParams.set('ref', ref);
+      return url.toString();
+    }
+
+    function getSocialPreviewShareUrl(prodId) {
+      const url = new URL(`/p/${encodeURIComponent(prodId)}`, window.location.origin);
+      const ref = getActiveRefCode();
       if (ref) url.searchParams.set('ref', ref);
       return url.toString();
     }
@@ -315,7 +326,7 @@
     async function shareProductById(prodId) {
       const p = cachedProducts.find(item => item.id === prodId);
       if (!p) return;
-      const shareUrl = getDedicatedProductUrl(prodId);
+      const shareUrl = getSocialPreviewShareUrl(prodId);
       const shareText = `${p.name} — ₹${Number(p.price).toLocaleString('en-IN')} | Moonland Store`;
 
       if (navigator.share) {
@@ -415,6 +426,9 @@
         let products = await response.json();
         if (Array.isArray(products) && products.length > 0) {
           cachedProducts = products;
+          try {
+            localStorage.setItem('moonland_store_products', JSON.stringify(products));
+          } catch (e) {}
           return products;
         }
       } catch (err) {
