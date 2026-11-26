@@ -327,13 +327,8 @@
     }
 
     function captureReferralFromUrl() {
-      const params = new URLSearchParams(window.location.search);
-      const ref = (params.get('ref') || params.get('code') || '').trim();
-      if (ref) {
-        localStorage.setItem('moonland_active_ref', ref);
-        localStorage.setItem('referralCode', ref);
-      }
-      const activeRef = localStorage.getItem('moonland_active_ref') || localStorage.getItem('referralCode') || '';
+      const captured = window.MoonlandReferral ? window.MoonlandReferral.capture() : '';
+      const activeRef = captured || localStorage.getItem('moonland_active_ref') || localStorage.getItem('referralCode') || '';
       const pill = document.getElementById('activeReferralPill');
       if (activeRef && pill) {
         pill.innerText = `Referral Applied: ${activeRef}`;
@@ -345,7 +340,7 @@
       const url = new URL(`/p/${encodeURIComponent(productId)}`, window.location.origin);
       const savedRef = (
         new URLSearchParams(window.location.search).get('ref') ||
-        localStorage.getItem('moonland_my_ref_code') ||
+        (window.MoonlandReferral ? window.MoonlandReferral.get() : '') ||
         localStorage.getItem('moonland_active_ref') ||
         ''
       ).trim();
@@ -388,48 +383,45 @@
       document.getElementById('pageQty').innerText = selectedQty;
     }
 
+    function addProductToCartStore(prod, qtyToAdd) {
+      if (typeof addToCart === 'function') {
+        addToCart({
+          id: prod.id,
+          title: prod.name,
+          name: prod.name,
+          price: Number(prod.price) || 0,
+          quantity: qtyToAdd
+        });
+      } else {
+        let cart = JSON.parse(localStorage.getItem('moonland_cart') || '[]');
+        let existing = cart.find(i => i.id === prod.id || i.title === prod.name);
+        if (existing) {
+          existing.id = prod.id;
+          existing.quantity = (existing.quantity || 1) + qtyToAdd;
+        } else {
+          cart.push({
+            id: prod.id,
+            title: prod.name,
+            name: prod.name,
+            price: Number(prod.price) || 0,
+            quantity: qtyToAdd
+          });
+        }
+        localStorage.setItem('moonland_cart', JSON.stringify(cart));
+        updatePageCartCount();
+      }
+    }
+
     function addPageProductToCart() {
       if (!currentProduct) return;
-      let cart = JSON.parse(localStorage.getItem('moonland_cart') || '[]');
-      let existing = cart.find(i => i.id === currentProduct.id || i.title === currentProduct.name);
-      if (existing) {
-        existing.id = currentProduct.id;
-        existing.quantity = (existing.quantity || 1) + selectedQty;
-      } else {
-        cart.push({
-          id: currentProduct.id,
-          title: currentProduct.name,
-          name: currentProduct.name,
-          price: Number(currentProduct.price) || 0,
-          quantity: selectedQty
-        });
-      }
-      localStorage.setItem('moonland_cart', JSON.stringify(cart));
-      if (typeof updateGlobalCartCount === 'function') updateGlobalCartCount();
-      else updatePageCartCount();
+      addProductToCartStore(currentProduct, selectedQty);
       document.getElementById('addedItemTitle').innerText = currentProduct.name;
       document.getElementById('addToCartSuccessModal').classList.remove('hidden');
     }
 
     function buyPageProductNow() {
       if (!currentProduct) return;
-      let cart = JSON.parse(localStorage.getItem('moonland_cart') || '[]');
-      let existing = cart.find(i => i.id === currentProduct.id || i.title === currentProduct.name);
-      if (existing) {
-        existing.id = currentProduct.id;
-        existing.quantity = (existing.quantity || 1) + selectedQty;
-      } else {
-        cart.push({
-          id: currentProduct.id,
-          title: currentProduct.name,
-          name: currentProduct.name,
-          price: Number(currentProduct.price) || 0,
-          quantity: selectedQty
-        });
-      }
-      localStorage.setItem('moonland_cart', JSON.stringify(cart));
-      if (typeof updateGlobalCartCount === 'function') updateGlobalCartCount();
-      else updatePageCartCount();
+      addProductToCartStore(currentProduct, selectedQty);
       window.location.href = 'order.html';
     }
 

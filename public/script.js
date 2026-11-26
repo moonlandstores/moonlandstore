@@ -20,7 +20,7 @@ function updateGlobalCartCount() {
 
 function addToCart(productOrTitle, price, quantity = 1) {
     let cart = getCart();
-    
+
     let newItem;
     if (typeof productOrTitle === 'object' && productOrTitle !== null) {
         newItem = {
@@ -40,20 +40,95 @@ function addToCart(productOrTitle, price, quantity = 1) {
     }
 
     let existing = cart.find(i => (i.id && newItem.id && i.id === newItem.id) || (i.title === newItem.title || i.name === newItem.name));
-    
+
     if (existing) {
         existing.quantity = Number(existing.quantity || existing.qty || 1) + Number(newItem.quantity);
     } else {
         cart.push(newItem);
     }
-    
+
     saveCart(cart);
 }
+
+const MoonlandReferral = (function() {
+    const STORAGE_KEY = 'moonland_active_ref';
+    const LEGACY_KEY = 'moonland_ref_code';
+
+    function cleanCode(val) {
+        const str = String(val || '').trim();
+        if (!str || str.toLowerCase() === 'none' || str.toLowerCase() === 'null' || str.toLowerCase() === 'undefined') {
+            return '';
+        }
+        return str;
+    }
+
+    function set(code) {
+        const cleaned = cleanCode(code);
+        if (!cleaned) return '';
+        try {
+            localStorage.setItem(STORAGE_KEY, cleaned);
+            localStorage.setItem(LEGACY_KEY, cleaned);
+            localStorage.setItem('referralCode', cleaned);
+        } catch (e) {}
+        return cleaned;
+    }
+
+    function get() {
+        try {
+            const primary = cleanCode(localStorage.getItem(STORAGE_KEY));
+            if (primary) return primary;
+
+            const secondary = cleanCode(localStorage.getItem('referralCode'));
+            if (secondary) {
+                set(secondary);
+                return secondary;
+            }
+
+            const legacy = cleanCode(localStorage.getItem(LEGACY_KEY));
+            if (legacy) {
+                set(legacy);
+                return legacy;
+            }
+        } catch (e) {}
+        return '';
+    }
+
+    function capture() {
+        try {
+            const params = new URLSearchParams(window.location.search);
+            const rawRef = params.get('ref') || params.get('code') || params.get('referral') || '';
+            const cleaned = cleanCode(rawRef);
+            if (cleaned) {
+                return set(cleaned);
+            }
+        } catch (e) {}
+        return get();
+    }
+
+    function attachToOrder(payload) {
+        const refCode = cleanCode(payload?.referralCode) || get();
+        return {
+            ...payload,
+            referralCode: refCode,
+            enteredRefCode: refCode || 'None',
+            referredByCode: refCode || null
+        };
+    }
+
+    return {
+        set,
+        get,
+        capture,
+        attachToOrder
+    };
+})();
+
+window.MoonlandReferral = MoonlandReferral;
 
 // Compact & Responsive Key Features / Specifications Renderer for Mobile & Desktop
 function renderCompactSpecs(specsStr) {
     if (!specsStr) return '<p class="text-zinc-500 text-[11px]">None</p>';
-    
+
     let items = specsStr.split(',');
     return `<div class="grid grid-cols-2 gap-2">` + items.map(item => {
         let parts = item.split(':');
@@ -69,7 +144,10 @@ function renderCompactSpecs(specsStr) {
     }).join('') + `</div>`;
 }
 
+MoonlandReferral.capture();
+
 window.addEventListener('DOMContentLoaded', () => {
+    MoonlandReferral.capture();
     updateGlobalStoreState();
 });
 

@@ -277,6 +277,7 @@
   <script src="script.js"></script>
   <script>
     let cachedProducts = [];
+    let sliderTimers = [];
 
     function toggleMobileMenu() {
       const dropdown = document.getElementById('mobileMenuDropdown');
@@ -284,6 +285,10 @@
     }
 
     function getActiveRefCode() {
+      if (window.MoonlandReferral) {
+        const tracked = window.MoonlandReferral.get();
+        if (tracked) return tracked;
+      }
       return (localStorage.getItem('moonland_my_ref_code') || localStorage.getItem('moonland_active_ref') || '').trim();
     }
 
@@ -308,6 +313,9 @@
     }
 
     function captureUrlParams() {
+      if (window.MoonlandReferral) {
+        window.MoonlandReferral.capture();
+      }
       const params = new URLSearchParams(window.location.search);
       const ref = (params.get('ref') || params.get('code') || '').trim();
       if (ref) {
@@ -420,28 +428,8 @@
       window.location.href = 'order.html';
     }
 
-    async function getProducts() {
-      try {
-        let response = await fetch('/api/products');
-        let products = await response.json();
-        if (Array.isArray(products) && products.length > 0) {
-          cachedProducts = products;
-          try {
-            localStorage.setItem('moonland_store_products', JSON.stringify(products));
-          } catch (e) {}
-          return products;
-        }
-      } catch (err) {
-        console.error('Error fetching products:', err);
-      }
-
-      let stored = localStorage.getItem('moonland_store_products');
-      if (stored) {
-        cachedProducts = JSON.parse(stored);
-        return cachedProducts;
-      }
-
-      cachedProducts = [
+    function getFallbackProducts() {
+      return [
         {
           id: 'prod_1',
           name: 'Signature Gas Stove',
@@ -451,12 +439,67 @@
           details: 'High-performance reliable gas stove.'
         }
       ];
+    }
+
+    function getInitialProductsSync() {
+      try {
+        const stored = localStorage.getItem('moonland_store_products');
+        if (stored) {
+          const parsed = JSON.parse(stored);
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            cachedProducts = parsed;
+            return cachedProducts;
+          }
+        }
+      } catch (e) {}
+
+      cachedProducts = getFallbackProducts();
       return cachedProducts;
     }
 
-    async function renderStoreGrid(productsToRender = null) {
+    async function syncProductsFromServer() {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 5000);
+
+      try {
+        const response = await fetch('/api/products', { signal: controller.signal });
+        clearTimeout(timeoutId);
+        if (!response.ok) return cachedProducts;
+
+        const products = await response.json();
+        if (Array.isArray(products) && products.length > 0) {
+          const prevJson = JSON.stringify(cachedProducts);
+          const nextJson = JSON.stringify(products);
+          cachedProducts = products;
+          try {
+            localStorage.setItem('moonland_store_products', nextJson);
+          } catch (e) {}
+
+          if (prevJson !== nextJson) {
+            const searchEl = document.getElementById('productSearchInput');
+            if (searchEl && searchEl.value.trim() !== '') {
+              filterStoreProducts();
+            } else {
+              renderStoreGrid(cachedProducts);
+            }
+          }
+        }
+      } catch (err) {
+        clearTimeout(timeoutId);
+      }
+
+      return cachedProducts;
+    }
+
+    function clearSliderTimers() {
+      sliderTimers.forEach(id => clearInterval(id));
+      sliderTimers = [];
+    }
+
+    function renderStoreGrid(productsToRender = null) {
+      clearSliderTimers();
       const grid = document.getElementById('dynamicProductsGrid');
-      const products = productsToRender || await getProducts();
+      const products = productsToRender || (cachedProducts.length > 0 ? cachedProducts : getInitialProductsSync());
       if (!grid) return;
       grid.innerHTML = '';
 
@@ -482,7 +525,7 @@
             <button type="button" onclick="event.stopPropagation(); shareProductById('${p.id}')" title="Share Product Link" class="absolute top-2 right-2 z-10 bg-black/75 hover:bg-cyan-400 hover:text-black text-white w-7 h-7 rounded-full flex items-center justify-center text-[10px] transition cursor-pointer">
               <i class="fa-solid fa-share-nodes"></i>
             </button>
-            <img id="storeImg_${index}" src="${imgList[0]}" class="w-full h-full object-contain smooth-fade-img group-hover:scale-105 transition duration-500">
+            <img id="storeImg_${index}" src="${imgList[0]}" loading="${index < 4 ? 'eager' : 'lazy'}" decoding="async" class="w-full h-full object-contain smooth-fade-img group-hover:scale-105 transition duration-500">
           </div>
           <div onclick="openProductDedicatedPage('${p.id}')" class="space-y-0.5">
             <h3 class="text-xs sm:text-sm font-bold uppercase tracking-tight line-clamp-2 leading-tight">${pName}</h3>
@@ -502,7 +545,7 @@
 
         if (imgList.length > 1) {
           let currentImgIdx = 0;
-          setInterval(() => {
+          const timerId = setInterval(() => {
             currentImgIdx = (currentImgIdx + 1) % imgList.length;
             const imgElement = document.getElementById(`storeImg_${index}`);
             if (imgElement) {
@@ -513,6 +556,7 @@
               }, 300);
             }
           }, 4000);
+          sliderTimers.push(timerId);
         }
       });
     }
@@ -567,11 +611,15 @@
       if (badge) badge.innerText = totalCount;
     }
 
-    document.addEventListener("DOMContentLoaded", async () => {
+    captureUrlParams();
+    getInitialProductsSync();
+    updateGlobalCartCount();
+
+    document.addEventListener("DOMContentLoaded", () => {
       captureUrlParams();
-      await getProducts();
-      renderStoreGrid();
       updateGlobalCartCount();
+      renderStoreGrid(cachedProducts);
+      syncProductsFromServer();
     });
   </script>
 </body>
