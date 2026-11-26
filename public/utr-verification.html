@@ -35,17 +35,18 @@
       </div>
       
       <!-- Locked Single-Row Navigation Bar -->
-      <nav class="flex flex-row flex-nowrap items-center gap-0.5 text-[9.5px] font-bold uppercase tracking-wider whitespace-nowrap overflow-x-auto max-w-full pb-1">
-        <a href="dash-analytics-9x81.html" class="bg-black text-zinc-400 hover:text-white border border-zinc-800 px-2.5 py-2 transition">Dashboard</a>
-        <a href="utr-verification.html" class="bg-cyan-400 text-black border border-cyan-400 px-2.5 py-2 shadow-[0_0_15px_rgba(34,211,238,0.3)] transition flex items-center gap-1.5">
+      <nav class="flex flex-row flex-nowrap items-center gap-1 text-[9.5px] font-bold uppercase tracking-wider whitespace-nowrap overflow-x-auto max-w-full pb-1">
+        <a href="dash-analytics-9x81.html" class="shrink-0 bg-black text-zinc-400 hover:text-white border border-zinc-800 px-2.5 py-2 transition">Dashboard</a>
+        <a href="utr-verification.html" class="shrink-0 bg-cyan-400 text-black border border-cyan-400 px-2.5 py-2 shadow-[0_0_15px_rgba(34,211,238,0.3)] transition flex items-center gap-1.5">
           UTR Verification 
           <span id="navUtrBadge" class="bg-black text-cyan-400 text-[9px] px-1.5 py-0.5 font-black hidden">0</span>
         </a>
-        <a href="manage-orders-8118.html" class="bg-black text-zinc-400 hover:text-white border border-zinc-800 px-2.5 py-2 transition">Orders</a>
-        <a href="inventory-products.html" class="bg-black text-zinc-400 hover:text-white border border-zinc-800 px-2.5 py-2 transition">Products</a>
-        <a href="customers-crm.html" class="bg-black text-zinc-400 hover:text-white border border-zinc-800 px-2.5 py-2 transition">Customers</a>
-        <a href="referral-payouts.html" class="bg-black text-zinc-400 hover:text-white border border-zinc-800 px-2.5 py-2 transition">Referrals</a>
-        <a href="settings-gateways.html" class="bg-black text-zinc-400 hover:text-white border border-zinc-800 px-2.5 py-2 transition">Settings</a>
+        <a href="manage-orders-8118.html" class="shrink-0 bg-black text-zinc-400 hover:text-white border border-zinc-800 px-2.5 py-2 transition">Orders</a>
+        <a href="inventory-products.html" class="shrink-0 bg-black text-zinc-400 hover:text-white border border-zinc-800 px-2.5 py-2 transition">Products</a>
+        <a href="customers-crm.html" class="shrink-0 bg-black text-zinc-400 hover:text-white border border-zinc-800 px-2.5 py-2 transition">Customers</a>
+        <a href="leads-vault-7k49.html" class="shrink-0 bg-black text-zinc-400 hover:text-white border border-zinc-800 px-2.5 py-2 transition">Phone Leads</a>
+        <a href="referral-payouts.html" class="shrink-0 bg-black text-zinc-400 hover:text-white border border-zinc-800 px-2.5 py-2 transition">Referrals</a>
+        <a href="settings-gateways.html" class="shrink-0 bg-black text-zinc-400 hover:text-white border border-zinc-800 px-2.5 py-2 transition">Settings</a>
       </nav>
     </div>
 
@@ -451,7 +452,7 @@
         if (res.ok && result.success) {
           const generatedRefCode = result.userRefCode || 'MOON-' + Math.floor(100000 + Math.random() * 900000);
           const autoShareUrl = `${window.location.origin}/order.html?ref=${generatedRefCode}`;
-          const message = `Hello *${customerName}*,\n\n🎉 Aapka payment (UTR: *${utrNumber}*) verify ho gaya hai!\n\nAapka Order ID: *${orderId}*\nAapka Exclusive Referral Code: *${generatedRefCode}*\n\nAapka Share Link:\n${autoShareUrl}\n\nIs link ko share karein, samne wale ko code dalne ki zarurat nahi padegi! 🚀`;
+          const message = `Hello *${customerName}*,\n\n✅ Aapka payment (UTR: *${utrNumber}*) verify ho gaya hai!\n\nAapka Order ID: *${orderId}*\nAapka Exclusive Referral Code: *${generatedRefCode}*\n\nAapka Share Link:\n${autoShareUrl}\n\nIs link ko share karein, samne wale ko code dalne ki zarurat nahi padegi! 🚀`;
 
           window.open(`https://wa.me/91${phone}?text=${encodeURIComponent(message)}`, '_blank');
           showToast('Approved', 'UTR successfully verify aur approve ho gaya hai!');

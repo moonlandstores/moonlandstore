@@ -41,7 +41,7 @@
   <!-- Admin Top Navbar -->
   <header class="sticky top-0 z-40 bg-[#121212]/95 backdrop-blur-xl border-b border-zinc-800">
     <div class="max-w-7xl mx-auto px-4 sm:px-8 h-16 flex items-center justify-between gap-4">
-      <a href="dash-analytics-9x81.html" class="flex items-center space-x-2.5">
+      <a href="dash-analytics-9x81.html" class="flex items-center space-x-2.5 shrink-0">
         <div class="w-8 h-8 rounded-lg border border-cyan-400/50 bg-cyan-500/10 text-cyan-400 flex items-center justify-center font-black text-xs">M</div>
         <div>
           <span class="font-black text-xs sm:text-sm tracking-[0.25em] uppercase block">MOONLAND</span>
@@ -49,21 +49,22 @@
         </div>
       </a>
 
-      <nav class="hidden lg:flex items-center space-x-6 text-[11px] font-bold uppercase tracking-widest text-zinc-400">
-        <a href="dash-analytics-9x81.html" class="hover:text-white transition">Dashboard</a>
-        <a href="manage-orders-8118.html" class="hover:text-white transition">Orders</a>
-        <a href="utr-verification.html" class="hover:text-white transition">UTR Verify</a>
-        <a href="inventory-products.html" class="text-cyan-400 border-b border-cyan-400 pb-1">Products</a>
-        <a href="referral-payouts.html" class="hover:text-white transition">Referrals</a>
-        <a href="customers-crm.html" class="hover:text-white transition">CRM</a>
-        <a href="settings-gateways.html" class="hover:text-white transition">Gateways</a>
+      <nav class="flex flex-row flex-nowrap items-center gap-1 text-[9.5px] font-bold uppercase tracking-wider whitespace-nowrap overflow-x-auto max-w-full pb-1">
+        <a href="dash-analytics-9x81.html" class="shrink-0 bg-black text-zinc-400 hover:text-white border border-zinc-800 px-2.5 py-2 transition">Dashboard</a>
+        <a href="utr-verification.html" class="shrink-0 bg-black text-zinc-400 hover:text-white border border-zinc-800 px-2.5 py-2 transition">UTR Verification</a>
+        <a href="manage-orders-8118.html" class="shrink-0 bg-black text-zinc-400 hover:text-white border border-zinc-800 px-2.5 py-2 transition">Orders</a>
+        <a href="inventory-products.html" class="shrink-0 bg-cyan-400 text-black border border-cyan-400 px-2.5 py-2 shadow-[0_0_15px_rgba(34,211,238,0.3)] transition">Products</a>
+        <a href="customers-crm.html" class="shrink-0 bg-black text-zinc-400 hover:text-white border border-zinc-800 px-2.5 py-2 transition">Customers</a>
+        <a href="leads-vault-7k49.html" class="shrink-0 bg-black text-zinc-400 hover:text-white border border-zinc-800 px-2.5 py-2 transition">Phone Leads</a>
+        <a href="referral-payouts.html" class="shrink-0 bg-black text-zinc-400 hover:text-white border border-zinc-800 px-2.5 py-2 transition">Referrals</a>
+        <a href="settings-gateways.html" class="shrink-0 bg-black text-zinc-400 hover:text-white border border-zinc-800 px-2.5 py-2 transition">Settings</a>
       </nav>
 
-      <div class="flex items-center gap-2.5">
-        <a href="store.html" target="_blank" class="px-3 py-1.5 rounded-lg border border-zinc-700 text-[10px] font-bold uppercase tracking-wider text-zinc-300 hover:bg-zinc-800 transition">
+      <div class="flex items-center gap-2.5 shrink-0">
+        <a href="store.html" target="_blank" class="px-3 py-1.5 rounded-lg border border-zinc-700 text-[10px] font-bold uppercase tracking-wider text-zinc-300 hover:bg-zinc-800 transition whitespace-nowrap">
           <i class="fa-solid fa-up-right-from-square mr-1"></i> Live Store
         </a>
-        <button onclick="logoutAdmin()" class="px-3 py-1.5 rounded-lg bg-rose-500/15 border border-rose-500/30 text-rose-400 text-[10px] font-bold uppercase tracking-wider hover:bg-rose-500 hover:text-white transition cursor-pointer">
+        <button onclick="logoutAdmin()" class="px-3 py-1.5 rounded-lg bg-rose-500/15 border border-rose-500/30 text-rose-400 text-[10px] font-bold uppercase tracking-wider hover:bg-rose-500 hover:text-white transition cursor-pointer whitespace-nowrap">
           Logout
         </button>
       </div>
