@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Product Details | MOONLAND STORE</title>
+  <meta name="description" content="Explore product photos, key features, and instant checkout on Moonland Store.">
+  <link rel="canonical" href="https://www.moonland.homes/products.html">
   <meta property="og:title" content="MOONLAND STORE — Curated Masterpiece">
   <meta property="og:description" content="Explore product photos, key features & instant order on Moonland Store.">
   <meta property="og:image" content="logo.png?v=999">
@@ -438,12 +440,14 @@
       }
 
       try {
-        await navigator.clipboard.writeText(`${shareText}\n${shareUrl}`);
+        await navigator.clipboard.writeText(`${shareText}
+${shareUrl}`);
         const fb = document.getElementById('shareCopyFeedback');
         fb.classList.remove('hidden');
         setTimeout(() => fb.classList.add('hidden'), 3500);
       } catch (e) {
-        window.open(`https://wa.me/?text=${encodeURIComponent(shareText + '\n' + shareUrl)}`, '_blank');
+        window.open(`https://wa.me/?text=${encodeURIComponent(shareText + '
+' + shareUrl)}`, '_blank');
       }
     }
 

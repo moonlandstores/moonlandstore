@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Store | MOONLAND STORE</title>
+  <meta name="description" content="Explore curated products at Moonland Store, search items, add to cart, or buy directly with fast checkout.">
+  <link rel="canonical" href="https://www.moonland.homes/store.html">
   <link rel="icon" type="image/png" href="logo.png?v=999">
   <link rel="shortcut icon" href="logo.png?v=999">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -346,12 +348,14 @@
       }
 
       try {
-        await navigator.clipboard.writeText(`${shareText}\n${shareUrl}`);
+        await navigator.clipboard.writeText(`${shareText}
+${shareUrl}`);
         const toast = document.getElementById('shareToast');
         toast.classList.remove('hidden');
         setTimeout(() => toast.classList.add('hidden'), 3000);
       } catch (e) {
-        window.open(`https://wa.me/?text=${encodeURIComponent(shareText + '\n' + shareUrl)}`, '_blank');
+        window.open(`https://wa.me/?text=${encodeURIComponent(shareText + '
+' + shareUrl)}`, '_blank');
       }
     }
 
