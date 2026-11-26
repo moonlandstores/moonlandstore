@@ -3,72 +3,79 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Store Products | MOONLAND STORE</title>
-  <!-- Browser Tab Favicon Logo -->
+  <title>Product Details | MOONLAND STORE</title>
+  <meta property="og:title" content="MOONLAND STORE — Curated Masterpiece">
+  <meta property="og:description" content="Explore product photos, key features & instant order on Moonland Store.">
+  <meta property="og:image" content="logo.png?v=999">
   <link rel="icon" type="image/png" href="logo.png?v=999">
   <link rel="shortcut icon" href="logo.png?v=999">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="style.css">
   <style>
-    /* Smooth theme transition */
-    body { transition: background-color 0.4s ease, color 0.4s ease; }
+    html { background-color: #050505; color: #ffffff; }
+    html.light { background-color: #f8fafc; color: #0f172a; }
+    body { background-color: #050505 !important; color: #ffffff !important; transition: background-color 0.4s ease, color 0.4s ease; }
 
-    /* DAYLIGHT MODE (WHITE + CLOUDS + BLACK ACCENTS) */
-    html.light body { background-color: #ffffff !important; color: #09090b !important; }
-    html.light header { background-color: rgba(255, 255, 255, 0.95) !important; border-bottom-color: #e4e4e7 !important; }
-    html.light .marquee-bar { background-color: #09090b !important; color: #f4f4f5 !important; border-bottom-color: #27272a !important; }
-    html.light .brand-logo-box { border-color: #09090b !important; background-color: #09090b !important; color: #ffffff !important; }
-    html.light nav a, html.light header button { color: #52525b !important; }
-    html.light nav a:hover, html.light header button:hover, html.light nav a.active-link { color: #09090b !important; }
+    html.light body { background-color: #f8fafc !important; color: #0f172a !important; }
+    html.light header { background-color: rgba(255, 255, 255, 0.95) !important; border-bottom-color: #cbd5e1 !important; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); }
+    html.light .marquee-bar {
+      background: linear-gradient(135deg, #0f172a, #1e293b) !important;
+      color: #f8fafc !important;
+      border-bottom: 2px solid #38bdf8 !important;
+      font-weight: 800 !important;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    html.light .brand-logo-box { border-color: #0f172a !important; background-color: #0f172a !important; color: #ffffff !important; }
+    html.light nav a, html.light header button { color: #334155 !important; font-weight: 700 !important; }
+    html.light nav a:hover, html.light header button:hover, html.light nav a.active-link { color: #0f172a !important; }
     html.light .clouds-bg { display: block !important; }
-    html.light .store-card { background-color: #f8fafc !important; border-color: #e2e8f0 !important; }
-    html.light .store-card h3 { color: #0f172a !important; }
-    html.light .store-card p { color: #475569 !important; }
-    html.light .store-card-price { color: #09090b !important; }
-    html.light .store-btn { background-color: #09090b !important; color: #ffffff !important; }
-    html.light .store-btn:hover { background-color: #27272a !important; }
-    html.light footer { background-color: #f1f5f9 !important; border-top-color: #e2e8f0 !important; color: #475569 !important; }
-    html.light footer a { color: #475569 !important; }
-    html.light footer a:hover { color: #000000 !important; }
+    html.light .stars-bg { display: none !important; }
+    html.light .product-shell { background-color: #ffffff !important; border-color: #cbd5e1 !important; box-shadow: 0 10px 30px -10px rgba(15, 23, 42, 0.12); }
+    html.light .spec-card { background-color: #f8fafc !important; border-color: #cbd5e1 !important; color: #0f172a !important; }
+    html.light .details-box { background-color: #f1f5f9 !important; border-color: #cbd5e1 !important; color: #0f172a !important; }
+    html.light .btn-outline { border-color: #0f172a !important; color: #0f172a !important; background-color: #ffffff !important; font-weight: 800; border-radius: 0.75rem; }
+    html.light .btn-outline:hover { background-color: #0f172a !important; color: #ffffff !important; }
+    html.light footer { background-color: #e2e8f0 !important; border-top-color: #cbd5e1 !important; color: #334155 !important; font-weight: 600; }
 
-    /* NIGHT MODE (DARK + STARS) */
     html.dark body { background-color: #050505 !important; color: #ffffff !important; }
     html.dark .clouds-bg { display: none !important; }
+    html.dark .stars-bg { display: block !important; }
+    html.dark header { background-color: #1a1a1a !important; border-bottom-color: #27272a !important; }
+    html.dark .product-shell { background-color: #0c0c0c !important; border-color: rgba(255, 255, 255, 0.1) !important; }
+    html.dark .spec-card { background-color: #000000 !important; border-color: #27272a !important; color: #ffffff !important; }
+    html.dark .details-box { background-color: rgba(0, 0, 0, 0.6) !important; border-color: rgba(255, 255, 255, 0.1) !important; color: #e4e4e7 !important; }
+    html.dark .quantity-wrapper { background-color: #000000 !important; border-color: rgba(255, 255, 255, 0.2) !important; color: #ffffff !important; }
+    html.dark .quantity-wrapper span, html.dark .quantity-wrapper button { color: #ffffff !important; }
+    html.dark .btn-outline {
+      background: linear-gradient(135deg, #38bdf8, #0284c7) !important;
+      border: none !important;
+      color: #000000 !important;
+      font-weight: 800 !important;
+      border-radius: 0.75rem;
+      box-shadow: 0 4px 12px rgba(56, 189, 248, 0.3);
+    }
+    html.dark .btn-outline:hover {
+      background: linear-gradient(135deg, #7dd3fc, #38bdf8) !important;
+      box-shadow: 0 6px 16px rgba(56, 189, 248, 0.5);
+    }
+    html.dark #mobileMenuDropdown { background-color: #1a1a1a !important; color: #ffffff !important; border-color: #27272a !important; }
+    html.dark #mobileMenuDropdown a { color: #ffffff !important; }
 
-    /* Soft Floating Clouds Animation */
-    @keyframes cloudDrift1 {
-      0% { transform: translateX(-100px); opacity: 0.3; }
-      50% { opacity: 0.6; }
-      100% { transform: translateX(1100px); opacity: 0.3; }
-    }
-    @keyframes cloudDrift2 {
-      0% { transform: translateX(800px); opacity: 0.2; }
-      50% { opacity: 0.5; }
-      100% { transform: translateX(-200px); opacity: 0.2; }
-    }
+    .smooth-fade-img { transition: opacity 0.4s ease-in-out; }
+    @keyframes cloudDrift1 { 0% { transform: translateX(-100px); opacity: 0.3; } 50% { opacity: 0.6; } 100% { transform: translateX(1100px); opacity: 0.3; } }
+    @keyframes cloudDrift2 { 0% { transform: translateX(800px); opacity: 0.2; } 50% { opacity: 0.5; } 100% { transform: translateX(-200px); opacity: 0.2; } }
+    @keyframes twinkle { 0%, 100% { opacity: 0.2; transform: scale(0.8); } 50% { opacity: 1; transform: scale(1.2); } }
     .cloud-elem-1 { animation: cloudDrift1 35s linear infinite; }
     .cloud-elem-2 { animation: cloudDrift2 45s linear infinite; }
-
-    .carousel-slide { display: none; }
-    .carousel-slide.active { display: block; }
-
-    @keyframes offerGlow {
-      0% { border-color: rgba(255, 255, 255, 0.1); box-shadow: 0 0 10px rgba(0, 0, 0, 0.9); }
-      50% { border-color: rgba(255, 255, 255, 0.6); box-shadow: 0 0 35px rgba(255, 255, 255, 0.15); }
-      100% { border-color: rgba(255, 255, 255, 0.1); box-shadow: 0 0 10px rgba(0, 0, 0, 0.9); }
-    }
-    .luxury-glow-card { animation: offerGlow 5s ease-in-out infinite; }
+    .star-anim { animation: twinkle 3s ease-in-out infinite; }
+    #cartDrawerOverlay { transition: opacity 0.3s ease, visibility 0.3s ease; }
   </style>
-
-  <!-- AUTO THEME SWITCHER SCRIPT -->
   <script>
-    function applyAutoTheme() {
+    (function() {
       const currentHour = new Date().getHours();
-      // Din: 6 AM se 6 PM (6 to 18)
       const isDayTime = currentHour >= 6 && currentHour < 18;
       const savedTheme = localStorage.getItem('moonland_theme');
-
       if (savedTheme === 'light' || (!savedTheme && isDayTime)) {
         document.documentElement.classList.add('light');
         document.documentElement.classList.remove('dark');
@@ -76,194 +83,485 @@
         document.documentElement.classList.add('dark');
         document.documentElement.classList.remove('light');
       }
-    }
-    document.addEventListener('DOMContentLoaded', applyAutoTheme);
+    })();
   </script>
 </head>
-<body class="bg-[#050505] text-white font-sans antialiased min-h-screen flex flex-col justify-between selection:bg-white selection:text-black relative">
+<body class="font-sans antialiased min-h-screen flex flex-col justify-between selection:bg-white selection:text-black relative">
 
-  <!-- Daylight Clouds Background Overlay -->
   <div class="clouds-bg hidden absolute inset-0 pointer-events-none z-0 overflow-hidden h-full">
-    <div class="absolute top-24 left-[-50px] w-72 h-24 bg-zinc-300/40 rounded-full blur-xl cloud-elem-1"></div>
-    <div class="absolute top-96 right-[-40px] w-96 h-32 bg-zinc-300/30 rounded-full blur-2xl cloud-elem-2"></div>
+    <div class="absolute top-24 left-[-50px] w-72 h-24 bg-sky-200/40 rounded-full blur-xl cloud-elem-1"></div>
+    <div class="absolute top-96 right-[-40px] w-96 h-32 bg-blue-200/30 rounded-full blur-2xl cloud-elem-2"></div>
   </div>
 
-  <!-- Top Announcement Bar -->
-  <div class="marquee-bar bg-black text-zinc-300 text-center py-2.5 px-4 text-[10px] font-bold tracking-[0.25em] uppercase border-b border-zinc-900 flex justify-center items-center gap-2 overflow-hidden whitespace-nowrap z-20">
+  <div class="stars-bg hidden absolute inset-0 pointer-events-none z-0 overflow-hidden h-full">
+    <div class="absolute top-16 left-20 w-1.5 h-1.5 bg-white rounded-full star-anim" style="animation-delay: 0s;"></div>
+    <div class="absolute top-32 right-32 w-2 h-2 bg-yellow-200 rounded-full star-anim" style="animation-delay: 1s;"></div>
+    <div class="absolute top-64 left-1/3 w-1.5 h-1.5 bg-white rounded-full star-anim" style="animation-delay: 1.5s;"></div>
+    <div class="absolute top-96 right-1/4 w-2 h-2 bg-sky-200 rounded-full star-anim" style="animation-delay: 0.5s;"></div>
+    <div class="absolute bottom-40 left-16 w-1.5 h-1.5 bg-white rounded-full star-anim" style="animation-delay: 2s;"></div>
+  </div>
+
+  <div class="marquee-bar bg-black text-zinc-300 py-2.5 px-4 text-[10px] sm:text-[11px] font-extrabold tracking-[0.2em] uppercase border-b overflow-hidden whitespace-nowrap z-20">
     <marquee behavior="scroll" direction="left" scrollamount="5">
-      <span class="inline-flex items-center gap-2 mx-6"><i class="fa-solid fa-bolt text-yellow-400"></i> MOONLAND SPECIAL: UNLIMITED REFER & EARN ₹1,000 INSTANT UPI CASHBACK PER REFERRAL!</span>
+      <span class="inline-flex items-center gap-2 mx-6"><i class="fa-solid fa-bolt text-yellow-400"></i> MOONLAND SPECIAL: UNLIMITED REFER & EARN ₹500 INSTANT UPI CASHBACK PER REFERRAL!</span>
     </marquee>
   </div>
 
-  <!-- Header / Navbar -->
-  <header class="sticky top-0 z-40 bg-black/90 backdrop-blur-xl border-b border-zinc-900">
-    <div class="max-w-7xl mx-auto px-6 sm:px-12 flex justify-between items-center h-24">
-      <a href="index.html" class="flex items-center space-x-4 group">
-        <div class="brand-logo-box w-8 h-8 border border-white flex items-center justify-center font-black text-xs tracking-widest text-white group-hover:bg-white group-hover:text-black transition duration-500">M</div>
+  <!-- Exact Same Navbar -->
+  <header class="sticky top-0 z-50 backdrop-blur-xl border-b border-zinc-900">
+    <div class="max-w-7xl mx-auto px-4 sm:px-12 flex justify-between items-center h-16 sm:h-20 relative">
+      <a href="index.html" class="flex items-center space-x-2.5 group">
+        <div class="brand-logo-box w-7 h-7 border border-white flex items-center justify-center font-black text-xs tracking-widest text-white group-hover:bg-white group-hover:text-black transition duration-500 rounded-lg">M</div>
         <div class="flex flex-col">
-          <span class="font-bold text-base tracking-[0.4em] uppercase text-white">MOONLAND</span>
-          <span class="text-[7px] tracking-[0.55em] text-zinc-400 uppercase font-bold">STORE</span>
+          <span class="font-bold text-xs sm:text-sm tracking-[0.3em] sm:tracking-[0.4em] uppercase">MOONLAND</span>
+          <span class="text-[6px] tracking-[0.55em] text-zinc-400 uppercase font-bold">STORE</span>
         </div>
       </a>
 
       <nav class="hidden md:flex items-center space-x-12 font-medium text-[11px] uppercase tracking-[0.25em] text-zinc-400">
-        <a href="index.html" class="text-white border-b border-white pb-1 tracking-[0.3em] font-bold active-link">Store</a>
-        <a href="referral.html" class="hover:text-white transition pb-1">Refer & Earn</a>
-        <a href="track.html" class="hover:text-white transition pb-1">Track Order</a>
-        <a href="about.html" class="hover:text-white transition pb-1">About Us</a>
+        <a href="index.html" class="hover:opacity-75 transition pb-1">Home</a>
+        <a href="store.html" class="border-b pb-1 tracking-[0.3em] font-bold active-link">Store</a>
+        <a href="referral.html" class="hover:opacity-75 transition pb-1">Refer & Earn</a>
+        <a href="track.html" class="hover:opacity-75 transition pb-1">Track Order</a>
+        <a href="about.html" class="hover:opacity-75 transition pb-1">About Us</a>
       </nav>
 
-      <div class="flex items-center space-x-6">
-        <button onclick="openCartModal()" class="flex items-center space-x-2 text-[11px] uppercase tracking-[0.2em] font-medium text-zinc-400 hover:text-white transition">
-          <i class="fa-solid fa-bag-shopping text-sm"></i>
-          <span id="cartCountBadge" class="bg-white text-black text-[9px] px-1.5 py-0.2 rounded-full font-bold ml-1">0</span>
+      <div class="flex items-center space-x-4">
+        <button onclick="openCartModal()" class="flex items-center space-x-1.5 text-[11px] uppercase tracking-[0.2em] font-medium transition hover:opacity-75 cursor-pointer">
+          <i class="fa-solid fa-bag-shopping text-base sm:text-sm"></i>
+          <span id="cartCountBadge" class="bg-black text-white dark:bg-white dark:text-black text-[9px] px-1.5 py-0.2 rounded-full font-bold ml-1">0</span>
         </button>
-        <button onclick="toggleMobileMenu()" class="md:hidden text-white text-lg"><i class="fa-solid fa-bars"></i></button>
+        <button onclick="toggleMobileMenu()" class="md:hidden text-lg p-1.5 cursor-pointer"><i class="fa-solid fa-bars"></i></button>
       </div>
     </div>
 
-    <!-- Mobile Menu Dropdown -->
-    <div id="mobileMenuDropdown" class="hidden md:hidden bg-black border-b border-zinc-900 px-8 py-6 space-y-5 text-xs uppercase font-medium tracking-[0.25em]">
-      <a href="index.html" class="block text-white font-bold">Store Home</a>
-      <a href="referral.html" class="block text-zinc-400 hover:text-white">Refer & Earn</a>
-      <a href="track.html" class="block text-zinc-400 hover:text-white">Track Order</a>
-      <a href="about.html" class="block text-zinc-400 hover:text-white">About Us</a>
+    <div id="mobileMenuDropdown" class="hidden absolute top-full left-0 w-full bg-white border-b border-zinc-200 px-6 py-5 space-y-4 text-xs uppercase font-medium tracking-[0.2em] shadow-2xl z-50">
+      <a href="index.html" class="block opacity-80 hover:opacity-100">Home</a>
+      <a href="store.html" class="block font-bold">Store</a>
+      <a href="referral.html" class="block opacity-80 hover:opacity-100">Refer & Earn</a>
+      <a href="track.html" class="block opacity-80 hover:opacity-100">Track Order</a>
+      <a href="about.html" class="block opacity-80 hover:opacity-100">About Us</a>
     </div>
   </header>
 
-  <!-- Main Store Catalog Content -->
-  <main class="max-w-7xl mx-auto px-6 sm:px-12 py-20 w-full flex-grow space-y-12 relative z-10">
-    <div class="text-center max-w-3xl mx-auto space-y-4">
-      <span class="inline-block text-[10px] font-bold uppercase tracking-[0.4em] text-zinc-400 border border-zinc-700 px-3.5 py-1.5 bg-zinc-900">
-        COMPLETE INVENTORY
-      </span>
-      <h1 class="text-3xl sm:text-5xl font-black uppercase tracking-[0.1em]">
-        Store Products Catalog
-      </h1>
-      <p class="text-xs sm:text-sm text-zinc-400 font-light tracking-wide">
-        Browse our full inventory with multiple high-definition views and instant seamless checkout.
-      </p>
+  <main class="flex-grow max-w-6xl mx-auto px-3 sm:px-10 py-6 sm:py-12 w-full space-y-6 relative z-10">
+    <div class="flex items-center justify-between gap-3">
+      <a href="store.html" class="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest opacity-80 hover:opacity-100 transition">
+        <i class="fa-solid fa-arrow-left"></i> Back to Store
+      </a>
+      <span id="activeReferralPill" class="hidden text-[10px] font-mono font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-emerald-500/15 text-emerald-400 border border-emerald-500/30"></span>
     </div>
 
-    <div id="storeProductsContainer" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-      <!-- Dynamically loaded from Backend API -->
+    <div id="productLoadingState" class="product-shell border rounded-2xl p-12 text-center text-xs uppercase tracking-widest opacity-75">
+      Loading product details...
+    </div>
+
+    <div id="productNotFoundState" class="hidden product-shell border rounded-2xl p-10 text-center space-y-4">
+      <p class="text-sm font-bold uppercase tracking-widest text-rose-400">Product nahi mila ya link invalid hai.</p>
+      <a href="store.html" class="inline-block btn-outline border px-6 py-3 text-xs uppercase tracking-wider font-bold">View All Products</a>
+    </div>
+
+    <div id="productMainView" class="hidden product-shell border rounded-2xl p-4 sm:p-8 shadow-2xl">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-10 items-start">
+        <!-- Left: High-Clarity Photo Gallery -->
+        <div class="lg:col-span-6 space-y-3">
+          <div onclick="openFullscreenImageViewer()" class="h-80 sm:h-[440px] bg-white dark:bg-black border border-zinc-200 dark:border-zinc-800 rounded-2xl overflow-hidden relative flex items-center justify-center p-3 cursor-pointer group shadow-inner">
+            <span class="absolute top-3 left-3 z-10 bg-red-600 text-white text-[9px] font-extrabold uppercase tracking-widest px-2.5 py-1 rounded shadow">Moonland Assured</span>
+            <span class="absolute bottom-3 right-3 bg-black/75 text-white text-[10px] px-2.5 py-1 rounded-lg opacity-85 group-hover:opacity-100 transition">
+              <i class="fa-solid fa-expand mr-1"></i> Full Photo
+            </span>
+            <img id="pageMainImg" src="" alt="Product Photo" class="w-full h-full object-contain smooth-fade-img">
+          </div>
+          <div id="pageThumbnails" class="flex gap-2.5 overflow-x-auto pb-1"></div>
+        </div>
+
+        <!-- Right: Product Title, Price, Features, Details, Add/Buy/Share -->
+        <div class="lg:col-span-6 space-y-5">
+          <div class="space-y-2">
+            <span class="bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 px-3 py-1 text-[9px] font-extrabold uppercase tracking-[0.2em] rounded-full">Official Store Item</span>
+            <h1 id="pageTitle" class="text-2xl sm:text-3xl font-black uppercase tracking-wide leading-tight pt-1"></h1>
+            <div class="flex items-baseline gap-3 pt-1">
+              <span id="pagePrice" class="text-2xl sm:text-3xl font-mono font-black text-emerald-500 dark:text-emerald-400"></span>
+              <span class="text-[10px] uppercase tracking-widest opacity-70 font-bold">Inclusive of all taxes</span>
+            </div>
+          </div>
+
+          <!-- Key Features -->
+          <div id="pageKeyFeaturesSection" class="space-y-2 pt-3 border-t border-zinc-200 dark:border-zinc-800 hidden">
+            <h2 class="text-[10px] font-extrabold uppercase tracking-[0.2em] opacity-80 flex items-center gap-1.5">
+              <i class="fa-solid fa-star text-yellow-500"></i> Key Features
+            </h2>
+            <div id="pageKeyFeaturesGrid" class="grid grid-cols-1 sm:grid-cols-2 gap-2"></div>
+          </div>
+
+          <!-- Full Description -->
+          <div id="pageDetailsSection" class="space-y-2 pt-3 border-t border-zinc-200 dark:border-zinc-800 hidden">
+            <h2 class="text-[10px] font-extrabold uppercase tracking-[0.2em] opacity-80 flex items-center gap-1.5">
+              <i class="fa-solid fa-circle-info text-cyan-400"></i> Product Details & Description
+            </h2>
+            <div class="details-box border p-4 rounded-xl">
+              <p id="pageDetailsText" class="text-xs sm:text-sm leading-relaxed whitespace-pre-line"></p>
+            </div>
+          </div>
+
+          <!-- Quantity + Add to Cart + Buy Now + Share -->
+          <div class="pt-4 border-t border-zinc-200 dark:border-zinc-800 space-y-4">
+            <div class="flex items-center justify-between flex-wrap gap-3">
+              <div class="flex items-center gap-3">
+                <span class="text-xs font-bold uppercase tracking-widest opacity-90">Quantity:</span>
+                <div class="quantity-wrapper flex items-center border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-black rounded-xl overflow-hidden shadow-sm">
+                  <button onclick="adjustPageQty(-1)" class="px-3.5 py-1.5 font-mono hover:bg-zinc-200 dark:hover:bg-zinc-800 text-sm font-bold cursor-pointer">-</button>
+                  <span id="pageQty" class="px-4 py-1.5 font-mono text-xs font-black">1</span>
+                  <button onclick="adjustPageQty(1)" class="px-3.5 py-1.5 font-mono hover:bg-zinc-200 dark:hover:bg-zinc-800 text-sm font-bold cursor-pointer">+</button>
+                </div>
+              </div>
+
+              <button onclick="shareCurrentProduct()" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl border border-cyan-500/40 bg-cyan-500/10 text-cyan-500 dark:text-cyan-300 text-[11px] font-extrabold uppercase tracking-wider hover:bg-cyan-500 hover:text-black transition cursor-pointer">
+                <i class="fa-solid fa-share-nodes"></i> Share Product Link
+              </button>
+            </div>
+
+            <div class="grid grid-cols-2 gap-3">
+              <button onclick="addPageProductToCart()" class="btn-outline border font-black py-3.5 uppercase tracking-wider text-xs transition shadow-md text-center rounded-xl cursor-pointer">
+                <i class="fa-solid fa-bag-shopping mr-1.5"></i> Add to Cart
+              </button>
+              <button onclick="buyPageProductNow()" class="btn-outline border font-black py-3.5 uppercase tracking-wider text-xs transition shadow-md text-center rounded-xl cursor-pointer">
+                <i class="fa-solid fa-bolt mr-1.5"></i> Buy Now
+              </button>
+            </div>
+
+            <p id="shareCopyFeedback" class="hidden text-[11px] font-mono text-emerald-400 font-bold">
+              ✓ Product link copy ho gaya hai! Ab aap WhatsApp par share kar sakte hain.
+            </p>
+          </div>
+        </div>
+      </div>
     </div>
   </main>
 
-  <!-- Footer -->
-  <footer class="bg-black text-zinc-600 py-16 border-t border-zinc-900 text-center text-[10px] uppercase tracking-[0.3em] space-y-4 relative z-10">
-    <p>© 2026 Moonland Store. All Rights Reserved.</p>
-    <div class="flex justify-center space-x-8 text-zinc-500">
-      <a href="index.html" class="hover:text-white transition">Store Home</a>
-      <a href="referral.html" class="hover:text-white transition">Refer & Earn</a>
-      <a href="track.html" class="hover:text-white transition">Track Order</a>
-      <a href="about.html" class="hover:text-white transition">About Us</a>
+  <!-- Fullscreen Image Modal -->
+  <div id="fullscreenImageModal" class="fixed inset-0 z-[100] bg-black/95 backdrop-blur-xl flex items-center justify-center hidden p-4">
+    <button onclick="closeFullscreenImageViewer()" class="absolute top-6 right-6 text-white text-2xl border border-zinc-700 w-12 h-12 flex items-center justify-center rounded-full bg-black/50 hover:bg-white hover:text-black transition cursor-pointer z-50">
+      <i class="fa-solid fa-xmark"></i>
+    </button>
+    <div class="max-w-5xl max-h-[90vh] w-full h-full flex items-center justify-center p-2">
+      <img id="fullscreenImgElement" src="" class="max-w-full max-h-full object-contain rounded-xl shadow-2xl">
     </div>
+  </div>
+
+  <!-- Add to Cart Success Modal -->
+  <div id="addToCartSuccessModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm hidden p-4">
+    <div class="product-shell border p-6 max-w-xs sm:max-w-sm w-full shadow-2xl space-y-4 text-center relative rounded-2xl">
+      <div class="w-12 h-12 bg-cyan-500/20 text-cyan-400 rounded-full flex items-center justify-center mx-auto text-lg shadow-md">
+        <i class="fa-solid fa-bag-shopping"></i>
+      </div>
+      <div class="space-y-1.5">
+        <span class="text-[9px] font-extrabold uppercase tracking-[0.3em] text-cyan-400 bg-cyan-500/10 px-2.5 py-1 border border-cyan-500/20 rounded-full">Successfully Added</span>
+        <h3 id="addedItemTitle" class="text-sm font-bold uppercase tracking-wider pt-1">Product Name</h3>
+        <p class="text-[10px] opacity-80">The item has been added to your cart.</p>
+      </div>
+      <div class="grid grid-cols-2 gap-2.5 pt-2">
+        <button onclick="document.getElementById('addToCartSuccessModal').classList.add('hidden')" class="border btn-outline font-bold py-2.5 text-[10px] uppercase tracking-wider transition rounded-xl cursor-pointer">Continue</button>
+        <button onclick="window.location.href='order.html'" class="border btn-outline font-black py-2.5 text-[10px] uppercase tracking-wider transition shadow-lg flex items-center justify-center gap-1 rounded-xl cursor-pointer">
+          <i class="fa-solid fa-arrow-right"></i> View Cart
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Cart Drawer -->
+  <div id="cartDrawerOverlay" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-md flex justify-end invisible opacity-0 transition-all duration-300">
+    <div class="w-full max-w-xs sm:max-w-md bg-white dark:bg-[#0c0c0c] border-l border-zinc-200 dark:border-zinc-800 h-full p-5 sm:p-8 flex flex-col justify-between shadow-2xl">
+      <div class="space-y-5">
+        <div class="flex justify-between items-center border-b border-zinc-200 dark:border-zinc-900 pb-3">
+          <h2 class="text-xs sm:text-sm font-black uppercase tracking-[0.2em]">Shopping Cart</h2>
+          <button onclick="closeCartModal()" class="text-zinc-500 dark:text-zinc-400 hover:text-black dark:hover:text-white text-sm cursor-pointer"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div id="cartDrawerItems" class="space-y-3 overflow-y-auto max-h-[60vh] pr-1"></div>
+      </div>
+      <div class="pt-4 border-t border-zinc-200 dark:border-zinc-900 space-y-3">
+        <div class="flex justify-between text-xs font-mono uppercase opacity-90 font-bold">
+          <span>Total Amount:</span>
+          <span id="cartDrawerTotal" class="font-bold text-emerald-600 dark:text-emerald-400">₹0</span>
+        </div>
+        <button onclick="window.location.href='order.html'" class="w-full btn-outline border py-3 text-xs uppercase tracking-[0.2em] font-black transition rounded-lg shadow-lg cursor-pointer">Proceed to Checkout</button>
+      </div>
+    </div>
+  </div>
+
+  <footer class="py-8 sm:py-12 border-t text-center text-[9px] sm:text-[10px] uppercase tracking-[0.3em] space-y-3 relative z-10">
+    <p>© 2026 Moonland Store. All Rights Reserved.</p>
   </footer>
 
   <script src="script.js"></script>
   <script>
-    let cachedProducts = [];
-
-    document.addEventListener("DOMContentLoaded", () => {
-        loadStoreCatalog();
-        updateGlobalCartCount();
-    });
+    let currentProduct = null;
+    let selectedQty = 1;
+    let currentImageList = [];
 
     function toggleMobileMenu() {
-      document.getElementById('mobileMenuDropdown').classList.toggle('hidden');
+      const dropdown = document.getElementById('mobileMenuDropdown');
+      if (dropdown) dropdown.classList.toggle('hidden');
     }
 
-    async function loadStoreCatalog() {
-        const container = document.getElementById('storeProductsContainer');
-        container.innerHTML = `<div class="col-span-full text-center text-zinc-500 py-12 uppercase tracking-widest text-xs border border-zinc-900 bg-[#0c0c0c]">Loading products...</div>`;
+    function captureReferralFromUrl() {
+      const params = new URLSearchParams(window.location.search);
+      const ref = (params.get('ref') || params.get('code') || '').trim();
+      if (ref) {
+        localStorage.setItem('moonland_active_ref', ref);
+        localStorage.setItem('referralCode', ref);
+      }
+      const activeRef = localStorage.getItem('moonland_active_ref') || localStorage.getItem('referralCode') || '';
+      const pill = document.getElementById('activeReferralPill');
+      if (activeRef && pill) {
+        pill.innerText = `Referral Applied: ${activeRef}`;
+        pill.classList.remove('hidden');
+      }
+    }
 
+    function getShareableProductUrl(productId) {
+      const url = new URL('product.html', window.location.origin);
+      url.searchParams.set('id', productId);
+      const savedRef = (
+        new URLSearchParams(window.location.search).get('ref') ||
+        localStorage.getItem('moonland_my_ref_code') ||
+        localStorage.getItem('moonland_active_ref') ||
+        ''
+      ).trim();
+      if (savedRef) {
+        url.searchParams.set('ref', savedRef);
+      }
+      return url.toString();
+    }
+
+    function selectMainPhoto(idx) {
+      const mainImg = document.getElementById('pageMainImg');
+      if (!mainImg || !currentImageList[idx]) return;
+      mainImg.style.opacity = 0;
+      setTimeout(() => {
+        mainImg.src = currentImageList[idx];
+        mainImg.style.opacity = 1;
+      }, 150);
+
+      document.querySelectorAll('.thumb-btn').forEach((btn, i) => {
+        btn.classList.toggle('border-cyan-400', i === idx);
+        btn.classList.toggle('ring-2', i === idx);
+        btn.classList.toggle('ring-cyan-400/50', i === idx);
+        btn.classList.toggle('border-zinc-300', i !== idx);
+      });
+    }
+
+    function openFullscreenImageViewer() {
+      const src = document.getElementById('pageMainImg').src;
+      if (!src) return;
+      document.getElementById('fullscreenImgElement').src = src;
+      document.getElementById('fullscreenImageModal').classList.remove('hidden');
+    }
+
+    function closeFullscreenImageViewer() {
+      document.getElementById('fullscreenImageModal').classList.add('hidden');
+    }
+
+    function adjustPageQty(delta) {
+      selectedQty = Math.max(1, selectedQty + delta);
+      document.getElementById('pageQty').innerText = selectedQty;
+    }
+
+    function addPageProductToCart() {
+      if (!currentProduct) return;
+      let cart = JSON.parse(localStorage.getItem('moonland_cart') || '[]');
+      let existing = cart.find(i => i.id === currentProduct.id || i.title === currentProduct.name);
+      if (existing) {
+        existing.id = currentProduct.id;
+        existing.quantity = (existing.quantity || 1) + selectedQty;
+      } else {
+        cart.push({
+          id: currentProduct.id,
+          title: currentProduct.name,
+          name: currentProduct.name,
+          price: Number(currentProduct.price) || 0,
+          quantity: selectedQty
+        });
+      }
+      localStorage.setItem('moonland_cart', JSON.stringify(cart));
+      updateGlobalCartCount();
+      document.getElementById('addedItemTitle').innerText = currentProduct.name;
+      document.getElementById('addToCartSuccessModal').classList.remove('hidden');
+    }
+
+    function buyPageProductNow() {
+      if (!currentProduct) return;
+      let cart = JSON.parse(localStorage.getItem('moonland_cart') || '[]');
+      let existing = cart.find(i => i.id === currentProduct.id || i.title === currentProduct.name);
+      if (existing) {
+        existing.id = currentProduct.id;
+        existing.quantity = (existing.quantity || 1) + selectedQty;
+      } else {
+        cart.push({
+          id: currentProduct.id,
+          title: currentProduct.name,
+          name: currentProduct.name,
+          price: Number(currentProduct.price) || 0,
+          quantity: selectedQty
+        });
+      }
+      localStorage.setItem('moonland_cart', JSON.stringify(cart));
+      updateGlobalCartCount();
+      window.location.href = 'order.html';
+    }
+
+    async function shareCurrentProduct() {
+      if (!currentProduct) return;
+      const shareUrl = getShareableProductUrl(currentProduct.id);
+      const shareText = `${currentProduct.name} — ₹${Number(currentProduct.price).toLocaleString('en-IN')} | Moonland Store`;
+
+      if (navigator.share) {
         try {
-            const res = await fetch('/api/products');
-            if (res.ok) {
-                cachedProducts = await res.json();
-            } else {
-                cachedProducts = [];
-            }
-        } catch (err) {
-            console.error('Failed to load products from server:', err);
-            cachedProducts = [];
-        }
-        
-        if(cachedProducts.length === 0) {
-            container.innerHTML = `<div class="col-span-full text-center text-zinc-500 py-12 uppercase tracking-widest text-xs border border-zinc-900 bg-[#0c0c0c]">No products found in store catalog.</div>`;
-            return;
-        }
+          await navigator.share({ title: currentProduct.name, text: shareText, url: shareUrl });
+          return;
+        } catch (e) {}
+      }
 
-        container.innerHTML = cachedProducts.map((p, pIdx) => {
-            const images = p.images && p.images.length > 0 ? p.images : ['https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&w=600&q=80'];
-            const price = Number(p.price) || 0;
-            
-            return `
-                <div class="store-card bg-[#0c0c0c] border border-zinc-800 p-6 shadow-2xl flex flex-col justify-between group hover:border-zinc-500 transition duration-500">
-                    <div class="space-y-4">
-                        <!-- Image Carousel Slider -->
-                        <div class="relative h-60 bg-black overflow-hidden border border-zinc-900">
-                            ${images.map((img, iIdx) => `
-                                <div class="carousel-slide ${iIdx === 0 ? 'active' : ''}" id="p_slide_${pIdx}_${iIdx}">
-                                    <img src="${img}" class="w-full h-60 object-cover opacity-90 group-hover:scale-105 transition duration-700">
-                                </div>
-                            `).join('')}
-
-                            ${images.length > 1 ? `
-                                <button onclick="switchProductSlide(${pIdx}, -1, ${images.length})" class="absolute left-2 top-1/2 -translate-y-1/2 bg-black/80 text-white p-2 text-xs hover:bg-white hover:text-black transition"><i class="fa-solid fa-chevron-left"></i></button>
-                                <button onclick="switchProductSlide(${pIdx}, 1, ${images.length})" class="absolute right-2 top-1/2 -translate-y-1/2 bg-black/80 text-white p-2 text-xs hover:bg-white hover:text-black transition"><i class="fa-solid fa-chevron-right"></i></button>
-                            ` : ''}
-                            <span class="absolute top-3 right-3 bg-white text-black text-[9px] font-bold px-2.5 py-1 uppercase tracking-widest shadow">₹${price.toLocaleString('en-IN')}</span>
-                        </div>
-
-                        <div class="space-y-2">
-                            <h3 class="text-base font-normal uppercase tracking-[0.1em]">${p.name}</h3>
-                            <p class="text-xs text-zinc-400 font-light tracking-wide line-clamp-2">${p.keyFeatures || p.desc || 'Premium high-performance product.'}</p>
-                        </div>
-                    </div>
-
-                    <div class="pt-6 border-t border-zinc-900 mt-6 space-y-3">
-                        <div class="store-card-price font-mono text-base text-zinc-200">₹${price.toLocaleString('en-IN')}</div>
-                        <button onclick="addCatalogItemToCart('${p.id}')" class="store-btn w-full bg-white hover:bg-zinc-200 text-black py-3 font-bold text-[10px] uppercase tracking-[0.2em] transition flex items-center justify-center space-x-2">
-                            <i class="fa-solid fa-bag-shopping"></i><span>Add to Cart</span>
-                        </button>
-                    </div>
-                </div>
-            `;
-        }).join('');
+      try {
+        await navigator.clipboard.writeText(`${shareText}\n${shareUrl}`);
+        const fb = document.getElementById('shareCopyFeedback');
+        fb.classList.remove('hidden');
+        setTimeout(() => fb.classList.add('hidden'), 3500);
+      } catch (e) {
+        window.open(`https://wa.me/?text=${encodeURIComponent(shareText + '\n' + shareUrl)}`, '_blank');
+      }
     }
 
-    let slideState = {};
-    function switchProductSlide(pIdx, direction, total) {
-        if(!(pIdx in slideState)) slideState[pIdx] = 0;
-        document.getElementById(`p_slide_${pIdx}_${slideState[pIdx]}`).classList.remove('active');
-        slideState[pIdx] = (slideState[pIdx] + direction + total) % total;
-        document.getElementById(`p_slide_${pIdx}_${slideState[pIdx]}`).classList.add('active');
+    function openCartModal() {
+      const drawer = document.getElementById('cartDrawerOverlay');
+      if (drawer) {
+        drawer.classList.remove('invisible', 'opacity-0');
+        drawer.classList.add('opacity-100');
+        renderCartDrawer();
+      }
     }
 
-    function addCatalogItemToCart(prodId) {
-        const p = cachedProducts.find(item => item.id === prodId);
-        if(!p) return;
-        let cart = JSON.parse(localStorage.getItem('moonland_cart') || '[]');
-        let existing = cart.find(i => i.id === p.id || i.title === p.name);
-        if (existing) {
-            existing.id = p.id;
-            existing.quantity = (existing.quantity || 1) + 1;
-        } else {
-            cart.push({ id: p.id, title: p.name, name: p.name, price: p.price, quantity: 1 });
-        }
-        localStorage.setItem('moonland_cart', JSON.stringify(cart));
-        updateGlobalCartCount();
-        alert('Product cart mein add ho gaya hai!');
+    function closeCartModal() {
+      const drawer = document.getElementById('cartDrawerOverlay');
+      if (drawer) {
+        drawer.classList.remove('opacity-100');
+        drawer.classList.add('opacity-0', 'invisible');
+      }
+    }
+
+    function renderCartDrawer() {
+      const container = document.getElementById('cartDrawerItems');
+      const totalContainer = document.getElementById('cartDrawerTotal');
+      let cart = JSON.parse(localStorage.getItem('moonland_cart') || '[]');
+      if (!cart.length) {
+        container.innerHTML = `<p class="text-xs opacity-70 uppercase tracking-widest text-center py-6 font-medium">Your cart is empty.</p>`;
+        totalContainer.innerText = `₹0`;
+        return;
+      }
+      let total = 0;
+      container.innerHTML = cart.map((item, idx) => {
+        const price = Number(item.price) || 0;
+        const qty = Number(item.quantity || item.qty || 1);
+        total += price * qty;
+        return `
+          <div class="flex justify-between items-center spec-card p-3 border rounded-xl text-xs">
+            <div>
+              <div class="font-bold uppercase tracking-wider text-[11px]">${item.title || item.name}</div>
+              <div class="opacity-80 font-mono text-[10px] mt-0.5">₹${price} x ${qty}</div>
+            </div>
+            <button onclick="removeFromCart(${idx})" class="text-zinc-400 hover:text-red-500 p-1.5 cursor-pointer"><i class="fa-solid fa-trash text-xs"></i></button>
+          </div>
+        `;
+      }).join('');
+      totalContainer.innerText = `₹${total.toLocaleString('en-IN')}`;
+    }
+
+    function removeFromCart(index) {
+      let cart = JSON.parse(localStorage.getItem('moonland_cart') || '[]');
+      cart.splice(index, 1);
+      localStorage.setItem('moonland_cart', JSON.stringify(cart));
+      updateGlobalCartCount();
+      renderCartDrawer();
     }
 
     function updateGlobalCartCount() {
-        let cart = JSON.parse(localStorage.getItem('moonland_cart') || '[]');
-        let totalCount = cart.reduce((sum, item) => sum + (item.quantity || item.qty || 1), 0);
-        const badge = document.getElementById('cartCountBadge');
-        if (badge) badge.innerText = totalCount;
+      let cart = JSON.parse(localStorage.getItem('moonland_cart') || '[]');
+      let totalCount = cart.reduce((sum, item) => sum + (item.quantity || item.qty || 1), 0);
+      const badge = document.getElementById('cartCountBadge');
+      if (badge) badge.innerText = totalCount;
     }
+
+    async function loadProductPage() {
+      captureReferralFromUrl();
+      updateGlobalCartCount();
+
+      const params = new URLSearchParams(window.location.search);
+      const productId = (params.get('id') || params.get('product') || '').trim();
+
+      let products = [];
+      try {
+        const res = await fetch('/api/products');
+        if (res.ok) products = await res.json();
+      } catch (e) {
+        console.error('Product fetch failed:', e);
+      }
+
+      if (!products.length) {
+        try {
+          products = JSON.parse(localStorage.getItem('moonland_store_products') || '[]');
+        } catch (e) {}
+      }
+
+      const found = products.find(p => p.id === productId) || (products.length === 1 && !productId ? products[0] : null);
+      document.getElementById('productLoadingState').classList.add('hidden');
+
+      if (!found) {
+        document.getElementById('productNotFoundState').classList.remove('hidden');
+        return;
+      }
+
+      currentProduct = found;
+      document.title = `${found.name} | MOONLAND STORE`;
+      document.getElementById('pageTitle').innerText = found.name;
+      document.getElementById('pagePrice').innerText = `₹${Number(found.price).toLocaleString('en-IN')}`;
+
+      currentImageList = (found.images && found.images.length > 0)
+        ? found.images
+        : ['https://images.unsplash.com/photo-1556911220-e15b29be8c8f?auto=format&fit=crop&q=80&w=600'];
+
+      document.getElementById('pageMainImg').src = currentImageList[0];
+
+      const thumbsEl = document.getElementById('pageThumbnails');
+      thumbsEl.innerHTML = currentImageList.map((img, idx) => `
+        <button type="button" onclick="selectMainPhoto(${idx})" class="thumb-btn w-16 h-16 sm:w-20 sm:h-20 rounded-xl overflow-hidden border ${idx === 0 ? 'border-cyan-400 ring-2 ring-cyan-400/50' : 'border-zinc-300 dark:border-zinc-700'} bg-white dark:bg-black p-1 shrink-0 cursor-pointer transition">
+          <img src="${img}" class="w-full h-full object-contain">
+        </button>
+      `).join('');
+
+      if (found.keyFeatures && found.keyFeatures.trim()) {
+        document.getElementById('pageKeyFeaturesSection').classList.remove('hidden');
+        document.getElementById('pageKeyFeaturesGrid').innerHTML = found.keyFeatures.split(',').map(item => {
+          const parts = item.split(':');
+          const label = parts[0] ? parts[0].trim() : 'Feature';
+          const val = parts[1] ? parts[1].trim() : item.trim();
+          return `
+            <div class="spec-card border p-2.5 rounded-xl">
+              <div class="text-[9px] uppercase tracking-widest opacity-70 font-bold">${label}</div>
+              <div class="text-xs font-extrabold uppercase mt-0.5">${val}</div>
+            </div>
+          `;
+        }).join('');
+      }
+
+      if (found.details && found.details.trim()) {
+        document.getElementById('pageDetailsSection').classList.remove('hidden');
+        document.getElementById('pageDetailsText').innerText = found.details;
+      }
+
+      document.getElementById('productMainView').classList.remove('hidden');
+    }
+
+    document.addEventListener('DOMContentLoaded', loadProductPage);
   </script>
 </body>
 </html>

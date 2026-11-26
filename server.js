@@ -68,6 +68,37 @@ if (db) {
   });
 }
 
+function escapeHtmlAttr(str) {
+  return String(str ?? '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+function getBaseUrl(req) {
+  const proto = (req.headers['x-forwarded-proto'] || req.protocol || 'https').split(',')[0].trim();
+  const host = req.get('host');
+  return `${proto}://${host}`;
+}
+
+async function getProductById(productId) {
+  if (!db || !productId) return null;
+  const cleanId = String(productId).trim();
+  const doc = await db.collection('products').doc(cleanId).get();
+  if (!doc.exists) return null;
+  const data = doc.data();
+  return {
+    id: doc.id,
+    name: data.name || 'Moonland Store Product',
+    price: Number(data.price) || 0,
+    images: Array.isArray(data.images) ? data.images : [],
+    keyFeatures: data.keyFeatures || '',
+    details: data.details || ''
+  };
+}
+
 function isAdminAuthenticated(req) {
   return Boolean(req.session && req.session.isAdmin);
 }
@@ -263,6 +294,97 @@ app.put('/api/settings', requireAdmin, adminBodyParser, adminUrlParser, async (r
   } catch (err) {
     res.status(500).json({ success: false, error: 'Failed to update settings' });
   }
+});
+
+// ==================== WHATSAPP & SOCIAL PREVIEW ROUTES ====================
+
+app.get('/api/products/:id/og-image', async (req, res) => {
+  try {
+    const product = await getProductById(req.params.id);
+    const firstImg = product && Array.isArray(product.images) && product.images[0] ? product.images[0] : '';
+
+    if (!firstImg) {
+      return res.redirect('/logo.png?v=999');
+    }
+
+    if (firstImg.startsWith('data:')) {
+      const match = firstImg.match(/^data:(image\/[a-zA-Z0-9.+-]+);base64,(.+)$/);
+      if (!match) {
+        return res.redirect('/logo.png?v=999');
+      }
+      const mimeType = match[1];
+      const imgBuffer = Buffer.from(match[2], 'base64');
+      res.setHeader('Content-Type', mimeType);
+      res.setHeader('Cache-Control', 'public, max-age=86400');
+      return res.send(imgBuffer);
+    }
+
+    if (/^https?:\/\//i.test(firstImg) || firstImg.startsWith('/')) {
+      return res.redirect(firstImg);
+    }
+
+    return res.redirect('/logo.png?v=999');
+  } catch (err) {
+    console.error('OG image error:', err);
+    return res.redirect('/logo.png?v=999');
+  }
+});
+
+function renderProductPreviewHtml(req, res, productId) {
+  getProductById(productId).then((product) => {
+    const baseUrl = getBaseUrl(req);
+    const cleanId = encodeURIComponent(productId || '');
+    const refParam = (req.query.ref || req.query.code || '').trim();
+    const refQuery = refParam ? `&ref=${encodeURIComponent(refParam)}` : '';
+    const clientTargetUrl = `${baseUrl}/products.html?id=${cleanId}${refQuery}`;
+
+    if (!product) {
+      return res.sendFile(path.join(publicDir, 'products.html'));
+    }
+
+    const titleText = `${product.name} — ₹${product.price.toLocaleString('en-IN')} | MOONLAND STORE`;
+    const descText = (product.keyFeatures || product.details || 'Buy original products on Moonland Store.').slice(0, 180);
+    const ogImageUrl = `${baseUrl}/api/products/${cleanId}/og-image`;
+
+    const html = `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>${escapeHtmlAttr(titleText)}</title>
+  <meta property="og:type" content="product">
+  <meta property="og:site_name" content="MOONLAND STORE">
+  <meta property="og:title" content="${escapeHtmlAttr(titleText)}">
+  <meta property="og:description" content="${escapeHtmlAttr(descText)}">
+  <meta property="og:image" content="${escapeHtmlAttr(ogImageUrl)}">
+  <meta property="og:image:secure_url" content="${escapeHtmlAttr(ogImageUrl)}">
+  <meta property="og:url" content="${escapeHtmlAttr(clientTargetUrl)}">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="${escapeHtmlAttr(titleText)}">
+  <meta name="twitter:description" content="${escapeHtmlAttr(descText)}">
+  <meta name="twitter:image" content="${escapeHtmlAttr(ogImageUrl)}">
+  <script>window.location.replace(${JSON.stringify(clientTargetUrl)});</script>
+</head>
+<body style="background:#050505;color:#fff;font-family:sans-serif;display:flex;align-items:center;justify-content:center;min-height:100vh;margin:0;">
+  <p>Opening <a href="${escapeHtmlAttr(clientTargetUrl)}" style="color:#38bdf8;">${escapeHtmlAttr(product.name)}</a>...</p>
+</body>
+</html>`;
+    return res.status(200).send(html);
+  }).catch(() => {
+    return res.sendFile(path.join(publicDir, 'products.html'));
+  });
+}
+
+app.get('/p/:id', (req, res) => {
+  renderProductPreviewHtml(req, res, req.params.id);
+});
+
+app.get('/product', (req, res) => {
+  const id = req.query.id || req.query.product;
+  if (id) {
+    return renderProductPreviewHtml(req, res, id);
+  }
+  return res.sendFile(path.join(publicDir, 'products.html'));
 });
 
 app.get('/api/products', async (req, res) => {
@@ -818,6 +940,7 @@ const allHtmlPages = [
   'manage-orders-8118.html',
   'inventory-products.html',
   'products.html',
+  'product.html',
   'store.html',
   'track.html',
   'referral.html',
