@@ -4,19 +4,16 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Store | MOONLAND STORE</title>
-  <!-- Browser Tab Favicon Logo -->
   <link rel="icon" type="image/png" href="logo.png?v=999">
   <link rel="shortcut icon" href="logo.png?v=999">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="style.css">
   <style>
-    /* Smooth theme transition & flash prevention */
     html { background-color: #050505; color: #ffffff; }
     html.light { background-color: #f8fafc; color: #0f172a; }
     body { background-color: #050505 !important; color: #ffffff !important; transition: background-color 0.4s ease, color 0.4s ease; }
 
-    /* DAYLIGHT MODE (HIGH CONTRAST & CLEAR VISIBILITY FIXES) */
     html.light body { background-color: #f8fafc !important; color: #0f172a !important; }
     html.light header { background-color: rgba(255, 255, 255, 0.95) !important; border-bottom-color: #cbd5e1 !important; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); }
 
@@ -66,15 +63,11 @@
 
     html.light .store-modal-box { background: #ffffff !important; border-color: #cbd5e1 !important; color: #0f172a !important; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); }
     html.light .store-modal-box h2, html.light .store-modal-box h3 { color: #0f172a !important; }
-    html.light .store-modal-inner { background: #f8fafc !important; border-color: #cbd5e1 !important; color: #0f172a !important; }
-    html.light .modal-details-box { background: #f1f5f9 !important; border-color: #cbd5e1 !important; color: #0f172a !important; }
 
-    /* NIGHT MODE FIXES FOR VISIBILITY */
     html.dark body { background-color: #050505 !important; color: #ffffff !important; }
     html.dark .clouds-bg { display: none !important; }
     html.dark .stars-bg { display: block !important; }
 
-    /* NIGHT MODE NAVBAR OVERRIDE - DARK SLATE GRAY */
     html.dark header {
       background-color: #1a1a1a !important;
       border-bottom-color: #27272a !important;
@@ -92,17 +85,6 @@
     html.dark .search-box-input::placeholder { color: #71717a !important; }
 
     html.dark .store-modal-box { background: rgba(12,12,12,0.98) !important; border-color: rgba(255,255,255,0.2) !important; color: #ffffff !important; }
-    html.dark .store-modal-inner { background: #000000 !important; border-color: #27272a !important; color: #ffffff !important; }
-    html.dark .modal-details-box { background: rgba(0, 0, 0, 0.6) !important; border-color: rgba(255, 255, 255, 0.1) !important; color: #e4e4e7 !important; }
-
-    html.dark .quantity-wrapper {
-      background-color: #000000 !important;
-      border-color: rgba(255, 255, 255, 0.2) !important;
-      color: #ffffff !important;
-    }
-    html.dark .quantity-wrapper span, html.dark .quantity-wrapper button {
-      color: #ffffff !important;
-    }
 
     html.dark .btn-outline {
       background: linear-gradient(135deg, #38bdf8, #0284c7) !important;
@@ -241,81 +223,6 @@
     <div id="dynamicProductsGrid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2.5 sm:gap-4"></div>
   </main>
 
-  <div id="productDetailModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md hidden p-3 sm:p-4">
-    <div class="store-modal-box border max-w-3xl w-full p-5 sm:p-8 relative shadow-2xl rounded-2xl space-y-4 sm:space-y-5 max-h-[90vh] overflow-y-auto">
-      <button onclick="closeProductModal()" class="absolute top-3 right-3 text-zinc-400 hover:text-white text-base sm:text-lg border border-zinc-700 w-8 h-8 sm:w-9 sm:h-9 flex items-center justify-center transition rounded-full z-10 cursor-pointer">
-        <i class="fa-solid fa-xmark"></i>
-      </button>
-
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6 items-start">
-        <div class="space-y-3">
-          <div onclick="openFullscreenImageViewer()" class="h-80 sm:h-96 bg-zinc-100 dark:bg-black border border-zinc-200 dark:border-zinc-800 overflow-hidden relative shadow-inner rounded-xl flex items-center justify-center p-2 cursor-pointer group">
-            <span class="absolute bottom-2 right-2 bg-black/70 text-white text-[9px] px-2 py-1 rounded-md opacity-0 group-hover:opacity-100 transition"><i class="fa-solid fa-expand mr-1"></i> Click to View Full</span>
-            <img id="modalMainImg" src="" class="w-full h-full object-contain smooth-fade-img">
-          </div>
-          <div id="modalThumbnails" class="flex gap-2 overflow-x-auto pb-1"></div>
-        </div>
-
-        <div class="space-y-3 sm:space-y-4">
-          <div class="flex items-center justify-between gap-2 pr-8">
-            <span class="bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 px-2.5 py-0.5 text-[8px] sm:text-[9px] font-bold uppercase tracking-wider rounded-md">Store Item</span>
-            <div class="flex items-center gap-3">
-              <button type="button" onclick="shareActiveProduct()" class="text-[10px] font-bold uppercase tracking-wider text-cyan-400 hover:underline cursor-pointer">
-                <i class="fa-solid fa-share-nodes mr-1"></i> Share
-              </button>
-              <a id="modalDedicatedPageLink" href="#" class="text-[10px] font-bold uppercase tracking-wider opacity-80 hover:opacity-100 underline">
-                Open Page
-              </a>
-            </div>
-          </div>
-          <h2 id="modalTitle" class="text-lg sm:text-xl font-black uppercase tracking-wider mt-1"></h2>
-          <p id="modalPrice" class="text-xl sm:text-2xl font-mono font-black text-emerald-400"></p>
-
-          <div id="keyFeaturesContainer" class="space-y-1.5 pt-2 border-t border-zinc-800 hidden">
-            <h3 class="text-[9px] sm:text-[10px] opacity-80 font-bold uppercase tracking-[0.2em] flex items-center gap-1.5">
-              <i class="fa-solid fa-star text-yellow-500"></i> Key Features
-            </h3>
-            <div id="modalKeyFeaturesGrid" class="grid grid-cols-1 gap-1.5 max-h-28 overflow-y-auto pr-1"></div>
-          </div>
-
-          <div id="detailsContainer" class="space-y-1.5 pt-2 border-t border-zinc-800 hidden">
-            <h3 class="text-[9px] sm:text-[10px] opacity-80 font-bold uppercase tracking-[0.2em] flex items-center gap-1.5">
-              <i class="fa-solid fa-circle-info text-cyan-400"></i> Details & Description
-            </h3>
-            <div class="modal-details-box border p-4 rounded-xl">
-              <p id="modalDetailsText" class="text-[11px] sm:text-xs leading-relaxed font-normal whitespace-pre-line"></p>
-            </div>
-          </div>
-
-          <div class="pt-3 border-t border-zinc-800 space-y-3">
-            <div class="flex items-center gap-3">
-              <span class="text-xs font-bold uppercase tracking-widest opacity-90">Quantity:</span>
-              <div class="quantity-wrapper flex items-center border border-zinc-700 bg-black rounded-xl overflow-hidden shadow-sm">
-                <button onclick="adjustQty(-1)" class="px-3 py-1 font-mono hover:bg-zinc-800 text-white text-sm cursor-pointer">-</button>
-                <span id="modalQty" class="px-3.5 py-1 font-mono text-xs font-bold text-white">1</span>
-                <button onclick="adjustQty(1)" class="px-3 py-1 font-mono hover:bg-zinc-800 text-white text-sm cursor-pointer">+</button>
-              </div>
-            </div>
-
-            <div class="flex gap-2.5 pt-1">
-              <button onclick="addCurrentToCart()" class="flex-1 btn-outline border font-bold py-2.5 sm:py-3 uppercase tracking-wider text-[11px] sm:text-xs transition shadow-sm text-center rounded-xl cursor-pointer">Add to Cart</button>
-              <button onclick="buyCurrentNow()" class="flex-1 btn-outline border font-bold py-2.5 sm:py-3 uppercase tracking-wider text-[11px] sm:text-xs transition shadow-sm text-center rounded-xl cursor-pointer">Buy Now</button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div id="fullscreenImageModal" class="fixed inset-0 z-[100] bg-black/95 backdrop-blur-xl flex items-center justify-center hidden p-4">
-    <button onclick="closeFullscreenImageViewer()" class="absolute top-6 right-6 text-white text-2xl border border-zinc-700 w-12 h-12 flex items-center justify-center rounded-full bg-black/50 hover:bg-white hover:text-black transition cursor-pointer z-50">
-      <i class="fa-solid fa-xmark"></i>
-    </button>
-    <div class="max-w-5xl max-h-[90vh] w-full h-full flex items-center justify-center p-2">
-      <img id="fullscreenImgElement" src="" class="max-w-full max-h-full object-contain rounded-xl shadow-2xl">
-    </div>
-  </div>
-
   <div id="addToCartSuccessModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm hidden p-4 transition-all duration-300">
     <div class="store-modal-box border p-6 max-w-xs sm:max-w-sm w-full shadow-2xl space-y-4 text-center relative rounded-2xl">
       <div class="w-12 h-12 bg-cyan-500/20 text-cyan-400 rounded-full flex items-center justify-center mx-auto text-lg shadow-md">
@@ -369,14 +276,24 @@
 
   <script src="script.js"></script>
   <script>
-    let activeProduct = null;
-    let currentQty = 1;
     let cachedProducts = [];
-    let modalImageInterval = null;
 
     function toggleMobileMenu() {
       const dropdown = document.getElementById('mobileMenuDropdown');
       if (dropdown) dropdown.classList.toggle('hidden');
+    }
+
+    function getDedicatedProductUrl(prodId) {
+      const url = new URL('products.html', window.location.origin);
+      url.searchParams.set('id', prodId);
+      const ref = (localStorage.getItem('moonland_my_ref_code') || localStorage.getItem('moonland_active_ref') || '').trim();
+      if (ref) url.searchParams.set('ref', ref);
+      return url.toString();
+    }
+
+    function openProductDedicatedPage(prodId) {
+      if (!prodId) return;
+      window.location.href = getDedicatedProductUrl(prodId);
     }
 
     function captureUrlParams() {
@@ -388,25 +305,17 @@
       }
       const deepProductId = (params.get('product') || params.get('id') || '').trim();
       if (deepProductId) {
-        const target = new URL('product.html', window.location.origin);
+        const target = new URL('products.html', window.location.origin);
         target.searchParams.set('id', deepProductId);
         if (ref) target.searchParams.set('ref', ref);
         window.location.replace(target.toString());
       }
     }
 
-    function getProductShareUrl(prodId) {
-      const url = new URL('product.html', window.location.origin);
-      url.searchParams.set('id', prodId);
-      const ref = (localStorage.getItem('moonland_my_ref_code') || localStorage.getItem('moonland_active_ref') || '').trim();
-      if (ref) url.searchParams.set('ref', ref);
-      return url.toString();
-    }
-
     async function shareProductById(prodId) {
       const p = cachedProducts.find(item => item.id === prodId);
       if (!p) return;
-      const shareUrl = getProductShareUrl(prodId);
+      const shareUrl = getDedicatedProductUrl(prodId);
       const shareText = `${p.name} — ₹${Number(p.price).toLocaleString('en-IN')} | Moonland Store`;
 
       if (navigator.share) {
@@ -424,10 +333,6 @@
       } catch (e) {
         window.open(`https://wa.me/?text=${encodeURIComponent(shareText + '\n' + shareUrl)}`, '_blank');
       }
-    }
-
-    function shareActiveProduct() {
-      if (activeProduct) shareProductById(activeProduct.id);
     }
 
     function openCartModal() {
@@ -558,14 +463,14 @@
         let card = document.createElement('div');
         card.className = `product-item product-card group border p-2 sm:p-3 flex flex-col justify-between space-y-2 transition duration-300 cursor-pointer rounded-xl shadow-sm`;
         card.innerHTML = `
-          <div onclick="openProductDetail('${p.id}')" class="h-60 sm:h-80 overflow-hidden bg-white rounded-lg relative border border-zinc-700 shadow-inner flex items-center justify-center p-1">
+          <div onclick="openProductDedicatedPage('${p.id}')" class="h-60 sm:h-80 overflow-hidden bg-white rounded-lg relative border border-zinc-700 shadow-inner flex items-center justify-center p-1">
             <span class="absolute top-2 left-2 z-10 bg-red-600 text-white text-[7px] sm:text-[9px] font-extrabold uppercase tracking-widest px-2 py-0.5 rounded shadow">Assured</span>
             <button type="button" onclick="event.stopPropagation(); shareProductById('${p.id}')" title="Share Product Link" class="absolute top-2 right-2 z-10 bg-black/75 hover:bg-cyan-400 hover:text-black text-white w-7 h-7 rounded-full flex items-center justify-center text-[10px] transition cursor-pointer">
               <i class="fa-solid fa-share-nodes"></i>
             </button>
             <img id="storeImg_${index}" src="${imgList[0]}" class="w-full h-full object-contain smooth-fade-img group-hover:scale-105 transition duration-500">
           </div>
-          <div onclick="openProductDetail('${p.id}')" class="space-y-0.5">
+          <div onclick="openProductDedicatedPage('${p.id}')" class="space-y-0.5">
             <h3 class="text-xs sm:text-sm font-bold uppercase tracking-tight line-clamp-2 leading-tight">${pName}</h3>
             <p class="text-[8px] sm:text-[11px] opacity-80 font-medium truncate">${p.keyFeatures || 'Certified Product'}</p>
           </div>
@@ -609,96 +514,6 @@
       renderStoreGrid(filtered);
     }
 
-    function openProductDetail(prodId) {
-      activeProduct = cachedProducts.find(p => p.id === prodId);
-      if (!activeProduct) return;
-
-      currentQty = 1;
-      document.getElementById('modalQty').innerText = currentQty;
-      document.getElementById('modalTitle').innerText = activeProduct.name;
-      document.getElementById('modalPrice').innerText = `₹${Number(activeProduct.price).toLocaleString('en-IN')}`;
-      document.getElementById('modalDedicatedPageLink').href = getProductShareUrl(activeProduct.id);
-
-      const kfContainer = document.getElementById('keyFeaturesContainer');
-      const kfGrid = document.getElementById('modalKeyFeaturesGrid');
-      if (activeProduct.keyFeatures && activeProduct.keyFeatures.trim() !== '') {
-        kfContainer.classList.remove('hidden');
-        kfGrid.innerHTML = activeProduct.keyFeatures.split(',').map(item => {
-          let parts = item.split(':');
-          let label = parts[0] ? parts[0].trim() : 'Feature';
-          let val = parts[1] ? parts[1].trim() : item.trim();
-          return `
-            <div class="store-modal-inner border p-2 flex flex-col justify-between space-y-0.5 rounded-lg shadow-sm">
-              <span class="text-[8px] sm:text-[9px] opacity-75 uppercase tracking-widest font-bold">${label}</span>
-              <span class="text-[11px] sm:text-xs font-bold uppercase">${val}</span>
-            </div>
-          `;
-        }).join('');
-      } else {
-        kfContainer.classList.add('hidden');
-      }
-
-      const detailsContainer = document.getElementById('detailsContainer');
-      const modalDetailsText = document.getElementById('modalDetailsText');
-      if (activeProduct.details && activeProduct.details.trim() !== '') {
-        detailsContainer.classList.remove('hidden');
-        modalDetailsText.innerText = activeProduct.details;
-      } else {
-        detailsContainer.classList.add('hidden');
-      }
-
-      let imgList = activeProduct.images && activeProduct.images.length > 0 ? activeProduct.images : ['https://images.unsplash.com/photo-1556911220-e15b29be8c8f?auto=format&fit=crop&q=80&w=400'];
-      const modalImgEl = document.getElementById('modalMainImg');
-      modalImgEl.src = imgList[0];
-
-      if (modalImageInterval) clearInterval(modalImageInterval);
-      if (imgList.length > 1) {
-        let modalImgIdx = 0;
-        modalImageInterval = setInterval(() => {
-          modalImgIdx = (modalImgIdx + 1) % imgList.length;
-          if (modalImgEl) {
-            modalImgEl.style.opacity = 0;
-            setTimeout(() => {
-              modalImgEl.src = imgList[modalImgIdx];
-              modalImgEl.style.opacity = 1;
-            }, 300);
-          }
-        }, 4000);
-      }
-
-      document.getElementById('modalThumbnails').innerHTML = imgList.map((img, idx) => `
-        <img src="${img}" onclick="document.getElementById('modalMainImg').src='${img}'" class="w-14 h-14 object-contain bg-white border ${idx === 0 ? 'border-cyan-400' : 'border-zinc-700'} cursor-pointer rounded-lg shadow-sm hover:scale-105 transition p-0.5">
-      `).join('');
-
-      document.getElementById('productDetailModal').classList.remove('hidden');
-    }
-
-    function closeProductModal() {
-      if (modalImageInterval) clearInterval(modalImageInterval);
-      document.getElementById('productDetailModal').classList.add('hidden');
-      activeProduct = null;
-    }
-
-    function openFullscreenImageViewer() {
-      const modalImg = document.getElementById('modalMainImg').src;
-      const fsModal = document.getElementById('fullscreenImageModal');
-      const fsImg = document.getElementById('fullscreenImgElement');
-      if (modalImg && fsModal && fsImg) {
-        fsImg.src = modalImg;
-        fsModal.classList.remove('hidden');
-      }
-    }
-
-    function closeFullscreenImageViewer() {
-      const fsModal = document.getElementById('fullscreenImageModal');
-      if (fsModal) fsModal.classList.add('hidden');
-    }
-
-    function adjustQty(val) {
-      currentQty = Math.max(1, currentQty + val);
-      document.getElementById('modalQty').innerText = currentQty;
-    }
-
     function addToCartDirect(prodId) {
       let p = cachedProducts.find(item => item.id === prodId);
       if (!p) return;
@@ -728,39 +543,6 @@
       }
       localStorage.setItem('moonland_cart', JSON.stringify(cart));
       updateGlobalCartCount();
-      window.location.href = 'order.html';
-    }
-
-    function addCurrentToCart() {
-      if (!activeProduct) return;
-      let cart = JSON.parse(localStorage.getItem('moonland_cart') || '[]');
-      let existing = cart.find(i => i.id === activeProduct.id || i.title === activeProduct.name);
-      if (existing) {
-        existing.id = activeProduct.id;
-        existing.quantity = (existing.quantity || 1) + currentQty;
-      } else {
-        cart.push({ id: activeProduct.id, title: activeProduct.name, name: activeProduct.name, price: activeProduct.price, quantity: currentQty });
-      }
-      localStorage.setItem('moonland_cart', JSON.stringify(cart));
-      updateGlobalCartCount();
-      const title = activeProduct.name;
-      closeProductModal();
-      showAddToCartPopup(title);
-    }
-
-    function buyCurrentNow() {
-      if (!activeProduct) return;
-      let cart = JSON.parse(localStorage.getItem('moonland_cart') || '[]');
-      let existing = cart.find(i => i.id === activeProduct.id || i.title === activeProduct.name);
-      if (existing) {
-        existing.id = activeProduct.id;
-        existing.quantity = (existing.quantity || 1) + currentQty;
-      } else {
-        cart.push({ id: activeProduct.id, title: activeProduct.name, name: activeProduct.name, price: activeProduct.price, quantity: currentQty });
-      }
-      localStorage.setItem('moonland_cart', JSON.stringify(cart));
-      updateGlobalCartCount();
-      closeProductModal();
       window.location.href = 'order.html';
     }
 

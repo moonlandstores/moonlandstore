@@ -107,7 +107,6 @@
     </marquee>
   </div>
 
-  <!-- Exact Same Navbar -->
   <header class="sticky top-0 z-50 backdrop-blur-xl border-b border-zinc-900">
     <div class="max-w-7xl mx-auto px-4 sm:px-12 flex justify-between items-center h-16 sm:h-20 relative">
       <a href="index.html" class="flex items-center space-x-2.5 group">
@@ -163,7 +162,6 @@
 
     <div id="productMainView" class="hidden product-shell border rounded-2xl p-4 sm:p-8 shadow-2xl">
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-10 items-start">
-        <!-- Left: High-Clarity Photo Gallery -->
         <div class="lg:col-span-6 space-y-3">
           <div onclick="openFullscreenImageViewer()" class="h-80 sm:h-[440px] bg-white dark:bg-black border border-zinc-200 dark:border-zinc-800 rounded-2xl overflow-hidden relative flex items-center justify-center p-3 cursor-pointer group shadow-inner">
             <span class="absolute top-3 left-3 z-10 bg-red-600 text-white text-[9px] font-extrabold uppercase tracking-widest px-2.5 py-1 rounded shadow">Moonland Assured</span>
@@ -175,7 +173,6 @@
           <div id="pageThumbnails" class="flex gap-2.5 overflow-x-auto pb-1"></div>
         </div>
 
-        <!-- Right: Product Title, Price, Features, Details, Add/Buy/Share -->
         <div class="lg:col-span-6 space-y-5">
           <div class="space-y-2">
             <span class="bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 px-3 py-1 text-[9px] font-extrabold uppercase tracking-[0.2em] rounded-full">Official Store Item</span>
@@ -186,7 +183,6 @@
             </div>
           </div>
 
-          <!-- Key Features -->
           <div id="pageKeyFeaturesSection" class="space-y-2 pt-3 border-t border-zinc-200 dark:border-zinc-800 hidden">
             <h2 class="text-[10px] font-extrabold uppercase tracking-[0.2em] opacity-80 flex items-center gap-1.5">
               <i class="fa-solid fa-star text-yellow-500"></i> Key Features
@@ -194,7 +190,6 @@
             <div id="pageKeyFeaturesGrid" class="grid grid-cols-1 sm:grid-cols-2 gap-2"></div>
           </div>
 
-          <!-- Full Description -->
           <div id="pageDetailsSection" class="space-y-2 pt-3 border-t border-zinc-200 dark:border-zinc-800 hidden">
             <h2 class="text-[10px] font-extrabold uppercase tracking-[0.2em] opacity-80 flex items-center gap-1.5">
               <i class="fa-solid fa-circle-info text-cyan-400"></i> Product Details & Description
@@ -204,7 +199,6 @@
             </div>
           </div>
 
-          <!-- Quantity + Add to Cart + Buy Now + Share -->
           <div class="pt-4 border-t border-zinc-200 dark:border-zinc-800 space-y-4">
             <div class="flex items-center justify-between flex-wrap gap-3">
               <div class="flex items-center gap-3">
@@ -239,7 +233,6 @@
     </div>
   </main>
 
-  <!-- Fullscreen Image Modal -->
   <div id="fullscreenImageModal" class="fixed inset-0 z-[100] bg-black/95 backdrop-blur-xl flex items-center justify-center hidden p-4">
     <button onclick="closeFullscreenImageViewer()" class="absolute top-6 right-6 text-white text-2xl border border-zinc-700 w-12 h-12 flex items-center justify-center rounded-full bg-black/50 hover:bg-white hover:text-black transition cursor-pointer z-50">
       <i class="fa-solid fa-xmark"></i>
@@ -249,7 +242,6 @@
     </div>
   </div>
 
-  <!-- Add to Cart Success Modal -->
   <div id="addToCartSuccessModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm hidden p-4">
     <div class="product-shell border p-6 max-w-xs sm:max-w-sm w-full shadow-2xl space-y-4 text-center relative rounded-2xl">
       <div class="w-12 h-12 bg-cyan-500/20 text-cyan-400 rounded-full flex items-center justify-center mx-auto text-lg shadow-md">
@@ -269,7 +261,6 @@
     </div>
   </div>
 
-  <!-- Cart Drawer -->
   <div id="cartDrawerOverlay" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-md flex justify-end invisible opacity-0 transition-all duration-300">
     <div class="w-full max-w-xs sm:max-w-md bg-white dark:bg-[#0c0c0c] border-l border-zinc-200 dark:border-zinc-800 h-full p-5 sm:p-8 flex flex-col justify-between shadow-2xl">
       <div class="space-y-5">
@@ -320,7 +311,7 @@
     }
 
     function getShareableProductUrl(productId) {
-      const url = new URL('product.html', window.location.origin);
+      const url = new URL('products.html', window.location.origin);
       url.searchParams.set('id', productId);
       const savedRef = (
         new URLSearchParams(window.location.search).get('ref') ||
@@ -384,7 +375,8 @@
         });
       }
       localStorage.setItem('moonland_cart', JSON.stringify(cart));
-      updateGlobalCartCount();
+      if (typeof updateGlobalCartCount === 'function') updateGlobalCartCount();
+      else updatePageCartCount();
       document.getElementById('addedItemTitle').innerText = currentProduct.name;
       document.getElementById('addToCartSuccessModal').classList.remove('hidden');
     }
@@ -406,7 +398,8 @@
         });
       }
       localStorage.setItem('moonland_cart', JSON.stringify(cart));
-      updateGlobalCartCount();
+      if (typeof updateGlobalCartCount === 'function') updateGlobalCartCount();
+      else updatePageCartCount();
       window.location.href = 'order.html';
     }
 
@@ -480,11 +473,12 @@
       let cart = JSON.parse(localStorage.getItem('moonland_cart') || '[]');
       cart.splice(index, 1);
       localStorage.setItem('moonland_cart', JSON.stringify(cart));
-      updateGlobalCartCount();
+      if (typeof updateGlobalCartCount === 'function') updateGlobalCartCount();
+      else updatePageCartCount();
       renderCartDrawer();
     }
 
-    function updateGlobalCartCount() {
+    function updatePageCartCount() {
       let cart = JSON.parse(localStorage.getItem('moonland_cart') || '[]');
       let totalCount = cart.reduce((sum, item) => sum + (item.quantity || item.qty || 1), 0);
       const badge = document.getElementById('cartCountBadge');
@@ -493,10 +487,13 @@
 
     async function loadProductPage() {
       captureReferralFromUrl();
-      updateGlobalCartCount();
+      if (typeof updateGlobalCartCount === 'function') updateGlobalCartCount();
+      else updatePageCartCount();
 
       const params = new URLSearchParams(window.location.search);
-      const productId = (params.get('id') || params.get('product') || '').trim();
+      const pathParts = window.location.pathname.split('/').filter(Boolean);
+      const pathId = (pathParts[0] === 'p' && pathParts[1]) ? decodeURIComponent(pathParts[1]) : '';
+      const productId = (params.get('id') || params.get('product') || pathId || '').trim();
 
       let products = [];
       try {
@@ -506,7 +503,7 @@
         console.error('Product fetch failed:', e);
       }
 
-      if (!products.length) {
+      if (!Array.isArray(products) || !products.length) {
         try {
           products = JSON.parse(localStorage.getItem('moonland_store_products') || '[]');
         } catch (e) {}

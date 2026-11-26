@@ -2,6 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
+const fs = require('fs');
 const admin = require('firebase-admin');
 const session = require('express-session');
 const crypto = require('crypto');
@@ -81,6 +82,21 @@ function getBaseUrl(req) {
   const proto = (req.headers['x-forwarded-proto'] || req.protocol || 'https').split(',')[0].trim();
   const host = req.get('host');
   return `${proto}://${host}`;
+}
+
+function resolveProductPageFile() {
+  const primaryPage = path.join(publicDir, 'products.html');
+  if (fs.existsSync(primaryPage)) return 'products.html';
+  return 'product.html';
+}
+
+function sendProductPageFallback(res) {
+  const pageName = resolveProductPageFile();
+  return res.status(200).sendFile(path.join(publicDir, pageName), (err) => {
+    if (err && !res.headersSent) {
+      res.status(200).redirect('/store.html');
+    }
+  });
 }
 
 async function getProductById(productId) {
@@ -331,22 +347,24 @@ app.get('/api/products/:id/og-image', async (req, res) => {
 });
 
 function renderProductPreviewHtml(req, res, productId) {
-  getProductById(productId).then((product) => {
-    const baseUrl = getBaseUrl(req);
-    const cleanId = encodeURIComponent(productId || '');
-    const refParam = (req.query.ref || req.query.code || '').trim();
-    const refQuery = refParam ? `&ref=${encodeURIComponent(refParam)}` : '';
-    const clientTargetUrl = `${baseUrl}/products.html?id=${cleanId}${refQuery}`;
+  getProductById(productId)
+    .then((product) => {
+      const baseUrl = getBaseUrl(req);
+      const cleanId = encodeURIComponent(productId || '');
+      const refParam = (req.query.ref || req.query.code || '').trim();
+      const refQuery = refParam ? `&ref=${encodeURIComponent(refParam)}` : '';
+      const pageFile = resolveProductPageFile();
+      const clientTargetUrl = `${baseUrl}/${pageFile}?id=${cleanId}${refQuery}`;
 
-    if (!product) {
-      return res.sendFile(path.join(publicDir, 'products.html'));
-    }
+      if (!product) {
+        return sendProductPageFallback(res);
+      }
 
-    const titleText = `${product.name} — ₹${product.price.toLocaleString('en-IN')} | MOONLAND STORE`;
-    const descText = (product.keyFeatures || product.details || 'Buy original products on Moonland Store.').slice(0, 180);
-    const ogImageUrl = `${baseUrl}/api/products/${cleanId}/og-image`;
+      const titleText = `${product.name} — ₹${product.price.toLocaleString('en-IN')} | MOONLAND STORE`;
+      const descText = (product.keyFeatures || product.details || 'Buy original products on Moonland Store.').slice(0, 180);
+      const ogImageUrl = `${baseUrl}/api/products/${cleanId}/og-image`;
 
-    const html = `<!DOCTYPE html>
+      const html = `<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -369,10 +387,11 @@ function renderProductPreviewHtml(req, res, productId) {
   <p>Opening <a href="${escapeHtmlAttr(clientTargetUrl)}" style="color:#38bdf8;">${escapeHtmlAttr(product.name)}</a>...</p>
 </body>
 </html>`;
-    return res.status(200).send(html);
-  }).catch(() => {
-    return res.sendFile(path.join(publicDir, 'products.html'));
-  });
+      return res.status(200).send(html);
+    })
+    .catch(() => {
+      return sendProductPageFallback(res);
+    });
 }
 
 app.get('/p/:id', (req, res) => {
@@ -384,7 +403,7 @@ app.get('/product', (req, res) => {
   if (id) {
     return renderProductPreviewHtml(req, res, id);
   }
-  return res.sendFile(path.join(publicDir, 'products.html'));
+  return sendProductPageFallback(res);
 });
 
 app.get('/api/products', async (req, res) => {
