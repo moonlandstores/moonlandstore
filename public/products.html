@@ -8,7 +8,8 @@
   <link rel="canonical" href="https://www.moonland.homes/products.html">
   <meta property="og:title" content="MOONLAND STORE — Curated Masterpiece">
   <meta property="og:description" content="Explore product photos, key features & instant order on Moonland Store.">
-  <meta property="og:image" content="logo.png?v=999">
+  <meta property="og:image" content="https://www.moonland.homes/logo.png?v=999">
+  <meta property="og:url" content="https://www.moonland.homes/products.html">
   <link rel="icon" type="image/png" href="logo.png?v=999">
   <link rel="shortcut icon" href="logo.png?v=999">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -282,7 +283,7 @@
       </div>
       <div class="space-y-1.5">
         <span class="text-[9px] font-extrabold uppercase tracking-[0.3em] text-cyan-400 bg-cyan-500/10 px-2.5 py-1 border border-cyan-500/20 rounded-full">Successfully Added</span>
-        <h3 id="addedItemTitle" class="text-sm font-bold uppercase tracking-wider pt-1">Product Name</h3>
+        <h2 id="addedItemTitle" class="text-sm font-bold uppercase tracking-wider pt-1">Product Name</h2>
         <p class="text-[10px] opacity-80">The item has been added to your cart.</p>
       </div>
       <div class="grid grid-cols-2 gap-2.5 pt-2">
@@ -350,6 +351,35 @@
         url.searchParams.set('ref', savedRef);
       }
       return url.toString();
+    }
+
+    function updateProductSeoMeta(product) {
+      const priceText = `₹${Number(product.price || 0).toLocaleString('en-IN')}`;
+      const descSource = (product.details || product.keyFeatures || `Buy ${product.name} at ${priceText} on Moonland Store.`).trim();
+      const shortDesc = descSource.length > 155 ? `${descSource.slice(0, 152).trim()}...` : descSource;
+      const productPageUrl = new URL(`products.html?id=${encodeURIComponent(product.id)}`, window.location.origin).toString();
+
+      document.title = `${product.name} (${priceText}) | MOONLAND STORE`;
+
+      const metaDesc = document.querySelector('meta[name="description"]');
+      if (metaDesc) metaDesc.setAttribute('content', shortDesc);
+
+      const ogTitle = document.querySelector('meta[property="og:title"]');
+      if (ogTitle) ogTitle.setAttribute('content', `${product.name} — ${priceText} | MOONLAND STORE`);
+
+      const ogDesc = document.querySelector('meta[property="og:description"]');
+      if (ogDesc) ogDesc.setAttribute('content', shortDesc);
+
+      const ogUrl = document.querySelector('meta[property="og:url"]');
+      if (ogUrl) ogUrl.setAttribute('content', productPageUrl);
+
+      const ogImage = document.querySelector('meta[property="og:image"]');
+      const primaryImg = (product.images && product.images.length > 0) ? product.images[0] : '';
+      if (ogImage && primaryImg) {
+        try {
+          ogImage.setAttribute('content', new URL(primaryImg, window.location.origin).toString());
+        } catch (e) {}
+      }
     }
 
     function selectMainPhoto(idx) {
@@ -516,7 +546,7 @@ ${shareUrl}`);
       document.getElementById('productNotFoundState').classList.add('hidden');
 
       currentProduct = found;
-      document.title = `${found.name} | MOONLAND STORE`;
+      updateProductSeoMeta(found);
       document.getElementById('pageTitle').innerText = found.name;
       document.getElementById('pagePrice').innerText = `₹${Number(found.price).toLocaleString('en-IN')}`;
 

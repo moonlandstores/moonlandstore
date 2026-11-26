@@ -5,6 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Privileges & Referral Rewards | MOONLAND STORE</title>
   <meta name="description" content="Join the Moonland Store referral program, fetch your referral link, or apply as an affiliate partner to earn ₹1,000 instant UPI rewards.">
+  <meta property="og:title" content="Privileges & Referral Rewards | MOONLAND STORE">
+  <meta property="og:description" content="Join the Moonland Store referral program, fetch your referral link, or apply as an affiliate partner to earn ₹1,000 instant UPI rewards.">
+  <meta property="og:image" content="https://www.moonland.homes/logo.png?v=999">
+  <meta property="og:url" content="https://www.moonland.homes/referral.html">
+  <meta property="og:type" content="website">
   <link rel="canonical" href="https://www.moonland.homes/referral.html">
   <!-- Browser Tab Favicon Logo -->
   <link rel="icon" type="image/png" href="logo.png?v=999">
@@ -12,6 +17,15 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="style.css">
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      "name": "Privileges & Referral Rewards | MOONLAND STORE",
+      "url": "https://www.moonland.homes/referral.html",
+      "description": "Join the Moonland Store referral program, fetch your referral link, or apply as an affiliate partner to earn ₹1,000 instant UPI rewards."
+    }
+  </script>
   <style>
     /* Smooth theme transition & flash prevention */
     html { background-color: #050505; color: #ffffff; }
@@ -267,9 +281,9 @@
 
     <!-- Interactive Referral Link Fetcher Box -->
     <div class="ref-card ref-card-featured border p-6 sm:p-8 luxury-glow-card space-y-4 text-center rounded-2xl">
-      <h3 class="ref-gold text-xs font-extrabold uppercase tracking-[0.2em]">
+      <h2 class="ref-gold text-xs font-extrabold uppercase tracking-[0.2em]">
         <i class="fa-solid fa-link mr-2"></i> Get Your Registered Referral Link
-      </h3>
+      </h2>
       <div class="flex flex-col sm:flex-row gap-3 max-w-2xl mx-auto">
         <input type="text" id="userReferralInput" placeholder="Enter your registered Mobile Number..." class="ref-input flex-1 border px-4 py-3.5 text-xs font-mono uppercase tracking-widest rounded-xl focus:outline-none focus:border-amber-500 transition">
         <button onclick="fetchExistingRefLink()" class="bg-yellow-400 hover:bg-yellow-300 text-black font-black px-6 py-3.5 text-xs uppercase tracking-[0.2em] rounded-xl transition shadow-lg cursor-pointer">
@@ -289,9 +303,9 @@
     <div class="ref-card border p-6 sm:p-8 space-y-6 rounded-2xl">
       <div class="ref-divider border-b pb-4">
         <span class="ref-cyan text-[10px] font-mono uppercase tracking-[0.25em] font-bold">INFLUENCER & PARTNER PROGRAM</span>
-        <h3 class="ref-heading text-lg font-black uppercase tracking-wider mt-1">
+        <h2 class="ref-heading text-lg font-black uppercase tracking-wider mt-1">
           <i class="fa-solid fa-handshake mr-2 ref-cyan"></i> Affiliate Partner Request & Status
-        </h3>
+        </h2>
         <p class="ref-muted text-xs mt-1">
           Submit your partner request below. Once admin approves your request, your unique referral code and link will be available here.
         </p>
@@ -299,7 +313,7 @@
 
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 text-xs">
         <form id="affiliateRequestForm" onsubmit="submitAffiliatePartnerRequest(event)" class="ref-inner-box space-y-4 border p-5 rounded-2xl">
-          <div class="ref-cyan text-[10px] font-mono uppercase tracking-widest font-bold">Send Partner Request</div>
+          <h3 class="ref-cyan text-[10px] font-mono uppercase tracking-widest font-bold">Send Partner Request</h3>
 
           <div>
             <label class="ref-muted block uppercase tracking-wider text-[10px] font-bold mb-1.5">Full Name *</label>
@@ -328,7 +342,7 @@
 
         <div class="ref-inner-box space-y-4 border p-5 rounded-2xl flex flex-col justify-between">
           <div class="space-y-4">
-            <div class="ref-gold text-[10px] font-mono uppercase tracking-widest font-bold">Check Partner Approval Status</div>
+            <h3 class="ref-gold text-[10px] font-mono uppercase tracking-widest font-bold">Check Partner Approval Status</h3>
             <p class="ref-muted leading-relaxed">
               Enter your registered 10-digit mobile number to check whether admin has approved your request and unlocked your referral link.
             </p>
@@ -352,21 +366,21 @@
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
       <div class="ref-card border p-8 text-center space-y-3 rounded-2xl hover:border-amber-500/60 transition">
         <span class="ref-muted text-[10px] uppercase tracking-widest font-bold">Milestone 1</span>
-        <div class="ref-heading text-2xl font-mono font-black">10 Refers</div>
+        <h3 class="ref-heading text-2xl font-mono font-black">10 Refers</h3>
         <div class="ref-gold text-3xl font-black font-mono">₹10,000</div>
         <p class="ref-muted text-[11px] uppercase tracking-wider font-semibold pt-2 ref-divider border-t">Instant Bank Transfer</p>
       </div>
 
       <div class="ref-card ref-card-featured border p-8 text-center space-y-3 rounded-2xl luxury-glow-card">
         <span class="ref-gold text-[10px] uppercase tracking-widest font-extrabold">Milestone 2 (Popular)</span>
-        <div class="ref-heading text-2xl font-mono font-black">25 Refers</div>
+        <h3 class="ref-heading text-2xl font-mono font-black">25 Refers</h3>
         <div class="ref-gold text-3xl font-black font-mono">₹25,000</div>
         <p class="ref-muted text-[11px] uppercase tracking-wider font-semibold pt-2 ref-divider border-t">Instant Bank Transfer</p>
       </div>
 
       <div class="ref-card border p-8 text-center space-y-3 rounded-2xl hover:border-amber-500/60 transition">
         <span class="ref-muted text-[10px] uppercase tracking-widest font-bold">Milestone 3</span>
-        <div class="ref-heading text-2xl font-mono font-black">50 Refers</div>
+        <h3 class="ref-heading text-2xl font-mono font-black">50 Refers</h3>
         <div class="ref-gold text-3xl font-black font-mono">₹50,000</div>
         <p class="ref-muted text-[11px] uppercase tracking-wider font-semibold pt-2 ref-divider border-t">Instant Bank Transfer</p>
       </div>
@@ -379,22 +393,22 @@
           <i class="fa-solid fa-gift"></i>
         </div>
         <div>
-          <h3 class="ref-heading text-lg font-bold uppercase tracking-wider">How Referral Works</h3>
+          <h2 class="ref-heading text-lg font-bold uppercase tracking-wider">How Referral Works</h2>
           <p class="ref-muted text-xs tracking-wide">3 simple steps to start earning instant cash</p>
         </div>
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-xs">
         <div class="space-y-2">
-          <div class="ref-gold font-mono font-bold text-sm">01. Place Order / Join</div>
+          <h3 class="ref-gold font-mono font-bold text-sm">01. Place Order / Join</h3>
           <p class="ref-muted leading-relaxed">Place any order or submit an affiliate partner request. Once verified or approved by admin, your unique referral link will be available.</p>
         </div>
         <div class="space-y-2">
-          <div class="ref-gold font-mono font-bold text-sm">02. Share Link</div>
+          <h3 class="ref-gold font-mono font-bold text-sm">02. Share Link</h3>
           <p class="ref-muted leading-relaxed">Share your referral link with your friends and on social media. Anyone who buys using your link will be tracked.</p>
         </div>
         <div class="space-y-2">
-          <div class="ref-gold font-mono font-bold text-sm">03. Get ₹1,000 UPI</div>
+          <h3 class="ref-gold font-mono font-bold text-sm">03. Get ₹1,000 UPI</h3>
           <p class="ref-muted leading-relaxed">As soon as your friend places an order, a direct ₹1,000 reward will be sent straight to your UPI or bank account.</p>
         </div>
       </div>
