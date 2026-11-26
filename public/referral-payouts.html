@@ -259,6 +259,14 @@
       return `AFF-${prefix}${randomNum}`;
     }
 
+    function buildStoreReferralUrl(refCode) {
+      const url = new URL('store.html', window.location.origin);
+      if (refCode) {
+        url.searchParams.set('ref', String(refCode).trim());
+      }
+      return url.toString();
+    }
+
     async function fetchAffiliatesAndRender() {
       try {
         const res = await fetch('/api/affiliate-partners');
@@ -419,8 +427,8 @@
       if (!partner || !partner.referralCode) return;
 
       const cleanPhone = String(partner.phone || '').replace(/\D/g, '').slice(-10);
-      const refLink = `${window.location.origin}/store.html?ref=${encodeURIComponent(partner.referralCode)}`;
-      const msg = `Hello *${partner.name}*,\n\n🎉 Aapki *Moonland Store Affiliate Partner* request approve ho gayi hai!\n\n🔑 Aapka Affiliate Referral Code: *${partner.referralCode}*\n🔗 Aapka Referral Link: ${refLink}\n\nIs code/link ke zariye hone wale har order par aap unlimited rewards earn kar sakte hain! 🚀`;
+      const refLink = buildStoreReferralUrl(partner.referralCode);
+      const msg = `Hello *${partner.name}*,\n\n🎉 Aapki *Moonland Store Affiliate Partner* request approve ho gayi hai!\n\n🔑 Aapka Affiliate Referral Code: *${partner.referralCode}*\n🛍️ Store Link: ${refLink}\n\nIs link/code ke zariye hone wale har order par aap unlimited rewards earn kar sakte hain! 🚀`;
       window.open(`https://wa.me/91${cleanPhone}?text=${encodeURIComponent(msg)}`, '_blank');
     }
 
@@ -602,7 +610,8 @@
           refName: referrerName,
           buyerName: buyerDisplayName,
           upi: referrerUpi,
-          phone: referrerPhone
+          phone: referrerPhone,
+          refCode: enteredCode
         };
 
         const whatsappButtonHtml = payoutStatus === 'Paid' ? `
@@ -670,7 +679,9 @@
       const rec = payoutRecordMap[key];
       if (!rec) return;
       const cleanPhone = String(rec.phone || '').replace(/\D/g, '').slice(-10);
-      const msg = `Hello *${rec.refName}*,\n\n🎉 Great news! Aapke referral code se *${rec.buyerName}* ne successfully order place kar diya hai.\n\n💰 Aapka ₹${PAYOUT_REWARD_AMOUNT.toLocaleString('en-IN')} Cash Referral Reward aapke UPI ID (*${rec.upi}*) par process kar diya gaya hai!\n\nThank you for growing with Moonland & Ninja Appliances! 🚀`;
+      const hasValidCode = rec.refCode && !['none', 'direct', ''].includes(String(rec.refCode).trim().toLowerCase());
+      const storeLink = hasValidCode ? buildStoreReferralUrl(rec.refCode) : buildStoreReferralUrl('');
+      const msg = `Hello *${rec.refName}*,\n\n🎉 Great news! Aapke referral code se *${rec.buyerName}* ne successfully order place kar diya hai.\n\n💰 Aapka ₹${PAYOUT_REWARD_AMOUNT.toLocaleString('en-IN')} Cash Referral Reward aapke UPI ID (*${rec.upi}*) par process kar diya gaya hai!\n🛍️ Store Link: ${storeLink}\n\nThank you for growing with Moonland & Ninja Appliances! 🚀`;
       window.open(`https://wa.me/91${cleanPhone}?text=${encodeURIComponent(msg)}`, '_blank');
     }
   </script>

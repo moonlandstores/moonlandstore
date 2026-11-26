@@ -320,6 +320,7 @@
       const ref = (params.get('ref') || params.get('code') || '').trim();
       if (ref) {
         localStorage.setItem('moonland_active_ref', ref);
+        localStorage.setItem('moonland_ref_code', ref);
         localStorage.setItem('referralCode', ref);
       }
       const deepProductId = (params.get('product') || params.get('id') || '').trim();

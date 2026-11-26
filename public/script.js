@@ -105,6 +105,15 @@ const MoonlandReferral = (function() {
         return get();
     }
 
+    function buildStoreUrl(code) {
+        const refCode = cleanCode(code) || get();
+        const url = new URL('store.html', window.location.origin);
+        if (refCode) {
+            url.searchParams.set('ref', refCode);
+        }
+        return url.toString();
+    }
+
     function attachToOrder(payload) {
         const refCode = cleanCode(payload?.referralCode) || get();
         return {
@@ -119,6 +128,7 @@ const MoonlandReferral = (function() {
         set,
         get,
         capture,
+        buildStoreUrl,
         attachToOrder
     };
 })();

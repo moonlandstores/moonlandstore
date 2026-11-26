@@ -346,6 +346,25 @@ ORDER SUCCESSFULLY SUBMITTED
 
 <script src="script.js"></script>
 <script>
+(function redirectReferralLinkToStore() {
+  const params = new URLSearchParams(window.location.search);
+  const urlRef = (params.get('ref') || params.get('code') || '').trim();
+  const cart = JSON.parse(localStorage.getItem('moonland_cart') || '[]');
+
+  if (urlRef) {
+    if (window.MoonlandReferral && typeof window.MoonlandReferral.set === 'function') {
+      window.MoonlandReferral.set(urlRef);
+    } else {
+      localStorage.setItem('moonland_ref_code', urlRef);
+      localStorage.setItem('moonland_active_ref', urlRef);
+    }
+
+    if (cart.length === 0) {
+      window.location.replace(`store.html?ref=${encodeURIComponent(urlRef)}`);
+    }
+  }
+})();
+
 let currentTotalSubtotal = 0;
 let currentAdminUpi = "paymoonland@upi";
 let currentMerchantName = "Moonland Store";
