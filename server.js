@@ -1032,6 +1032,77 @@ app.put('/api/orders/:id/approve', requireAdmin, async (req, res) => {
   }
 });
 
+// ==================== SEO SITEMAP & ROBOTS ROUTES ====================
+
+app.get('/robots.txt', (req, res) => {
+  const baseUrl = getBaseUrl(req);
+  const robots = [
+    'User-agent: *',
+    'Allow: /',
+    'Disallow: /admin-login.html',
+    'Disallow: /customers-crm.html',
+    'Disallow: /dash-analytics-9x81.html',
+    'Disallow: /inventory-products.html',
+    'Disallow: /manage-orders-8118.html',
+    'Disallow: /referral-payouts.html',
+    'Disallow: /settings-gateways.html',
+    'Disallow: /utr-verification.html',
+    'Disallow: /leads-vault-7k49.html',
+    'Disallow: /order.html',
+    '',
+    `Sitemap: ${baseUrl}/sitemap.xml`
+  ].join('\n');
+
+  res.type('text/plain').send(robots);
+});
+
+app.get('/sitemap.xml', async (req, res) => {
+  try {
+    const baseUrl = getBaseUrl(req);
+    const today = new Date().toISOString().split('T')[0];
+
+    const staticUrls = [
+      { loc: `${baseUrl}/`, changefreq: 'daily', priority: '1.0' },
+      { loc: `${baseUrl}/store.html`, changefreq: 'daily', priority: '0.9' },
+      { loc: `${baseUrl}/products.html`, changefreq: 'daily', priority: '0.8' },
+      { loc: `${baseUrl}/referral.html`, changefreq: 'weekly', priority: '0.8' },
+      { loc: `${baseUrl}/track.html`, changefreq: 'weekly', priority: '0.6' },
+      { loc: `${baseUrl}/about.html`, changefreq: 'monthly', priority: '0.6' }
+    ];
+
+    const productUrls = [];
+    if (db) {
+      const snapshot = await db.collection('products').get();
+      snapshot.forEach(doc => {
+        productUrls.push({
+          loc: `${baseUrl}/p/${encodeURIComponent(doc.id)}`,
+          changefreq: 'daily',
+          priority: '0.85'
+        });
+      });
+    }
+
+    const allUrls = [...staticUrls, ...productUrls];
+    const xmlItems = allUrls.map(u => `  <url>
+    <loc>${escapeHtmlAttr(u.loc)}</loc>
+    <lastmod>${today}</lastmod>
+    <changefreq>${u.changefreq}</changefreq>
+    <priority>${u.priority}</priority>
+  </url>`).join('\n');
+
+    const xml = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${xmlItems}
+</urlset>`;
+
+    res.header('Content-Type', 'application/xml');
+    res.send(xml);
+  } catch (err) {
+    console.error('Sitemap generation error:', err);
+    res.status(500).type('text/plain').send('Failed to generate sitemap');
+  }
+});
+
 const allHtmlPages = [
   'admin-login.html',
   'dash-analytics-9x81.html',
