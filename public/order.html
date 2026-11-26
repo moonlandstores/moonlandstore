@@ -760,6 +760,23 @@ async function submitOrderForm(event) {
   const cart = JSON.parse(localStorage.getItem('moonland_cart') || '[]');
   const nowIso = new Date().toISOString();
 
+  if (!Array.isArray(cart) || cart.length === 0) {
+    alert("Your cart is empty!");
+    return;
+  }
+
+  const normalizedItems = cart.map(item => ({
+    id: item.id || item.productId || '',
+    name: item.title || item.name || 'Product',
+    price: Number(item.price) || 0,
+    quantity: Number(item.quantity || item.qty || 1)
+  }));
+
+  if (normalizedItems.some(i => !i.id)) {
+    alert("Cart item ID missing hai. Kripya Store se product dobara Add to Cart karein.");
+    return;
+  }
+
   if (refCode && window.MoonlandReferral) {
     window.MoonlandReferral.set(refCode);
   }
@@ -775,7 +792,7 @@ async function submitOrderForm(event) {
     referredByCode: refCode || null,
     utr: utr,
     utrNumber: utr,
-    items: cart,
+    items: normalizedItems,
     totalAmount: currentTotalSubtotal,
     createdAt: nowIso,
     date: nowIso
@@ -790,26 +807,34 @@ async function submitOrderForm(event) {
   submitBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin mr-2"></i> Submitting Order...`;
 
   try {
-    let response = await fetch('/api/orders', {
+    const response = await fetch('/api/orders', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(orderPayload)
     });
-    if(!response.ok) throw new Error("Server error");
-  } catch(err) {
-    console.log("Saving order to local storage fallback");
+
+    const result = await response.json();
+    if (!response.ok || !result.success) {
+      throw new Error(result.error || "Order server par save nahi ho paaya.");
+    }
+
+    let allOrders = JSON.parse(localStorage.getItem('moonland_my_orders') || '[]');
+    allOrders.unshift({
+      ...orderPayload,
+      id: result.orderId,
+      orderId: result.orderId,
+      status: 'Payment Verification Pending'
+    });
+    localStorage.setItem('moonland_my_orders', JSON.stringify(allOrders));
+    localStorage.removeItem('moonland_cart');
+
+    document.getElementById('orderSuccessModal').classList.remove('hidden');
+  } catch (err) {
+    alert(err.message || "UTR submit karne mein error aaya.");
+  } finally {
+    submitBtn.disabled = false;
+    submitBtn.innerHTML = `<i class="fa-solid fa-shield-check"></i> Submit UTR for Verification`;
   }
-
-  let allOrders = JSON.parse(localStorage.getItem('moonland_my_orders') || '[]');
-  allOrders.unshift({ ...orderPayload, orderId: 'ML-' + Math.floor(100000 + Math.random() * 900000), status: 'Pending Verification' });
-  localStorage.setItem('moonland_my_orders', JSON.stringify(allOrders));
-
-  localStorage.removeItem('moonland_cart');
-
-  submitBtn.disabled = false;
-  submitBtn.innerHTML = `<i class="fa-solid fa-shield-check"></i> Submit UTR for Verification`;
-
-  document.getElementById('orderSuccessModal').classList.remove('hidden');
 }
 </script>
 </body>
