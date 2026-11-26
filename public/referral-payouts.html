@@ -63,7 +63,7 @@
     </div>
 
     <!-- Affiliate Partner Requests & Code Generator -->
-    <div class="bg-[rgba(12,12,12,0.75)] border border-cyan-500/30 p-6 space-y-5 shadow-xl rounded-none">
+    <div class="bg-[rgba(12,12,12,0.75)] border border-cyan-500/30 p-6 space-y-6 shadow-xl rounded-none">
       <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-zinc-800/80 pb-4">
         <div>
           <span class="text-[10px] font-mono uppercase tracking-[0.2em] text-cyan-400 font-bold">PARTNER ONBOARDING</span>
@@ -76,8 +76,32 @@
         </div>
       </div>
 
-      <div id="affiliateRequestsContainer" class="space-y-3 text-xs">
-        <p class="text-zinc-500 font-mono text-center py-4">Loading affiliate partner requests...</p>
+      <div class="grid grid-cols-1 xl:grid-cols-2 gap-6">
+        <!-- Box 1: Pending & Rejected Applications -->
+        <div class="bg-black/70 border border-amber-400/25 p-4 space-y-3">
+          <div class="flex items-center justify-between border-b border-zinc-800 pb-2.5">
+            <h3 class="text-xs font-black uppercase tracking-wider text-amber-300 flex items-center gap-2">
+              <i class="fa-solid fa-inbox"></i> New / Pending & Rejected Requests
+            </h3>
+            <span id="affQueueCountLabel" class="text-[11px] font-mono text-zinc-400">0</span>
+          </div>
+          <div id="affiliateRequestsContainer" class="space-y-3 text-xs max-h-[420px] overflow-y-auto pr-1">
+            <p class="text-zinc-500 font-mono text-center py-4">Loading affiliate partner requests...</p>
+          </div>
+        </div>
+
+        <!-- Box 2: Saved Approved Affiliate Partners -->
+        <div class="bg-black/70 border border-emerald-400/30 p-4 space-y-3">
+          <div class="flex items-center justify-between border-b border-zinc-800 pb-2.5">
+            <h3 class="text-xs font-black uppercase tracking-wider text-emerald-300 flex items-center gap-2">
+              <i class="fa-solid fa-user-check"></i> Saved Approved Affiliates
+            </h3>
+            <span id="affApprovedCountLabel" class="text-[11px] font-mono text-emerald-300">0 Saved</span>
+          </div>
+          <div id="approvedAffiliatesContainer" class="space-y-3 text-xs max-h-[420px] overflow-y-auto pr-1">
+            <p class="text-zinc-500 font-mono text-center py-4">Koi approved affiliate partner nahi hai.</p>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -106,8 +130,6 @@
         <button onclick="setPayoutFilter('Paid')" id="filterBtnPaid" class="bg-black border border-zinc-800 text-zinc-400 hover:text-white font-bold px-4 py-2.5 text-xs uppercase tracking-wider transition">Paid</button>
 
         <select id="typeFilterSelect" onchange="renderPayoutsHistory()" class="bg-black border border-zinc-800 px-3 py-2.5 text-xs text-zinc-300 font-mono uppercase focus:outline-none focus:border-cyan-400 ml-2">
-          <option value="all">All Orders (Direct + Referral)</option>
-          <option value="direct">Direct / Organic Only</option>
           <option value="referral">Referral Only</option>
         </select>
       </div>
@@ -267,6 +289,26 @@
       return url.toString();
     }
 
+    function getOrderReferralCode(order) {
+      const raw = (
+        order?.enteredRefCode ||
+        order?.refCodeUsed ||
+        order?.referralCode ||
+        order?.referredByCode ||
+        order?.refCode ||
+        order?.code ||
+        order?.appliedRefCode ||
+        order?.appliedCode ||
+        ''
+      ).trim();
+
+      const lower = raw.toLowerCase();
+      if (!raw || lower === 'none' || lower === 'direct' || lower === 'null' || lower === 'undefined') {
+        return '';
+      }
+      return raw;
+    }
+
     async function fetchAffiliatesAndRender() {
       try {
         const res = await fetch('/api/affiliate-partners');
@@ -282,78 +324,122 @@
         cachedAffiliates = getLocalAffiliates();
       }
       renderAffiliateRequests();
+      if (cachedOrders.length > 0) {
+        renderPayoutsHistory();
+      }
     }
 
     function renderAffiliateRequests() {
-      const container = document.getElementById('affiliateRequestsContainer');
-      const pendingCount = cachedAffiliates.filter(a => (a.status || 'Pending') === 'Pending').length;
-      const approvedCount = cachedAffiliates.filter(a => (a.status || 'Pending') === 'Approved').length;
-      const rejectedCount = cachedAffiliates.filter(a => (a.status || 'Pending') === 'Rejected').length;
+      const queueContainer = document.getElementById('affiliateRequestsContainer');
+      const approvedContainer = document.getElementById('approvedAffiliatesContainer');
 
-      document.getElementById('affPendingBadge').innerText = `Pending: ${pendingCount}`;
-      document.getElementById('affApprovedBadge').innerText = `Approved: ${approvedCount}`;
-      document.getElementById('affRejectedBadge').innerText = `Rejected: ${rejectedCount}`;
+      const pendingList = cachedAffiliates.filter(a => (a.status || 'Pending') === 'Pending');
+      const approvedList = cachedAffiliates.filter(a => a.status === 'Approved');
+      const rejectedList = cachedAffiliates.filter(a => a.status === 'Rejected');
+      const queueList = cachedAffiliates.filter(a => a.status !== 'Approved');
 
-      if (!cachedAffiliates.length) {
-        container.innerHTML = `<div class="bg-black border border-zinc-800/70 p-6 text-center text-zinc-500 font-mono">Koi affiliate partner application nahi mila.</div>`;
-        return;
-      }
+      document.getElementById('affPendingBadge').innerText = `Pending: ${pendingList.length}`;
+      document.getElementById('affApprovedBadge').innerText = `Approved: ${approvedList.length}`;
+      document.getElementById('affRejectedBadge').innerText = `Rejected: ${rejectedList.length}`;
+      document.getElementById('affQueueCountLabel').innerText = `${queueList.length}`;
+      document.getElementById('affApprovedCountLabel').innerText = `${approvedList.length} Saved`;
 
-      container.innerHTML = cachedAffiliates.map((partner, index) => {
-        const partnerId = partner.id || `aff_${index}`;
-        const status = partner.status || 'Pending';
-        const isApproved = status === 'Approved';
-        const isRejected = status === 'Rejected';
-        const code = isApproved ? (partner.referralCode || '') : '';
-        const createdText = partner.createdAt && !isNaN(new Date(partner.createdAt).getTime())
-          ? new Date(partner.createdAt).toLocaleString('en-IN')
-          : 'N/A';
+      if (!queueList.length) {
+        queueContainer.innerHTML = `<div class="bg-black border border-zinc-800/70 p-6 text-center text-zinc-500 font-mono">Koi pending ya rejected request nahi hai.</div>`;
+      } else {
+        queueContainer.innerHTML = queueList.map((partner) => {
+          const partnerId = partner.id || `${partner.phone || ''}_${partner.name || ''}`;
+          const status = partner.status || 'Pending';
+          const isRejected = status === 'Rejected';
+          const createdText = partner.createdAt && !isNaN(new Date(partner.createdAt).getTime())
+            ? new Date(partner.createdAt).toLocaleString('en-IN')
+            : 'N/A';
 
-        const badgeClass = isApproved
-          ? 'bg-emerald-400/20 text-emerald-300 border border-emerald-400/40'
-          : isRejected
+          const badgeClass = isRejected
             ? 'bg-rose-500/20 text-rose-300 border border-rose-500/40'
             : 'bg-amber-400/20 text-amber-300 border border-amber-400/40';
 
-        return `
-          <div class="bg-black border border-zinc-800/90 p-4 flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
-            <div class="space-y-1">
-              <div class="flex items-center gap-2 flex-wrap">
-                <strong class="text-white text-sm uppercase tracking-wider">${escapeHtml(partner.name)}</strong>
-                <span class="px-2.5 py-0.5 text-[10px] font-mono font-bold uppercase border ${badgeClass}">
-                  ${escapeHtml(status)}
-                </span>
-                ${code ? `<code class="bg-cyan-400/10 text-cyan-300 border border-cyan-400/30 px-2.5 py-0.5 font-mono font-bold">${escapeHtml(code)}</code>` : ''}
+          return `
+            <div class="bg-black border border-zinc-800/90 p-4 flex flex-col justify-between gap-3">
+              <div class="space-y-1">
+                <div class="flex items-center gap-2 flex-wrap">
+                  <strong class="text-white text-sm uppercase tracking-wider">${escapeHtml(partner.name)}</strong>
+                  <span class="px-2.5 py-0.5 text-[10px] font-mono font-bold uppercase border ${badgeClass}">
+                    ${escapeHtml(status)}
+                  </span>
+                </div>
+                <p class="text-zinc-400 font-mono text-[11px]">
+                  Phone: <span class="text-white">${escapeHtml(partner.phone)}</span> • UPI: <span class="text-amber-300">${escapeHtml(partner.upiId)}</span>
+                </p>
+                <p class="text-zinc-500 text-[11px]">Address: ${escapeHtml(partner.address)} • Applied: ${escapeHtml(createdText)}</p>
               </div>
-              <p class="text-zinc-400 font-mono text-[11px]">
-                Phone: <span class="text-white">${escapeHtml(partner.phone)}</span> • UPI: <span class="text-amber-300">${escapeHtml(partner.upiId)}</span>
-              </p>
-              <p class="text-zinc-500 text-[11px]">Address: ${escapeHtml(partner.address)} • Applied: ${escapeHtml(createdText)}</p>
-            </div>
 
-            <div class="flex flex-wrap items-center gap-2">
-              ${!isApproved ? `
-                <button onclick="approveAffiliatePartner('${escapeHtml(partnerId)}')" class="bg-emerald-400 hover:bg-emerald-300 text-black font-black px-4 py-2 text-[11px] uppercase tracking-wider transition flex items-center gap-1.5">
+              <div class="flex flex-wrap items-center gap-2 pt-1">
+                <button onclick="approveAffiliatePartner('${escapeHtml(partnerId)}')" class="bg-emerald-400 hover:bg-emerald-300 text-black font-black px-3.5 py-2 text-[11px] uppercase tracking-wider transition flex items-center gap-1.5">
                   <i class="fa-solid fa-check"></i> Approve & Generate Code
                 </button>
-              ` : `
-                <button onclick="sendAffiliateCodeWhatsApp('${escapeHtml(partnerId)}')" class="bg-cyan-400 hover:bg-cyan-300 text-black font-black px-4 py-2 text-[11px] uppercase tracking-wider transition flex items-center gap-1.5">
+                ${!isRejected ? `
+                  <button onclick="rejectAffiliatePartner('${escapeHtml(partnerId)}')" class="bg-rose-500 hover:bg-rose-400 text-black font-black px-3.5 py-2 text-[11px] uppercase tracking-wider transition flex items-center gap-1.5">
+                    <i class="fa-solid fa-xmark"></i> Reject
+                  </button>
+                ` : ''}
+              </div>
+            </div>
+          `;
+        }).join('');
+      }
+
+      if (!approvedList.length) {
+        approvedContainer.innerHTML = `<div class="bg-black border border-zinc-800/70 p-6 text-center text-zinc-500 font-mono">Approve karne par partners yahan save honge.</div>`;
+      } else {
+        approvedContainer.innerHTML = approvedList.map((partner) => {
+          const partnerId = partner.id || `${partner.phone || ''}_${partner.name || ''}`;
+          const code = partner.referralCode || '';
+          const link = buildStoreReferralUrl(code);
+          const approvedText = partner.approvedAt && !isNaN(new Date(partner.approvedAt).getTime())
+            ? new Date(partner.approvedAt).toLocaleString('en-IN')
+            : 'Saved';
+
+          return `
+            <div class="bg-black border border-emerald-500/25 p-4 flex flex-col justify-between gap-3">
+              <div class="space-y-1">
+                <div class="flex items-center gap-2 flex-wrap">
+                  <strong class="text-white text-sm uppercase tracking-wider">${escapeHtml(partner.name)}</strong>
+                  <span class="px-2 py-0.5 text-[10px] font-mono font-bold uppercase bg-emerald-400/20 text-emerald-300 border border-emerald-400/40">
+                    Approved
+                  </span>
+                  ${code ? `<code class="bg-cyan-400/10 text-cyan-300 border border-cyan-400/30 px-2.5 py-0.5 font-mono font-bold">${escapeHtml(code)}</code>` : ''}
+                </div>
+                <p class="text-zinc-400 font-mono text-[11px]">
+                  Phone: <span class="text-white">${escapeHtml(partner.phone)}</span> • UPI: <span class="text-amber-300">${escapeHtml(partner.upiId)}</span>
+                </p>
+                <p class="text-cyan-400/90 font-mono text-[10px] break-all">${escapeHtml(link)}</p>
+                <p class="text-zinc-500 text-[10px] font-mono">Approved: ${escapeHtml(approvedText)}</p>
+              </div>
+
+              <div class="flex flex-wrap items-center gap-2 pt-1">
+                <button onclick="sendAffiliateCodeWhatsApp('${escapeHtml(partnerId)}')" class="bg-cyan-400 hover:bg-cyan-300 text-black font-black px-3.5 py-2 text-[11px] uppercase tracking-wider transition flex items-center gap-1.5">
                   <i class="fa-brands fa-whatsapp text-sm"></i> Send Code on WhatsApp
                 </button>
-              `}
-              ${!isRejected ? `
-                <button onclick="rejectAffiliatePartner('${escapeHtml(partnerId)}')" class="bg-rose-500 hover:bg-rose-400 text-black font-black px-4 py-2 text-[11px] uppercase tracking-wider transition flex items-center gap-1.5">
-                  <i class="fa-solid fa-xmark"></i> Reject
+                <button onclick="copyAffiliateLink('${escapeHtml(link)}')" class="bg-zinc-900 hover:bg-zinc-800 text-white border border-zinc-700 font-bold px-3 py-2 text-[11px] uppercase tracking-wider transition flex items-center gap-1.5">
+                  <i class="fa-solid fa-copy"></i> Copy Link
                 </button>
-              ` : ''}
+              </div>
             </div>
-          </div>
-        `;
-      }).join('');
+          `;
+        }).join('');
+      }
+    }
+
+    function copyAffiliateLink(link) {
+      if (!link) return;
+      navigator.clipboard.writeText(link).then(() => {
+        showToast('Link Copied', 'Affiliate referral link copy ho gaya hai!');
+      });
     }
 
     async function approveAffiliatePartner(partnerId) {
-      const target = cachedAffiliates.find((a, idx) => (a.id || `aff_${idx}`) === partnerId);
+      const target = cachedAffiliates.find((a) => (a.id || `${a.phone || ''}_${a.name || ''}`) === partnerId);
       if (!target) return;
 
       const generatedCode = target.referralCode || generateAffiliateCode(target.name);
@@ -377,19 +463,20 @@
         return showToast('Error', 'Server par partner approve nahi ho paaya.');
       }
 
-      cachedAffiliates = cachedAffiliates.map((a, idx) => {
-        if ((a.id || `aff_${idx}`) === partnerId) {
+      cachedAffiliates = cachedAffiliates.map((a) => {
+        if ((a.id || `${a.phone || ''}_${a.name || ''}`) === partnerId) {
           return { ...a, ...updatedPayload };
         }
         return a;
       });
       saveLocalAffiliates(cachedAffiliates);
       renderAffiliateRequests();
-      showToast('Affiliate Approved', `Code ${generatedCode} generate ho gaya hai!`);
+      renderPayoutsHistory();
+      showToast('Approved & Saved', `${target.name} (${generatedCode}) Approved box mein save ho gaya!`);
     }
 
     async function rejectAffiliatePartner(partnerId) {
-      const target = cachedAffiliates.find((a, idx) => (a.id || `aff_${idx}`) === partnerId);
+      const target = cachedAffiliates.find((a) => (a.id || `${a.phone || ''}_${a.name || ''}`) === partnerId);
       if (!target) return;
 
       const updatedPayload = {
@@ -411,19 +498,20 @@
         return showToast('Error', 'Server par partner reject nahi ho paaya.');
       }
 
-      cachedAffiliates = cachedAffiliates.map((a, idx) => {
-        if ((a.id || `aff_${idx}`) === partnerId) {
+      cachedAffiliates = cachedAffiliates.map((a) => {
+        if ((a.id || `${a.phone || ''}_${a.name || ''}`) === partnerId) {
           return { ...a, ...updatedPayload };
         }
         return a;
       });
       saveLocalAffiliates(cachedAffiliates);
       renderAffiliateRequests();
+      renderPayoutsHistory();
       showToast('Rejected', 'Affiliate partner request reject kar di gayi hai.');
     }
 
     function sendAffiliateCodeWhatsApp(partnerId) {
-      const partner = cachedAffiliates.find((a, idx) => (a.id || `aff_${idx}`) === partnerId);
+      const partner = cachedAffiliates.find((a) => (a.id || `${a.phone || ''}_${a.name || ''}`) === partnerId);
       if (!partner || !partner.referralCode) return;
 
       const cleanPhone = String(partner.phone || '').replace(/\D/g, '').slice(-10);
@@ -443,7 +531,7 @@
     function clearFilters() {
       document.getElementById('payoutSearchInput').value = '';
       document.getElementById('payoutDateFilter').value = '';
-      document.getElementById('typeFilterSelect').value = 'all';
+      document.getElementById('typeFilterSelect').value = 'referral';
       document.getElementById('payoutSortSelect').value = 'newest';
       renderPayoutsHistory();
     }
@@ -453,7 +541,7 @@
         const res = await fetch('/api/orders');
         if (res.ok) {
           const allOrders = await res.json();
-          cachedOrders = allOrders.filter(o => o.status !== 'Rejected');
+          cachedOrders = allOrders.filter(o => o.status !== 'Rejected' && Boolean(getOrderReferralCode(o)));
         } else {
           cachedOrders = [];
         }
@@ -495,11 +583,10 @@
     }
 
     function renderPayoutsHistory() {
-      const orders = cachedOrders;
+      const orders = cachedOrders.filter(o => Boolean(getOrderReferralCode(o)));
       const container = document.getElementById('payoutHistoryContainer');
       const searchQuery = document.getElementById('payoutSearchInput').value.toLowerCase().trim();
       const selectedDate = document.getElementById('payoutDateFilter').value;
-      const typeVal = document.getElementById('typeFilterSelect').value;
       const sortVal = document.getElementById('payoutSortSelect').value;
 
       let totalPaidCount = 0;
@@ -514,18 +601,15 @@
       document.getElementById('statPaidCount').innerText = totalPaidCount;
 
       let filteredOrders = orders.filter(o => {
+        const enteredCode = getOrderReferralCode(o);
+        if (!enteredCode) return false;
+
         const status = o.payoutStatus || 'Pending';
         if (currentFilter === 'Paid' && status !== 'Paid') return false;
         if (currentFilter === 'Pending' && status === 'Paid') return false;
 
-        const enteredCode = (o.enteredRefCode || o.refCodeUsed || o.referralCode || o.refCode || o.code || o.appliedRefCode || o.appliedCode || '').trim();
-        const isDirect = !enteredCode || enteredCode.toLowerCase() === 'none' || enteredCode.toLowerCase() === 'direct' || enteredCode === '';
-
-        if (typeVal === 'direct' && !isDirect) return false;
-        if (typeVal === 'referral' && isDirect) return false;
-
         const refInfo = findReferrerInfo(enteredCode, orders);
-        const referrerName = (refInfo ? refInfo.name : 'direct / unknown referrer').toLowerCase();
+        const referrerName = (o.referrerName || (refInfo ? refInfo.name : 'unknown referrer')).toLowerCase();
         const buyerName = (o.customer || o.name || '').toLowerCase();
         const buyerPhone = (o.phone || '').toLowerCase();
         const orderId = (o.id || '').toLowerCase();
@@ -547,9 +631,10 @@
 
       let referrerCounts = {};
       orders.forEach(o => {
-        const code = (o.enteredRefCode || o.refCodeUsed || o.referralCode || o.refCode || o.code || '').trim();
+        const code = getOrderReferralCode(o);
+        if (!code) return;
         const refInfo = findReferrerInfo(code, orders);
-        const refName = refInfo ? refInfo.name : 'Direct / Unknown Referrer';
+        const refName = o.referrerName || (refInfo ? refInfo.name : 'Unknown Referrer');
         if ((o.payoutStatus || 'Pending') === 'Paid') {
           referrerCounts[refName] = (referrerCounts[refName] || 0) + 1;
         }
@@ -562,13 +647,13 @@
         if (sortVal === 'newest') return timeB - timeA;
         if (sortVal === 'oldest') return timeA - timeB;
 
-        const codeA = (a.enteredRefCode || a.refCodeUsed || a.referralCode || a.refCode || a.code || '').trim();
-        const codeB = (b.enteredRefCode || b.refCodeUsed || b.referralCode || b.refCode || b.code || '').trim();
+        const codeA = getOrderReferralCode(a);
+        const codeB = getOrderReferralCode(b);
 
         const refA = findReferrerInfo(codeA, orders);
-        const nameA = refA ? refA.name : 'Direct / Unknown Referrer';
+        const nameA = a.referrerName || (refA ? refA.name : 'Unknown Referrer');
         const refB = findReferrerInfo(codeB, orders);
-        const nameB = refB ? refB.name : 'Direct / Unknown Referrer';
+        const nameB = b.referrerName || (refB ? refB.name : 'Unknown Referrer');
 
         if (sortVal === 'topEarners') {
           return (referrerCounts[nameB] || 0) - (referrerCounts[nameA] || 0);
@@ -579,7 +664,7 @@
       });
 
       if (filteredOrders.length === 0) {
-        container.innerHTML = `<div class="bg-[rgba(12,12,12,0.7)] border border-white/10 p-10 text-center text-zinc-500 text-xs uppercase tracking-widest shadow-xl">Is search ya filter ke mutabiq koi referral payout record nahi mila.</div>`;
+        container.innerHTML = `<div class="bg-[rgba(12,12,12,0.7)] border border-white/10 p-10 text-center text-zinc-500 text-xs uppercase tracking-widest shadow-xl">Koi referral order record nahi mila.</div>`;
         return;
       }
 
@@ -589,7 +674,7 @@
       filteredOrders.forEach((o, idx) => {
         const recordKey = `rec_${idx}_${o.id || idx}`;
         const payoutStatus = o.payoutStatus || 'Pending';
-        const enteredCode = (o.enteredRefCode || o.refCodeUsed || o.referralCode || o.refCode || o.code || 'None').trim();
+        const enteredCode = getOrderReferralCode(o);
         const rawOrderDate = o.createdAt || o.timestamp;
         const parsedOrderDate = rawOrderDate ? new Date(rawOrderDate) : null;
         const orderDate = (parsedOrderDate && !isNaN(parsedOrderDate.getTime()))
@@ -602,7 +687,7 @@
 
         const refInfo = findReferrerInfo(enteredCode, orders);
         const buyerDisplayName = o.customer || o.name || 'Customer';
-        const referrerName = o.referrerName || (refInfo ? refInfo.name : 'Direct / Unknown Referrer');
+        const referrerName = o.referrerName || (refInfo ? refInfo.name : 'Unknown Referrer');
         const referrerUpi = o.referrerUpi || (refInfo ? refInfo.upi : (o.upiId || 'N/A'));
         const referrerPhone = o.referrerPhone || (refInfo ? refInfo.phone : (o.phone || ''));
 
@@ -679,8 +764,7 @@
       const rec = payoutRecordMap[key];
       if (!rec) return;
       const cleanPhone = String(rec.phone || '').replace(/\D/g, '').slice(-10);
-      const hasValidCode = rec.refCode && !['none', 'direct', ''].includes(String(rec.refCode).trim().toLowerCase());
-      const storeLink = hasValidCode ? buildStoreReferralUrl(rec.refCode) : buildStoreReferralUrl('');
+      const storeLink = buildStoreReferralUrl(rec.refCode);
       const msg = `Hello *${rec.refName}*,\n\n🎉 Great news! Aapke referral code se *${rec.buyerName}* ne successfully order place kar diya hai.\n\n💰 Aapka ₹${PAYOUT_REWARD_AMOUNT.toLocaleString('en-IN')} Cash Referral Reward aapke UPI ID (*${rec.upi}*) par process kar diya gaya hai!\n🛍️ Store Link: ${storeLink}\n\nThank you for growing with Moonland & Ninja Appliances! 🚀`;
       window.open(`https://wa.me/91${cleanPhone}?text=${encodeURIComponent(msg)}`, '_blank');
     }
