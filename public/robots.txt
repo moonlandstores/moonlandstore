@@ -1,0 +1,14 @@
+User-agent: *
+Allow: /
+Disallow: /admin-login.html
+Disallow: /customers-crm.html
+Disallow: /dash-analytics-9x81.html
+Disallow: /inventory-products.html
+Disallow: /manage-orders-8118.html
+Disallow: /referral-payouts.html
+Disallow: /settings-gateways.html
+Disallow: /utr-verification.html
+Disallow: /leads-vault-7k49.html
+Disallow: /order.html
+
+Sitemap: https://www.moonland.homes/sitemap.xml
