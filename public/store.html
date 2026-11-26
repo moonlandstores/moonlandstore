@@ -16,6 +16,39 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="style.css">
+  <script id="storeBreadcrumbJsonLd" type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://www.moonland.homes/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Store",
+          "item": "https://www.moonland.homes/store.html"
+        }
+      ]
+    }
+  </script>
+  <script id="storeCatalogJsonLd" type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "CollectionPage",
+      "name": "Moonland Store — Masterpieces",
+      "url": "https://www.moonland.homes/store.html",
+      "description": "Explore curated products at Moonland Store, search items, add to cart, or buy directly with fast checkout.",
+      "mainEntity": {
+        "@type": "ItemList",
+        "itemListElement": []
+      }
+    }
+  </script>
   <style>
     html { background-color: #050505; color: #ffffff; }
     html.light { background-color: #f8fafc; color: #0f172a; }
@@ -286,6 +319,55 @@
     let cachedProducts = [];
     let sliderTimers = [];
 
+    function updateStoreCatalogSchema(products) {
+      const schemaEl = document.getElementById('storeCatalogJsonLd');
+      if (!schemaEl || !Array.isArray(products)) return;
+
+      const items = products.slice(0, 20).map((p, idx) => {
+        const primaryImg = (p.images && p.images.length > 0) ? p.images[0] : 'https://www.moonland.homes/logo.png?v=999';
+        let absImg = primaryImg;
+        try {
+          absImg = new URL(primaryImg, window.location.origin).toString();
+        } catch (e) {}
+
+        const productUrl = new URL('products.html', window.location.origin);
+        if (p.id) productUrl.searchParams.set('id', p.id);
+
+        return {
+          "@type": "ListItem",
+          "position": idx + 1,
+          "url": productUrl.toString(),
+          "item": {
+            "@type": "Product",
+            "name": p.name || 'Product',
+            "image": absImg,
+            "description": (p.details || p.keyFeatures || p.name || 'Moonland Store product').toString().slice(0, 200),
+            "url": productUrl.toString(),
+            "offers": {
+              "@type": "Offer",
+              "priceCurrency": "INR",
+              "price": Number(p.price) || 0,
+              "availability": "https://schema.org/InStock",
+              "url": productUrl.toString()
+            }
+          }
+        };
+      });
+
+      schemaEl.textContent = JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "CollectionPage",
+        "name": "Moonland Store — Masterpieces",
+        "url": "https://www.moonland.homes/store.html",
+        "description": "Explore curated products at Moonland Store, search items, add to cart, or buy directly with fast checkout.",
+        "mainEntity": {
+          "@type": "ItemList",
+          "numberOfItems": items.length,
+          "itemListElement": items
+        }
+      });
+    }
+
     function toggleMobileMenu() {
       const dropdown = document.getElementById('mobileMenuDropdown');
       if (dropdown) dropdown.classList.toggle('hidden');
@@ -353,14 +435,12 @@
       }
 
       try {
-        await navigator.clipboard.writeText(`${shareText}
-${shareUrl}`);
+        await navigator.clipboard.writeText(`${shareText}\n${shareUrl}`);
         const toast = document.getElementById('shareToast');
         toast.classList.remove('hidden');
         setTimeout(() => toast.classList.add('hidden'), 3000);
       } catch (e) {
-        window.open(`https://wa.me/?text=${encodeURIComponent(shareText + '
-' + shareUrl)}`, '_blank');
+        window.open(`https://wa.me/?text=${encodeURIComponent(`${shareText}\n${shareUrl}`)}`, '_blank');
       }
     }
 
@@ -458,12 +538,14 @@ ${shareUrl}`);
           const parsed = JSON.parse(stored);
           if (Array.isArray(parsed) && parsed.length > 0) {
             cachedProducts = parsed;
+            updateStoreCatalogSchema(cachedProducts);
             return cachedProducts;
           }
         }
       } catch (e) {}
 
       cachedProducts = getFallbackProducts();
+      updateStoreCatalogSchema(cachedProducts);
       return cachedProducts;
     }
 
@@ -481,6 +563,7 @@ ${shareUrl}`);
           const prevJson = JSON.stringify(cachedProducts);
           const nextJson = JSON.stringify(products);
           cachedProducts = products;
+          updateStoreCatalogSchema(cachedProducts);
           try {
             localStorage.setItem('moonland_store_products', nextJson);
           } catch (e) {}
