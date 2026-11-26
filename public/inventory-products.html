@@ -40,33 +40,81 @@
 
   <!-- Admin Top Navbar -->
   <header class="sticky top-0 z-40 bg-[#121212]/95 backdrop-blur-xl border-b border-zinc-800">
-    <div class="max-w-7xl mx-auto px-4 sm:px-8 h-16 flex items-center justify-between gap-4">
-      <a href="dash-analytics-9x81.html" class="flex items-center space-x-2.5 shrink-0">
-        <div class="w-8 h-8 rounded-lg border border-cyan-400/50 bg-cyan-500/10 text-cyan-400 flex items-center justify-center font-black text-xs">M</div>
-        <div>
-          <span class="font-black text-xs sm:text-sm tracking-[0.25em] uppercase block">MOONLAND</span>
-          <span class="text-[8px] tracking-[0.35em] text-zinc-400 uppercase font-bold block">ADMIN INVENTORY</span>
-        </div>
-      </a>
-
-      <nav class="flex flex-row flex-nowrap items-center gap-1 text-[9.5px] font-bold uppercase tracking-wider whitespace-nowrap overflow-x-auto max-w-full pb-1">
-        <a href="dash-analytics-9x81.html" class="shrink-0 bg-black text-zinc-400 hover:text-white border border-zinc-800 px-2.5 py-2 transition">Dashboard</a>
-        <a href="utr-verification.html" class="shrink-0 bg-black text-zinc-400 hover:text-white border border-zinc-800 px-2.5 py-2 transition">UTR Verification</a>
-        <a href="manage-orders-8118.html" class="shrink-0 bg-black text-zinc-400 hover:text-white border border-zinc-800 px-2.5 py-2 transition">Orders</a>
-        <a href="inventory-products.html" class="shrink-0 bg-cyan-400 text-black border border-cyan-400 px-2.5 py-2 shadow-[0_0_15px_rgba(34,211,238,0.3)] transition">Products</a>
-        <a href="customers-crm.html" class="shrink-0 bg-black text-zinc-400 hover:text-white border border-zinc-800 px-2.5 py-2 transition">Customers</a>
-        <a href="leads-vault-7k49.html" class="shrink-0 bg-black text-zinc-400 hover:text-white border border-zinc-800 px-2.5 py-2 transition">Phone Leads</a>
-        <a href="referral-payouts.html" class="shrink-0 bg-black text-zinc-400 hover:text-white border border-zinc-800 px-2.5 py-2 transition">Referrals</a>
-        <a href="settings-gateways.html" class="shrink-0 bg-black text-zinc-400 hover:text-white border border-zinc-800 px-2.5 py-2 transition">Settings</a>
-      </nav>
-
-      <div class="flex items-center gap-2.5 shrink-0">
-        <a href="store.html" target="_blank" class="px-3 py-1.5 rounded-lg border border-zinc-700 text-[10px] font-bold uppercase tracking-wider text-zinc-300 hover:bg-zinc-800 transition whitespace-nowrap">
-          <i class="fa-solid fa-up-right-from-square mr-1"></i> Live Store
+    <div class="max-w-7xl mx-auto px-4 sm:px-8 py-3 xl:py-0 xl:h-16">
+      <div class="flex items-center justify-between gap-4">
+        <a href="dash-analytics-9x81.html" class="flex items-center space-x-2.5 shrink-0">
+          <div class="w-8 h-8 rounded-lg border border-cyan-400/50 bg-cyan-500/10 text-cyan-400 flex items-center justify-center font-black text-xs">M</div>
+          <div>
+            <span class="font-black text-xs sm:text-sm tracking-[0.25em] uppercase block">MOONLAND</span>
+            <span class="text-[8px] tracking-[0.35em] text-zinc-400 uppercase font-bold block">ADMIN INVENTORY</span>
+          </div>
         </a>
-        <button onclick="logoutAdmin()" class="px-3 py-1.5 rounded-lg bg-rose-500/15 border border-rose-500/30 text-rose-400 text-[10px] font-bold uppercase tracking-wider hover:bg-rose-500 hover:text-white transition cursor-pointer whitespace-nowrap">
-          Logout
+
+        <!-- Desktop Navigation Links -->
+        <nav
+          data-active-page="inventory-products.html"
+          class="hidden xl:flex flex-row flex-nowrap items-center gap-1 text-[9.5px] font-bold uppercase tracking-wider whitespace-nowrap"
+        >
+          <a href="dash-analytics-9x81.html" class="shrink-0 bg-black text-zinc-400 hover:text-white border border-zinc-800 px-2.5 py-2 transition">Dashboard</a>
+          <a href="utr-verification.html" class="shrink-0 bg-black text-zinc-400 hover:text-white border border-zinc-800 px-2.5 py-2 transition">UTR Verification</a>
+          <a href="manage-orders-8118.html" class="shrink-0 bg-black text-zinc-400 hover:text-white border border-zinc-800 px-2.5 py-2 transition">Orders</a>
+          <a href="inventory-products.html" class="shrink-0 bg-black text-zinc-400 hover:text-white border border-zinc-800 px-2.5 py-2 transition">Products</a>
+          <a href="customers-crm.html" class="shrink-0 bg-black text-zinc-400 hover:text-white border border-zinc-800 px-2.5 py-2 transition">Customers</a>
+          <a href="leads-vault-7k49.html" class="shrink-0 bg-black text-zinc-400 hover:text-white border border-zinc-800 px-2.5 py-2 transition">Phone Leads</a>
+          <a href="referral-payouts.html" class="shrink-0 bg-black text-zinc-400 hover:text-white border border-zinc-800 px-2.5 py-2 transition">Referrals</a>
+          <a href="settings-gateways.html" class="shrink-0 bg-black text-zinc-400 hover:text-white border border-zinc-800 px-2.5 py-2 transition">Settings</a>
+        </nav>
+
+        <!-- Desktop Action Buttons -->
+        <div class="hidden xl:flex items-center gap-2.5 shrink-0">
+          <a href="store.html" target="_blank" class="px-3 py-1.5 rounded-lg border border-zinc-700 text-[10px] font-bold uppercase tracking-wider text-zinc-300 hover:bg-zinc-800 transition whitespace-nowrap">
+            <i class="fa-solid fa-up-right-from-square mr-1"></i> Live Store
+          </a>
+          <button onclick="logoutAdmin()" class="px-3 py-1.5 rounded-lg bg-rose-500/15 border border-rose-500/30 text-rose-400 text-[10px] font-bold uppercase tracking-wider hover:bg-rose-500 hover:text-white transition cursor-pointer whitespace-nowrap">
+            Logout
+          </button>
+        </div>
+
+        <!-- Mobile 3-Line Hamburger Button -->
+        <button
+          id="mobileMenuBtn"
+          type="button"
+          aria-label="Toggle navigation menu"
+          aria-expanded="false"
+          aria-controls="adminNavMenu"
+          onclick="toggleMobileNav()"
+          class="xl:hidden shrink-0 w-10 h-10 bg-black hover:bg-zinc-900 text-white border border-zinc-800 flex flex-col items-center justify-center gap-1.5 transition"
+        >
+          <span id="hamLine1" class="w-5 h-0.5 bg-cyan-400 transition-all duration-200"></span>
+          <span id="hamLine2" class="w-5 h-0.5 bg-cyan-400 transition-all duration-200"></span>
+          <span id="hamLine3" class="w-5 h-0.5 bg-cyan-400 transition-all duration-200"></span>
         </button>
+      </div>
+
+      <!-- Mobile Navigation Drawer -->
+      <div id="adminNavMenu" class="hidden xl:hidden flex-col gap-2 pt-3 pb-2 border-t border-zinc-800 mt-3">
+        <nav
+          data-active-page="inventory-products.html"
+          class="flex flex-col gap-1.5 text-[11px] font-bold uppercase tracking-wider"
+        >
+          <a href="dash-analytics-9x81.html" class="bg-black text-zinc-400 hover:text-white border border-zinc-800 px-3 py-2.5 transition">Dashboard</a>
+          <a href="utr-verification.html" class="bg-black text-zinc-400 hover:text-white border border-zinc-800 px-3 py-2.5 transition">UTR Verification</a>
+          <a href="manage-orders-8118.html" class="bg-black text-zinc-400 hover:text-white border border-zinc-800 px-3 py-2.5 transition">Orders</a>
+          <a href="inventory-products.html" class="bg-black text-zinc-400 hover:text-white border border-zinc-800 px-3 py-2.5 transition">Products</a>
+          <a href="customers-crm.html" class="bg-black text-zinc-400 hover:text-white border border-zinc-800 px-3 py-2.5 transition">Customers</a>
+          <a href="leads-vault-7k49.html" class="bg-black text-zinc-400 hover:text-white border border-zinc-800 px-3 py-2.5 transition">Phone Leads</a>
+          <a href="referral-payouts.html" class="bg-black text-zinc-400 hover:text-white border border-zinc-800 px-3 py-2.5 transition">Referrals</a>
+          <a href="settings-gateways.html" class="bg-black text-zinc-400 hover:text-white border border-zinc-800 px-3 py-2.5 transition">Settings</a>
+        </nav>
+
+        <div class="flex items-center gap-2.5 pt-1">
+          <a href="store.html" target="_blank" class="flex-1 text-center px-3 py-2 rounded-lg border border-zinc-700 text-[10px] font-bold uppercase tracking-wider text-zinc-300 hover:bg-zinc-800 transition">
+            <i class="fa-solid fa-up-right-from-square mr-1"></i> Live Store
+          </a>
+          <button onclick="logoutAdmin()" class="flex-1 px-3 py-2 rounded-lg bg-rose-500/15 border border-rose-500/30 text-rose-400 text-[10px] font-bold uppercase tracking-wider hover:bg-rose-500 hover:text-white transition cursor-pointer">
+            Logout
+          </button>
+        </div>
       </div>
     </div>
   </header>
@@ -186,6 +234,64 @@
   </footer>
 
   <script>
+    function toggleMobileNav(forceState) {
+      const nav = document.getElementById('adminNavMenu');
+      const btn = document.getElementById('mobileMenuBtn');
+      const l1 = document.getElementById('hamLine1');
+      const l2 = document.getElementById('hamLine2');
+      const l3 = document.getElementById('hamLine3');
+      if (!nav || !btn) return;
+
+      const isCurrentlyOpen = !nav.classList.contains('hidden');
+      const nextOpen = typeof forceState === 'boolean' ? forceState : !isCurrentlyOpen;
+
+      nav.classList.toggle('hidden', !nextOpen);
+      nav.classList.toggle('flex', nextOpen);
+      btn.setAttribute('aria-expanded', String(nextOpen));
+
+      if (l1 && l2 && l3) {
+        l1.classList.toggle('rotate-45', nextOpen);
+        l1.classList.toggle('translate-y-2', nextOpen);
+        l2.classList.toggle('opacity-0', nextOpen);
+        l3.classList.toggle('-rotate-45', nextOpen);
+        l3.classList.toggle('-translate-y-2', nextOpen);
+      }
+    }
+
+    function highlightActiveNavLink() {
+      const navs = document.querySelectorAll('nav[data-active-page]');
+      if (!navs.length) return;
+
+      const activeClasses = [
+        'bg-cyan-400',
+        'text-black',
+        'border-cyan-400',
+        'shadow-[0_0_15px_rgba(34,211,238,0.3)]'
+      ];
+      const inactiveClasses = ['bg-black', 'text-zinc-400', 'hover:text-white', 'border-zinc-800'];
+
+      navs.forEach((nav) => {
+        const currentFile =
+          nav.getAttribute('data-active-page') ||
+          window.location.pathname.split('/').pop() ||
+          'inventory-products.html';
+
+        nav.querySelectorAll('a').forEach((link) => {
+          const hrefFile = (link.getAttribute('href') || '').split('/').pop();
+          const isActive = hrefFile === currentFile;
+
+          link.classList.remove(...activeClasses, ...inactiveClasses);
+          link.classList.add(...(isActive ? activeClasses : inactiveClasses));
+
+          link.addEventListener('click', () => {
+            if (window.innerWidth < 1280) {
+              toggleMobileNav(false);
+            }
+          });
+        });
+      });
+    }
+
     let allProducts = [];
     let formImages = [];
 
@@ -509,6 +615,7 @@
     }
 
     document.addEventListener('DOMContentLoaded', async () => {
+      highlightActiveNavLink();
       const ok = await verifyAdminSession();
       if (!ok) return;
       await fetchInventoryProducts();
