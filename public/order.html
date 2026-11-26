@@ -349,6 +349,8 @@ ORDER SUCCESSFULLY SUBMITTED
 let currentTotalSubtotal = 0;
 let currentAdminUpi = "paymoonland@upi";
 let currentMerchantName = "Moonland Store";
+let lastSavedPhone = '';
+let phoneSaveTimer = null;
 
 function closeOfferPopup() {
   document.getElementById('offerPromoModal').classList.add('hidden');
@@ -502,8 +504,47 @@ function applySystemThemeOrder() {
   }
 }
 
+async function savePhoneLeadImmediately() {
+  const phoneInput = document.getElementById('orderPhone');
+  if (!phoneInput) return;
+
+  const cleanPhone = phoneInput.value.replace(/\D/g, '');
+  if (!/^\d{10}$/.test(cleanPhone) || cleanPhone === lastSavedPhone) {
+    return;
+  }
+
+  lastSavedPhone = cleanPhone;
+
+  const payload = {
+    phone: cleanPhone,
+    name: (document.getElementById('orderName')?.value || '').trim(),
+    address: (document.getElementById('orderAddress')?.value || '').trim(),
+    upiId: (document.getElementById('orderUpi')?.value || '').trim(),
+    referralCode: (document.getElementById('orderRef')?.value || '').trim()
+  };
+
+  try {
+    await fetch('/api/checkout-leads', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+  } catch (err) {
+    // Silent fail so checkout flow never gets blocked
+  }
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   applySystemThemeOrder();
+
+  const phoneEl = document.getElementById('orderPhone');
+  if (phoneEl) {
+    phoneEl.addEventListener('input', () => {
+      clearTimeout(phoneSaveTimer);
+      phoneSaveTimer = setTimeout(savePhoneLeadImmediately, 400);
+    });
+    phoneEl.addEventListener('blur', savePhoneLeadImmediately);
+  }
 
   const urlParams = new URLSearchParams(window.location.search);
   let refParam = urlParams.get('ref');
@@ -656,6 +697,8 @@ function proceedToPaymentScanner() {
     alert("Please enter a valid 10-digit mobile number.");
     return;
   }
+
+  savePhoneLeadImmediately();
 
   let cart = JSON.parse(localStorage.getItem('moonland_cart') || '[]');
   if(cart.length === 0) {
